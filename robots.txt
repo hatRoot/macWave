@@ -1,0 +1,36 @@
+# Archivo Robots optimizado para MacWave (Reparación Mac)
+# Limpio de viejas configuraciones para mejorar el ranking
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /tmp/
+Disallow: /bin/
+Disallow: /cotizaciones/
+Disallow: /clientes/
+Disallow: /html_sidebar/
+Disallow: /dashboard-ods.html
+Disallow: /status-ods.html
+Disallow: /ods.html
+Disallow: /tecnicos.html
+Disallow: /ticket-badge.html
+
+# Reglas específicas y directas para el robot principal de búsqueda y posicionamiento
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /tmp/
+Disallow: /bin/
+Disallow: /cotizaciones/
+Disallow: /clientes/
+Disallow: /html_sidebar/
+Disallow: /dashboard-ods.html
+Disallow: /status-ods.html
+Disallow: /ods.html
+Disallow: /tecnicos.html
+Disallow: /ticket-badge.html
+
+# Mapa del sitio optimizado para Reparación Mac (Priorizado)
+Sitemap: https://macwave.com.mx/sitemap.xml

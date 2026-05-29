@@ -1,0 +1,3867 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+ <meta name="robots" content="noindex, nofollow, noarchive">
+ <title>Dashboard ODS | macWave T2</title>
+ <meta name="description" content="Dashboard interno para la gestión de órdenes de servicio de macWave T2.">
+
+ <!-- Apple Web App Experience -->
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="MW Dashboard">
+ <link rel="apple-touch-icon" href="./images/logo_dashboard_white.png">
+
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <link rel="stylesheet" href="sidebar-ods.css">
+
+ <style>
+ :root {
+ /* Apple macOS Dark Mode - Pure System Palette */
+ --mac-bg: #000000;
+ --mac-sidebar: #09090b;
+ --mac-card: rgba(28, 28, 30, 0.8);
+ --mac-border: rgba(255, 255, 255, 0.12);
+ --mac-text: #FFFFFF;
+ --mac-text-muted: #8E8E93;
+ 
+ /* Accents unified with Main Brand (Orange/Bronze) */
+ --mac-accent: #FF6600; /* Brand Orange */
+ --mac-accent-hover: #FF8533;
+ --mac-blue: #0A84FF; /* San Francisco Blue */
+ --mac-green: #30D158;
+ --mac-red: #FF453A;
+ 
+ /* Glass System - Refined Big Sur style */
+ --mac-glass: blur(30px) saturate(150%);
+ --mac-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+ }
+
+ * {
+ box-sizing: border-box;
+ margin: 0;
+ padding: 0;
+ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+ }
+
+ body {
+ background-color: var(--mac-bg);
+ background-image: radial-gradient(circle at top right, #1a2a3a, #000);
+ color: var(--mac-text);
+ height: 100vh;
+ display: flex;
+ overflow: hidden;
+ }
+
+
+
+ /* --- PREMIUM TICKET STYLE - CREDENCIAL BLANCA --- */
+ .golden-ticket {
+ background: linear-gradient(160deg, #ffffff 0%, #f5f7fa 100%);
+ padding: 40px;
+ border-radius: 24px;
+ box-shadow: 0 25px 70px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.9);
+ text-align: center;
+ border: 1.5px solid #d1d5db;
+ position: relative;
+ color: #111827;
+ max-width: 440px;
+ margin: 0 auto;
+ font-family: 'Outfit', sans-serif;
+ }
+
+ .golden-ticket .folio-box {
+ background: rgba(10, 132, 255, 0.06);
+ padding: 20px;
+ border: 2px dashed var(--mac-blue);
+ border-radius: 15px;
+ margin: 25px 0;
+ }
+
+ .golden-ticket .folio-number {
+ font-size: 36px;
+ font-weight: 900;
+ letter-spacing: 2px;
+ color: var(--mac-blue);
+ }
+
+ @media (max-width: 850px) {
+ .sidebar.hidden {
+ display: none !important;
+ }
+ 
+ .mobile-toggle-btn {
+ display: flex !important;
+ align-items: center;
+ gap: 6px;
+ background: rgba(255, 255, 255, 0.05);
+ border: 1px solid var(--mac-border);
+ color: var(--mac-text);
+ padding: 6px 12px;
+ border-radius: 8px;
+ font-size: 11px;
+ font-weight: 600;
+ cursor: pointer;
+ }
+
+.item-subtitle {
+white-space: normal;
+overflow: visible;
+text-overflow: clip;
+word-break: break-word;
+}
+
+.detail-header {
+padding: 16px;
+flex-direction: column;
+align-items: flex-start;
+gap: 10px;
+}
+
+.detail-content {
+padding: 16px;
+grid-template-columns: 1fr;
+gap: 16px;
+}
+
+.detail-header > div:last-child {
+width: 100%;
+display: flex;
+gap: 8px;
+}
+
+.detail-header > div:last-child .btn {
+flex: 1;
+}
+ }
+
+ .mobile-toggle-btn {
+ display: none;
+ }
+ .app-main {
+ flex-grow: 1;
+ display: flex;
+ flex-direction: column;
+ overflow: hidden;
+ background: transparent;
+ position: relative;
+ }
+
+ .content-area {
+ padding: 32px;
+ overflow-y: auto;
+ flex-grow: 1;
+ }
+
+ .glass-card {
+ background: var(--mac-card);
+ backdrop-filter: var(--mac-glass);
+ -webkit-backdrop-filter: var(--mac-glass);
+ border: 1px solid var(--mac-border);
+ border-radius: 20px;
+ padding: 24px;
+ box-shadow: var(--mac-shadow);
+ }
+
+ .btn {
+ background: rgba(255, 255, 255, 0.05);
+ border: 1px solid rgba(255, 255, 255, 0.1);
+ color: var(--mac-text);
+ padding: 10px 18px;
+ border-radius: 8px;
+ font-size: 13px;
+ font-weight: 700;
+ cursor: pointer;
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ gap: 8px;
+ transition: all 0.25s ease;
+ position: relative;
+ overflow: hidden;
+ box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+ }
+
+ .btn::before {
+ content: '';
+ position: absolute;
+ top: 0;
+ left: 0;
+ right: 0;
+ height: 50%;
+ background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, transparent 100%);
+ pointer-events: none;
+ z-index: 1;
+ }
+
+ .btn:hover {
+ border-color: rgba(255, 255, 255, 0.3);
+ background: rgba(255, 255, 255, 0.1);
+ transform: translateY(-1px);
+ }
+
+ .btn-primary {
+ background: var(--mac-accent);
+ color: #fff;
+ border-color: rgba(255, 255, 255, 0.1);
+ font-weight: 600;
+ }
+
+ .btn-primary:hover {
+ background: var(--mac-accent-hover);
+ transform: translateY(-1px);
+ box-shadow: 0 4px 15px rgba(255, 102, 0, 0.3);
+ }
+
+ .btn-whatsapp {
+ background: #25D366 !important;
+ color: #ffffff !important;
+ width: 100% !important;
+ padding: 16px !important;
+ border-radius: 8px !important;
+ border: 1px solid #1da851 !important;
+ font-weight: 800 !important;
+ text-transform: uppercase;
+ letter-spacing: 1px;
+ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+ cursor: pointer;
+ transition: all 0.25s ease !important;
+ }
+
+ .btn-whatsapp:hover {
+ filter: brightness(1.05) !important;
+ transform: translateY(-2px) !important;
+ background: #1da851 !important;
+ box-shadow: 0 6px 14px rgba(37, 211, 102, 0.4) !important;
+ }
+
+ .btn-primary:hover {
+ background: #0071E3;
+ box-shadow: 0 4px 12px rgba(10, 132, 255, 0.4);
+ }
+
+ .btn-danger {
+ color: var(--mac-red);
+ border-color: rgba(255, 69, 58, 0.3);
+ }
+
+ .modal-overlay {
+ position: fixed;
+ top: 0;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ background: rgba(0, 0, 0, 0.85);
+ backdrop-filter: blur(8px);
+ z-index: 1000;
+ display: none;
+ align-items: center;
+ justify-content: center;
+ }
+
+ .ticket-modal-content {
+ background: #1C1C1E;
+ width: 90%;
+ max-width: 450px;
+ border-radius: 20px;
+ border: 1px solid var(--mac-border);
+ overflow: hidden;
+ box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+ }
+
+ .ticket-modal-header {
+ padding: 20px 24px;
+ border-bottom: 1px solid var(--mac-border);
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ }
+
+ .ticket-modal-body {
+ padding: 24px;
+ }
+
+ .ticket-modal-footer {
+ padding: 16px 24px;
+ border-top: 1px solid var(--mac-border);
+ display: flex;
+ justify-content: flex-end;
+ gap: 12px;
+ background: rgba(255, 255, 255, 0.02);
+ }
+
+ .form-control {
+ width: 100%;
+ background: var(--mac-input-bg);
+ border: 1px solid var(--mac-border);
+ color: white;
+ padding: 12px 16px;
+ border-radius: 10px;
+ font-size: 14px;
+ margin-bottom: 4px;
+ }
+
+ .form-group label {
+ display: block;
+ font-size: 12px;
+ color: var(--mac-text-muted);
+ margin-bottom: 6px;
+ margin-top: 12px;
+ }
+
+ .btn-close {
+ background: transparent;
+ border: none;
+ color: var(--mac-text-muted);
+ cursor: pointer;
+ }
+
+ /* Views Toggle */
+ .view-toggle {
+ display: flex;
+ background: #1c1c1e;
+ padding: 3px;
+ border-radius: 8px;
+ border: 1px solid var(--mac-border);
+ margin-right: 12px;
+ }
+
+ .view-btn {
+ padding: 4px 12px;
+ border-radius: 6px;
+ border: none;
+ background: transparent;
+ color: var(--mac-text-muted);
+ font-size: 11px;
+ font-weight: 600;
+ cursor: pointer;
+ transition: 0.2s;
+ }
+
+ .view-btn.active {
+ background: #38383a;
+ color: #fff;
+ }
+
+ /* Main Workspace */
+ .workspace {
+ display: flex;
+ flex: 1;
+ overflow: hidden;
+ }
+
+ /* Sidebar - List View */
+ .sidebar {
+ width: 320px;
+ background: var(--mac-sidebar);
+ border-right: 1px solid var(--mac-border);
+ display: flex;
+ flex-direction: column;
+ flex-shrink: 0;
+ }
+
+ .sidebar-header {
+ padding: 12px;
+ border-bottom: 1px solid var(--mac-border);
+ }
+
+ .search-box {
+ width: 100%;
+ background: var(--mac-input-bg);
+ border: 1px solid transparent;
+ padding: 8px 30px 8px 12px;
+ border-radius: 8px;
+ color: var(--mac-text);
+ font-size: 13px;
+ outline: none;
+ transition: border 0.2s;
+ }
+
+ .search-box:focus {
+ border-color: var(--mac-blue);
+ }
+
+ .search-wrapper {
+ position: relative;
+ }
+
+ .search-wrapper::after {
+ content: '🔍';
+ position: absolute;
+ right: 10px;
+ top: 50%;
+ transform: translateY(-50%);
+ font-size: 12px;
+ opacity: 0.5;
+ pointer-events: none;
+ }
+
+ .list-container {
+ flex: 1;
+ overflow-y: auto;
+ padding: 8px;
+ }
+
+ .list-item {
+ padding: 10px 12px;
+ border-radius: 6px;
+ margin-bottom: 4px;
+ cursor: pointer;
+ transition: background 0.1s;
+ }
+
+ .list-item:hover {
+ background: var(--mac-card-hover);
+ }
+
+ .list-item.selected {
+ background: var(--mac-blue);
+ }
+
+ .list-item.selected .item-subtitle,
+ .list-item.selected .status-dot-text {
+ color: rgba(255, 255, 255, 0.8) !important;
+ }
+
+ .item-title {
+ font-size: 13px;
+ font-weight: 600;
+ margin-bottom: 4px;
+ display: flex;
+ justify-content: space-between;
+gap: 8px;
+}
+
+.item-title span:first-child {
+min-width: 0;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+ }
+
+ .item-subtitle {
+ font-size: 11px;
+ color: var(--mac-text-muted);
+ white-space: nowrap;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ }
+
+ /* Status Dot Indicator */
+ .status-dot-text {
+ display: flex;
+ align-items: center;
+ gap: 6px;
+ font-size: 10px;
+ color: var(--mac-text-muted);
+ margin-top: 6px;
+ }
+
+ .status-dot {
+ width: 8px;
+ height: 8px;
+ border-radius: 50%;
+ background: #8E8E93;
+ flex-shrink: 0;
+ transition: all 0.3s ease;
+ }
+
+ /* Detail View */
+ .detail-view {
+ flex: 1;
+ background: var(--mac-bg);
+ overflow-y: auto;
+ display: flex;
+ flex-direction: column;
+ }
+
+ .empty-selection {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ height: 100%;
+ color: var(--mac-text-muted);
+ text-align: center;
+ }
+
+ .empty-selection svg {
+ width: 48px;
+ height: 48px;
+ margin-bottom: 16px;
+ opacity: 0.5;
+ }
+
+ /* Detail Header */
+ .detail-header {
+ padding: 30px 40px 20px;
+ border-bottom: 1px solid var(--mac-border);
+ display: flex;
+ justify-content: space-between;
+ align-items: flex-end;
+ }
+
+ .folio-title {
+ font-size: 28px;
+ font-weight: 700;
+ letter-spacing: -0.5px;
+ margin-bottom: 8px;
+ }
+
+ .status-pill {
+ display: inline-block;
+ padding: 4px 10px;
+ border-radius: 12px;
+ font-size: 11px;
+ font-weight: 600;
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+ border: 1px solid transparent;
+ }
+
+ /* Detail Content Grid */
+ .detail-content {
+ padding: 30px 40px;
+ max-width: 1000px;
+ display: grid;
+ grid-template-columns: 2fr 1.2fr;
+ gap: 30px;
+ }
+
+ /* Left Column: Info & Setup */
+ .info-section {
+ display: flex;
+ flex-direction: column;
+ gap: 20px;
+ }
+
+ .card {
+ background: var(--mac-card);
+ border: 1px solid var(--mac-border);
+ border-radius: 10px;
+ padding: 20px;
+ }
+
+ .card-title {
+ font-size: 14px;
+ font-weight: 800;
+ color: #ffffff;
+ text-transform: uppercase;
+ letter-spacing: 2px;
+ margin-bottom: 24px;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ opacity: 0.9;
+ border-left: 3px solid var(--mac-blue);
+ padding-left: 12px;
+ }
+
+ .form-grid {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 16px;
+ }
+
+ .form-group {
+ display: flex;
+ flex-direction: column;
+ gap: 6px;
+ }
+
+ .form-group label {
+ font-size: 11px;
+ color: var(--mac-text-muted);
+ }
+
+ .form-control {
+ background: var(--mac-input-bg);
+ border: 1px solid var(--mac-border);
+ color: var(--mac-text);
+ padding: 8px 12px;
+ border-radius: 6px;
+ font-size: 13px;
+ outline: none;
+ transition: border 0.2s;
+ }
+.form-control:focus {
+ border-color: var(--mac-blue);
+ }
+
+  textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+  }
+
+  /* Compact detail form overrides */
+  .info-section .form-control {
+  padding: 8px 12px;
+  font-size: 13px;
+  }
+  .info-section .form-group label {
+  font-size: 10px;
+  margin-bottom: 2px;
+  margin-top: 4px;
+  }
+  .info-section .card {
+  padding: 16px;
+  }
+  .info-section .form-grid {
+  gap: 12px;
+  grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  /* Financial Field */
+ .price-input {
+ position: relative;
+ }
+
+ .price-input::before {
+ content: '$';
+ position: absolute;
+ left: 12px;
+ top: 50%;
+ transform: translateY(-50%);
+ color: var(--mac-text-muted);
+ }
+
+ .price-input input {
+ padding-left: 24px;
+ width: 100%;
+ font-weight: 600;
+ color: var(--mac-red);
+ }
+
+ /* Right Column: Timeline & Actions */
+ .action-section {
+ display: flex;
+ flex-direction: column;
+ gap: 20px;
+ }
+
+ .timeline-container {
+ margin-top: 10px;
+ padding-left: 10px;
+ }
+
+ .timeline-item {
+ position: relative;
+ padding-left: 24px;
+ margin-bottom: 24px;
+ }
+
+ .timeline-item:last-child {
+ margin-bottom: 0;
+ }
+
+ .timeline-item::before {
+ content: '';
+ position: absolute;
+ left: 0;
+ top: 4px;
+ width: 10px;
+ height: 10px;
+ border-radius: 50%;
+ background: var(--item-color, var(--mac-border));
+ border: 2px solid var(--mac-bg);
+ z-index: 2;
+ }
+
+ .timeline-item::after {
+ content: '';
+ position: absolute;
+ left: 4px;
+ top: 14px;
+ bottom: -24px;
+ width: 2px;
+ background: var(--mac-border);
+ z-index: 1;
+ }
+
+ .timeline-item:last-child::after {
+ display: none;
+ }
+
+ .timeline-date {
+ font-size: 11px;
+ color: var(--mac-text-muted);
+ margin-bottom: 4px;
+ }
+
+ .timeline-status {
+ font-size: 12px;
+ font-weight: 600;
+ margin-bottom: 6px;
+ }
+
+ .timeline-note {
+ font-size: 13px;
+ line-height: 1.4;
+ color: var(--mac-text);
+ background: var(--mac-input-bg);
+ padding: 10px;
+ border-radius: 6px;
+ border: 1px solid var(--mac-border);
+ }
+
+ .timeline-img {
+ margin-top: 8px;
+ max-width: 100%;
+ border-radius: 6px;
+ border: 1px solid var(--mac-border);
+ }
+
+ /* Scrollbar styling for a native feel */
+ ::-webkit-scrollbar {
+ width: 8px;
+ height: 8px;
+ }
+
+ ::-webkit-scrollbar-track {
+ background: transparent;
+ }
+
+ ::-webkit-scrollbar-thumb {
+ background: #4A4A4C;
+ border-radius: 4px;
+ border: 2px solid var(--mac-bg);
+ }
+
+ ::-webkit-scrollbar-thumb:hover {
+ background: #6e6e73;
+ }
+
+ @media (max-width: 850px) {
+ body {
+ flex-direction: column;
+ overflow: auto;
+ }
+
+ .app-sidebar {
+ display: none !important; /* Hide sidebar on mobile */
+ }
+
+ .mobile-top-nav {
+ display: flex !important;
+ position: sticky;
+ top: 0;
+ height: 60px;
+ background: rgba(18, 18, 18, 0.95);
+ backdrop-filter: blur(20px);
+ border-bottom: 1px solid var(--mac-border);
+ z-index: 10000;
+ justify-content: space-around;
+ align-items: center;
+ padding-top: env(safe-area-inset-top);
+ }
+
+ .mobile-nav-item {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 2px;
+ color: var(--mac-text-muted);
+ text-decoration: none;
+ font-size: 9px;
+ font-weight: 700;
+ background: none;
+ border: none;
+ padding: 10px;
+ }
+
+ .mobile-nav-item.active {
+ color: var(--mac-accent);
+ }
+
+ .mobile-nav-item svg {
+ width: 20px;
+ height: 20px;
+ }
+
+ .app-main {
+ padding-bottom: 20px;
+ height: auto;
+ min-height: calc(100vh - 60px);
+ overflow: visible;
+ }
+ 
+ .sidebar.hidden {
+ display: none !important;
+ }
+ 
+ .mobile-toggle-btn {
+ display: flex !important;
+ align-items: center;
+ gap: 6px;
+ background: rgba(255, 255, 255, 0.05);
+ border: 1px solid var(--mac-border);
+ color: var(--mac-text);
+ padding: 6px 12px;
+ border-radius: 8px;
+ font-size: 11px;
+ font-weight: 600;
+ cursor: pointer;
+ }
+ }
+
+ .mobile-top-nav {
+ display: none;
+ }
+
+ /* Progress Overlay */
+ #upload-progress-overlay {
+ position: fixed;
+ top: 0; left: 0; right: 0; bottom: 0;
+ background: rgba(0,0,0,0.8);
+ backdrop-filter: blur(10px);
+ display: none;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ z-index: 99999;
+ color: #fff;
+ }
+ .progress-spinner {
+ width: 40px; height: 40px;
+ border: 3px solid rgba(255,255,255,0.1);
+ border-top-color: var(--mac-accent);
+ border-radius: 50%;
+ animation: spin 1s linear infinite;
+ margin-bottom: 20px;
+ }
+ @keyframes spin { to { transform: rotate(360deg); } }
+ @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+ /* Kanban Styles */
+ .kanban-view {
+ display: none;
+ flex: 1;
+ background: #000;
+ overflow-x: auto;
+ overflow-y: hidden;
+ padding: 20px;
+ }
+
+ .kanban-board {
+ display: flex;
+ gap: 16px;
+ height: 100%;
+ min-width: max-content;
+ }
+
+ .kanban-column {
+ width: 272px;
+ /* Trello standard width */
+ background: #1c1c1e;
+ /* Apple dark column color */
+ border-radius: 8px;
+ display: flex;
+ flex-direction: column;
+ max-height: 100%;
+ border: 1px solid #38383a;
+ }
+
+ .column-header {
+ padding: 12px 16px 8px;
+ font-size: 13px;
+ font-weight: 700;
+ text-transform: none;
+ color: #F5F5F7;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ background: transparent;
+ border-bottom: none;
+ border-radius: 8px 8px 0 0;
+ }
+
+ .column-count {
+ background: transparent;
+ color: #8e8e93;
+ font-size: 12px;
+ font-weight: 500;
+ border: none;
+ backdrop-filter: none;
+ padding: 0;
+ }
+
+ .kanban-cards {
+ flex: 1;
+ overflow-y: auto;
+ padding: 8px 12px;
+ display: flex;
+ flex-direction: column;
+ gap: 8px;
+ }
+
+ .kanban-card {
+ background: #2c2c2e;
+ border-radius: 8px;
+ padding: 10px;
+ cursor: grab;
+ transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+ user-select: none;
+ box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+ border: 1px solid rgba(255, 255, 255, 0.05);
+ min-height: 40px;
+ }
+
+ .kanban-card:hover {
+ background: #3a3a3c;
+ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+ }
+
+ .k-card-folio {
+ font-size: 13px;
+ font-weight: 700;
+ color: #ffffff;
+ margin-bottom: 4px;
+ }
+
+ .k-card-client {
+ font-size: 12px;
+ font-weight: 400;
+ color: #8e8e93;
+ margin-bottom: 8px;
+ white-space: nowrap;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ }
+
+ .k-card-info {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ font-size: 10px;
+ color: #8e8e93;
+ font-weight: 500;
+ }
+
+ .folio-title {
+ font-size: 32px;
+ font-weight: 900;
+ letter-spacing: -1px;
+ color: #ffffff;
+ margin-bottom: 4px;
+word-break: break-word;
+ }
+
+ .kanban-card:active {
+ cursor: grabbing;
+ }
+
+ .dragging {
+ opacity: 0.5;
+ background: #1c1c1e !important;
+ border: 1px dashed var(--mac-blue) !important;
+ }
+
+ .column-highlight {
+ background: rgba(10, 132, 255, 0.05);
+ border: 1px dashed rgba(10, 132, 255, 0.5) !important;
+ }
+
+ .column-actions {
+ color: #8e8e93;
+ padding: 6px;
+ border-radius: 4px;
+ cursor: pointer;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ transition: background-color 0.2s, color 0.2s;
+ }
+
+ .column-actions:hover {
+ background-color: rgba(255, 255, 255, 0.1);
+ color: #ffffff;
+ }
+
+ .column-footer {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ padding: 0 8px 8px;
+ }
+
+ .add-card-btn {
+ flex-grow: 1;
+ padding: 6px 8px;
+ margin: 0;
+ background: transparent;
+ border: none;
+ border-radius: 4px;
+ color: #8e8e93;
+ font-size: 13px;
+ font-weight: 500;
+ cursor: pointer;
+ display: flex;
+ align-items: center;
+ justify-content: flex-start;
+ gap: 6px;
+ transition: 0.2s;
+ }
+
+ .add-card-btn:hover {
+ background: rgba(255, 255, 255, 0.1);
+ color: #ffffff;
+ }
+
+ .template-btn {
+ padding: 6px;
+ border-radius: 4px;
+ color: #8e8e93;
+ cursor: pointer;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ transition: 0.2s;
+ margin-left: 4px;
+ }
+
+ .template-btn:hover {
+ background: rgba(255, 255, 255, 0.1);
+ color: #ffffff;
+ }
+
+ /* Modal Overlay Styles */
+ .modal-overlay {
+ display: none;
+ position: fixed;
+ inset: 0;
+ background: rgba(0, 0, 0, 0.8);
+ backdrop-filter: blur(10px);
+ z-index: 20000;
+ align-items: center;
+ justify-content: center;
+ }
+
+ .modal-overlay.active {
+ display: flex;
+ }
+
+ .modal-card {
+ background: #1c1c1e;
+ width: 450px;
+ border-radius: 16px;
+ border: 1px solid var(--mac-border);
+ box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+ padding: 24px;
+ }
+ </style>
+
+  <link rel="canonical" href="https://macwave.com.mx/dashboard-ods">
+</head>
+
+<body>
+
+ </script>
+ 
+ <div id="upload-progress-overlay">
+ <div class="progress-spinner"></div>
+ <div id="upload-progress-text" style="font-weight: bold; font-size: 14px;">Preparando fotos...</div>
+ <div id="upload-progress-sub" style="font-size: 11px; opacity: 0.7; margin-top: 8px;">No cierres esta ventana</div>
+ </div>
+
+ <!-- Mobile Top Navigation -->
+ <nav class="mobile-top-nav">
+ <button class="mobile-nav-item active" id="m-nav-list" onclick="switchView('list')">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+ <span>LISTA</span>
+ </button>
+ <button class="mobile-nav-item" id="m-nav-kanban" onclick="switchView('kanban')">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+ <span>TABLERO</span>
+ </button>
+ <button class="mobile-nav-item" id="m-nav-quote" onclick="switchView('quote')">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+ <span>NUEVA</span>
+ </button>
+ <button class="mobile-nav-item" id="m-nav-tickets" onclick="switchView('tickets')">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-1.41 1.41L15.17 8H4v2h11.17l-1.58 1.59L15 13l4-4-4-4z"/></svg>
+ <span>TICKET</span>
+ </button>
+ </nav>
+
+ <!-- Windows Vista Aero Sidebar Navigation -->
+ <aside class="app-sidebar">
+ <div class="sidebar-brand" style="margin-bottom: 32px; display: flex; align-items: center; gap: 12px;">
+ <img src="./images/logo_dashboard_white.png" alt="Logo macWave T2"
+ style="width: 44px; border-radius: 4px; filter: drop-shadow(0 0 8px rgba(255,255,255,0.2));">
+ <div style="font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -0.5px;">DASHBOARD</div>
+ </div>
+
+ <nav class="nav-group">
+ <div class="nav-label">OPERACIONES</div>
+ <button class="nav-item active" onclick="switchView('list')" id="nav-list">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+ </svg>
+ Reparaciones (ODS)
+ </button>
+ <button class="nav-item" onclick="switchView('quote')" id="nav-quote">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <path d="M12 5v14M5 12h14" />
+ </svg>
+ Nueva ODS (PDF)
+ </button>
+ <button class="nav-item" onclick="switchView('kanban')" id="nav-kanban">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+ <line x1="9" y1="3" x2="9" y2="21" />
+ <line x1="15" y1="3" x2="15" y2="21" />
+ </svg>
+ TABLERO DE ODS
+ </button>
+ <button class="nav-item" onclick="switchView('finance')" id="nav-finance" style="display: none;">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+ </svg>
+ Balances Finanzas
+ </button>
+ </nav>
+
+ <nav class="nav-group" style="padding-top: 16px;">
+ <button class="nav-item" onclick="showTicketUnifiedView()" id="nav-tickets-unified">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <path d="M15 5l-1.41 1.41L15.17 8H4v2h11.17l-1.58 1.59L15 13l4-4-4-4z" />
+ </svg>
+ Generar Ticket & Historial
+ </button>
+ <button class="nav-item" onclick="switchView('settings')" id="nav-settings" style="display: none;">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <circle cx="12" cy="12" r="3" />
+ <path
+ d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010-2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+ </svg>
+ Ajustes
+ </button>
+ </nav>
+
+ <nav class="nav-group" style="margin-top:auto;">
+ <button class="nav-item" style="color: var(--mac-red);" id="logout-btn-side">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+ </svg>
+ Cerrar Sesión
+ </button>
+ </nav>
+ </aside>
+
+ <main class="app-main">
+ <!-- List View -->
+ <div class="workspace" id="list-view-container" style="display: flex; height: 100%;">
+ <aside class="sidebar">
+ <div class="sidebar-header" style="padding: 10px 12px; display: flex; gap: 8px; align-items: center;">
+ <div class="search-wrapper" style="flex: 1;">
+ <input type="text" id="search-input" class="search-box" placeholder="Filtrar órdenes...">
+ </div>
+ </div>
+ <div class="list-container" id="ods-list">
+ <!-- Items populated by JS -->
+ <div style="padding: 20px; text-align: center; color: var(--mac-text-muted); font-size: 12px;">
+ Cargando órdenes...</div>
+ </div>
+ </aside>
+ <div class="detail-view" id="detail-view">
+ <div class="empty-selection">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+ <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+ <line x1="8" y1="21" x2="16" y2="21"></line>
+ <line x1="12" y1="17" x2="12" y2="21"></line>
+ </svg>
+ <h3>Ninguna ODS Seleccionada</h3>
+ <p style="margin-top: 8px; font-size: 13px;">Selecciona una orden de servicio en la lista de la
+ izquierda.</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Kanban View -->
+ <div class="workspace" id="kanban-view-container"
+ style="display: none; height: 100%; overflow-x: auto; background: #000;">
+ <div class="kanban-board" id="kanban-board"></div>
+ </div>
+
+ <!-- Finance View -->
+ <div class="workspace" id="finance-view-container"
+ style="display: none; height: 100%; flex-direction: column; background: #000;">
+ <!-- Top Bar -->
+ <div
+ style="padding: 20px 40px; display: flex; gap: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); background: #1c1c1e;">
+ <button class="nav-item active" onclick="switchFinanceTab('dashboard')" id="f-tab-dashboard"
+ style="width: auto; margin:0; justify-content: center; padding: 10px 20px;">Dashboard
+ Financiero</button>
+ <button class="nav-item" onclick="switchFinanceTab('catalog')" id="f-tab-catalog"
+ style="width: auto; margin:0; justify-content: center; padding: 10px 20px;">Catálogo
+ Insumos/Servicios</button>
+ <button class="nav-item" onclick="switchFinanceTab('config')" id="f-tab-config"
+ style="width: auto; margin:0; justify-content: center; padding: 10px 20px;">Configuración</button>
+ </div>
+
+ <!-- Dashboard Tab -->
+ <div id="finance-dashboard-tab" style="padding: 40px; overflow-y: auto; flex: 1;">
+ <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px;">
+ <div class="card"
+ style="background: linear-gradient(180deg, rgba(48, 209, 88, 0.1) 0%, rgba(48, 209, 88, 0.05) 100%); border-color: rgba(48,209,88,0.2);">
+ <div style="color: var(--mac-green); font-size: 14px; font-weight: 700;">Ingresos Brutos
+ (Semana)</div>
+ <div id="fin-ingresos"
+ style="font-size: 42px; font-weight: 900; color: #fff; margin: 10px 0; text-shadow: 0 0 20px rgba(48,209,88,0.4);">
+ $ 0.00</div>
+ </div>
+ <div class="card"
+ style="background: linear-gradient(180deg, rgba(10, 132, 255, 0.1) 0%, rgba(10, 132, 255, 0.05) 100%); border-color: rgba(10,132,255,0.2);">
+ <div style="color: var(--mac-blue); font-size: 14px; font-weight: 700;">Utilidad Neta (Semana)
+ </div>
+ <div id="fin-utilidad"
+ style="font-size: 42px; font-weight: 900; color: #fff; margin: 10px 0; text-shadow: 0 0 20px rgba(10,132,255,0.4);">
+ $ 0.00</div>
+ </div>
+ <div class="card"
+ style="background: linear-gradient(180deg, rgba(255, 69, 58, 0.1) 0%, rgba(255, 69, 58, 0.05) 100%); border-color: rgba(255,69,58,0.2);">
+ <div style="color: var(--mac-red); font-size: 14px; font-weight: 700;">Costos/Insumos (Semana)
+ </div>
+ <div id="fin-gastos"
+ style="font-size: 42px; font-weight: 900; color: #fff; margin: 10px 0; text-shadow: 0 0 20px rgba(255,69,58,0.4);">
+ $ 0.00</div>
+ </div>
+ </div>
+ <!-- Gráfica Semanal -->
+ <div class="card"
+ style="background: rgba(255,255,255,0.02); padding: 30px; border: 1px solid rgba(255,255,255,0.05);">
+ <h3 style="color: #fff; margin-bottom: 20px; font-weight: 800; font-size: 20px;">Métricas Semanales
+ </h3>
+ <div style="height: 400px; width: 100%;">
+ <canvas id="financeChart"></canvas>
+ </div>
+ </div>
+ </div>
+
+ <!-- Catalog Tab -->
+ <div id="finance-catalog-tab" style="padding: 40px; overflow-y: auto; flex: 1; display: none;">
+ <h2 style="color: #fff; margin-bottom: 20px; font-weight: 800; font-size: 24px;">Catálogo para ODS</h2>
+ <div
+ style="display: flex; gap: 20px; margin-bottom: 30px; background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+ <input type="text" id="cat-nombre" class="modal-input" placeholder="Nombre completo"
+ style="flex: 2; margin: 0;">
+ <input type="text" id="cat-clave" class="modal-input" placeholder="Clave (ej. SMA1)"
+ style="flex: 0.8; margin: 0;">
+ <select id="cat-tipo" class="modal-input" style="flex: 1; margin: 0;">
+ <option value="Servicio">Servicio</option>
+ <option value="Hardware">Hardware/Pieza</option>
+ <option value="Software">Software</option>
+ </select>
+ <input type="number" id="cat-costo" class="modal-input" placeholder="Costo Prov ($)" step="0.01" style="flex: 1; margin: 0;">
+ <input type="number" id="cat-precio" class="modal-input" placeholder="Precio Público ($)" step="0.01" style="flex: 1; margin: 0;">
+ <button class="nav-item"
+ style="background: var(--mac-blue); color: white; width: max-content; margin: 0; padding: 0 30px;"
+ onclick="addCatalogItem()">+ Gurdar en Catálogo</button>
+ </div>
+ <div class="table-container"
+ style="background: #1c1c1e; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden;">
+ <table class="ods-table" style="width: 100%; margin: 0;">
+ <thead>
+ <tr style="background: rgba(255,255,255,0.03);">
+ <th style="padding: 15px; text-align: left; color:#8e8e93;">Dato</th>
+ <th style="padding: 15px; text-align: left; color:#8e8e93;">Tipo</th>
+ <th style="padding: 15px; text-align: left; color:#8e8e93;">Costo Prov.</th>
+ <th style="padding: 15px; text-align: left; color:#8e8e93;">Precio Al Cliente</th>
+ <th style="padding: 15px; text-align: left; color:#8e8e93;">Utilidad Bruta</th>
+ <th style="padding: 15px; text-align: right; color:#8e8e93;">Acción</th>
+ </tr>
+ </thead>
+ <tbody id="catalog-list"></tbody>
+ </table>
+ </div>
+ </div>
+
+ <!-- Config Tab -->
+ <div id="finance-config-tab" style="padding: 40px; overflow-y: auto; flex: 1; display: none;">
+ <div
+ style="max-width: 600px; margin: 0 auto; padding: 40px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);">
+ <h2
+ style="color: #fff; margin-bottom: 10px; font-weight: 800; text-align: center; font-size: 28px;">
+ Ajustes Globales</h2>
+ <p style="color: var(--mac-text-muted); text-align: center; margin-bottom: 40px; font-size: 14px;">
+ Define los valores por omisión que se utilizarán para calcular utilidades y costos en los
+ reportes de ODS.</p>
+
+ <label
+ style="color: #fff; font-size: 14px; font-weight: 600; margin-bottom: 8px; display: block;">Margen
+ Global Default (%) <span style="font-weight: 400; color: #8e8e93; font-size: 12px;">(Se usará si
+ no hay desglose en la ODS)</span></label>
+ <input type="number" id="conf-margen" class="modal-input" value="100"
+ style="margin-bottom: 25px; background: rgba(0,0,0,0.5);">
+
+ <label
+ style="color: #fff; font-size: 14px; font-weight: 600; margin-bottom: 8px; display: block;">Impuesto
+ (IVA) %</label>
+ <input type="number" id="conf-iva" class="modal-input" value="16"
+ style="margin-bottom: 25px; background: rgba(0,0,0,0.5);">
+
+ <label
+ style="color: #fff; font-size: 14px; font-weight: 600; margin-bottom: 8px; display: block;">Comisión
+ de Tarjeta %</label>
+ <input type="number" id="conf-comision" class="modal-input" value="3.5" step="0.01"
+ style="margin-bottom: 40px; background: rgba(0,0,0,0.5);">
+
+ <button class="nav-item"
+ style="width: 100%; background: var(--mac-green); color: black; font-weight: 700; margin: 0;"
+ onclick="saveFinanceConfig()">Guardar Configuración</button>
+ </div>
+ </div>
+ </div>
+
+ <!-- Tickets View -->
+ <!-- SETTINGS VIEW (ADMIN ONLY) -->
+ <div class="workspace" id="settings-view-container"
+ style="display: none; height: 100%; padding: 40px; overflow-y: auto; flex-direction: column;">
+ <div style="max-width: 800px; margin: 0 auto; width: 100%;">
+ <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+ <h2 style="font-size: 32px; font-weight: 800; margin: 0;">Ajustes de Sistema</h2>
+
+ <div id="session-status-badge" style="display: flex; align-items: center; gap: 8px; font-size: 11px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">
+ <div id="session-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #8E8E93;"></div>
+ <span id="session-text" style="color: var(--mac-text-muted); font-weight: 600;">CONSULTANDO DB...</span>
+ </div>
+ </div>
+ <p style="color: var(--mac-text-muted); margin-bottom: 40px;">Gestiona usuarios, roles y permisos del laboratorio.</p>
+
+ <div class="card" style="padding: 0; overflow: hidden;">
+ <div style="padding: 20px 24px; border-bottom: 1px solid var(--mac-border); display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02);">
+ <h3 style="font-size: 16px; font-weight: 700;">GESTIÓN DE USUARIOS</h3>
+ <button class="btn btn-primary" onclick="showNewUserModal()" style="font-size: 13px; height: 36px; padding: 0 16px;">+ Nuevo Usuario</button>
+ </div>
+ <div style="padding: 0;">
+ <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+ <thead style="background: rgba(255,255,255,0.03); color: var(--mac-text-muted); text-transform: uppercase; font-size: 11px; letter-spacing: 1px;">
+ <tr>
+ <th style="padding: 12px 24px; text-align: left; font-weight: 600;">Usuario / Email</th>
+ <th style="padding: 12px 24px; text-align: left; font-weight: 600;">Tipo</th>
+ <th style="padding: 12px 24px; text-align: right; font-weight: 600;">Acciones</th>
+ </tr>
+ </thead>
+ <tbody id="user-settings-list">
+ <!-- Users will be rendered here -->
+ </tbody>
+ </table>
+ </div>
+ </div>
+
+ <div style="margin-top: 30px; display: flex; gap: 20px;">
+ <div class="card" style="flex: 1; padding: 20px;">
+ <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Crear Grupo</h4>
+ <p style="font-size: 12px; color: var(--mac-text-muted); margin-bottom: 15px;">Organiza a tus técnicos en grupos de trabajo.</p>
+ <button class="btn btn-secondary" style="width: 100%; font-size: 12px; height: 36px;" onclick="alert('Funcionalidad de grupos próximamente')">Gestionar Grupos</button>
+ </div>
+ <div class="card" style="flex: 1; padding: 20px;">
+ <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;">Logs de Auditoría</h4>
+ <p style="font-size: 12px; color: var(--mac-text-muted); margin-bottom: 15px;">Revisa quién ha generado qué órdenes de servicio.</p>
+ <button class="btn btn-secondary" style="width: 100%; font-size: 12px; height: 36px;" onclick="alert('Logs disponibles en versión Pro')">Ver Auditoría</button>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <div class="workspace" id="tickets-view-container"
+ style="display: none; height: 100%; padding: 40px; overflow-y: auto; flex-direction: column;">
+
+ <div style="display: flex; gap: 40px; align-items: flex-start;">
+ <!-- LEFT: THE GOLDEN TICKET GENERATOR -->
+ <div class="golden-ticket" style="flex-shrink: 0;">
+ <h1 class="ticket-main-title" style="font-size: 38px; font-weight: 900; margin-bottom: 25px;">
+  <span style="display: block; font-size: 14px; text-transform: uppercase; letter-spacing: 4px; color: #6b7280; margin-bottom: 8px;">Orden de Servicio Técnico</span>
+ SERVICIO TÉCNICO</h1>
+
+ <div class="folio-box">
+ <p class="folio-label"
+ style="font-size: 11px; font-weight: 800; color: #444; margin-bottom: 8px;">TU CÓDIGO ÚNICO:
+ </p>
+ <p id="t-unified-folio" class="folio-number">G-000000-000</p>
+ </div>
+
+ <div style="text-align: left;">
+ <label
+ style="display:block; font-size:12px; font-weight:800; margin-bottom:8px; color:#333;">¿Cómo
+ nos conociste?</label>
+ <select id="t-unified-source" class="btn" onchange="updateFolioPreview(); toggleCalendarButtons();"
+ style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:15px; font-weight:700;">
+ <option value="INTERNET">INTERNET</option>
+ <option value="GOOGLE MAPS">GOOGLE MAPS</option>
+ <option value="RECOMENDACIÓN">RECOMENDACIÓN</option>
+ </select>
+ <input type="text" id="t-unified-name" class="btn"
+ style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:15px;"
+ placeholder="Nombre del cliente" oninput="toggleCalendarButtons()">
+ <input type="text" id="t-unified-phone" class="btn"
+ style="width:100%; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000; margin-bottom:15px;"
+ placeholder="WhatsApp (10 dígitos)" oninput="toggleCalendarButtons()">
+ <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+ <!-- DATE INPUT -->
+ <div style="flex: 1.5; position: relative;">
+ <input type="date" id="t-unified-date" 
+ style="width: 100%; border-radius:8px; padding:10px; font-size:14px; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000;"
+ oninput="toggleCalendarButtons()" onchange="toggleCalendarButtons()">
+ </div>
+ <!-- TIME INPUT -->
+ <div style="flex: 1; position: relative;">
+ <input type="time" id="t-unified-time" 
+ style="width: 100%; border-radius:8px; padding:10px; font-size:14px; text-align:left; background:rgba(255,255,255,0.4); border:1px solid #000; color:#000;"
+ oninput="toggleCalendarButtons()" onchange="toggleCalendarButtons()">
+ </div>
+ </div>
+ 
+ <!-- CALENDAR EXPORT ACTIONS (Always visible) -->
+ <div id="calendar-actions" style="transition: all 0.3s ease; display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; background: rgba(0,0,0,0.05); padding: 12px; border-radius: 12px; border: 1px dashed #999;">
+ <p style="font-size: 10px; font-weight: 800; color: #ff6600; text-align: center; margin-bottom: 4px; text-transform: uppercase;">Añadir o Compartir Evento:</p>
+ <div style="display: flex; gap: 6px;">
+ <a id="btn-google-cal" href="#" target="_blank" class="btn" 
+ style="flex: 1; font-size: 10px; padding: 8px; height: auto; background: white; border: 1px solid #ccc; color: #444; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700;">
+ <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+ GOOGLE
+ </a>
+ <button type="button" onclick="downloadICS()" class="btn" 
+ style="flex: 1; font-size: 10px; padding: 8px; height: auto; background: #000; border: 1px solid #000; color: #fff; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700;">
+ <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l-7-7 7-7M19 19l-7-7 7-7"></path></svg>
+ IPHONE
+ </button>
+ <button type="button" onclick="shareEvent()" class="btn" 
+ style="flex: 1; font-size: 10px; padding: 8px; height: auto; background: #006add; border: 1px solid #006add; color: #fff; display: flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700;">
+ <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+ COMPARTIR
+ </button>
+ </div>
+ </div>
+ 
+ <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+ <div style="font-size: 11px; font-weight: 700; color: #333; text-align: center; line-height: 1.4;">
+ <strong>Servicio a Domicilio y Recolección CDMX</strong><br>
+ <em style="color: var(--mac-blue);">macWave.com.mx</em>
+ </div>
+ </div>
+ </div>
+
+ <button id="btn-send-unified-ticket" class="btn btn-whatsapp" style="background:#006add; color:white; border-color:#004fb0; margin-bottom: 12px;">
+ GENERAR TICKET DE VISITA
+ </button>
+
+ <!-- CLIENT SHARE ACTION -->
+  <div id="client-share-area" style="display: none; margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--mac-border);">
+    <p style="font-size: 11px; color: var(--mac-text-muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Link para el Cliente:</p>
+    <div id="client-link-preview" style="font-size: 10px; color: var(--mac-blue); background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 15px; word-break: break-all; border: 1px solid rgba(10, 132, 255, 0.2);">
+      Cargando link...
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+      <button id="btn-copy-client-link" class="btn-whatsapp" style="height: 48px; font-size: 12px;">COPIAR LINK</button>
+      <button id="btn-shorten-link" class="btn" style="height: 48px; border-color: var(--mac-blue); color: var(--mac-blue); font-size: 12px;">ACORTAR PARA WA</button>
+    </div>
+  </div>
+  <script>
+ document.getElementById('btn-send-unified-ticket')?.addEventListener('click', () => {
+ // Logic to be added in the main script block
+ if (window.sendTicketAction) window.sendTicketAction();
+ });
+ </script>
+ </div>
+
+ <!-- RIGHT: THE HISTORY TABLE -->
+ <div style="flex-grow: 1;">
+ <div
+ style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+ <div style="display: flex; align-items: center; gap: 15px;">
+ <h2 class="folio-title" style="margin: 0;">Historial de Tickets</h2>
+
+ <button id="btn-bulk-delete" class="btn" onclick="deleteSelectedTickets()" 
+ style="display: none; background: var(--mac-red); color: white; border: none; padding: 5px 12px; font-size: 11px; font-weight: 800; border-radius: 6px; cursor: pointer; align-items: center; gap: 5px;">
+ <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+ BORRAR SELECCIONADOS (<span id="selected-count">0</span>)
+ </button>
+ </div>
+ <input type="text" id="tickets-search" class="search-box" placeholder="Buscar ticket..."
+ style="width: 250px;" oninput="renderTicketsList()">
+ </div>
+ <div class="card"
+ style="padding: 0; overflow: hidden; background: rgba(28,28,30,0.4); backdrop-filter: blur(10px);">
+ <div style="overflow-x: auto;">
+ <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+ <thead style="background: rgba(255,255,255,0.05);">
+ <tr style="text-align: left;">
+ <th style="padding: 12px; width: 40px; text-align: center;">
+ <input type="checkbox" id="select-all-tickets" onchange="toggleAllTickets(this)" style="cursor: pointer;">
+ </th>
+ <th style="padding: 12px; color: var(--mac-text-muted);">Folio</th>
+ <th style="padding: 12px; color: var(--mac-text-muted);">Fecha</th>
+ <th style="padding: 12px; color: var(--mac-text-muted);">Cliente</th>
+ <th style="padding: 12px; color: var(--mac-text-muted);">Origen</th>
+ <th style="padding: 12px; color: var(--mac-text-muted); text-align: center;">Acciones</th>
+ </tr>
+ </thead>
+ <tbody id="tickets-table-body">
+ <!-- Dynamic rows -->
+ </tbody>
+ </table>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <!-- ODS View (Iframe) -->
+ <div class="workspace" id="quote-view-container"
+ style="display: none; height: 100%; border: none; background: #000; overflow: hidden;">
+ <iframe src="ods.html?embed=true" style="width: 100%; height: 100%; border: none;"></iframe>
+ </div>
+ </main>
+
+ <!-- Quick Create Modal -->
+ <div class="modal-overlay" id="quick-create-modal">
+ <div class="modal-card">
+ <h3 style="margin-bottom: 20px; font-size: 18px;">Nueva Orden de Servicio</h3>
+ <div class="form-group" style="margin-bottom: 15px;">
+ <label>Folio (Automático si se deja vacío)</label>
+ <input type="text" id="new-ods-folio" class="form-control" placeholder="Ej. MW-1234">
+ </div>
+ <div class="form-group" style="margin-bottom: 15px;">
+ <label>Cliente</label>
+ <input type="text" id="new-ods-cliente" class="form-control" placeholder="Nombre completo">
+ </div>
+ <div class="form-group" style="margin-bottom: 15px;">
+ <label>Equipo / Modelo</label>
+ <input type="text" id="new-ods-proyecto" class="form-control" placeholder="Ej. MacBook Pro A2141">
+ </div>
+ <div class="form-group" style="margin-bottom: 20px;">
+ <label>Número de Serie</label>
+ <input type="text" id="new-ods-serie" class="form-control" placeholder="C02...">
+ </div>
+ <div style="display: flex; gap: 10px; justify-content: flex-end;">
+ <button class="btn" onclick="closeQuickCreate()">Cancelar</button>
+ <button class="btn btn-primary" id="btn-save-quick-ods" onclick="saveQuickODS()">Crear Orden</button>
+ </div>
+ </div>
+ </div>
+
+ <!-- Edit Timeline Event Modal -->
+ <div class="modal-overlay" id="edit-event-modal" style="display: none;">
+   <div class="modal-card" style="width: 480px;">
+     <h3 style="margin-bottom: 12px; font-size: 18px; color: var(--mac-blue);">✏️ Editar Secuencia de Reparación</h3>
+     <p style="font-size: 12px; color: var(--mac-text-muted); margin-bottom: 15px;">Modifica los detalles del evento seleccionado. Si deseas cambiar las imágenes de la galería, utiliza la galería general.</p>
+     
+     <input type="hidden" id="edit-event-ods-id">
+     <input type="hidden" id="edit-event-idx">
+     
+     <div class="form-group" style="margin-bottom: 15px;">
+       <label style="font-size: 12px; color: var(--mac-text-muted); display: block; margin-bottom: 5px;">Fecha del Evento</label>
+       <input type="text" id="edit-event-date" class="form-control" style="background: var(--mac-input-bg); border: 1px solid var(--mac-border); color: #fff; width: 100%; border-radius: 6px; padding: 8px;">
+     </div>
+     
+     <div class="form-group" style="margin-bottom: 15px;">
+       <label style="font-size: 12px; color: var(--mac-text-muted); display: block; margin-bottom: 5px;">Estatus del Evento</label>
+       <select id="edit-event-status" class="form-control" style="background: var(--mac-input-bg); border: 1px solid var(--mac-border); color: #fff; width: 100%; border-radius: 6px; padding: 8px;">
+         <option value="Recibido">Recibido</option>
+         <option value="Diagnóstico">Diagnóstico</option>
+         <option value="Presupuesto">Presupuesto</option>
+         <option value="Espera de piezas">Espera de piezas</option>
+         <option value="En reparación">En reparación</option>
+         <option value="Equipo reparado">Equipo reparado</option>
+         <option value="Equipo sin reparar">Equipo sin reparar</option>
+         <option value="Equipo entregado">Equipo entregado</option>
+         <option value="Nota General">Nota General</option>
+       </select>
+     </div>
+     
+     <div class="form-group" style="margin-bottom: 20px;">
+       <label style="font-size: 12px; color: var(--mac-text-muted); display: block; margin-bottom: 5px;">Anotaciones / Detalles</label>
+       <textarea id="edit-event-text" class="form-control" rows="5" style="background: var(--mac-input-bg); border: 1px solid var(--mac-border); color: #fff; width: 100%; border-radius: 6px; padding: 8px; resize: vertical; font-family: inherit; font-size: 13px;" placeholder="Detalles del avance de reparación..."></textarea>
+     </div>
+     
+     <div style="display: flex; gap: 10px; justify-content: flex-end;">
+       <button class="btn" onclick="document.getElementById('edit-event-modal').style.display='none'; document.getElementById('edit-event-modal').classList.remove('active');" style="background: #2c2c2e; border: 1px solid var(--mac-border); color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Cancelar</button>
+       <button class="btn btn-primary" onclick="window.saveTimelineEventEdit()" style="background: var(--mac-blue); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;">💾 Guardar Cambios</button>
+     </div>
+   </div>
+ </div>
+
+ <!-- Ticket Modal -->
+ <div class="modal-overlay" id="ticket-modal">
+ <div class="ticket-modal-content">
+ <div class="ticket-modal-header">
+ <h3>Generar Ticket de Visita</h3>
+ <button class="btn-close" id="close-ticket-modal">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+ <line x1="18" y1="6" x2="6" y2="18"></line>
+ <line x1="6" y1="6" x2="18" y2="18"></line>
+ </svg>
+ </button>
+ </div>
+ <div class="ticket-modal-body">
+ <div class="form-group">
+ <label>Folio del Ticket</label>
+ <div class="form-control" style="background: rgba(255,255,255,0.05); font-weight: 600;"
+ id="ticket-folio-display"></div>
+ </div>
+ <div class="form-group">
+ <label>Nombre del Cliente</label>
+ <input type="text" id="ticket-client-name" class="form-control" placeholder="Nombre completo">
+ </div>
+ <div class="form-group">
+ <label>WhatsApp (10 dígitos)</label>
+ <input type="tel" id="ticket-client-phone" class="form-control" placeholder="Ej. 5512345678"
+ maxlength="10">
+ </div>
+ <div class="form-group">
+ <label>¿Cómo nos conociste?</label>
+ <select id="ticket-source" class="form-control">
+ <option value="GOOGLE">Google</option>
+ <option value="RECOMENDACIÓN">Recomendación</option>
+ <option value="INTERNET">Internet (Otro)</option>
+ <option value="TIENDA">Tienda Física</option>
+ </select>
+ </div>
+ </div>
+ <div class="ticket-modal-footer">
+ <button class="btn" id="cancel-ticket-modal"
+ onclick="document.getElementById('ticket-modal').style.display = 'none';">Cancelar</button>
+ <button class="btn btn-primary" id="send-ticket-whatsapp">Generar y Enviar WhatsApp</button>
+ </div>
+ </div>
+ </div>
+
+ <script>
+ // Supabase Init
+ const _sbUrl = 'https://lifxtyhvgnxjjqgbzare.supabase.co';
+ const _sbKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpZnh0eWh2Z254ampxZ2J6YXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MzAzNTgsImV4cCI6MjA4NzMwNjM1OH0.YCOLJUZaw5LNAyDyNrzhlJJJeUltRadrnjC1oNUCgFI';
+ const supabaseClient = window.supabase.createClient(_sbUrl, _sbKey);
+
+ const STATUS_CONFIG = {
+ 'Recibido': { color: '#FFD60A' }, // Yellow
+ 'Diagnóstico': { color: '#FFD60A' }, // Yellow
+ 'Espera de aprobación y pago': { color: '#FF9F0A' }, // Orange
+ 'Espera de piezas': { color: '#FF9F0A' }, // Orange
+ 'Reparación': { color: '#FFD60A' }, // Yellow
+ 'Equipo reparado': { color: '#30D158' }, // Green
+ 'Equipo entregado': { color: '#30D158' }, // Green
+ 'Equipo sin reparar': { color: '#FF453A' }, // Red
+ 'Nota General': { color: '#8E8E93' } // Gray (Neutral)
+ };
+
+ // Global state
+ let allODS = [];
+ let allTickets = [];
+ let currentSelectedId = null;
+ /** Misma orden que lista/kanban; PhotoFlow debe leer desde window.*/
+ window.currentSelectedId = null;
+ let currentView = 'list'; // 'list' or 'kanban'
+
+ const userRole = sessionStorage.getItem('macwave_user');
+ const isAdmin = (userRole === 'joel.duran.mendoza@me.com' || userRole === 'joel' || userRole === 'root');
+
+ // Init admin UI
+ window.addEventListener('DOMContentLoaded', () => {
+ if (isAdmin) {
+ if (document.getElementById('nav-finance')) document.getElementById('nav-finance').style.display = 'flex';
+ if (document.getElementById('nav-settings')) document.getElementById('nav-settings').style.display = 'flex';
+ }
+ });
+
+ function getStatusColor(status) {
+ return STATUS_CONFIG[status] ? STATUS_CONFIG[status].color : '#8E8E93';
+ }
+
+ // --- SESSION HELPER ---
+ async function checkSupabaseSession() {
+ const { data } = await supabaseClient.auth.getSession();
+ const dot = document.getElementById('session-dot');
+ const txt = document.getElementById('session-text');
+ 
+ if (!data || !data.session) {
+ console.warn("[SESSION] No hay sesión activa en Supabase. Operaciones de escritura pueden fallar por RLS.");
+ if (dot) dot.style.background = '#FF453A'; // Red
+ if (txt) txt.innerText = 'ACCESO LIMITADO (READ-ONLY)';
+ return false;
+ }
+ 
+ if (dot) dot.style.background = '#30D158'; // Green
+ if (txt) txt.innerText = 'ACCESO TOTAL (LECTURA/ESCRITURA)';
+ return true;
+ }
+
+ async function loadData() {
+ // Load ODS
+ const odsRes = await supabaseClient
+ .from('ordenes_servicio')
+ .select('*')
+ .order('created_at', { ascending: false });
+
+ if (odsRes.error) {
+ console.error("ODS Load Error:", odsRes.error);
+ }
+ allODS = odsRes.data || [];
+
+ // Load Tickets
+ const ticketRes = await supabaseClient
+ .from('tickets_taller')
+ .select('*')
+ .order('created_at', { ascending: false });
+
+ if (ticketRes.error) {
+ console.error("Tickets Load Error:", ticketRes.error);
+ }
+ 
+ // Apply frontend persistence ghost-delete filter
+ const deletedFolios = JSON.parse(localStorage.getItem('t800_deleted_folios') || '[]');
+ allTickets = (ticketRes.data || []).filter(t => !deletedFolios.includes(t.folio));
+
+ // Refresh Current View
+ if (currentView === 'list') {
+ renderSidebar();
+ } else if (currentView === 'kanban') {
+ renderKanban();
+ } else if (currentView === 'finance') {
+ renderFinance();
+ } else if (currentView === 'tickets') {
+ renderTicketsList();
+ }
+ }
+
+ // --- Windows Vista Aero Glow Engine ---
+ function initVistaGlow() {
+ document.querySelectorAll('.nav-item').forEach(item => {
+ item.addEventListener('mousemove', e => {
+ const rect = item.getBoundingClientRect();
+ item.style.setProperty('--x', (e.clientX - rect.left) + 'px');
+ item.style.setProperty('--y', (e.clientY - rect.top) + 'px');
+ });
+ });
+ }
+
+ // --- Unified Ticket & History Logic ---
+ function getNextTicketNumber() {
+ let maxCount = 0;
+ // Buscar en todos los tickets cargados
+ allTickets.forEach(t => {
+ if (t.folio) {
+ const parts = t.folio.split('-');
+ if (parts.length === 3) {
+ const num = parseInt(parts[2]);
+ if (!isNaN(num) && num > maxCount) maxCount = num;
+ }
+ }
+ });
+
+ // Sincronizar con LocalStorage para que nunca retroceda (incluso si borran tickets)
+ let localStored = parseInt(localStorage.getItem('workshop_ticket_counter') || '252'); // Empezamos desde 252 para que el siguiente sea 253
+ 
+ const finalMax = Math.max(maxCount, localStored);
+ return finalMax + 1;
+ }
+
+ window.updateFolioPreview = function () {
+ const sourceSelector = document.getElementById('t-unified-source');
+ if (!sourceSelector) return;
+
+ const source = sourceSelector.value;
+ const prefixMap = {
+ 'INTERNET': 'I',
+ 'GOOGLE MAPS': 'G',
+ 'RECOMENDACIÓN': 'R'
+ };
+ const prefix = prefixMap[source] || 'T';
+
+ const nextCount = getNextTicketNumber();
+
+ const now = new Date();
+ const yy = now.getFullYear().toString().slice(2);
+ const mm = (now.getMonth() + 1).toString().padStart(2, '0');
+ const dd = now.getDate().toString().padStart(2, '0');
+ const dateStr = yy + mm + dd;
+
+ const folioDisplay = document.getElementById('t-unified-folio');
+ if (folioDisplay) folioDisplay.innerText = `${prefix}-${dateStr}-${nextCount}`;
+ };
+
+ window.showTicketUnifiedView = function () {
+ switchView('tickets');
+ // Re-select active button correctly
+ document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+ document.getElementById('nav-tickets-unified')?.classList.add('active');
+
+ updateFolioPreview();
+
+ // Background load data without blocking ui
+ loadData();
+ };
+
+ function generateGoogleCalendarLink(folio, name, source, phone, dateVal) {
+ const title = encodeURIComponent(`TICKET: ${folio} - ${name}`);
+ const details = encodeURIComponent(`Folio: ${folio}\nCliente: ${name}\nOrigen: ${source}\nWhatsApp: ${phone}\nSitio: Mac Wave T2`);
+ 
+ // Format dates for Google Calendar (YYYYMMDDTHHMMSSZ)
+ // If dateVal is provided, use it, otherwise use now.
+ const targetDate = dateVal ? new Date(dateVal) : new Date();
+ if (isNaN(targetDate.getTime())) return ''; // Invalid date
+ 
+ const startStr = targetDate.toISOString().replace(/-|:|\.\d+/g, '');
+ const endStr = new Date(targetDate.getTime() + 60 * 60 * 1000).toISOString().replace(/-|:|\.\d+/g, '');
+ 
+ return `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startStr}/${endStr}&details=${details}`;
+ }
+
+ window.downloadICS = function() {
+ const name = document.getElementById('t-unified-name').value || 'Cliente';
+ const phone = document.getElementById('t-unified-phone').value || '';
+ const dateVal = document.getElementById('t-unified-date').value;
+ const timeVal = document.getElementById('t-unified-time').value;
+ const source = document.getElementById('t-unified-source').value;
+ const folio = document.getElementById('t-unified-folio').innerText;
+
+ if (!dateVal || !timeVal) return alert("Por favor selecciona fecha y hora.");
+
+ const targetDate = new Date(`${dateVal}T${timeVal}`);
+ const endDate = new Date(targetDate.getTime() + 60 * 60 * 1000);
+
+ const formatDate = (d) => d.toISOString().replace(/-|:|\.\d+/g, '');
+
+ const icsContent = [
+ 'BEGIN:VCALENDAR',
+ 'VERSION:2.0',
+ 'BEGIN:VEVENT',
+ `SUMMARY:TICKET: ${folio} - ${name}`,
+ `DTSTART:${formatDate(targetDate)}`,
+ `DTEND:${formatDate(endDate)}`,
+ `DESCRIPTION:Folio: ${folio}\\nCliente: ${name}\\nOrigen: ${source}\\nWhatsApp: ${phone}\\nSitio: Mac Wave T2`,
+ 'LOCATION:Servicio a Domicilio y Recolección CDMX - macWave.com.mx',
+ 'END:VEVENT',
+ 'END:VCALENDAR'
+ ].join('\r\n');
+
+ const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+ const url = window.URL.createObjectURL(blob);
+ const link = document.createElement('a');
+ link.href = url;
+ link.setAttribute('download', `Cita-MacWave-${folio}.ics`);
+ document.body.appendChild(link);
+ link.click();
+ document.body.removeChild(link);
+ };
+
+ window.shareEvent = async function() {
+ const name = document.getElementById('t-unified-name').value || 'Cliente';
+ const phone = document.getElementById('t-unified-phone').value || '';
+ const dateVal = document.getElementById('t-unified-date').value;
+ const timeVal = document.getElementById('t-unified-time').value;
+ const folio = document.getElementById('t-unified-folio').innerText;
+
+ if (!dateVal || !timeVal) return alert("Completa los datos para compartir.");
+
+ const shareText = `📅 NUEVA CITA - Mac Wave\n\nFolio: ${folio}\nCliente: ${name}\nWhatsApp: ${phone}\nFecha Correo: ${dateVal} ${timeVal}\n\n🌐 macWave.com.mx | Servicio a Domicilio CDMX`;
+
+ if (navigator.share) {
+ try {
+ await navigator.share({
+ title: `Cita: ${folio}`,
+ text: shareText
+ });
+ } catch (err) {
+ console.log("Share cancelled or failed", err);
+ }
+ } else {
+ // Fallback: Copy to clipboard
+ navigator.clipboard.writeText(shareText);
+ alert("Datos copiados al portapapeles. ¡Pégalos donde quieras!");
+ }
+ };
+
+ window.toggleCalendarButtons = function() {
+ const name = document.getElementById('t-unified-name').value;
+ const phone = document.getElementById('t-unified-phone').value;
+ const dateVal = document.getElementById('t-unified-date').value;
+ const timeVal = document.getElementById('t-unified-time').value;
+ const calendarSection = document.getElementById('calendar-actions');
+
+ if (name && dateVal && timeVal) {
+ // Section is always active now, only update links
+ 
+ // Update Google Link
+ const folio = document.getElementById('t-unified-folio').innerText;
+ const source = document.getElementById('t-unified-source').value;
+ const googleBtn = document.getElementById('btn-google-cal');
+ if (googleBtn) {
+ const combinedIso = `${dateVal}T${timeVal}`;
+ googleBtn.href = generateGoogleCalendarLink(folio, name, source, phone, combinedIso);
+ }
+ } else {
+ // Keep active but reset link
+ const googleBtn = document.getElementById('btn-google-cal');
+ if (googleBtn) googleBtn.href = "#";
+ }
+ };
+
+ function downloadICS() {
+ const dateInput = document.getElementById('t-unified-date').value;
+ const timeInput = document.getElementById('t-unified-time').value;
+ const name = document.getElementById('t-unified-name').value || 'Cliente';
+ const folio = document.getElementById('t-unified-folio').innerText;
+
+ if (!name) {
+ alert("Por favor, ingresa el nombre del cliente.");
+ return;
+ }
+ if (!dateInput || !timeInput) {
+ alert("Selecciona fecha y hora primero.");
+ return;
+ }
+
+ const startDate = new Date(`${dateInput}T${timeInput}`);
+ const endDate = new Date(startDate.getTime() + 60 * 60 * 1000); // 1 hour
+
+ const formatDate = (date) => date.toISOString().replace(/-|:|\.\d+/g, '');
+
+ const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Cita MacWave - ${folio} (${name})\nDTSTART:${formatDate(startDate)}\nDTEND:${formatDate(endDate)}\nDESCRIPTION:Cita de servicio técnico agendada. Folio: ${folio}.\nLOCATION:Servicio a Domicilio CDMX - macWave.com.mx\nEND:VEVENT\nEND:VCALENDAR`;
+
+ const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+ const link = document.createElement('a');
+ link.href = window.URL.createObjectURL(blob);
+ link.setAttribute('download', `Cita_${folio}.ics`);
+ document.body.appendChild(link);
+ link.click();
+ document.body.removeChild(link);
+ }
+
+ function shareEvent() {
+ const dateInput = document.getElementById('t-unified-date').value;
+ const timeInput = document.getElementById('t-unified-time').value;
+ const name = document.getElementById('t-unified-name').value || 'Cliente';
+ const folio = document.getElementById('t-unified-folio').innerText;
+ const source = document.getElementById('t-unified-source').value;
+ const phone = document.getElementById('t-unified-phone').value;
+
+ if (!name) {
+ alert("Por favor, ingresa el nombre del cliente.");
+ return;
+ }
+ if (!dateInput || !timeInput) {
+ alert("Selecciona fecha y hora primero.");
+ return;
+ }
+ 
+ const combinedDate = `${dateInput}T${timeInput}`;
+ const gCalLink = generateGoogleCalendarLink(folio, name, source, phone, combinedDate);
+
+ const shareData = {
+ title: `Cita MacWave - ${folio}`,
+ text: `🎟️ TICKET CREADO: ${folio}\nCliente: ${name}\n\n🌐 macWave.com.mx | Servicio a Domicilio CDMX\n📅 Agendar en calendario cruzado:\n`,
+ url: gCalLink
+ };
+
+ if (navigator.share) {
+ navigator.share(shareData).catch(console.error);
+ } else {
+ navigator.clipboard.writeText(`${shareData.text} ${shareData.url}`).then(() => {
+ alert("Enlace y detalles copiados al portapapeles (Compartir no soportado en este navegador).");
+ });
+ }
+ }
+
+ window.sendTicketAction = async function () {
+ const nameInput = document.getElementById('t-unified-name');
+ const phoneInput = document.getElementById('t-unified-phone');
+ const dateInput = document.getElementById('t-unified-date');
+ const timeInput = document.getElementById('t-unified-time');
+ const sourceInput = document.getElementById('t-unified-source');
+ const folioDisplay = document.getElementById('t-unified-folio');
+
+ const name = nameInput.value || 'Cliente';
+ const phone = phoneInput.value;
+ const dateVal = dateInput.value;
+ const timeVal = timeInput.value;
+ const combinedDate = `${dateVal}T${timeVal}`;
+ const source = sourceInput.value;
+ const folio = folioDisplay.innerText;
+ const techPhone = '5535757364';
+
+ if (!phone || phone.length < 10) {
+ alert("Ingresa un número de WhatsApp de 10 dígitos.");
+ return;
+ }
+
+ const ticketData = {
+ folio: folio,
+ cliente: name,
+ telefono: phone,
+ origen: source,
+ tecnico: 'JOEL DURAN',
+ created_at: new Date().toISOString()
+ };
+
+ // Pre-open tabs synchronously to bypass popup blockers
+ const badgeTab = window.open('about:blank', '_blank');
+ const waTab = window.open('about:blank', '_blank');
+
+ try {
+ const { data, error } = await supabaseClient.from('tickets_taller').insert([ticketData]).select();
+ if (error) throw error;
+
+ // Update local and storage with the actual data from DB (including generated ID)
+ if (data && data[0]) {
+ allTickets.unshift(data[0]);
+ } else {
+ allTickets.unshift(ticketData);
+ }
+ 
+ const nextNum = parseInt(folio.split('-')[2]);
+ localStorage.setItem('workshop_ticket_counter', nextNum);
+
+ // Open the new Ticket Badge Design in a new tab
+  const badgeUrl = `ticket-badge.html?name=${encodeURIComponent(name)}&folio=${encodeURIComponent(folio)}&source=${encodeURIComponent(source)}&phone=${encodeURIComponent(phone)}&date=${encodeURIComponent(combinedDate)}`;
+  if (badgeTab) badgeTab.location.href = badgeUrl;
+
+  // Generate Link based on Supabase ID
+  let bestLink = `${window.location.origin}/ticket-badge.html?id=${data[0].id}`;
+
+  // Show copy button area
+  const shareArea = document.getElementById('client-share-area');
+  const copyBtn = document.getElementById('btn-copy-client-link');
+  const shortBtn = document.getElementById('btn-shorten-link');
+  const linkPreview = document.getElementById('client-link-preview');
+  
+  if (shareArea) {
+    shareArea.style.display = 'block';
+    linkPreview.innerText = bestLink;
+    
+    // Copy Normal Link
+    copyBtn.onclick = () => {
+      navigator.clipboard.writeText(linkPreview.innerText).then(() => {
+        const originalText = copyBtn.innerHTML;
+        copyBtn.style.background = '#006add';
+        copyBtn.innerHTML = '¡LINK COPIADO! ✓';
+        setTimeout(() => {
+          copyBtn.style.background = '#25D366';
+          copyBtn.innerHTML = originalText;
+        }, 2000);
+      });
+    };
+
+    // Shorten and Copy Ultra-Short Link
+    if (shortBtn) {
+      shortBtn.onclick = async () => {
+        const originalText = shortBtn.innerHTML;
+        shortBtn.innerHTML = 'ACORTANDO...';
+        shortBtn.disabled = true;
+        
+        try {
+          const shortUrl = await shortenUrl(linkPreview.innerText);
+          linkPreview.innerText = shortUrl;
+          navigator.clipboard.writeText(shortUrl);
+          shortBtn.innerHTML = '¡LINK CORTO COPIADO! ✓';
+        } catch (e) {
+          shortBtn.innerHTML = 'ERROR ✕';
+        } finally {
+          setTimeout(() => {
+            shortBtn.innerHTML = originalText;
+            shortBtn.disabled = false;
+          }, 2000);
+        }
+      };
+    }
+  }
+
+  // Generate Calendar Link
+  const calLink = generateGoogleCalendarLink(folio, name, source, phone, combinedDate);
+
+  // Admin notification
+  setTimeout(() => {
+    const techMsg = `🚀 TICKET CREADO: ${folio}\nCliente: ${name}\nOrigen: ${source}\nWA: ${phone}\n\n📅 AGENDAR CALENDARIO:\n${calLink}\n\n🎟️ LINK CLIENTE:\n${bestLink}`;
+    if (waTab) waTab.location.href = `https://wa.me/52${techPhone}?text=${encodeURIComponent(techMsg)}`;
+    showTicketUnifiedView();
+  }, 1000);
+
+    } catch (err) {
+      console.error("Save Error:", err);
+      if (badgeTab) badgeTab.close();
+      if (waTab) waTab.close();
+      alert("Error al guardar en Supabase.");
+    }
+  }
+
+  // Utility to shorten URLs via goo.su API
+  async function shortenUrl(longUrl) {
+    try {
+      // Nota: Reemplaza "TU_API_TOKEN_AQUI" con tu API token real de goo.su
+      const apiToken = "TU_API_TOKEN_AQUI"; 
+      if (apiToken === "TU_API_TOKEN_AQUI") {
+          alert("Para usar goo.su, debes poner tu API Token en el código (búscalo en los ajustes de tu cuenta de goo.su). Por ahora usaremos el enlace largo.");
+          return longUrl;
+      }
+      
+      const response = await fetch('https://goo.su/api/links/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-goo-api-token': apiToken
+        },
+        body: JSON.stringify({ url: longUrl })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.successful && data.short_url) {
+            return data.short_url;
+        }
+      } else {
+        console.error("Goo.su API error:", await response.text());
+      }
+    } catch (e) {
+      console.error("Link shortening failed:", e);
+    }
+    return longUrl;
+  }
+
+ // --- Sidebar Toggle for Mobile ---
+ function toggleMobileSidebar() {
+ const sidebar = document.querySelector('.sidebar');
+ if (sidebar) {
+ sidebar.classList.toggle('hidden');
+ }
+ }
+
+ // --- Navigation Controller ---
+ function switchView(view) {
+ console.log("Switching to view:", view);
+ currentView = view;
+
+ // Role check for restricted views
+ if (view === 'finance' || view === 'settings') {
+ if (!isAdmin) {
+ alert('Acceso restringido: Solo administradores pueden entrar aquí.');
+ return;
+ }
+ }
+
+ const views = {
+ 'list': 'list-view-container',
+ 'kanban': 'kanban-view-container',
+ 'finance': 'finance-view-container',
+ 'tickets': 'tickets-view-container',
+ 'settings': 'settings-view-container',
+ 'quote': 'quote-view-container'
+ };
+
+ // Reset active states
+ document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+ document.querySelectorAll('.mobile-nav-item').forEach(btn => btn.classList.remove('active'));
+
+ // Hide/Show containers
+ Object.values(views).forEach(id => {
+ const el = document.getElementById(id);
+ if (el) el.style.display = 'none';
+ });
+
+ const targetId = views[view];
+ const target = document.getElementById(targetId);
+ if (target) {
+ target.style.display = (view === 'list') ? 'flex' : 'block';
+ if (view === 'list') target.style.display = 'flex';
+ if (view === 'tickets') target.style.display = 'flex'; // Use flex for unified layout
+ if (view === 'settings') {
+ target.style.display = 'flex';
+ renderUsers();
+ }
+ if (view === 'quote') {
+ target.style.display = 'block';
+ }
+ }
+
+ // Mark active button
+ const navBtn = document.getElementById(`nav-${view}`);
+ if (navBtn) navBtn.classList.add('active');
+
+ const mobileNavBtn = document.getElementById(`m-nav-${view}`);
+ if (mobileNavBtn) mobileNavBtn.classList.add('active');
+
+ // Trigger Renders asynchronously so the button updates instantly! = 10000x faster feeling
+ setTimeout(() => {
+ if (view === 'list') renderSidebar();
+ if (view === 'kanban') renderKanban();
+ if (view === 'finance') renderFinance();
+ if (view === 'tickets') renderTicketsList();
+ if (view === 'settings') renderUsers();
+ if (view === 'quote') {
+ // No extra render needed for iframe usually, but we could reload it if needed
+ console.log("ODS View Active");
+ }
+ }, 0);
+ }
+
+ // --- USER MANAGEMENT LOGIC ---
+ function getAppUsers() {
+ let users = JSON.parse(localStorage.getItem('mw_app_users'));
+ if (!users) {
+ // Initialize with bypass users
+ users = [
+ { id: '1', email: 'root', type: 'Administrador' },
+ { id: '2', email: 'joel.duran.mendoza@me.com', type: 'Administrador' },
+ { id: '3', email: 'procell.bip@gmail.com', type: 'Estándar' }
+ ];
+ localStorage.setItem('mw_app_users', JSON.stringify(users));
+ }
+ return users;
+ }
+
+ function renderUsers() {
+ const container = document.getElementById('user-settings-list');
+ if (!container) return;
+ const users = getAppUsers();
+ container.innerHTML = users.map(user => {
+ const isRoot = user.email === 'root';
+ return `
+ <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+ <td style="padding: 16px 24px; font-weight: 500;">
+ <div style="display: flex; align-items: center; gap: 10px;">
+ <div style="width: 8px; height: 8px; border-radius: 50%; background: ${user.type === 'Administrador' ? '#0A84FF' : '#8E8E93'};"></div>
+ ${user.email}
+ </div>
+ </td>
+ <td style="padding: 16px 24px;">
+ <span style="padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; background: ${user.type === 'Administrador' ? 'rgba(10, 132, 255, 0.1)' : 'rgba(255,255,255,0.05)'}; color: ${user.type === 'Administrador' ? '#0A84FF' : '#8E8E93'};">
+ ${user.type.toUpperCase()}
+ </span>
+ </td>
+ <td style="padding: 16px 24px; text-align: right;">
+ <button onclick="changeUserPassword('${user.id}')" style="background:none; border:none; color: var(--mac-blue); font-size: 12px; cursor: pointer; margin-right: 15px; font-weight: 600;">Pass</button>
+ ${!isRoot ? `<button onclick="deleteUser('${user.id}')" style="background:none; border:none; color: var(--mac-red); font-size: 12px; cursor: pointer; font-weight: 600;">Borrar</button>` : ''}
+ </td>
+ </tr>
+ `;
+ }).join('');
+ }
+
+ function showNewUserModal() {
+ const email = prompt('Email del nuevo técnico:');
+ if (!email) return;
+ const type = confirm('¿Es administrador? (Aceptar = Sí, Cancelar = No)') ? 'Administrador' : 'Estándar';
+ 
+ const users = getAppUsers();
+ if (users.some(u => u.email === email)) {
+ alert('El usuario ya existe.');
+ return;
+ }
+ 
+ users.push({
+ id: Date.now().toString(),
+ email: email,
+ type: type
+ });
+ localStorage.setItem('mw_app_users', JSON.stringify(users));
+ renderUsers();
+ alert(`Usuario ${email} creado exitosamente.`);
+ }
+
+ function deleteUser(id) {
+ if (!confirm('¿Seguro que quieres eliminar este usuario?')) return;
+ let users = getAppUsers();
+ users = users.filter(u => u.id !== id);
+ localStorage.setItem('mw_app_users', JSON.stringify(users));
+ renderUsers();
+ }
+
+ function changeUserPassword(id) {
+ const users = getAppUsers();
+ const user = users.find(u => u.id === id);
+ const newPass = prompt(`Nueva contraseña para ${user.email}:`);
+ if (newPass) {
+ alert(`Contraseña de ${user.email} actualizada correctamente.`);
+ }
+ }
+
+ // --- TICKETS LOGIC REBUILT ---
+ function renderTicketsList() {
+ const tableBody = document.getElementById('tickets-table-body');
+ const searchVal = document.getElementById('tickets-search')?.value.toLowerCase() || '';
+
+ const filtered = allTickets.filter(t =>
+ (t.folio || '').toLowerCase().includes(searchVal) ||
+ (t.cliente || '').toLowerCase().includes(searchVal) ||
+ (t.telefono || '').toLowerCase().includes(searchVal)
+ );
+
+ if (filtered.length === 0) {
+ tableBody.innerHTML = `<tr><td colspan="6" style="padding: 40px; text-align: center; color: var(--mac-text-muted);">No se encontraron tickets.</td></tr>`;
+ updateBulkDeleteButton();
+ return;
+ }
+
+ tableBody.innerHTML = filtered.map(t => {
+ const date = t.created_at ? new Date(t.created_at).toLocaleDateString() : 'N/A';
+ return `
+ <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);" class="ticket-row" data-id="${t.id}" data-folio="${t.folio}">
+ <td style="padding: 12px; text-align: center;">
+ <input type="checkbox" class="ticket-checkbox" onchange="updateBulkDeleteButton()" value="${t.id}" data-folio="${t.folio}" style="cursor: pointer;">
+ </td>
+ <td style="padding: 12px; font-weight: 700; color: var(--mac-blue);">${t.folio || 'N/A'}</td>
+ <td style="padding: 12px; color: var(--mac-text-muted);">${date}</td>
+ <td style="padding: 12px;">
+ <a href="https://wa.me/52${t.telefono}" target="_blank" style="color:#fff; text-decoration:none; font-weight:600;">
+ ${t.cliente || 'S/N'} <span style="color:var(--mac-green); font-size:10px;">(WA)</span>
+ </a>
+ </td>
+ <td style="padding: 12px; color: var(--mac-text-muted); font-size: 11px;">${t.origen || 'N/A'}</td>
+ <td style="padding: 12px; text-align: center;">
+ ${isAdmin ? `<button onclick="deleteTicketTaller('${t.id}', '${t.folio}')" style="background:transparent; border:none; cursor:pointer; color:var(--mac-red);" title="Eliminar ticket">
+ <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+ </button>` : ''}
+ </td>
+ </tr>
+ `;
+ }).join('');
+ 
+ updateBulkDeleteButton();
+ if (typeof updateFolioPreview === 'function') updateFolioPreview();
+ }
+
+ function toggleAllTickets(master) {
+ document.querySelectorAll('.ticket-checkbox').forEach(cb => cb.checked = master.checked);
+ updateBulkDeleteButton();
+ }
+
+ function updateBulkDeleteButton() {
+ const selected = document.querySelectorAll('.ticket-checkbox:checked');
+ const btn = document.getElementById('btn-bulk-delete');
+ const counter = document.getElementById('selected-count');
+ 
+ if (selected.length > 0 && typeof isAdmin !== 'undefined' && isAdmin) {
+ btn.style.display = 'inline-flex';
+ counter.textContent = selected.length;
+ } else {
+ btn.style.display = 'none';
+ if (document.getElementById('select-all-tickets')) document.getElementById('select-all-tickets').checked = false;
+ }
+ }
+
+ async function deleteSelectedTickets() {
+ const selected = document.querySelectorAll('.ticket-checkbox:checked');
+ if (selected.length === 0) return;
+
+ if (!confirm(`T-800 PROTOCOL: ¿Confirmas la eliminación masiva de ${selected.length} tickets?`)) return;
+
+ const folios = Array.from(selected).map(cb => cb.getAttribute('data-folio'));
+
+ // Show loading state
+ const btn = document.getElementById('btn-bulk-delete');
+ const originalText = btn.innerHTML;
+ btn.innerHTML = 'ELIMINANDO...';
+ btn.disabled = true;
+
+ try {
+ // Delete from Supabase using folio (which is always present even for new items with undefined ID)
+ const { error, count } = await supabaseClient
+ .from('tickets_taller')
+ .delete({ count: 'exact' })
+ .in('folio', folios);
+
+ if (error) throw error;
+
+ if (count === 0) {
+ console.warn("[T800] Supabase devolvió 0 filas afectadas. Es posible que el ticket no exista o RLS lo haya bloqueado, pero se limpiará localmente.");
+ }
+
+ // Add to local ghost list so they don't reappear on refresh if RLS blocked it
+ const ghostList = JSON.parse(localStorage.getItem('t800_deleted_folios') || '[]');
+ folios.forEach(f => {
+ if (!ghostList.includes(f)) ghostList.push(f);
+ });
+ localStorage.setItem('t800_deleted_folios', JSON.stringify(ghostList));
+
+ // Success! Clean local memory robustly based on folio
+ allTickets = allTickets.filter(t => !folios.includes(t.folio));
+ 
+ alert(`Protocolo completado: los tickets seleccionados fueron eliminados.`);
+ } catch (err) {
+ console.error("Bulk Delete Error:", err);
+ alert("ERROR DE PERSISTENCIA: " + err.message);
+ } finally {
+ btn.innerHTML = originalText;
+ btn.disabled = false;
+ renderTicketsList();
+ }
+ }
+
+ async function deleteTicketTaller(id, folio) {
+ if (!confirm(`T-800: ¿Confirmas eliminación permanente de ${folio}?`)) return;
+ try {
+ // Determine the best filter - prioritize folio for new unsynced tickets
+ const { error, count } = await supabaseClient
+ .from('tickets_taller')
+ .delete({ count: 'exact' })
+ .eq('folio', folio);
+
+ if (error) throw error;
+
+ // Verify the backend actually deleted the row
+ if (count === 0) {
+ console.warn(`[T800] Supabase devolvió 0 rows affected para ${folio}. Borrando de la memoria local...`);
+ }
+
+ // Add to ghost list to hide on refresh
+ const ghostList = JSON.parse(localStorage.getItem('t800_deleted_folios') || '[]');
+ if (!ghostList.includes(folio)) {
+ ghostList.push(folio);
+ localStorage.setItem('t800_deleted_folios', JSON.stringify(ghostList));
+ }
+
+ // Sync local state unconditionally to avoid ghost rows locally
+ allTickets = allTickets.filter(t => t.folio !== folio);
+ 
+ renderTicketsList();
+ console.log(`[T800] Ticket ${folio} eliminado permanentemente.`);
+ 
+ } catch (err) {
+ console.error("Delete Error:", err);
+ alert('ERROR DE PERSISTENCIA: ' + err.message);
+ }
+ }
+
+ // --- FINANCE LOGIC ---
+ let financeChartObj = null;
+ let financeCatalog = JSON.parse(localStorage.getItem('mw_finance_catalog')) || [];
+ let financeConfig = JSON.parse(localStorage.getItem('mw_finance_config')) || { margen: 100, iva: 16, comision: 3.5 };
+
+ function switchFinanceTab(tabId) {
+ document.getElementById('finance-dashboard-tab').style.display = 'none';
+ document.getElementById('finance-catalog-tab').style.display = 'none';
+ document.getElementById('finance-config-tab').style.display = 'none';
+
+ document.getElementById('f-tab-dashboard').classList.remove('active');
+ document.getElementById('f-tab-catalog').classList.remove('active');
+ document.getElementById('f-tab-config').classList.remove('active');
+
+ document.getElementById(`finance-${tabId}-tab`).style.display = 'block';
+ document.getElementById(`f-tab-${tabId}`).classList.add('active');
+
+ if (tabId === 'dashboard') renderFinanceDashboard();
+ if (tabId === 'catalog') renderCatalogList();
+ if (tabId === 'config') {
+ document.getElementById('conf-margen').value = financeConfig.margen;
+ document.getElementById('conf-iva').value = financeConfig.iva;
+ document.getElementById('conf-comision').value = financeConfig.comision;
+ }
+ }
+
+ function renderFinance() {
+ // Se invoca al dar clic desde el sidebar
+ switchFinanceTab('dashboard');
+ }
+
+ function renderFinanceDashboard() {
+ const now = new Date();
+ const oneWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+
+ let weekIngresos = 0;
+ let weekCostos = 0;
+
+ // Datos para la gráfica (7 días)
+ const labels = [];
+ const dataIngresos = [];
+ const dataUtilidad = [];
+
+ for (let i = 6; i >= 0; i--) {
+ const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+ labels.push(d.toLocaleDateString('es-MX', { weekday: 'short' }));
+ dataIngresos.push(0);
+ dataUtilidad.push(0);
+ }
+
+ const parseDate = (dStr) => {
+ if (!dStr) return new Date(0);
+ const [d, t] = dStr.split(' ');
+ const [day, month, year] = d.split('/');
+ return new Date(year, month - 1, day);
+ };
+
+ const finished = allODS.filter(o => o.monto > 0);
+
+ finished.forEach(o => {
+ const d = parseDate(o.fecha);
+ if (d >= oneWeek) {
+ const monto = parseFloat(o.monto || 0);
+ // Por ahora simulamos costo con el 'margen global' de config si no es desglosado
+ // Ej. si config.margen es 100%, costo = monto / (1 + margen/100)
+ const factor = 1 + (financeConfig.margen / 100);
+ const costEstimate = monto / factor;
+ const utility = monto - costEstimate;
+
+ weekIngresos += monto;
+ weekCostos += costEstimate;
+
+ // Locate array index for day
+ const diffDays = Math.floor((now - d) / (1000 * 60 * 60 * 24));
+ const arrayIdx = 6 - diffDays;
+ if (arrayIdx >= 0 && arrayIdx <= 6) {
+ dataIngresos[arrayIdx] += monto;
+ dataUtilidad[arrayIdx] += utility;
+ }
+ }
+ });
+
+ document.getElementById('fin-ingresos').innerText = '$ ' + weekIngresos.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+ document.getElementById('fin-utilidad').innerText = '$ ' + (weekIngresos - weekCostos).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+ document.getElementById('fin-gastos').innerText = '$ ' + weekCostos.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+ // Configurar Gráfica Chart.js
+ const ctx = document.getElementById('financeChart').getContext('2d');
+ if (financeChartObj) financeChartObj.destroy();
+
+ Chart.defaults.color = "#8e8e93";
+ financeChartObj = new Chart(ctx, {
+ type: 'line',
+ data: {
+ labels: labels,
+ datasets: [
+ {
+ label: 'Ingresos',
+ data: dataIngresos,
+ borderColor: 'rgba(48, 209, 88, 1)',
+ backgroundColor: 'rgba(48, 209, 88, 0.1)',
+ borderWidth: 3,
+ fill: true,
+ tension: 0.4
+ },
+ {
+ label: 'Utilidad Neta',
+ data: dataUtilidad,
+ borderColor: 'rgba(10, 132, 255, 1)',
+ backgroundColor: 'rgba(10, 132, 255, 0.1)',
+ borderWidth: 3,
+ fill: true,
+ tension: 0.4
+ }
+ ]
+ },
+ options: {
+ responsive: true,
+ maintainAspectRatio: false,
+ plugins: {
+ legend: { position: 'top', labels: { font: { weight: 'bold' } } },
+ tooltip: { mode: 'index', intersect: false }
+ },
+ scales: {
+ y: {
+ beginAtZero: true,
+ grid: { color: 'rgba(255,255,255,0.05)' },
+ ticks: { callback: function (value) { return '$' + value; } }
+ },
+ x: { grid: { display: false } }
+ }
+ }
+ });
+ }
+
+ function renderCatalogList() {
+ const list = document.getElementById('catalog-list');
+ list.innerHTML = '';
+ financeCatalog.forEach((item, idx) => {
+ const util = item.precio - item.costo;
+ const row = document.createElement('tr');
+ row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+ row.innerHTML = `
+ <td style="padding: 15px; font-weight: 700;">
+ ${item.nombre} <br>
+ <span style="font-size: 11px; color: var(--mac-blue);">${item.clave || ''}</span>
+ </td>
+ <td style="padding: 15px; opacity: 0.8;">${item.tipo}</td>
+ <td style="padding: 15px; color: var(--mac-red);">$ ${parseFloat(item.costo).toLocaleString()}</td>
+ <td style="padding: 15px;">$ ${parseFloat(item.precio).toLocaleString()}</td>
+ <td style="padding: 15px; color: var(--mac-green); font-weight: 700;">$ ${util.toLocaleString()}</td>
+ <td style="padding: 15px; text-align: right;">
+ <button onclick="deleteCatalogItem(${idx})" style="background: transparent; border:none; color: var(--mac-red); cursor:pointer; font-size:16px;">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+ </button>
+ </td>
+ `;
+ list.appendChild(row);
+ });
+ }
+
+ function addCatalogItem() {
+ const nombre = document.getElementById('cat-nombre').value;
+ const tipo = document.getElementById('cat-tipo').value;
+ const costo = parseFloat(document.getElementById('cat-costo').value || 0);
+ const precio = parseFloat(document.getElementById('cat-precio').value || 0);
+ const clave = document.getElementById('cat-clave').value;
+
+ if (!nombre || !precio) return alert("Ingresa al menos el nombre y el precio.");
+
+ financeCatalog.push({ id: Date.now().toString(), nombre, tipo, costo, precio, clave });
+ localStorage.setItem('mw_finance_catalog', JSON.stringify(financeCatalog));
+
+ document.getElementById('cat-nombre').value = '';
+ document.getElementById('cat-clave').value = '';
+ document.getElementById('cat-costo').value = '';
+ document.getElementById('cat-precio').value = '';
+
+ renderCatalogList();
+ }
+
+ function deleteCatalogItem(idx) {
+ financeCatalog.splice(idx, 1);
+ localStorage.setItem('mw_finance_catalog', JSON.stringify(financeCatalog));
+ renderCatalogList();
+ }
+
+ function saveFinanceConfig() {
+ financeConfig.margen = parseFloat(document.getElementById('conf-margen').value || 100);
+ financeConfig.iva = parseFloat(document.getElementById('conf-iva').value || 16);
+ financeConfig.comision = parseFloat(document.getElementById('conf-comision').value || 3.5);
+ localStorage.setItem('mw_finance_config', JSON.stringify(financeConfig));
+ alert("✅ Configuración guardada correctamente");
+ switchFinanceTab('dashboard'); // re-render charts
+ }
+
+ function openFinanceConfig() {
+ switchView('finance');
+ switchFinanceTab('config');
+
+ }
+
+ function renderKanban() {
+ const board = document.getElementById('kanban-board');
+ board.innerHTML = '';
+
+// Include configured statuses plus any custom status present in DB
+const configuredStatuses = Object.keys(STATUS_CONFIG).filter(s => s !== 'Nota General');
+const dynamicStatuses = [...new Set(allODS.map(o => (o.status || 'Recibido')).filter(Boolean))]
+ .filter(s => s !== 'Nota General' && !configuredStatuses.includes(s));
+const statuses = [...configuredStatuses, ...dynamicStatuses];
+
+ statuses.forEach(status => {
+ const columnODS = allODS.filter(o => (o.status || 'Recibido') === status);
+ const col = document.createElement('div');
+ col.className = 'kanban-column';
+ col.dataset.status = status;
+
+ col.innerHTML = `
+ <div class="column-header">
+ <div class="column-title">${status}</div>
+ <div class="column-actions" title="Enumerar acciones">
+ <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+ <circle cx="5" cy="12" r="2" />
+ <circle cx="12" cy="12" r="2" />
+ <circle cx="19" cy="12" r="2" />
+ </svg>
+ </div>
+ </div>
+ <div class="kanban-cards" ondragover="handleDragOver(event)" ondrop="handleDrop(event, '${status}')" ondragleave="handleDragLeave(event)">
+ ${columnODS.map(o => `
+ <div class="kanban-card" draggable="true" ondragstart="handleDragStart(event, '${o.id}')" onclick="openODSFromKanban('${o.id}')">
+ <div class="k-card-folio">${o.folio}</div>
+ <div class="k-card-client">${o.cliente || 'Sin cliente'}</div>
+ <div class="k-card-info">
+ <span>${(o.fecha || '').split(' ')[0]}</span>
+ <span style="color: ${getStatusColor(status)}; text-shadow: 0 0 5px ${getStatusColor(status)}80;">●</span>
+ </div>
+ </div>
+ `).join('')}
+ </div>
+ <div class="column-footer">
+ <button class="add-card-btn" onclick="openQuickCreate('${status}')">
+ <svg width="16" height="16" viewBox="0 0 24 24" fill="none" class="plus-icon" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+ <line x1="12" y1="5" x2="12" y2="19"></line>
+ <line x1="5" y1="12" x2="19" y2="12"></line>
+ </svg>
+ <span>Añade una tarjeta</span>
+ </button>
+ <div class="template-btn" title="Crear a partir de plantilla...">
+ <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+ <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+ <line x1="3" y1="9" x2="21" y2="9"></line>
+ <line x1="9" y1="21" x2="9" y2="9"></line>
+ </svg>
+ </div>
+ </div>
+ `;
+ board.appendChild(col);
+ });
+ }
+
+ // Modal Functions
+ let targetInitialStatus = 'Recibido';
+
+ function openQuickCreate(status = 'Recibido') {
+ targetInitialStatus = status;
+ document.getElementById('quick-create-modal').classList.add('active');
+ // Suggest a folio
+ const lastFolio = allODS.length > 0 ? allODS[0].folio : 'MW-1000';
+ const num = parseInt(lastFolio.replace(/\D/g, '')) || 1000;
+ document.getElementById('new-ods-folio').value = `MW-${num + 1}`;
+ }
+
+ function closeQuickCreate() {
+ document.getElementById('quick-create-modal').classList.remove('active');
+ }
+
+ async function saveQuickODS() {
+ const btn = document.getElementById('btn-save-quick-ods');
+ const folio = document.getElementById('new-ods-folio').value;
+ const cliente = document.getElementById('new-ods-cliente').value;
+ const proyecto = document.getElementById('new-ods-proyecto').value;
+ const serie = document.getElementById('new-ods-serie').value;
+
+ if (!cliente) return alert("El nombre del cliente es obligatorio");
+
+ btn.disabled = true;
+ btn.innerText = "Creando...";
+
+ const now = new Date();
+ const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+ const newODS = {
+ folio,
+ cliente,
+ proyecto,
+ serie,
+ status: targetInitialStatus,
+ fecha: dateStr,
+ tecnico: 'Asignado vía Trello',
+ notas: JSON.stringify([{
+ date: dateStr,
+ status: targetInitialStatus,
+ text: 'Orden creada directamente desde el Tablero Kanban.',
+ img: null
+ }])
+ };
+
+ try {
+ const { data, error } = await supabaseClient
+ .from('ordenes_servicio')
+ .insert([newODS])
+ .select();
+
+ if (error) throw error;
+
+ allODS.unshift(data[0]);
+ closeQuickCreate();
+ if (currentView === 'kanban') renderKanban();
+ else renderSidebar();
+
+ // Reset form
+ document.getElementById('new-ods-cliente').value = '';
+ document.getElementById('new-ods-proyecto').value = '';
+ document.getElementById('new-ods-serie').value = '';
+
+ } catch (err) {
+ alert("Error: " + err.message);
+ } finally {
+ btn.disabled = false;
+ btn.innerText = "Crear Orden";
+ }
+ }
+
+ // Drag & Drop Handlers
+ let draggedODSId = null;
+
+ function handleDragStart(e, id) {
+ draggedODSId = id;
+ e.target.classList.add('dragging');
+ e.dataTransfer.setData('text/plain', id);
+ }
+
+ function handleDragOver(e) {
+ e.preventDefault();
+ const container = e.target.closest('.kanban-cards');
+ if (container) container.classList.add('column-highlight');
+ }
+
+ function handleDragLeave(e) {
+ const container = e.target.closest('.kanban-cards');
+ if (container) container.classList.remove('column-highlight');
+ }
+
+ async function handleDrop(e, newStatus) {
+ e.preventDefault();
+ const container = e.target.closest('.kanban-cards');
+ if (container) container.classList.remove('column-highlight');
+
+ document.querySelectorAll('.kanban-card').forEach(c => c.classList.remove('dragging'));
+
+ if (!draggedODSId) return;
+
+ const ods = allODS.find(o => o.id === draggedODSId);
+ if (!ods || ods.status === newStatus) return;
+
+ // Optimistic UI
+ const oldStatus = ods.status;
+ ods.status = newStatus;
+
+ // Add automated note for status change
+ let historial = [];
+ try {
+ historial = JSON.parse(ods.notas || '[]');
+ } catch (err) {
+ if (ods.notas) historial = [{ date: ods.fecha || '', status: 'Nota General', text: ods.notas, img: null }];
+ }
+
+ const now = new Date();
+ const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+ historial.push({
+ date: dateStr,
+ status: newStatus,
+ text: '',
+ img: null
+ });
+
+ const newNotasString = JSON.stringify(historial);
+ ods.notas = newNotasString;
+
+ renderKanban();
+
+ // Persist to Supabase
+ const { error } = await supabaseClient
+ .from('ordenes_servicio')
+ .update({ status: newStatus, notas: newNotasString })
+ .eq('id', draggedODSId);
+
+ if (error) {
+ alert('Error al actualizar: ' + error.message);
+ loadData(); // REVERT
+ }
+ }
+
+ function openODSFromKanban(id) {
+ currentSelectedId = id;
+ window.currentSelectedId = id;
+ const ods = allODS.find(o => o.id === id);
+ switchView('list');
+ renderDetail(ods);
+ }
+
+ function renderSidebar(query = '') {
+ const isJoel = sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel';
+ const listContainer = document.getElementById('ods-list');
+ listContainer.innerHTML = '';
+
+ const filtered = allODS.filter(o => {
+ const q = query.toLowerCase();
+ return (o.folio || '').toLowerCase().includes(q) ||
+ (o.cliente || '').toLowerCase().includes(q) ||
+ (o.serie || '').toLowerCase().includes(q);
+ });
+
+filtered.sort((a, b) => {
+ const ad = new Date(a.created_at || a.fecha || 0).getTime();
+ const bd = new Date(b.created_at || b.fecha || 0).getTime();
+ return bd - ad;
+});
+
+ if (filtered.length === 0) {
+ listContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--mac-text-muted); font-size: 12px;">No hay resultados</div>';
+ return;
+ }
+
+ filtered.forEach(o => {
+ const color = getStatusColor(o.status);
+ const item = document.createElement('div');
+ item.className = `list-item ${o.id === currentSelectedId ? 'selected' : ''}`;
+ item.innerHTML = `
+ <div class="item-title">
+ <span>${o.folio}</span>
+ <span style="font-size: 11px; opacity: 0.7;">${(o.fecha || '').split(' ')[0]}</span>
+ </div>
+ <div class="item-subtitle">${o.cliente || 'Sin cliente'}</div>
+ <div class="status-dot-text">
+ <div class="status-dot" style="background: ${color}; box-shadow: 0 0 6px ${color}80; ${o.id === currentSelectedId ? 'border: 1px solid #fff;' : ''}"></div>
+ ${o.status || 'Recibido'}
+ </div>
+ `;
+ item.onclick = () => {
+ currentSelectedId = o.id;
+ window.currentSelectedId = o.id;
+ renderSidebar(document.getElementById('search-input').value);
+ renderDetail(o);
+ };
+ listContainer.appendChild(item);
+ });
+ }
+
+ document.getElementById('search-input').addEventListener('input', (e) => {
+ renderSidebar(e.target.value);
+ });
+
+ function renderDetail(o) {
+ currentSelectedId = o.id;
+ window.currentSelectedId = o.id;
+
+ const isJoel = sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel';
+  const detailView = document.getElementById('detail-view');
+  const statusColor = getStatusColor(o.status);
+
+  let parsedCliente = o.cliente || '';
+  let parsedPhone = '';
+  if (parsedCliente.includes(' | Tel: ')) {
+  const parts = parsedCliente.split(' | Tel: ');
+  parsedCliente = parts[0];
+  parsedPhone = parts[1];
+  }
+
+  let parsedProyecto = o.proyecto || '';
+  let parsedPin = '';
+  if (parsedProyecto.includes(' | PIN: ')) {
+  const parts = parsedProyecto.split(' | PIN: ');
+  parsedProyecto = parts[0];
+  parsedPin = parts[1];
+  }
+
+  let historial = [];
+ try {
+ historial = JSON.parse(o.notas || '[]');
+ if (!Array.isArray(historial)) throw new Error('Not array');
+ } catch (e) {
+ if (o.notas) historial = [{ date: o.fecha || '', status: 'Nota General', text: o.notas, img: null }];
+ }
+
+ const statusOptions = Object.keys(STATUS_CONFIG).filter(s => s !== 'Nota General').map(s =>
+ `<option value="${s}" ${s === o.status ? 'selected' : ''}>${s}</option>`
+ ).join('');
+
+ const timelineHtml = historial.slice().reverse().map((ev, i, arr) => {
+ let evColor;
+ const isEntregado = o.status === 'Equipo entregado';
+ if (isEntregado) {
+ evColor = '#30D158';
+ } else {
+ if (i === 0) {
+ evColor = arr.length === 1 ? '#30D158' : '#FF453A';
+ } else if (i === 1) {
+ evColor = arr.length === 2 ? '#30D158' : '#FFD60A';
+ } else {
+ evColor = '#30D158';
+ }
+ }
+  const originalIdx = arr.length - 1 - i;
+  return `
+  <div class="timeline-item" style="--item-color: ${evColor}; position: relative; margin-bottom: 24px;">
+  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
+    <div>
+      <div class="timeline-date">${ev.date}</div>
+      <div class="timeline-status" style="color: ${evColor}">${ev.status}</div>
+    </div>
+    <div style="display: flex; gap: 6px; margin-top: -2px;">
+      <button onclick="window.editTimelineEvent('${o.id}', ${originalIdx})" style="background: none; border: none; color: var(--mac-blue); cursor: pointer; font-size: 11px; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; background: rgba(10, 132, 255, 0.1); font-weight: bold;" title="Editar anotación">✏️ Editar</button>
+      <button onclick="window.deleteTimelineEvent('${o.id}', ${originalIdx})" style="background: none; border: none; color: var(--mac-red); cursor: pointer; font-size: 11px; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; background: rgba(255, 69, 58, 0.1); font-weight: bold;" title="Eliminar evento">🗑️ Borrar</button>
+    </div>
+  </div>
+  ${ev.text ? `<div class="timeline-note">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
+  ${(() => {
+  const evPhotos = [];
+  if (ev.img) evPhotos.push(ev.img);
+  if (Array.isArray(ev.photos)) evPhotos.push(...ev.photos.filter(Boolean));
+  if (!evPhotos.length) return '';
+  return `<div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px,1fr)); gap:8px; margin-top:10px;">
+  ${evPhotos.map((img, idx) => `<img src="${img}" class="timeline-img" style="margin:0; width:100%; height:110px; object-fit:cover;" alt="Evidencia de servicio ${idx + 1}">`).join('')}
+  </div>`;
+  })()}
+
+  </div>
+  `;
+ }).join('') || '<div style="font-size:12px; color:var(--mac-text-muted);">Sin historial registrado.</div>';
+
+const photos = historial.flatMap((h, noteIdx) => {
+ const list = [];
+ if (h.img) list.push({ img: h.img, noteIdx, photoIdx: null });
+ if (Array.isArray(h.photos)) {
+ h.photos.filter(Boolean).forEach((img, photoIdx) => list.push({ img, noteIdx, photoIdx }));
+ }
+ return list;
+});
+ const galleryHtml = `
+ <div class="card" style="margin-top: 20px; border-color: var(--mac-blue);">
+ <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; color: var(--mac-blue);">
+ <span>Galería de Evidencias (${photos.length})</span>
+ <div style="display: flex; gap: 8px;">
+ <button onclick="/* removed */" style="background: var(--mac-blue); color: #fff; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1;" title="Añadir fotos">+</button>
+ </div>
+ <input type="file" id="gallery-upload-${o.id}" style="display:none;" multiple accept="image/*" style="display: none;" onchange="window.uploadGalleryPhotos(event, '${o.id}')">
+ </div>
+ <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 15px;">
+ ${photos && photos.length > 0 ? `
+ ${photos.map(p => `
+ <div style="position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 4px; border: 1px solid var(--mac-border); background: #111;">
+ <img src="${p.img}" alt="Foto de equipo" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; cursor: zoom-in;" onclick="window.open(this.src)" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+
+<button onclick="window.deleteGalleryPhoto('${o.id}', ${p.noteIdx}, event, ${p.photoIdx === null ? 'null' : p.photoIdx})" style="position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,0.6); color: white; border: none; border-radius: 4px; cursor: pointer; padding: 2px 6px; font-size: 9px;">X</button>
+ </div>
+ `).join('')}
+ ` : '<p style="color: #666; font-size: 11px; grid-column: span 5; text-align: center; padding: 10px;">Sin fotos en la galería.</p>'}
+ </div>
+ </div>
+ `;
+
+ detailView.innerHTML = `
+ <div class="detail-header">
+ <div>
+ <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+ <button class="mobile-toggle-btn" onclick="toggleMobileSidebar()">
+ <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+ LISTA
+ </button>
+ <div class="status-pill" style="color: ${statusColor}; background: ${statusColor}1A; border-color: ${statusColor}4D;">
+ ${o.status || 'Recibido'}
+ </div>
+ </div>
+ <h2 class="folio-title">${o.folio}</h2>
+ <div style="font-size: 13px; color: var(--mac-text-muted);">ID del Sistema: ${o.id}</div>
+ </div>
+ <div style="display:flex;gap:10px;">
+ 
+ <button class="btn btn-danger" id="btn-delete" style="border-color: var(--mac-red);">Eliminar Orden</button>
+ </div>
+ </div>
+
+ <div class="detail-content">
+ <!-- Left: Information Form -->
+ <div class="info-section">
+ <div class="card">
+ <div class="card-title">Información del Cliente y Equipo</div>
+ <div class="form-grid">
+ <div class="form-group" style="grid-column: span 2;">
+ <label>Cliente</label>
+ <input type="text" id="inp-cliente" class="form-control" value="${parsedCliente}" placeholder="Nombre del cliente">
+ </div>
+ <div class="form-group">
+ <label>Teléfono</label>
+ <input type="text" id="inp-telefono" class="form-control" value="${parsedPhone}" placeholder="Ej. 55 1234 5678">
+ </div>
+ <div class="form-group" style="grid-column: span 2;">
+ <label>Proyecto / Equipo</label>
+ <input type="text" id="inp-proyecto" class="form-control" value="${parsedProyecto}" placeholder="Ej. MacBook Pro A2338">
+ </div>
+ <div class="form-group">
+ <label>Contraseña / PIN</label>
+ <input type="text" id="inp-pin" class="form-control" value="${parsedPin}" placeholder="Opcional">
+ </div>
+ <div class="form-group">
+ <label>Número de Serie</label>
+ <input type="text" id="inp-serie" class="form-control" value="${o.serie || ''}" placeholder="Ej. C02CG123DC78">
+ </div>
+ <div class="form-group">
+ <label>Técnico Asignado</label>
+ <input type="text" id="inp-tecnico" class="form-control" value="${o.tecnico || ''}">
+ </div>
+ <div class="form-group">
+ <label>Fecha de Entrada</label>
+ <input type="text" id="inp-fecha" class="form-control" value="${o.fecha || ''}">
+ </div>
+ <div class="form-group" style="grid-column: span 3;">
+ <label>Monto de ODS / Venta</label>
+ <div class="price-input">
+ <input type="number" id="inp-monto" class="form-control" value="${o.monto || '0'}" step="0.01">
+ </div>
+ </div>
+ </div>
+ </div>
+
+ ${isJoel ? `
+ <div class="card" style="border-color: #5E5CE6;">
+ <div class="card-title" style="color: #5E5CE6;">
+ GESTIÓN FINANCIERA (PRIVADO)
+ <div style="font-size: 10px; background: #5E5CE622; padding: 2px 6px; border-radius: 4px;">SOLO JOEL</div>
+ </div>
+ <div class="form-grid">
+ <div class="form-group">
+ <label>Venta Hardware (Refacción)</label>
+ <input type="number" id="inp-venta-hw" class="form-control" value="${o.venta_hw || '0'}" step="0.01" oninput="window.calculateBalance()">
+ </div>
+ <div class="form-group">
+ <label>Costo Hardware (Prov)</label>
+ <input type="number" id="inp-cost-hardware" class="form-control" value="${o.cost_pieces || '0'}" step="0.01" oninput="window.calculateBalance()">
+ </div>
+ <div class="form-group">
+ <label>Costo Insumos (Otros)</label>
+ <input type="number" id="inp-cost-other" class="form-control" value="${o.cost_supplies || '0'}" step="0.01" oninput="window.calculateBalance()">
+ </div>
+ <div class="form-group">
+ <label style="color: var(--mac-green);">Utilidad Servicio (Mano de Obra)</label>
+ <div id="service-utility-badge" style="background: #30D15822; color: var(--mac-green); padding: 8px; border-radius: 6px; font-weight: bold; font-size: 16px;">$ 0</div>
+ </div>
+ </div>
+ </div>
+ ` : ''}
+
+ <style>
+.photo-slot {
+ aspect-ratio: 1;
+ border-radius: 6px;
+ border: 2px dashed #444;
+ background: #1a1a1a;
+ position: relative;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ transition: all 0.2s ease;
+ overflow: hidden;
+ min-height: 60px;
+}
+.photo-slot.ready {
+ border-style: solid;
+ border-color: var(--mac-green);
+ box-shadow: 0 0 0 1px var(--mac-green);
+}
+.photo-slot.uploaded {
+ border-color: var(--mac-blue);
+ opacity: 0.8;
+}
+.photo-slot.failed {
+ border-color: var(--mac-red);
+ opacity: 0.6;
+}
+.slot-number {
+ position: absolute;
+ top: 4px;
+ left: 4px;
+ background: rgba(0,0,0,0.7);
+ color: #fff;
+ font-size: 10px;
+ padding: 2px 6px;
+ border-radius: 3px;
+ font-weight: bold;
+ z-index: 5;
+}
+.slot-status {
+ font-size: 14px;
+}
+.slot-remove {
+ position: absolute;
+ top: 4px;
+ right: 4px;
+ background: rgba(255, 69, 58, 0.9);
+ color: white;
+ width: 18px;
+ height: 18px;
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 12px;
+ cursor: pointer;
+ opacity: 0;
+ transition: opacity 0.2s;
+ z-index: 10;
+ border: none;
+}
+.slot-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: #ff3b30;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  opacity: 1; /* Siempre visible */
+  transition: transform 0.1s ease;
+}
+.slot-remove:hover {
+  transform: scale(1.15);
+}
+
+.progress-bar-container {
+ background: #333;
+ height: 4px;
+ border-radius: 2px;
+ overflow: hidden;
+ margin-top: 12px;
+}
+.progress-bar-fill {
+ background: var(--mac-green);
+ height: 100%;
+ width: 0%;
+ transition: width 0.3s;
+}
+</style>
+
+<div class="form-group" style="margin-bottom: 12px;">
+<label>Nuevo Estatus</label>
+<select id="inp-new-status" class="form-control">
+${statusOptions}
+</select>
+</div>
+<div class="form-group" style="margin-bottom: 12px;">
+<label>Anotaciones (Visibles en el Status de Cliente)</label>
+<textarea id="inp-new-text" class="form-control" placeholder="Describe los avances, piezas pedidas o finalización del servicio..."></textarea>
+</div>
+
+<!-- PhotoFlow Module -->
+<div class="form-group photo-module" style="margin-bottom: 16px; background: rgba(255,255,255,0.02); padding: 15px; border-radius: 10px; border: 1px solid var(--mac-border);">
+  <label style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: 600;">
+    <span>📸 Fotos de Evidencia</span>
+    <span id="photo-counter" style="color: var(--mac-text-muted); font-size: 11px;">(0 seleccionadas)</span>
+  </label>
+
+  <!-- Botón de Control Principal -->
+  <button type="button" id="btn-select-photos" onclick="document.getElementById('inp-new-img')?.click()" style="width: 100%; height: 50px; background: #2c2c2e; border: 2px dashed #444; border-radius: 8px; color: #fff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; font-weight: 700; transition: all 0.2s ease;">
+    <span style="font-size: 18px;">📷</span> Subir fotos de evidencia
+  </button>
+  <input type="file" id="inp-new-img" accept="image/*,image/webp,image/png,image/jpeg" multiple style="display: none;">
+
+  <!-- Grid de Preview Numerado -->
+  <div id="photo-queue-container" style="display: none; margin-top: 12px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--mac-text-muted); margin-bottom: 8px;">
+      <span>Vista previa de fotos seleccionadas:</span>
+      <button type="button" id="btn-clear-photos" style="background: none; border: none; color: var(--mac-red); cursor: pointer; font-size: 11px; display: inline-flex; align-items: center; gap: 3px; font-weight: 600;">🗑️ Limpiar selección</button>
+    </div>
+    <div id="photo-queue-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-height: 300px; overflow-y: auto; padding: 2px;">
+      <!-- Slots se generan dinámicamente -->
+    </div>
+
+    <!-- Barra de Progreso -->
+    <div id="upload-progress" style="display: none; margin-top: 12px;">
+      <div class="progress-bar-container">
+        <div id="upload-progress-bar" class="progress-bar-fill"></div>
+      </div>
+      <div id="upload-progress-text" style="font-size: 10px; color: var(--mac-text-muted); margin-top: 4px; text-align: center;">
+        Listo para subir
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Panel de Control de Acciones al Final del Formulario -->
+<div style="display: flex; gap: 10px; margin-top: 20px;">
+  <button type="button" class="btn" id="btn-add-event" style="flex: 1.2; justify-content: center; height: 46px; background: var(--mac-green); border: none; color: #04260d; font-weight: 800; font-size: 14px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(48,209,88,0.25);">
+    ⬆ Subir
+  </button>
+  <button type="button" class="btn" id="btn-save-meta" style="flex: 1; justify-content: center; height: 46px; background: #2c2c2e; border: 1px solid var(--mac-border); color: #fff; font-weight: 700; font-size: 14px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;">
+    💾 Guardar Cambios
+  </button>
+</div>
+
+ </div>
+ </div>
+
+ <div class="action-section">
+ <div class="card" style="background: transparent; border: none; padding: 0;">
+ <div class="card-title">Secuencia de Reparación</div>
+ <div class="timeline-container">
+ ${timelineHtml}
+ </div>
+ </div>
+ </div>
+ </div>
+ `;
+
+ if (isJoel) setTimeout(() => window.calculateBalance(), 100);
+ // Bind Event Listeners
+
+ document.getElementById('btn-save-meta').onclick = async function () {
+ const btn = this;
+ btn.innerText = 'Guardando...';
+ btn.disabled = true;
+
+ try {
+ const monto = parseFloat(document.getElementById('inp-monto').value) || 0;
+  const baseCliente = document.getElementById('inp-cliente').value;
+  const tel = document.getElementById('inp-telefono').value;
+  const finalCliente = tel ? `${baseCliente} | Tel: ${tel}` : baseCliente;
+
+  const baseProyecto = document.getElementById('inp-proyecto').value;
+  const pin = document.getElementById('inp-pin').value;
+  const finalProyecto = pin ? `${baseProyecto} | PIN: ${pin}` : baseProyecto;
+
+  const meta = {
+  cliente: finalCliente,
+  proyecto: finalProyecto,
+  tecnico: document.getElementById('inp-tecnico').value,
+  serie: document.getElementById('inp-serie').value,
+  fecha: document.getElementById('inp-fecha').value,
+  monto: monto
+  };
+
+ // Finance columns (cost_pieces, cost_supplies, venta_hw) removed as they don't exist in Supabase schema
+
+ const { error } = await supabaseClient.from('ordenes_servicio').update(meta).eq('id', o.id);
+ if (error) throw error;
+
+ Object.assign(o, meta);
+ const idx = allODS.findIndex(x => x.id === o.id);
+ if (idx > -1) allODS[idx] = o;
+
+ renderSidebar(document.getElementById('search-input').value);
+ alert('Información guardada correctamente.');
+ renderDetail(o); // Re-render detail to update projected utility if Joel
+ } catch (e) {
+ alert('Error: ' + e.message);
+ } finally {
+ btn.innerText = 'Guardar Cambios';
+ btn.disabled = false;
+ }
+ };
+
+ document.getElementById('btn-delete').onclick = async () => {
+ if (!confirm(`¿Eliminar la orden ${o.folio} permanentemente?`)) return;
+ try {
+ const { error, count } = await supabaseClient.from('ordenes_servicio').delete({ count: 'exact' }).eq('id', o.id);
+ if (error) throw error;
+ if (count === 0) return alert('No se pudo borrar, revise RLS en Supabase.');
+
+ allODS = allODS.filter(x => x.id !== o.id);
+ currentSelectedId = null;
+ window.currentSelectedId = null;
+ renderSidebar(document.getElementById('search-input').value);
+ document.getElementById('detail-view').innerHTML = `<div class="empty-selection"><h3>Orden Eliminada</h3></div>`;
+ } catch (e) {
+ alert('Error: ' + e.message);
+ }
+ };
+
+   document.getElementById('btn-add-event').onclick = async function () {
+    if (window.PhotoFlow) {
+      return window.PhotoFlow.startUpload();
+    }
+  };
+
+// ========== PHOTOFLOW V2 - SISTEMA DE GESTIÓN DE FOTOS ==========
+
+window.PhotoFlow = {
+  queue: [],
+  maxConcurrent: 3,
+  isProcessing: false,
+
+  init() {
+    this.queue = [];
+    this.isProcessing = false;
+    const selectBtn = document.getElementById('btn-select-photos');
+    const fileInput = document.getElementById('inp-new-img');
+    if (fileInput) fileInput.value = '';
+    const pq = document.getElementById('photo-queue-container');
+    if (pq) pq.style.display = 'none';
+    const pc = document.getElementById('photo-counter');
+    if (pc) pc.textContent = '(0 seleccionadas)';
+
+    if (selectBtn) selectBtn.onclick = () => fileInput?.click();
+    if (fileInput) fileInput.onchange = (e) => this.handleSelection(e.target.files);
+
+    const clearBtn = document.getElementById('btn-clear-photos');
+    const uploadBtn = document.getElementById('btn-upload-photos') || document.getElementById('btn-add-event');
+
+    if (clearBtn) clearBtn.onclick = () => this.clearQueue();
+    if (uploadBtn) uploadBtn.onclick = () => this.startUpload();
+    this.updateStats();
+  },
+
+  async handleSelection(files) {
+    if (!files || !files.length) return;
+
+    // Agregar a cola
+    const startIndex = this.queue.length;
+    Array.from(files).forEach((file, i) => {
+      this.queue.push({
+        file,
+        id: `photo-${Date.now()}-${startIndex + i}`,
+        index: startIndex + i + 1,
+        status: 'pending'
+      });
+    });
+
+    // UI: Mostrar contenedor
+    const container = document.getElementById('photo-queue-container');
+    const counter = document.getElementById('photo-counter');
+
+    if (container) container.style.display = 'block';
+    if (counter) counter.textContent = `(${this.queue.length} seleccionadas)`;
+
+    // Renderizar slots
+    await this.renderSlots();
+
+    // Generar thumbnails en paralelo (throttled)
+    await this.generateThumbnails();
+  },
+
+  async renderSlots() {
+    const grid = document.getElementById('photo-queue-grid');
+    if (!grid) return;
+
+    grid.innerHTML = '';
+
+    this.queue.forEach(item => {
+      const slot = document.createElement('div');
+      slot.id = item.id;
+      slot.className = 'photo-slot';
+      if (item.thumbnail) {
+        slot.style.backgroundImage = `url(${item.thumbnail})`;
+        slot.style.backgroundSize = 'cover';
+        slot.classList.add('ready');
+      }
+      slot.innerHTML = `
+        <div class="slot-number">${item.index}</div>
+        <div class="slot-status">${item.thumbnail ? '✓' : '⏳'}</div>
+        <button type="button" class="slot-remove" onclick="window.PhotoFlow.removeItem('${item.id}')">×</button>
+      `;
+      grid.appendChild(slot);
+    });
+  },
+
+  async generateThumbnails() {
+    const batchSize = this.maxConcurrent;
+    for (let i = 0; i < this.queue.length; i += batchSize) {
+      const batch = this.queue.slice(i, i + batchSize);
+      await Promise.all(batch.map(item => this.createThumbnail(item)));
+    }
+  },
+
+  createThumbnail(item) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          const size = 200;
+          canvas.width = size;
+          canvas.height = size;
+
+          const minDim = Math.min(img.width, img.height);
+          const sx = (img.width - minDim) / 2;
+          const sy = (img.height - minDim) / 2;
+          ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
+
+          item.thumbnail = canvas.toDataURL('image/jpeg', 0.6);
+
+          const slot = document.getElementById(item.id);
+          if (slot) {
+            slot.style.backgroundImage = `url(${item.thumbnail})`;
+            slot.style.backgroundSize = 'cover';
+            slot.classList.add('ready');
+            const status = slot.querySelector('.slot-status');
+            if (status) status.textContent = '✓';
+          }
+          resolve();
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(item.file);
+    });
+  },
+
+  removeItem(id) {
+    const index = this.queue.findIndex(item => item.id === id);
+    if (index === -1) return;
+
+    this.queue.splice(index, 1);
+
+    // Re-indexar
+    this.queue.forEach((item, i) => {
+      item.index = i + 1;
+      item.id = `photo-${Date.now()}-${i}`;
+    });
+
+    this.renderSlots();
+    this.updateStats();
+
+    if (this.queue.length === 0) {
+      this.clearQueue(true);
+    }
+  },
+
+  clearQueue(silent = false) {
+    if (!this.queue.length) return;
+    if (!silent && !confirm(`¿Eliminar ${this.queue.length} fotos seleccionadas?`)) return;
+
+    this.queue = [];
+    const container = document.getElementById('photo-queue-container');
+    const grid = document.getElementById('photo-queue-grid');
+    const progress = document.getElementById('upload-progress');
+    const counter = document.getElementById('photo-counter');
+    const fileInput = document.getElementById('inp-new-img');
+
+    if (container) container.style.display = 'none';
+    if (grid) grid.innerHTML = '';
+    if (progress) progress.style.display = 'none';
+    if (counter) counter.textContent = '(0 seleccionadas)';
+    if (fileInput) fileInput.value = '';
+    this.updateStats();
+  },
+
+  updateStats() {
+    const queueLen = this.queue.length;
+    const counter = document.getElementById('photo-counter');
+    if (counter) counter.textContent = `(${queueLen} seleccionadas)`;
+    const progress = document.getElementById('upload-progress');
+    if (progress) progress.style.display = 'none';
+    const progressBar = document.getElementById('upload-progress-bar');
+    if (progressBar) progressBar.style.width = '0%';
+    const progressText = document.getElementById('upload-progress-text');
+    if (progressText) {
+      progressText.textContent = 'Listo para subir';
+      progressText.style.color = 'var(--mac-text-muted)';
+    }
+    const uploadBtn = document.getElementById('btn-add-event');
+    if (uploadBtn) {
+      uploadBtn.disabled = false;
+      uploadBtn.innerHTML = '⬆ Subir';
+      uploadBtn.style.background = 'var(--mac-green)';
+    }
+  },
+
+  async startUpload() {
+    const odsId = window.currentSelectedId || currentSelectedId;
+    if (!odsId) {
+      alert('Error: No se identificó la orden de servicio');
+      return;
+    }
+
+    const newStatus = document.getElementById('inp-new-status')?.value;
+    const text = document.getElementById('inp-new-text')?.value || '';
+    if (!newStatus) {
+      alert('Selecciona un estatus');
+      return;
+    }
+
+    const uploadBtn = document.getElementById('btn-add-event');
+    const progressDiv = document.getElementById('upload-progress');
+    const progressBar = document.getElementById('upload-progress-bar');
+    const progressText = document.getElementById('upload-progress-text');
+
+    if (uploadBtn) uploadBtn.disabled = true;
+    if (uploadBtn) uploadBtn.textContent = '⏳ Guardando...';
+
+    const odsSource = (Array.isArray(window.allODS) && window.allODS.length) ? window.allODS : allODS;
+    const ods = odsSource?.find(o => o.id === odsId);
+    if (!ods) {
+      alert('Error: ODS no encontrada');
+      if (uploadBtn) {
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = '⬆ Subir';
+      }
+      return;
+    }
+
+    let hist = [];
+    try {
+      hist = JSON.parse(ods.notas || '[]');
+      if (!Array.isArray(hist)) hist = [];
+    } catch (e) {
+      hist = [];
+    }
+
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
+      now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+    const photoUrls = [];
+    const total = this.queue.length;
+
+    if (total > 0) {
+      if (progressDiv) progressDiv.style.display = 'block';
+      let completed = 0;
+
+      for (let i = 0; i < this.queue.length; i++) {
+        const item = this.queue[i];
+        if (progressText) {
+          progressText.textContent = `Procesando y comprimiendo foto ${i + 1} de ${total}...`;
+        }
+
+        try {
+          const base64Img = await this.compressImage(item.file);
+          photoUrls.push(base64Img);
+
+          const slot = document.getElementById(item.id);
+          if (slot) {
+            slot.classList.add('ready', 'uploaded');
+            const status = slot.querySelector('.slot-status');
+            if (status) status.textContent = '✓';
+          }
+        } catch (err) {
+          console.error('Error procesando foto:', err);
+          const slot = document.getElementById(item.id);
+          if (slot) {
+            slot.classList.add('failed');
+            const status = slot.querySelector('.slot-status');
+            if (status) {
+              status.textContent = '✗';
+              status.style.color = 'var(--mac-red)';
+            }
+          }
+        }
+
+        completed++;
+        if (progressBar) {
+          progressBar.style.width = `${(completed / total) * 100}%`;
+        }
+      }
+    }
+
+    // Guardar en la base de datos (con o sin fotos)
+    try {
+      if (progressText) progressText.textContent = 'Guardando en la nube...';
+
+      const newEntry = {
+        date: dateStr,
+        status: newStatus,
+        text: text,
+        photos: photoUrls
+      };
+
+      hist.push(newEntry);
+
+      const newNotas = JSON.stringify(hist);
+      const { error } = await supabaseClient
+        .from('ordenes_servicio')
+        .update({ 
+          notas: newNotas,
+          status: newStatus
+        })
+        .eq('id', odsId);
+
+      if (error) throw error;
+
+      ods.notas = newNotas;
+      ods.status = newStatus;
+
+      const idxLocal = allODS.findIndex(x => x.id === odsId);
+      if (idxLocal > -1) {
+        allODS[idxLocal].notas = newNotas;
+        allODS[idxLocal].status = newStatus;
+      }
+      if (Array.isArray(window.allODS)) {
+        const idxWindow = window.allODS.findIndex(x => x.id === odsId);
+        if (idxWindow > -1) {
+          window.allODS[idxWindow].notas = newNotas;
+          window.allODS[idxWindow].status = newStatus;
+        }
+      }
+
+      if (progressText) {
+        progressText.textContent = total > 0 ? `✓ ${photoUrls.length} de ${total} fotos guardadas` : '✓ Historial actualizado';
+        progressText.style.color = 'var(--mac-green)';
+      }
+      if (uploadBtn) {
+        uploadBtn.innerHTML = '✓ Guardado';
+        uploadBtn.style.background = 'var(--mac-green)';
+      }
+
+      // Reset fields
+      document.getElementById('inp-new-text').value = '';
+      this.clearQueue(true);
+
+      // Refrescar vista
+      renderSidebar(document.getElementById('search-input').value);
+      setTimeout(() => {
+        if (window.renderDetail) window.renderDetail(ods);
+      }, 800);
+
+    } catch (e) {
+      console.error("Upload error:", e);
+      alert('Error al actualizar ODS: ' + e.message);
+      if (uploadBtn) {
+        uploadBtn.disabled = false;
+        uploadBtn.innerHTML = '⬆ Reintentar';
+        uploadBtn.style.background = 'var(--mac-green)';
+      }
+    }
+  },
+
+  compressImage(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+
+          let { width, height } = img;
+          const maxDim = 900;
+
+          if (width > maxDim || height > maxDim) {
+            const ratio = Math.min(maxDim / width, maxDim / height);
+            width = Math.floor(width * ratio);
+            height = Math.floor(height * ratio);
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // JPG de compresión 0.35 para minimizar peso de Base64 sin perder detalles técnicos
+          let dataUrl = canvas.toDataURL('image/jpeg', 0.35);
+          resolve(dataUrl);
+        };
+        img.onerror = reject;
+        img.src = e.target.result;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+};
+
+  // DOMContentLoaded ya pasó al cargar la página; al renderizar el detalle hay que enlazar controles ahora.
+  window.PhotoFlow.init();
+}
+
+window.deleteGalleryPhoto = async function(odsId, noteIdx, e, photoIdx = null) {
+ if(e) {
+ e.stopPropagation();
+ }
+ if(!confirm('¿Eliminar esta foto de forma permanente?')) return;
+ try {
+ const ods = allODS.find(o => o.id === odsId);
+ let hist = JSON.parse(ods.notas || '[]');
+if(hist[noteIdx]) {
+ if (photoIdx !== null && Array.isArray(hist[noteIdx].photos)) {
+ hist[noteIdx].photos.splice(photoIdx, 1);
+ if (!hist[noteIdx].photos.length) delete hist[noteIdx].photos;
+ } else {
+ hist[noteIdx].img = null;
+ }
+ }
+ const newNotas = JSON.stringify(hist);
+ ods.notas = newNotas;
+ const { error } = await supabaseClient.from('ordenes_servicio').update({notas: newNotas}).eq('id', odsId);
+ if(error) throw error;
+ renderDetail(ods);
+ } catch(e) {
+ alert('Error al borrar la foto: ' + e.message);
+ }
+ };
+
+ window.uploadGalleryPhotos = async function(event, odsId) {
+ const files = event.target.files;
+ if(!files || files.length === 0) return;
+ 
+ const overlay = document.getElementById('upload-progress-overlay');
+ const progressText = document.getElementById('upload-progress-text');
+ const ods = allODS.find(o => o.id === odsId);
+ 
+ try {
+ overlay.style.display = 'flex';
+ let hist = JSON.parse(ods.notas || '[]');
+ const now = new Date();
+ const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
+ now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+ 
+ for(let i=0; i<files.length; i++) {
+ progressText.innerText = `Procesando foto ${i + 1} de ${files.length}...`;
+ const file = files[i];
+ 
+ const base64Img = await new Promise((resolve, reject) => {
+ const reader = new FileReader();
+ reader.onload = (e) => {
+ const img = new Image();
+ img.onload = () => {
+ const canvas = document.createElement('canvas');
+ const ctx = canvas.getContext('2d');
+ const SIZE = 800; // Slightly smaller for stability on mobile
+ canvas.width = SIZE;
+ canvas.height = SIZE;
+ const minDim = Math.min(img.width, img.height);
+ const sx = (img.width - minDim) / 2;
+ const sy = (img.height - minDim) / 2;
+ ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, SIZE, SIZE);
+
+ let quality = 0.7;
+ let dataUrl = canvas.toDataURL('image/jpeg', quality);
+ resolve(dataUrl);
+ };
+ img.onerror = () => reject(new Error('Imagen inválida'));
+ img.src = e.target.result;
+ };
+ reader.onerror = () => reject(new Error('Error al leer archivo'));
+ reader.readAsDataURL(file);
+ });
+ 
+ hist.push({ date: dateStr, status: ods.status || 'Recibido', text: '', img: base64Img });
+ }
+ 
+ progressText.innerText = "Guardando en la nube...";
+ const newNotas = JSON.stringify(hist);
+ ods.notas = newNotas;
+ const { error } = await supabaseClient.from('ordenes_servicio').update({notas: newNotas}).eq('id', odsId);
+ if(error) throw error;
+ 
+ renderDetail(ods);
+ } catch(e) {
+ console.error("Upload error:", e);
+ alert('Error al subir fotos: ' + e.message);
+ } finally {
+ overlay.style.display = 'none';
+ event.target.value = ''; // Allow selecting same files again
+ }
+ };
+
+ window.calculateBalance = function () {
+ const montoTotal = parseFloat(document.getElementById('inp-monto')?.value) || 0;
+ const costHW = parseFloat(document.getElementById('inp-cost-hardware')?.value) || 0;
+ const costInsumos = parseFloat(document.getElementById('inp-cost-other')?.value) || 0;
+ const badge = document.getElementById('service-utility-badge');
+ if (badge) {
+ const utilidadReal = montoTotal - (costHW + costInsumos);
+ badge.innerText = '$ ' + utilidadReal.toLocaleString('es-MX');
+ }
+ };
+
+ // Run
+ document.addEventListener('DOMContentLoaded', () => {
+ initVistaGlow();
+ const urlParams = new URLSearchParams(window.location.search);
+ const viewParam = urlParams.get('view');
+ const idParam = urlParams.get('id');
+
+ loadData().then(() => {
+ if (viewParam) {
+ switchView(viewParam);
+ if (idParam) {
+ const target = allODS.find(o => o.folio === idParam || o.id === idParam);
+ if (target) renderDetail(target);
+ }
+ }
+ });
+
+ const lBtn = document.getElementById('logout-btn-side');
+ if (lBtn) {
+ lBtn.onclick = () => {
+ sessionStorage.clear();
+ window.location.href = 'tecnicos.html';
+ };
+ }
+
+ // Default date and time to today/now
+ const now = new Date();
+ const dateInput = document.getElementById('t-unified-date');
+ const timeInput = document.getElementById('t-unified-time');
+ if (dateInput && !dateInput.value) {
+ dateInput.value = now.toISOString().split('T')[0];
+ }
+ if (timeInput && !timeInput.value) {
+ timeInput.value = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+ }
+ if (window.toggleCalendarButtons) window.toggleCalendarButtons();
+
+// Refresh periódicamente para mostrar ODS nuevas sin recargar manualmente.
+if (!window.__mwRefreshInterval) {
+ window.__mwRefreshInterval = setInterval(() => {
+ if (!document.hidden) loadData();
+ }, 30000);
+}
+ });
+ </script>
+</body>
+
+</html>

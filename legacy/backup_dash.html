@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Dashboard ODS - MacWave GSX</title>
+
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+ <style>
+ :root {
+ /* Apple GSX / macOS Dark Mode Palette */
+ --mac-bg: #000000;
+ --mac-sidebar: #1C1C1E;
+ --mac-card: #1C1C1E;
+ --mac-card-hover: #2C2C2E;
+ --mac-border: #38383A;
+ --mac-text: #F5F5F7;
+ --mac-text-muted: #8E8E93;
+ --mac-blue: #0A84FF;
+ --mac-green: #30D158;
+ --mac-red: #FF453A;
+ --mac-input-bg: #2C2C2E;
+ }
+
+ * {
+ box-sizing: border-box;
+ margin: 0;
+ padding: 0;
+ font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+ -webkit-font-smoothing: antialiased;
+ }
+
+ body {
+ background-color: var(--mac-bg);
+ color: var(--mac-text);
+ height: 100vh;
+ display: flex;
+ flex-direction: row;
+ /* Horizontal for Sidebar */
+ overflow: hidden;
+ }
+
+ /* Sidebar Navigation (iTunes Style) */
+ .app-sidebar {
+ width: 260px;
+ background: var(--mac-sidebar);
+ border-right: 1px solid var(--mac-border);
+ display: flex;
+ flex-direction: column;
+ padding: 24px 12px;
+ flex-shrink: 0;
+ z-index: 100;
+ }
+
+ .sidebar-brand {
+ padding: 0 12px 32px 12px;
+ display: flex;
+ align-items: center;
+ gap: 12px;
+ }
+
+ .brand-logo {
+ width: 32px;
+ height: 32px;
+ background: var(--mac-blue);
+ border-radius: 8px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-weight: 800;
+ color: white;
+ font-size: 18px;
+ }
+
+ .brand-text {
+ font-size: 16px;
+ font-weight: 700;
+ letter-spacing: -0.5px;
+ }
+
+ .nav-group {
+ margin-bottom: 24px;
+ }
+
+ .nav-label {
+ font-size: 11px;
+ font-weight: 600;
+ color: var(--mac-text-muted);
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+ padding: 0 12px 8px 12px;
+ }
+
+ .nav-item {
+ display: flex;
+ align-items: center;
+ gap: 12px;
+ padding: 10px 16px;
+ border-radius: 8px;
+ color: var(--mac-text);
+ text-decoration: none;
+ font-size: 13.5px;
+ font-weight: 500;
+ cursor: pointer;
+ transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+ margin-bottom: 2px;
+ border: 1px solid transparent;
+ background: transparent;
+ width: 100%;
+ text-align: left;
+ }
+
+ .nav-item:hover {
+ background: rgba(255, 255, 255, 0.05);
+ border-color: rgba(255, 255, 255, 0.05);
+ }
+
+ .nav-item.active {
+ background: var(--mac-blue);
+ color: #fff;
+ box-shadow: 0 4px 12px rgba(0, 113, 227, 0.3);
+ }
+
+ .nav-item svg {
+ width: 18px;
+ height: 18px;
+ opacity: 0.7;
+ }
+
+ .nav-item.active svg {
+ opacity: 1;
+ }
+
+ /* Main Content wrapper */
+ .app-main {
+ flex-grow: 1;
+ display: flex;
+ flex-direction: column;
+ overflow: hidden;
+ background: #000;
+ position: relative;
+ }
+
+ .btn {
+ background: #2C2C2E;
+ border: 1px solid var(--mac-border);
+ color: var(--mac-text);
+ padding: 8px 16px;
+ border-radius: 8px;
+ font-size: 13px;
+ font-weight: 500;
+ cursor: pointer;
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ gap: 8px;
+ transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+ user-select: none;
+ }
+
+ .btn:hover {
+ background: #3A3A3C;
+ border-color: #48484A;
+ transform: translateY(-1px);
+ }
+
+ .btn:active {
+ transform: translateY(0);
+ background: #2C2C2E;
+ }
+
+ .btn.active {
+ background: var(--mac-blue);
+ border-color: var(--mac-blue);
+ color: white;
+ box-shadow: 0 4px 12px rgba(10, 132, 255, 0.3);
+ }
+
+ .btn-primary {
+ background: var(--mac-blue);
+ color: #fff;
+ border-color: var(--mac-blue);
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+ }
+
+ .btn-primary:hover {
+ background: #0071E3;
+ box-shadow: 0 4px 12px rgba(10, 132, 255, 0.4);
+ }
+
+ .btn-danger {
+ color: var(--mac-red);
+ border-color: rgba(255, 69, 58, 0.3);
+ }
+
+ .btn-danger:hover {
+ background: rgba(255, 69, 58, 0.1);
+ border-color: var(--mac-red);
+ }
+
+ /* Views Toggle */
+ .view-toggle {
+ display: flex;
+ background: #1c1c1e;
+ padding: 3px;
+ border-radius: 8px;
+ border: 1px solid var(--mac-border);
+ margin-right: 12px;
+ }
+
+ .view-btn {
+ padding: 4px 12px;
+ border-radius: 6px;
+ border: none;
+ background: transparent;
+ color: var(--mac-text-muted);
+ font-size: 11px;
+ font-weight: 600;
+ cursor: pointer;
+ transition: 0.2s;
+ }
+
+ .view-btn.active {
+ background: #38383a;
+ color: #fff;
+ }
+
+ /* Main Workspace */
+ .workspace {
+ display: flex;
+ flex: 1;
+ overflow: hidden;
+ }
+
+ /* Sidebar - List View */
+ .sidebar {
+ width: 320px;
+ background: var(--mac-sidebar);
+ border-right: 1px solid var(--mac-border);
+ display: flex;
+ flex-direction: column;
+ flex-shrink: 0;
+ }
+
+ .sidebar-header {
+ padding: 12px;
+ border-bottom: 1px solid var(--mac-border);
+ }
+
+ .search-box {
+ width: 100%;
+ background: var(--mac-input-bg);
+ border: 1px solid transparent;
+ padding: 8px 30px 8px 12px;
+ border-radius: 8px;
+ color: var(--mac-text);
+ font-size: 13px;
+ outline: none;
+ transition: border 0.2s;
+ }
+
+ .search-box:focus {
+ border-color: var(--mac-blue);
+ }
+
+ .search-wrapper {
+ position: relative;
+ }
+
+ .search-wrapper::after {
+ content: '🔍';
+ position: absolute;
+ right: 10px;
+ top: 50%;
+ transform: translateY(-50%);
+ font-size: 12px;
+ opacity: 0.5;
+ pointer-events: none;
+ }
+
+ .list-container {
+ flex: 1;
+ overflow-y: auto;
+ padding: 8px;
+ }
+
+ .list-item {
+ padding: 10px 12px;
+ border-radius: 6px;
+ margin-bottom: 4px;
+ cursor: pointer;
+ transition: background 0.1s;
+ }
+
+ .list-item:hover {
+ background: var(--mac-card-hover);
+ }
+
+ .list-item.selected {
+ background: var(--mac-blue);
+ }
+
+ .list-item.selected .item-subtitle,
+ .list-item.selected .status-dot-text {
+ color: rgba(255, 255, 255, 0.8) !important;
+ }
+
+ .item-title {
+ font-size: 13px;
+ font-weight: 600;
+ margin-bottom: 4px;
+ display: flex;
+ justify-content: space-between;
+ }
+
+ .item-subtitle {
+ font-size: 11px;
+ color: var(--mac-text-muted);
+ white-space: nowrap;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ }
+
+ /* Status Dot Indicator */
+ .status-dot-text {
+ display: flex;
+ align-items: center;
+ gap: 6px;
+ font-size: 10px;
+ color: var(--mac-text-muted);
+ margin-top: 6px;
+ }
+
+ .status-dot {
+ width: 8px;
+ height: 8px;
+ border-radius: 50%;
+ background: #8E8E93;
+ flex-shrink: 0;
+ transition: all 0.3s ease;
+ }
+
+ /* Detail View */
+ .detail-view {
+ flex: 1;
+ background: var(--mac-bg);
+ overflow-y: auto;
+ display: flex;
+ flex-direction: column;
+ }
+
+ .empty-selection {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ height: 100%;
+ color: var(--mac-text-muted);
+ text-align: center;
+ }
+
+ .empty-selection svg {
+ width: 48px;
+ height: 48px;
+ margin-bottom: 16px;
+ opacity: 0.5;
+ }
+
+ /* Detail Header */
+ .detail-header {
+ padding: 30px 40px 20px;
+ border-bottom: 1px solid var(--mac-border);
+ display: flex;
+ justify-content: space-between;
+ align-items: flex-end;
+ }
+
+ .folio-title {
+ font-size: 28px;
+ font-weight: 700;
+ letter-spacing: -0.5px;
+ margin-bottom: 8px;
+ }
+
+ .status-pill {
+ display: inline-block;
+ padding: 4px 10px;
+ border-radius: 12px;
+ font-size: 11px;
+ font-weight: 600;
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+ border: 1px solid transparent;
+ }
+
+ /* Detail Content Grid */
+ .detail-content {
+ padding: 30px 40px;
+ max-width: 1000px;
+ display: grid;
+ grid-template-columns: 2fr 1.2fr;
+ gap: 30px;
+ }
+
+ /* Left Column: Info & Setup */
+ .info-section {
+ display: flex;
+ flex-direction: column;
+ gap: 20px;
+ }
+
+ .card {
+ background: var(--mac-card);
+ border: 1px solid var(--mac-border);
+ border-radius: 10px;
+ padding: 20px;
+ }
+
+ .card-title {
+ font-size: 14px;
+ font-weight: 800;
+ color: #ffffff;
+ text-transform: uppercase;
+ letter-spacing: 2px;
+ margin-bottom: 24px;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ opacity: 0.9;
+ border-left: 3px solid var(--mac-blue);
+ padding-left: 12px;
+ }
+
+ .form-grid {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 16px;
+ }
+
+ .form-group {
+ display: flex;
+ flex-direction: column;
+ gap: 6px;
+ }
+
+ .form-group label {
+ font-size: 11px;
+ color: var(--mac-text-muted);
+ }
+
+ .form-control {
+ background: var(--mac-input-bg);
+ border: 1px solid var(--mac-border);
+ color: var(--mac-text);
+ padding: 8px 12px;
+ border-radius: 6px;
+ font-size: 13px;
+ outline: none;
+ transition: border 0.2s;
+ }
+
+ .form-control:focus {
+ border-color: var(--mac-blue);
+ }
+
+ textarea.form-control {
+ resize: vertical;
+ min-height: 80px;
+ }
+
+ /* Financial Field */
+ .price-input {
+ position: relative;
+ }
+
+ .price-input::before {
+ content: '$';
+ position: absolute;
+ left: 12px;
+ top: 50%;
+ transform: translateY(-50%);
+ color: var(--mac-text-muted);
+ }
+
+ .price-input input {
+ padding-left: 24px;
+ width: 100%;
+ font-weight: 600;
+ color: var(--mac-red);
+ }
+
+ /* Right Column: Timeline & Actions */
+ .action-section {
+ display: flex;
+ flex-direction: column;
+ gap: 20px;
+ }
+
+ .timeline-container {
+ margin-top: 10px;
+ padding-left: 10px;
+ }
+
+ .timeline-item {
+ position: relative;
+ padding-left: 24px;
+ margin-bottom: 24px;
+ }
+
+ .timeline-item:last-child {
+ margin-bottom: 0;
+ }
+
+ .timeline-item::before {
+ content: '';
+ position: absolute;
+ left: 0;
+ top: 4px;
+ width: 10px;
+ height: 10px;
+ border-radius: 50%;
+ background: var(--item-color, var(--mac-border));
+ border: 2px solid var(--mac-bg);
+ z-index: 2;
+ }
+
+ .timeline-item::after {
+ content: '';
+ position: absolute;
+ left: 4px;
+ top: 14px;
+ bottom: -24px;
+ width: 2px;
+ background: var(--mac-border);
+ z-index: 1;
+ }
+
+ .timeline-item:last-child::after {
+ display: none;
+ }
+
+ .timeline-date {
+ font-size: 11px;
+ color: var(--mac-text-muted);
+ margin-bottom: 4px;
+ }
+
+ .timeline-status {
+ font-size: 12px;
+ font-weight: 600;
+ margin-bottom: 6px;
+ }
+
+ .timeline-note {
+ font-size: 13px;
+ line-height: 1.4;
+ color: var(--mac-text);
+ background: var(--mac-input-bg);
+ padding: 10px;
+ border-radius: 6px;
+ border: 1px solid var(--mac-border);
+ }
+
+ .timeline-img {
+ margin-top: 8px;
+ max-width: 100%;
+ border-radius: 6px;
+ border: 1px solid var(--mac-border);
+ }
+
+ /* Scrollbar styling for a native feel */
+ ::-webkit-scrollbar {
+ width: 8px;
+ height: 8px;
+ }
+
+ ::-webkit-scrollbar-track {
+ background: transparent;
+ }
+
+ ::-webkit-scrollbar-thumb {
+ background: #4A4A4C;
+ border-radius: 4px;
+ border: 2px solid var(--mac-bg);
+ }
+
+ ::-webkit-scrollbar-thumb:hover {
+ background: #6e6e73;
+ }
+
+ @media (max-width: 850px) {
+ .workspace {
+ flex-direction: column;
+ }
+
+ .sidebar {
+ width: 100%;
+ height: 40vh;
+ border-right: none;
+ border-bottom: 1px solid var(--mac-border);
+ }
+
+ .detail-content {
+ grid-template-columns: 1fr;
+ padding: 20px;
+ }
+
+ .detail-header {
+ padding: 20px;
+ }
+ }
+
+ /* Kanban Styles */
+ .kanban-view {
+ display: none;
+ flex: 1;
+ background: #000;
+ overflow-x: auto;
+ overflow-y: hidden;
+ padding: 20px;
+ }
+
+ .kanban-board {
+ display: flex;
+ gap: 16px;
+ height: 100%;
+ min-width: max-content;
+ }
+
+ .kanban-column {
+ width: 300px;
+ background: #1c1c1e;
+ border-radius: 12px;
+ display: flex;
+ flex-direction: column;
+ max-height: 100%;
+ border: 1px solid #38383a;
+ }
+
+ .column-header {
+ padding: 16px 20px;
+ font-size: 11px;
+ font-weight: 700;
+ text-transform: uppercase;
+ letter-spacing: 1px;
+ color: #8E8E93;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ background: rgba(255, 255, 255, 0.03);
+ border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+ border-top-left-radius: 12px;
+ border-top-right-radius: 12px;
+ }
+
+ .column-count {
+ background: rgba(255, 255, 255, 0.08);
+ backdrop-filter: blur(8px);
+ padding: 2px 8px;
+ border-radius: 10px;
+ color: #fff;
+ font-size: 10px;
+ font-weight: 600;
+ border: 1px solid rgba(255, 255, 255, 0.1);
+ }
+
+ .kanban-cards {
+ flex: 1;
+ overflow-y: auto;
+ padding: 12px;
+ display: flex;
+ flex-direction: column;
+ gap: 10px;
+ }
+
+ .kanban-card {
+ background: #2c2c2e;
+ border: 1px solid rgba(255, 255, 255, 0.05);
+ border-radius: 8px;
+ padding: 12px;
+ cursor: grab;
+ transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+ user-select: none;
+ }
+
+ .kanban-card:hover {
+ background: #3a3a3c;
+ transform: translateY(-2px);
+ box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+ border-color: rgba(255, 255, 255, 0.1);
+ }
+
+ .k-card-folio {
+ font-size: 14px;
+ font-weight: 800;
+ color: #ffffff;
+ margin-bottom: 4px;
+ letter-spacing: 0.5px;
+ }
+
+ .k-card-client {
+ font-size: 12px;
+ font-weight: 400;
+ color: #8e8e93;
+ margin-bottom: 12px;
+ white-space: nowrap;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ }
+
+ .k-card-info {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ font-size: 10px;
+ color: #48484a;
+ font-weight: 700;
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+ }
+
+ .folio-title {
+ font-size: 32px;
+ font-weight: 900;
+ letter-spacing: -1px;
+ color: #ffffff;
+ margin-bottom: 4px;
+ }
+
+ .kanban-card:active {
+ cursor: grabbing;
+ }
+
+ .k-card-folio {
+ font-size: 13px;
+ font-weight: 700;
+ color: var(--mac-blue);
+ margin-bottom: 4px;
+ }
+
+ .k-card-client {
+ font-size: 12px;
+ font-weight: 500;
+ margin-bottom: 6px;
+ color: #fff;
+ }
+
+ .k-card-info {
+ font-size: 10px;
+ color: #8e8e93;
+ display: flex;
+ justify-content: space-between;
+ }
+
+ .dragging {
+ opacity: 0.5;
+ background: #1c1c1e !important;
+ border: 1px dashed var(--mac-blue) !important;
+ }
+
+ .column-highlight {
+ background: rgba(10, 132, 255, 0.05);
+ border: 1px dashed rgba(10, 132, 255, 0.5) !important;
+ }
+
+ .add-card-btn {
+ padding: 10px;
+ margin: 8px 12px 12px;
+ background: transparent;
+ border: 1px dashed var(--mac-border);
+ border-radius: 8px;
+ color: var(--mac-text-muted);
+ font-size: 11px;
+ font-weight: 600;
+ cursor: pointer;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ gap: 6px;
+ transition: 0.2s;
+ }
+
+ .add-card-btn:hover {
+ background: rgba(255, 255, 255, 0.05);
+ color: #fff;
+ border-color: var(--mac-blue);
+ }
+
+ /* Modal Overlay Styles */
+ .modal-overlay {
+ display: none;
+ position: fixed;
+ inset: 0;
+ background: rgba(0, 0, 0, 0.8);
+ backdrop-filter: blur(10px);
+ z-index: 20000;
+ align-items: center;
+ justify-content: center;
+ }
+
+ .modal-overlay.active {
+ display: flex;
+ }
+
+ .modal-card {
+ background: #1c1c1e;
+ width: 450px;
+ border-radius: 16px;
+ border: 1px solid var(--mac-border);
+ box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+ padding: 24px;
+ }
+ </style>
+</head>
+
+<body>
+
+ <!-- Auth Check -->
+ <script>
+ if (sessionStorage.getItem('macwave_session') !== 'authorized') {
+ window.location.href = 'tecnicos.html';
+ }
+ </script>
+
+ <!-- Apple Sidebar Navigation -->
+ <aside class="app-sidebar">
+ <a href="dashboard-ods.html" class="sidebar-brand"
+ style="text-decoration: none; display: flex; align-items: center; gap: 12px; margin-bottom: 32px;">
+ <img src="./images/circuito_bronce.jpg"
+ style="width: 40px; height: 40px; border-radius: 8px; object-fit: cover; mix-blend-mode: lighten;">
+ <div class="brand-text" style="font-size: 16px; font-weight: 700; color: #fff;">Dashboard</div>
+ </a>
+
+ <nav class="nav-group">
+ <div class="nav-label">Gestión</div>
+ <button class="nav-item active" onclick="switchView('list')" id="nav-list">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+ </svg>
+ ODS
+ </button>
+ <a href="cotizaciones.html" class="nav-item" style="text-decoration:none;">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <line x1="12" y1="5" x2="12" y2="19"></line>
+ <line x1="5" y1="12" x2="19" y2="12"></line>
+ </svg>
+ Crear ODS
+ </a>
+ <button class="nav-item" onclick="switchView('kanban')" id="nav-kanban">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+ <line x1="9" y1="3" x2="9" y2="21" />
+ <line x1="15" y1="3" x2="15" y2="21" />
+ </svg>
+ Reparaciones
+ </button>
+ <script>
+ if (sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel') {
+ document.write(`
+ <button class="nav-item" onclick="switchView('finance')" id="nav-finance">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+ Balances Finanzas
+ </button>
+ `);
+ }
+ </script>
+ </nav>
+
+ <nav class="nav-group">
+ <div class="nav-label">Herramientas</div>
+ <a href="cotizaciones.html?ticket=true" class="nav-item" style="text-decoration:none;">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <path d="M20 12v7a1 1 0 01-1 1H5a1 1 0 01-1-1v-7M16 8l-4-4-4 4M12 4v12" />
+ </svg>
+ </nav>
+
+ <nav class="nav-group" style="margin-top:auto;">
+ <button class="nav-item" style="color: var(--mac-red);" id="logout-btn-side">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+ </svg>
+ Cerrar Sesión
+ </button>
+ </nav>
+ </aside>
+
+ <main class="app-main">
+ <!-- List View -->
+ <div class="workspace" id="list-view-container" style="display: flex; height: 100%;">
+ <aside class="sidebar">
+ <div class="sidebar-header" style="padding: 10px 12px; display: flex; gap: 8px; align-items: center;">
+ <div class="search-wrapper" style="flex: 1;">
+ <input type="text" id="search-input" class="search-box" placeholder="Filtrar órdenes...">
+ </div>
+ </div>
+ <div class="list-container" id="ods-list">
+ <!-- Items populated by JS -->
+ <div style="padding: 20px; text-align: center; color: var(--mac-text-muted); font-size: 12px;">
+ Cargando órdenes...</div>
+ </div>
+ </aside>
+ <div class="detail-view" id="detail-view">
+ <div class="empty-selection">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+ <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+ <line x1="8" y1="21" x2="16" y2="21"></line>
+ <line x1="12" y1="17" x2="12" y2="21"></line>
+ </svg>
+ <h3>Ninguna ODS Seleccionada</h3>
+ <p style="margin-top: 8px; font-size: 13px;">Selecciona una orden de servicio en la lista de la
+ izquierda.</p>
+ </div>
+ </div>
+ </div>
+
+ <!-- Kanban View -->
+ <div class="workspace" id="kanban-view-container"
+ style="display: none; height: 100%; overflow-x: auto; background: #000;">
+ <div class="kanban-board" id="kanban-board"></div>
+ </div>
+
+ <!-- Finance View -->
+ <div class="workspace" id="finance-view-container"
+ style="display: none; height: 100%; padding: 40px; overflow-y: auto; flex-direction: column;">
+ <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+ <h1 class="folio-title">Balances Financieros</h1>
+ <button class="btn"
+ style="background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1); color: #fff;"
+ onclick="openFinanceConfig()">
+ <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+ <path
+ d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+ </svg>
+ Configuración
+ </button>
+ </div>
+ <div id="finance-metrics"
+ style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;"></div>
+ <div class="card" style="margin-top: 30px; padding: 0; overflow: hidden;">
+ <div class="column-header">Desglose de Utilidad por Orden</div>
+ <div style="overflow-x: auto;">
+ <table id="finance-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
+ <thead style="background: rgba(255,255,255,0.05);">
+ <tr style="text-align: left;">
+ <th style="padding: 12px; color: var(--mac-text-muted);">Folio</th>
+ <th style="padding: 12px; color: var(--mac-text-muted);">Fecha</th>
+ <th style="padding: 12px; color: var(--mac-text-muted);">Venta</th>
+ <th style="padding: 12px; color: var(--mac-text-muted);">Costo</th>
+ <th style="padding: 12px; color: var(--mac-primary);">Utilidad</th>
+ <th style="padding: 12px; color: var(--mac-text-muted);">Margen</th>
+ </tr>
+ </thead>
+ <tbody id="finance-table-body"></tbody>
+ </table>
+ </div>
+ </div>
+ </div><!-- /finance-view-container -->
+ </main>
+
+ <!-- Quick Create Modal -->
+ <div class="modal-overlay" id="quick-create-modal">
+ <div class="modal-card">
+ <h3 style="margin-bottom: 20px; font-size: 18px;">Nueva Orden de Servicio</h3>
+ <div class="form-group" style="margin-bottom: 15px;">
+ <label>Folio (Automático si se deja vacío)</label>
+ <input type="text" id="new-ods-folio" class="form-control" placeholder="Ej. MW-1234">
+ </div>
+ <div class="form-group" style="margin-bottom: 15px;">
+ <label>Cliente</label>
+ <input type="text" id="new-ods-cliente" class="form-control" placeholder="Nombre completo">
+ </div>
+ <div class="form-group" style="margin-bottom: 15px;">
+ <label>Equipo / Modelo</label>
+ <input type="text" id="new-ods-proyecto" class="form-control" placeholder="Ej. MacBook Pro A2141">
+ </div>
+ <div class="form-group" style="margin-bottom: 20px;">
+ <label>Número de Serie</label>
+ <input type="text" id="new-ods-serie" class="form-control" placeholder="C02...">
+ </div>
+ <div style="display: flex; gap: 10px; justify-content: flex-end;">
+ <button class="btn" onclick="closeQuickCreate()">Cancelar</button>
+ <button class="btn btn-primary" id="btn-save-quick-ods" onclick="saveQuickODS()">Crear Orden</button>
+ </div>
+ </div>
+ </div>
+
+ <script>
+ // Supabase Init
+ const _sbUrl = 'https://lifxtyhvgnxjjqgbzare.supabase.co';
+ const _sbKey = 'sb_publishable_7aBPXbWRwrltSuXtzsyg-g_L1Fu3rTT';
+ const supabaseClient = window.supabase.createClient(_sbUrl, _sbKey);
+
+ const STATUS_CONFIG = {
+ 'Recibido': { color: '#FFD60A' }, // Yellow
+ 'Diagnóstico': { color: '#FFD60A' }, // Yellow
+ 'Espera de aprobación y pago': { color: '#FF9F0A' }, // Orange
+ 'Espera de piezas': { color: '#FF9F0A' }, // Orange
+ 'Reparación': { color: '#FFD60A' }, // Yellow
+ 'Equipo reparado': { color: '#30D158' }, // Green
+ 'Equipo entregado': { color: '#30D158' }, // Green
+ 'Equipo sin reparar': { color: '#FF453A' }, // Red
+ 'Nota General': { color: '#8E8E93' } // Gray (Neutral)
+ };
+
+ let allODS = [];
+ let currentSelectedId = null;
+ let currentView = 'list'; // 'list' or 'kanban'
+
+ function getStatusColor(status) {
+ return STATUS_CONFIG[status] ? STATUS_CONFIG[status].color : '#8E8E93';
+ }
+
+ async function loadData() {
+ const { data, error } = await supabaseClient
+ .from('ordenes_servicio')
+ .select('*')
+ .order('created_at', { ascending: false });
+
+ if (error) {
+ document.getElementById('ods-list').innerHTML = `<div style="color:var(--mac-red); padding:15px; font-size:12px; text-align:center;">Error: ${error.message}</div>`;
+ return;
+ }
+ allODS = data || [];
+ if (currentView === 'list') {
+ renderSidebar();
+ } else if (currentView === 'kanban') {
+ renderKanban();
+ } else if (currentView === 'finance') {
+ renderFinance();
+ }
+ }
+
+ function switchView(view) {
+ currentView = view;
+ const listCont = document.getElementById('list-view-container');
+ const kanbanCont = document.getElementById('kanban-view-container');
+ const financeCont = document.getElementById('finance-view-container');
+ const navItems = document.querySelectorAll('.nav-item');
+
+ navItems.forEach(item => item.classList.remove('active'));
+
+ if (view === 'list') {
+ listCont.style.display = 'flex';
+ kanbanCont.style.display = 'none';
+ financeCont.style.display = 'none';
+ document.getElementById('nav-list').classList.add('active');
+ renderSidebar();
+ } else if (view === 'kanban') {
+ listCont.style.display = 'none';
+ kanbanCont.style.display = 'flex';
+ financeCont.style.display = 'none';
+ document.getElementById('nav-kanban').classList.add('active');
+ renderKanban();
+ } else if (view === 'finance') {
+ listCont.style.display = 'none';
+ kanbanCont.style.display = 'none';
+ financeCont.style.display = 'flex';
+ const fNav = document.getElementById('nav-finance');
+ if (fNav) fNav.classList.add('active');
+ renderFinance();
+ }
+ }
+
+ function renderFinance() {
+ const metricsCont = document.getElementById('finance-metrics');
+ const tableBody = document.getElementById('finance-table-body');
+
+ const now = new Date();
+ const oneWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+ const oneMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+ const oneYear = new Date(now.getFullYear(), 0, 1);
+
+ const parseDate = (dStr) => {
+ if (!dStr) return new Date(0);
+ const [d, t] = dStr.split(' ');
+ const [day, month, year] = d.split('/');
+ return new Date(year, month - 1, day);
+ };
+
+ const stats = {
+ week: { v: 0, u: 0 },
+ month: { v: 0, u: 0 },
+ year: { v: 0, u: 0 },
+ total: { v: 0, c: 0, u: 0 }
+ };
+
+ const finished = allODS.filter(o => o.monto > 0);
+ tableBody.innerHTML = '';
+
+ finished.forEach(o => {
+ const oDate = parseDate(o.fecha);
+ // Since cost columns don't exist in Supabase, we default to 0 to avoid errors
+ const cost = 0;
+ const utility = parseFloat(o.monto || 0);
+
+ stats.total.v += parseFloat(o.monto);
+ stats.total.c += cost;
+ stats.total.u += utility;
+
+ if (oDate >= oneWeek) { stats.week.v += parseFloat(o.monto); stats.week.u += utility; }
+ if (oDate >= oneMonth) { stats.month.v += parseFloat(o.monto); stats.month.u += utility; }
+ if (oDate >= oneYear) { stats.year.v += parseFloat(o.monto); stats.year.u += utility; }
+
+ const row = document.createElement('tr');
+ row.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+ row.innerHTML = `
+ <td style="padding: 12px; font-weight: 700;">${o.folio}</td>
+ <td style="padding: 12px; opacity: 0.7;">${(o.fecha || '').split(' ')[0]}</td>
+ <td style="padding: 12px;">$ ${parseFloat(o.monto).toLocaleString()}</td>
+ <td style="padding: 12px; color: var(--mac-red);">$ ${cost.toLocaleString()}</td>
+ <td style="padding: 12px; color: var(--mac-green); font-weight: 700;">$ ${utility.toLocaleString()}</td>
+ <td style="padding: 12px; opacity: 0.7;">${o.monto > 0 ? ((utility / o.monto) * 100).toFixed(0) : 0}%</td>
+ `;
+ tableBody.appendChild(row);
+ });
+
+ metricsCont.innerHTML = `
+ <div class="card" style="background: linear-gradient(180deg, rgba(10, 132, 255, 0.1) 0%, rgba(10, 132, 255, 0.05) 100%); border-color: rgba(10, 132, 255, 0.2);">
+ <div style="font-size: 11px; color: var(--mac-blue); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Utilidad Servicios (Semana)</div>
+ <div style="font-size: 24px; font-weight: 800; margin: 12px 0; color: #fff;">$ ${stats.week.u.toLocaleString()}</div>
+ <div style="font-size: 11px; color: var(--mac-text-muted);">Venta Bruta: $ ${stats.week.v.toLocaleString()}</div>
+ </div>
+ <div class="card" style="background: linear-gradient(180deg, rgba(48, 209, 88, 0.1) 0%, rgba(48, 209, 88, 0.05) 100%); border-color: rgba(48, 209, 88, 0.2);">
+ <div style="font-size: 11px; color: var(--mac-green); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Utilidad Servicios (Mes)</div>
+ <div style="font-size: 24px; font-weight: 800; margin: 12px 0; color: #fff;">$ ${stats.month.u.toLocaleString()}</div>
+ <div style="font-size: 11px; color: var(--mac-text-muted);">Venta Bruta: $ ${stats.month.v.toLocaleString()}</div>
+ </div>
+ <div class="card" style="background: linear-gradient(180deg, rgba(94, 92, 230, 0.1) 0%, rgba(94, 92, 230, 0.05) 100%); border-color: rgba(94, 92, 230, 0.2);">
+ <div style="font-size: 11px; color: #5E5CE6; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Utilidad Servicios (Año)</div>
+ <div style="font-size: 24px; font-weight: 800; margin: 12px 0; color: #fff;">$ ${stats.year.u.toLocaleString()}</div>
+ <div style="font-size: 11px; color: var(--mac-text-muted);">Venta Bruta: $ ${stats.year.v.toLocaleString()}</div>
+ </div>
+ <div class="card" style="background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%); border-color: rgba(255, 255, 255, 0.1);">
+ <div style="font-size: 11px; color: #fff; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Utilidad Neta (Total)</div>
+ <div style="font-size: 28px; font-weight: 900; color: var(--mac-green); margin: 12px 0; text-shadow: 0 0 15px rgba(48, 209, 88, 0.3);">$ ${stats.total.u.toLocaleString()}</div>
+ <div style="font-size: 11px; color: var(--mac-text-muted);">Ventas Totales: $ ${stats.total.v.toLocaleString()}</div>
+ </div>
+ `;
+ }
+
+ function openFinanceConfig() {
+ // No alert - keeping it silent/clean for now
+ console.log("Config opened");
+ }
+
+ function renderKanban() {
+ const board = document.getElementById('kanban-board');
+ board.innerHTML = '';
+
+ // Get unique statuses in order from CONFIG, excluding 'Nota General'
+ const statuses = Object.keys(STATUS_CONFIG).filter(s => s !== 'Nota General');
+
+ statuses.forEach(status => {
+ const columnODS = allODS.filter(o => (o.status || 'Recibido') === status);
+ const col = document.createElement('div');
+ col.className = 'kanban-column';
+ col.dataset.status = status;
+
+ col.innerHTML = `
+ <div class="column-header">
+ ${status}
+ <span class="column-count">${columnODS.length}</span>
+ </div>
+ <div class="kanban-cards" ondragover="handleDragOver(event)" ondrop="handleDrop(event, '${status}')" ondragleave="handleDragLeave(event)">
+ ${columnODS.map(o => `
+ <div class="kanban-card" draggable="true" ondragstart="handleDragStart(event, '${o.id}')" onclick="openODSFromKanban('${o.id}')">
+ <div class="k-card-folio">${o.folio}</div>
+ <div class="k-card-client">${o.cliente || 'Sin cliente'}</div>
+ <div class="k-card-info">
+ <span>${(o.fecha || '').split(' ')[0]}</span>
+ <span style="color: ${getStatusColor(status)}; text-shadow: 0 0 5px ${getStatusColor(status)}80;">●</span>
+ </div>
+ </div>
+ `).join('')}
+ </div>
+ <button class="add-card-btn" onclick="openQuickCreate('${status}')">
+ <span>+</span> Añadir Orden
+ </button>
+ `;
+ board.appendChild(col);
+ });
+ }
+
+ // Modal Functions
+ let targetInitialStatus = 'Recibido';
+
+ function openQuickCreate(status = 'Recibido') {
+ targetInitialStatus = status;
+ document.getElementById('quick-create-modal').classList.add('active');
+ // Suggest a folio
+ const lastFolio = allODS.length > 0 ? allODS[0].folio : 'MW-1000';
+ const num = parseInt(lastFolio.replace(/\D/g, '')) || 1000;
+ document.getElementById('new-ods-folio').value = `MW-${num + 1}`;
+ }
+
+ function closeQuickCreate() {
+ document.getElementById('quick-create-modal').classList.remove('active');
+ }
+
+ async function saveQuickODS() {
+ const btn = document.getElementById('btn-save-quick-ods');
+ const folio = document.getElementById('new-ods-folio').value;
+ const cliente = document.getElementById('new-ods-cliente').value;
+ const proyecto = document.getElementById('new-ods-proyecto').value;
+ const serie = document.getElementById('new-ods-serie').value;
+
+ if (!cliente) return alert("El nombre del cliente es obligatorio");
+
+ btn.disabled = true;
+ btn.innerText = "Creando...";
+
+ const now = new Date();
+ const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+ const newODS = {
+ folio,
+ cliente,
+ proyecto,
+ serie,
+ status: targetInitialStatus,
+ fecha: dateStr,
+ tecnico: 'Asignado vía Trello',
+ notas: JSON.stringify([{
+ date: dateStr,
+ status: targetInitialStatus,
+ text: 'Orden creada directamente desde el Tablero Kanban.',
+ img: null
+ }])
+ };
+
+ try {
+ const { data, error } = await supabaseClient
+ .from('ordenes_servicio')
+ .insert([newODS])
+ .select();
+
+ if (error) throw error;
+
+ allODS.unshift(data[0]);
+ closeQuickCreate();
+ if (currentView === 'kanban') renderKanban();
+ else renderSidebar();
+
+ // Reset form
+ document.getElementById('new-ods-cliente').value = '';
+ document.getElementById('new-ods-proyecto').value = '';
+ document.getElementById('new-ods-serie').value = '';
+
+ } catch (err) {
+ alert("Error: " + err.message);
+ } finally {
+ btn.disabled = false;
+ btn.innerText = "Crear Orden";
+ }
+ }
+
+ // Drag & Drop Handlers
+ let draggedODSId = null;
+
+ function handleDragStart(e, id) {
+ draggedODSId = id;
+ e.target.classList.add('dragging');
+ e.dataTransfer.setData('text/plain', id);
+ }
+
+ function handleDragOver(e) {
+ e.preventDefault();
+ const container = e.target.closest('.kanban-cards');
+ if (container) container.classList.add('column-highlight');
+ }
+
+ function handleDragLeave(e) {
+ const container = e.target.closest('.kanban-cards');
+ if (container) container.classList.remove('column-highlight');
+ }
+
+ async function handleDrop(e, newStatus) {
+ e.preventDefault();
+ const container = e.target.closest('.kanban-cards');
+ if (container) container.classList.remove('column-highlight');
+
+ document.querySelectorAll('.kanban-card').forEach(c => c.classList.remove('dragging'));
+
+ if (!draggedODSId) return;
+
+ const ods = allODS.find(o => o.id === draggedODSId);
+ if (!ods || ods.status === newStatus) return;
+
+ // Optimistic UI
+ const oldStatus = ods.status;
+ ods.status = newStatus;
+
+ // Add automated note for status change
+ let historial = [];
+ try {
+ historial = JSON.parse(ods.notas || '[]');
+ } catch (err) {
+ if (ods.notas) historial = [{ date: ods.fecha || '', status: 'Nota General', text: ods.notas, img: null }];
+ }
+
+ const now = new Date();
+ const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+ historial.push({
+ date: dateStr,
+ status: newStatus,
+ text: `Cambio de estatus vía Tablero: ${oldStatus} -> ${newStatus}`,
+ img: null
+ });
+
+ const newNotasString = JSON.stringify(historial);
+ ods.notas = newNotasString;
+
+ renderKanban();
+
+ // Persist to Supabase
+ const { error } = await supabaseClient
+ .from('ordenes_servicio')
+ .update({ status: newStatus, notas: newNotasString })
+ .eq('id', draggedODSId);
+
+ if (error) {
+ alert('Error al actualizar: ' + error.message);
+ loadData(); // REVERT
+ }
+ }
+
+ function openODSFromKanban(id) {
+ currentSelectedId = id;
+ const ods = allODS.find(o => o.id === id);
+ switchView('list');
+ renderDetail(ods);
+ }
+
+ function renderSidebar(query = '') {
+ const isJoel = sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel';
+ const listContainer = document.getElementById('ods-list');
+ listContainer.innerHTML = '';
+
+ const filtered = allODS.filter(o => {
+ const q = query.toLowerCase();
+ return (o.folio || '').toLowerCase().includes(q) ||
+ (o.cliente || '').toLowerCase().includes(q) ||
+ (o.serie || '').toLowerCase().includes(q);
+ });
+
+ if (filtered.length === 0) {
+ listContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--mac-text-muted); font-size: 12px;">No hay resultados</div>';
+ return;
+ }
+
+ filtered.forEach(o => {
+ const color = getStatusColor(o.status);
+ const item = document.createElement('div');
+ item.className = `list-item ${o.id === currentSelectedId ? 'selected' : ''}`;
+ item.innerHTML = `
+ <div class="item-title">
+ <span>${o.folio}</span>
+ <span style="font-size: 11px; opacity: 0.7;">${(o.fecha || '').split(' ')[0]}</span>
+ </div>
+ <div class="item-subtitle">${o.cliente || 'Sin cliente'}</div>
+ <div class="status-dot-text">
+ <div class="status-dot" style="background: ${color}; box-shadow: 0 0 6px ${color}80; ${o.id === currentSelectedId ? 'border: 1px solid #fff;' : ''}"></div>
+ ${o.status || 'Recibido'}
+ </div>
+ `;
+ item.onclick = () => {
+ currentSelectedId = o.id;
+ renderSidebar(document.getElementById('search-input').value);
+ renderDetail(o);
+ };
+ listContainer.appendChild(item);
+ });
+ }
+
+ document.getElementById('search-input').addEventListener('input', (e) => {
+ renderSidebar(e.target.value);
+ });
+
+ function renderDetail(o) {
+ const isJoel = sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel';
+ const detailView = document.getElementById('detail-view');
+ const statusColor = getStatusColor(o.status);
+
+ let historial = [];
+ try {
+ historial = JSON.parse(o.notas || '[]');
+ if (!Array.isArray(historial)) throw new Error('Not array');
+ } catch (e) {
+ if (o.notas) historial = [{ date: o.fecha || '', status: 'Nota General', text: o.notas, img: null }];
+ }
+
+ const statusOptions = Object.keys(STATUS_CONFIG).filter(s => s !== 'Nota General').map(s =>
+ `<option value="${s}" ${s === o.status ? 'selected' : ''}>${s}</option>`
+ ).join('');
+
+ const timelineHtml = historial.slice().reverse().map((ev, i, arr) => {
+ let evColor;
+ const isEntregado = o.status === 'Equipo entregado';
+ if (isEntregado) {
+ evColor = '#30D158';
+ } else {
+ if (i === 0) {
+ evColor = arr.length === 1 ? '#30D158' : '#FF453A';
+ } else if (i === 1) {
+ evColor = arr.length === 2 ? '#30D158' : '#FFD60A';
+ } else {
+ evColor = '#30D158';
+ }
+ }
+ return `
+ <div class="timeline-item" style="--item-color: ${evColor};">
+ <div class="timeline-date">${ev.date}</div>
+ <div class="timeline-status" style="color: ${evColor}">${ev.status}</div>
+ ${ev.text ? `<div class="timeline-note">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
+ ${ev.img ? `<img src="${ev.img}" class="timeline-img">` : ''}
+ </div>
+ `;
+ }).join('') || '<div style="font-size:12px; color:var(--mac-text-muted);">Sin historial registrado.</div>';
+
+ const photos = historial.filter(h => h.img).map(h => h.img);
+ const galleryHtml = photos.length > 0 ? `
+ <div class="card" style="margin-top: 20px; border-color: var(--mac-blue);">
+ <div class="card-title" style="color: var(--mac-blue);">Galería de Evidencias (${photos.length})</div>
+ <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px;">
+ ${photos.map(p => `
+ <div style="position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 8px; border: 1px solid var(--mac-border); cursor: zoom-in;" onclick="window.open(this.querySelector('img').src)">
+ <img src="${p}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+ </div>
+ `).join('')}
+ </div>
+ </div>
+ ` : '';
+
+ detailView.innerHTML = `
+ <div class="detail-header">
+ <div>
+ <div class="status-pill" style="color: ${statusColor}; background: ${statusColor}1A; border-color: ${statusColor}4D; margin-bottom: 8px;">
+ ${o.status || 'Recibido'}
+ </div>
+ <h2 class="folio-title">${o.folio}</h2>
+ <div style="font-size: 13px; color: var(--mac-text-muted);">ID del Sistema: ${o.id}</div>
+ </div>
+ <div style="display:flex;gap:10px;">
+ <button class="btn btn-primary" id="btn-save-meta">Guardar Cambios</button>
+ <button class="btn btn-danger" id="btn-delete" style="border-color: var(--mac-red);">Eliminar</button>
+ </div>
+ </div>
+
+ <div class="detail-content">
+ <!-- Left: Information Form -->
+ <div class="info-section">
+ <div class="card">
+ <div class="card-title">Información del Cliente y Equipo</div>
+ <div class="form-grid">
+ <div class="form-group" style="grid-column: span 2;">
+ <label>Cliente</label>
+ <input type="text" id="inp-cliente" class="form-control" value="${o.cliente || ''}" placeholder="Nombre del cliente">
+ </div>
+ <div class="form-group">
+ <label>Proyecto / Equipo</label>
+ <input type="text" id="inp-proyecto" class="form-control" value="${o.proyecto || ''}" placeholder="Ej. MacBook Pro A2338">
+ </div>
+ <div class="form-group">
+ <label>Número de Serie</label>
+ <input type="text" id="inp-serie" class="form-control" value="${o.serie || ''}" style="font-family: monospace;" placeholder="C02...">
+ </div>
+ <div class="form-group">
+ <label>Técnico Asignado</label>
+ <input type="text" id="inp-tecnico" class="form-control" value="${o.tecnico || ''}">
+ </div>
+ <div class="form-group">
+ <label>Fecha de Entrada</label>
+ <input type="text" id="inp-fecha" class="form-control" value="${o.fecha || ''}">
+ </div>
+ <div class="form-group" style="grid-column: span 2;">
+ <label>Monto de Cotización / Venta</label>
+ <div class="price-input">
+ <input type="number" id="inp-monto" class="form-control" value="${o.monto || '0'}" step="0.01">
+ </div>
+ </div>
+ </div>
+ </div>
+
+ ${isJoel ? `
+ <div class="card" style="border-color: #5E5CE6;">
+ <div class="card-title" style="color: #5E5CE6;">
+ GESTIÓN FINANCIERA (PRIVADO)
+ <div style="font-size: 10px; background: #5E5CE622; padding: 2px 6px; border-radius: 4px;">SOLO JOEL</div>
+ </div>
+ <div class="form-grid">
+ <div class="form-group">
+ <label>Venta Hardware (Refacción)</label>
+ <input type="number" id="inp-venta-hw" class="form-control" value="${o.venta_hw || '0'}" step="0.01" oninput="window.calculateBalance()">
+ </div>
+ <div class="form-group">
+ <label>Costo Hardware (Prov)</label>
+ <input type="number" id="inp-cost-hardware" class="form-control" value="${o.cost_pieces || '0'}" step="0.01" oninput="window.calculateBalance()">
+ </div>
+ <div class="form-group">
+ <label>Costo Insumos (Otros)</label>
+ <input type="number" id="inp-cost-other" class="form-control" value="${o.cost_supplies || '0'}" step="0.01" oninput="window.calculateBalance()">
+ </div>
+ <div class="form-group">
+ <label style="color: var(--mac-green);">Utilidad Servicio (Mano de Obra)</label>
+ <div id="service-utility-badge" style="background: #30D15822; color: var(--mac-green); padding: 8px; border-radius: 6px; font-weight: bold; font-size: 16px;">$ 0</div>
+ </div>
+ </div>
+ </div>
+ ` : ''}
+
+ ${galleryHtml}
+
+ <div class="card" style="border-color: var(--mac-green);">
+ <div class="card-title" style="color: var(--mac-green);">Registrar Avance</div>
+ <div class="form-group" style="margin-bottom: 12px;">
+ <label>Nuevo Estatus</label>
+ <select id="inp-new-status" class="form-control">
+ ${statusOptions}
+ </select>
+ </div>
+ <div class="form-group" style="margin-bottom: 12px;">
+ <label>Anotaciones (Visibles en el Status de Cliente)</label>
+ <textarea id="inp-new-text" class="form-control" placeholder="Describe los avances, piezas pedidas o finalización del servicio..."></textarea>
+ </div>
+ <div class="form-group" style="margin-bottom: 16px;">
+ <label>Evidencia Fotográfica (Opcional)</label>
+ <input type="file" id="inp-new-img" accept="image/*" class="form-control" style="padding: 6px;">
+ </div>
+ <button class="btn btn-primary" id="btn-add-event" style="width: 100%; justify-content: center; background: var(--mac-green); border-color: var(--mac-green);">Actualizar Historial</button>
+ </div>
+ </div>
+
+ <div class="action-section">
+ <div class="card" style="background: transparent; border: none; padding: 0;">
+ <div class="card-title">Secuencia de Reparación</div>
+ <div class="timeline-container">
+ ${timelineHtml}
+ </div>
+ </div>
+ </div>
+ </div>
+ `;
+
+ if (isJoel) setTimeout(() => window.calculateBalance(), 100);
+ // Bind Event Listeners
+ document.getElementById('btn-save-meta').onclick = async function () {
+ const btn = this;
+ btn.innerText = 'Guardando...';
+ btn.disabled = true;
+
+ try {
+ const monto = parseFloat(document.getElementById('inp-monto').value) || 0;
+ const meta = {
+ cliente: document.getElementById('inp-cliente').value,
+ proyecto: document.getElementById('inp-proyecto').value,
+ tecnico: document.getElementById('inp-tecnico').value,
+ serie: document.getElementById('inp-serie').value,
+ fecha: document.getElementById('inp-fecha').value,
+ monto: monto
+ };
+
+ // Finance columns (cost_pieces, cost_supplies, venta_hw) removed as they don't exist in Supabase schema
+
+ const { error } = await supabaseClient.from('ordenes_servicio').update(meta).eq('id', o.id);
+ if (error) throw error;
+
+ Object.assign(o, meta);
+ const idx = allODS.findIndex(x => x.id === o.id);
+ if (idx > -1) allODS[idx] = o;
+
+ renderSidebar(document.getElementById('search-input').value);
+ alert('Información guardada correctamente.');
+ renderDetail(o); // Re-render detail to update projected utility if Joel
+ } catch (e) {
+ alert('Error: ' + e.message);
+ } finally {
+ btn.innerText = 'Guardar Cambios';
+ btn.disabled = false;
+ }
+ };
+
+ document.getElementById('btn-delete').onclick = async () => {
+ if (!confirm(`¿Eliminar la orden ${o.folio} permanentemente?`)) return;
+ try {
+ const { error, count } = await supabaseClient.from('ordenes_servicio').delete({ count: 'exact' }).eq('id', o.id);
+ if (error) throw error;
+ if (count === 0) return alert('No se pudo borrar, revise RLS en Supabase.');
+
+ allODS = allODS.filter(x => x.id !== o.id);
+ currentSelectedId = null;
+ renderSidebar(document.getElementById('search-input').value);
+ document.getElementById('detail-view').innerHTML = `<div class="empty-selection"><h3>Orden Eliminada</h3></div>`;
+ } catch (e) {
+ alert('Error: ' + e.message);
+ }
+ };
+
+ document.getElementById('btn-add-event').onclick = async function () {
+ const btn = this;
+ const newStatus = document.getElementById('inp-new-status').value;
+ const text = document.getElementById('inp-new-text').value;
+ const fileInput = document.getElementById('inp-new-img');
+ const file = fileInput.files[0];
+
+ if (!newStatus) return alert("Selecciona un estatus");
+
+ btn.innerText = "Procesando...";
+ btn.disabled = true;
+
+ try {
+ let base64Img = null;
+ if (file) {
+ base64Img = await new Promise((resolve, reject) => {
+ const reader = new FileReader();
+ reader.onload = (e) => {
+ const img = new Image();
+ img.onload = () => {
+ const canvas = document.createElement('canvas');
+ const ctx = canvas.getContext('2d');
+ const MAX_WIDTH = 1200; const MAX_HEIGHT = 1200;
+ let width = img.width; let height = img.height;
+ if (width > height) { if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } }
+ else { if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } }
+ canvas.width = width; canvas.height = height;
+ ctx.drawImage(img, 0, 0, width, height);
+
+ // Base quality 0.7. If result is > 1MB (approx 1.3M chars in base64), reduce quality.
+ let quality = 0.7;
+ let dataUrl = canvas.toDataURL('image/jpeg', quality);
+ if (dataUrl.length > 1000000) {
+ quality = 0.5;
+ dataUrl = canvas.toDataURL('image/jpeg', quality);
+ }
+ resolve(dataUrl);
+ };
+ img.onerror = () => reject(new Error('Formato inválido'));
+ img.src = e.target.result;
+ };
+ reader.onerror = () => reject(new Error('Error de lectura'));
+ reader.readAsDataURL(file);
+ });
+ }
+
+ const now = new Date();
+ const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
+ now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+ const newHistorial = JSON.parse(o.notas || '[]');
+ newHistorial.push({ date: dateStr, status: newStatus, text: text, img: base64Img });
+ const newNotasString = JSON.stringify(newHistorial);
+
+ const { error } = await supabaseClient.from('ordenes_servicio').update({
+ status: newStatus, notas: newNotasString
+ }).eq('id', o.id);
+ if (error) throw error;
+
+ o.status = newStatus;
+ o.notas = newNotasString;
+ const idx = allODS.findIndex(x => x.id === o.id);
+ if (idx > -1) { allODS[idx].status = newStatus; allODS[idx].notas = newNotasString; }
+
+ renderSidebar(document.getElementById('search-input').value);
+ renderDetail(o);
+
+ } catch (e) {
+ alert('Error: ' + e.message);
+ btn.innerText = "Actualizar Historial";
+ btn.disabled = false;
+ }
+ };
+ }
+
+ window.calculateBalance = function () {
+ const montoTotal = parseFloat(document.getElementById('inp-monto')?.value) || 0;
+ const costHW = parseFloat(document.getElementById('inp-cost-hardware')?.value) || 0;
+ const costInsumos = parseFloat(document.getElementById('inp-cost-other')?.value) || 0;
+ const badge = document.getElementById('service-utility-badge');
+ if (badge) {
+ const utilidadReal = montoTotal - (costHW + costInsumos);
+ badge.innerText = '$ ' + utilidadReal.toLocaleString('es-MX');
+ }
+ };
+
+ // Run
+ document.addEventListener('DOMContentLoaded', () => {
+ const urlParams = new URLSearchParams(window.location.search);
+ const viewParam = urlParams.get('view');
+ const idParam = urlParams.get('id');
+
+ loadData().then(() => {
+ if (viewParam) {
+ switchView(viewParam);
+ if (idParam) {
+ const target = allODS.find(o => o.folio === idParam || o.id === idParam);
+ if (target) renderDetail(target);
+ }
+ }
+ });
+
+ // Logout Handler
+ const lBtn = document.getElementById('logout-btn-side');
+ if (lBtn) {
+ lBtn.onclick = () => {
+ sessionStorage.clear();
+ window.location.href = 'tecnicos.html';
+ };
+ }
+ });
+ </script>
+</body>
+
+</html>

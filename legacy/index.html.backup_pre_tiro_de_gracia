@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+
+<head>
+    <link rel="canonical" href="https://macwave.com.mx/">
+    <!-- Google Tag Manager (Placeholder - Disabled until ID provided) -->
+    <!-- <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-XXXXXXX');</script> -->
+    <!-- End Google Tag Manager -->
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JENWM4W22D"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-JENWM4W22D');
+    </script>
+    <!-- End Google Analytics 4 -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reparación de Mac y MacBook a Domicilio CDMX | Pantalla, Batería y Lógica</title>
+
+    <!-- Essential Meta Tags -->
+    <meta name="description"
+        content="⚡ Expertos en REPARACIÓN DE MAC Y MACBOOK EN CDMX. Diagnóstico Profesional. Especialistas en MacBook Pro, Air e iMac. Cambios de pantalla, batería y reparación de lógica.">
+    <meta name="keywords"
+        content="reparación de mac y macbook, reparación mac cdmx, centro de servicio mac, arreglo de macbook, taller de mac, soporte tecnico apple mexico, cambio pantalla macbook cdmx, bateria macbook air original, mac mojada reparacion, mantenimiento preventivo mac, reparacion imac cdmx, reparacion de mac portatiles, servicio tecnico macbook pro">
+
+    <!-- Conversion & Business Meta -->
+    <meta name="contact" content="55-3575-7364">
+    <meta name="contact_type" content="WhatsApp">
+    <meta name="coverage" content="Polanco, Santa Fe, Interlomas, Pedregal, Lomas, Chalco">
+    <meta name="response_time" content="Mismo día">
+    <meta name="author" content="Mac Wave T2">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+    <!-- Geo Meta Tags for Local SEO -->
+    <meta name="geo.region" content="MX-CMX">
+    <meta name="geo.placename" content="Ciudad de México">
+    <meta name="geo.position" content="19.432608;-99.133209">
+    <meta name="ICBM" content="19.432608, -99.133209">
+
+
+    <!-- Favicon -->
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://www.macwave.com.mx/images/favicon1.png">
+    <link rel="apple-touch-icon" href="https://www.macwave.com.mx/images/favicon1.png">
+
+    <!-- Performance Optimization: Preload Critical Assets -->
+    <link rel="preload" href="./images/circuito_bronce.jpg" as="image">
+    <link rel="preload" href="./images/dispositivos.jpg" as="image">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        as="style">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:locale" content="es_MX">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Reparación de Mac CDMX  【Diagnóstico Profesional】 - Soporte Apple">
+    <meta property="og:description"
+        content="⚡ Expertos en reparación de Mac en CDMX. Rescatamos equipos 'mojados' o que 'no encienden' (Nivel Componente). ¡Diagnóstico Profesional + Servicio a Domicilio!">
+    <meta property="og:url" content="https://macwave.com.mx/">
+    <meta property="og:site_name" content="Mac Wave México">
+    <meta property="og:image" content="https://macwave.com.mx/images/apple.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Reparación de Mac CDMX  【Diagnóstico Profesional】 - Soporte Apple">
+    <meta name="twitter:description"
+        content="⚡ Expertos en reparación de Mac en CDMX. Rescatamos equipos 'mojados' o que 'no encienden' (Nivel Componente). ¡Diagnóstico Profesional + Servicio a Domicilio!">
+    <meta name="twitter:image" content="https://macwave.com.mx/images/apple.png">
+
+    <link rel="stylesheet" href="style.css?v=8.5.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Mac Wave T2",
+        "alternateName": ["MacWave", "Mac Wave T2", "Reparación de Mac México"],
+        "url": "https://macwave.com.mx/",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://macwave.com.mx/?s={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Mac Wave T2 - Reparación de Mac y MacBook CDMX",
+        "image": "https://macwave.com.mx/images/apple.png",
+        "description": "Centro de Reparación de Mac en CDMX. Expertos en MacBook Pro, MacBook Air e iMac. Diagnóstico Profesional, servicio a domicilio y reparación a nivel componente. Cobertura en Polanco, Santa Fe, Interlomas, Lomas, Pedregal, Satélite.",
+        "@id": "https://macwave.com.mx/#localbusiness",
+        "url": "https://macwave.com.mx/",
+        "telephone": "+525535757364",
+        "priceRange": "$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Agendar Cita vía WhatsApp",
+          "addressLocality": "Ciudad de México",
+          "addressRegion": "CDMX / Estado de México",
+          "addressCountry": "MX"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 19.432608,
+          "longitude": -99.133209
+        },
+        "areaServed": [
+          "Polanco", "Santa Fe", "Interlomas", "Lomas de Chapultepec", "Pedregal", "Satélite", "Chalco", "CDMX", "Estado de México"
+        ],
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "09:00",
+            "closes": "19:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Saturday",
+            "opens": "10:00",
+            "closes": "15:00"
+          }
+        ],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "47"
+        },
+        "sameAs": [
+          "https://wa.me/525535757364"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Servicios de Reparación",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Reparación de Mac y MacBook",
+                "description": "Servicio técnico especializado para toda la gama Mac: MacBook Pro, Air, iMac y Mac mini."
+              }
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Cambio de Pantalla MacBook",
+                "description": "Sustitución de pantallas para MacBook Pro y MacBook Air."
+              }
+            }
+          ]
+        }
+      }
+    ]
+    </script>
+
+    <!-- FAQ Schema para SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+    "mainEntity": [{
+    "@type": "Question",
+    "name": "¿Cuánto cobran por revisar una Mac?",
+    "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "En Mac Wave T2 ofrecemos diagnóstico 100% GRATUITO para todos los modelos de MacBook Pro y MacBook Air. Nuestro objetivo es que conozcas el problema real y el costo total antes de comprometerte a cualquier gasto. ¡Sin cargos ocultos!"
+    }
+    },{
+    "@type": "Question",
+    "name": "¿Cuánto cuesta restaurar un Mac?",
+    "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Restaurar una Mac (formateo, instalación de sistema macOS Sonoma/Sequoia y limpieza interna) tiene un costo base altamente competitivo. Esto incluye respaldo de archivos y optimización total para que tu equipo vuele como nuevo."
+    }
+    },{
+    "@type": "Question",
+    "name": "¿Puedes simplemente presentarte en una tienda Apple para repararlo?",
+    "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Sí, pero en las tiendas oficiales suelen decir que equipos con más de 5 años son 'vintage' y no tienen piezas, o te cobran la tarjeta lógica completa. En Mac Wave T2 reparamos a nivel componente, rescatando tu equipo a una fracción del costo oficial."
+    }
+    },{
+    "@type": "Question",
+    "name": "¿Cuánto tardan en reparar un Mac?",
+    "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "La mayoría de los cambios (pantallas, baterías, SDD) se realizan el mismo día. Las reparaciones complejas de micro-soldadura suelen tardar de 24 a 48 horas tras la aprobación del presupuesto gratuito."
+    }
+    }]
+    }
+    </script>
+
+    <!-- SoftwareApplication Schema for Licenses -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Microsoft Office & Antivirus Genuine Licenses",
+      "operatingSystem": "macOS, Windows",
+      "applicationCategory": "BusinessApplication, SecurityApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "300.00",
+        "priceCurrency": "MXN"
+      }
+    }
+    </script>
+
+    <!-- VideoObject Schema for Technical Success -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VideoObject",
+      "name": "Reparación de Placa Lógica MacBook Pro",
+      "description": "Intervención técnica en el corazón de una MacBook Pro para rescate a nivel componente.",
+      "thumbnailUrl": "https://macwave.com.mx/images/mac-repair-logic.jpg",
+      "uploadDate": "2026-02-11",
+      "contentUrl": "https://macwave.com.mx/#soluciones"
+    }
+    </script>
+
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": "https://macwave.com.mx/"
+      },{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Reparación MacBook",
+        "item": "https://macwave.com.mx/#soluciones"
+      }]
+    }
+    </script>
+
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) (Disabled) -->
+    <!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript> -->
+    <!-- End Google Tag Manager (noscript) -->
+
+    <header class="main-header">
+        <div class="container header-content">
+            <div class="logo">
+                <a href="index.html" class="logo-link">
+                    <img src="./images/circuito_bronce.jpg" alt="Logo Mac Wave T2" class="logo-img">
+
+                    <div class="logo-text-container">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span class="logo-brand">Mac Wave T2</span>
+                        </div>
+                        <span class="logo-subtext subtext-1">Soporte Técnico Apple Especializado y Reparación Mac en
+                            CDMX</span>
+                        <span class="logo-subtext subtext-2">Refacciones Originales - Para tu dispositivo Apple fuera
+                            de garantía</span>
+                    </div>
+                </a>
+            </div>
+            <nav class="main-nav">
+                <a href="#soluciones" class="nav-link">Servicios de Reparación</a>
+                <a href="#planes" class="nav-link">Para Empresas</a>
+            </nav>
+            <div class="header-actions">
+
+                <a href="https://wa.me/525535757364" target="_blank" rel="noopener noreferrer"
+                    class="cta-button header-cta neon-green" style="padding: 10px 20px; font-size: 0.9rem;"
+                    onclick="gtag('event', 'whatsapp_click', { 'event_category': 'contact', 'event_label': 'header' });">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-whatsapp" viewBox="0 0 16 16" style="margin-right: 8px;">
+                        <path
+                            d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
+                    </svg>
+                    WhatsApp
+                </a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section id="hero-authority" class="hero-section-authority">
+            <div class="container">
+
+                <div class="hero-split-content">
+
+                    <div class="hero-image-container">
+                        <img src="./images/dispositivos.jpg" alt="Reparación de Macbook MacBook Pro MacBook Air CDMX"
+                            class="hero-img" fetchpriority="high">
+                    </div>
+
+                    <div class="hero-content-text">
+                        <div class="certification-group">
+                            <span class="cert-apple-logo"></span>
+                            <div class="cert-text-lines">
+                                <p class="cert-line-2">Apple Consulting System Engineer</p>
+                                <p class="cert-line-1"><b>ACSP</b> Apple Certified Support Professional</p>
+                            </div>
+                        </div>
+                        <div class="hero-banner-promo">
+                            <span>Especialistas</span> Diagnóstico Nivel Componente y Servicio Domicilio
+                        </div>
+                        <h1>Reparación de Mac y MacBook en CDMX</h1>
+                        <p><strong>¿Tu Mac no enciende? ¿Pantalla rota? ¿Mojada?</strong> Somos expertos en revivir
+                            equipos Apple. <strong>Diagnóstico Profesional</strong> para MacBook Pro, Air e iMac.
+                            Reparación
+                            a nivel componente y servicio a domicilio en CDMX. <strong>Garantía por escrito.</strong>
+                        </p>
+                        <div class="hero-actions">
+                            <a href="#soluciones" class="cta-button primary">Descubre Nuestras Soluciones</a>
+                            <a href="#contacto" class="cta-button secondary">Habla con un Experto</a>
+                        </div>
+
+                        <!-- Google Review Pill - Static & Smaller -->
+                        <div class="google-review-pill">
+                            <svg class="google-g-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                                    fill="#4285F4" />
+                                <path
+                                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                                    fill="#34A853" />
+                                <path
+                                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
+                                    fill="#FBBC05" />
+                                <path
+                                    d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                                    fill="#EA4335" />
+                            </svg>
+                            <span class="google-star">★</span>
+                            <span class="google-rating-score">5.0</span>
+                            <span class="google-divider"></span>
+                            <span class="google-reviews-count">50 reseñas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="soluciones" class="section-padded solution-grid-section">
+            <div class="container">
+                <h2>Centro de Reparación de Mac y MacBook en CDMX</h2>
+                <p class="section-description"><strong>¿Buscas donde reparar tu Mac?</strong> Somos el
+                    taller de servicio Apple más confiable. Especialistas en cambio de pantalla, batería, teclado,
+                    y reparación de tarjeta lógica para <strong>MacBook Pro, MacBook Air e iMac</strong>. Cobertura:
+                    <strong>Polanco, Santa Fe, Interlomas, Bosques, Lomas, Pedregal, Satélite y Chalco</strong>.
+                </p>
+                <p class="section-description"
+                    style="margin-top: 15px; font-weight: 500; color: var(--accent-orange); font-size: 1.1em;">
+                    ¿Buscas atención personal? Si tu Mac o iPhone necesita ayuda urgente, estamos aquí para ti. <a
+                        href="https://wa.me/525535757364"
+                        style="color: inherit; text-decoration: underline; font-weight: 700;">¡Agenda tu cita hoy
+                        mismo!</a></p>
+
+                <div class="certification-badge-container"
+                    style="margin-top: 30px; margin-bottom: 40px; text-align: center;">
+                    <p style="font-size: 1.2rem; font-weight: 600; color: #FFFFFF; margin-bottom: 20px;">Contamos con
+                        las últimas certificaciones Apple</p>
+                    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                        <a href="https://www.credly.com/badges/f931f052-2ff5-423a-bed3-49004ca58bb5" target="_blank"
+                            rel="noopener noreferrer" class="cta-button neon-blue">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                viewBox="0 0 16 16" style="margin-right: 8px;">
+                                <path
+                                    d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z" />
+                            </svg>
+                            Ver Certificación Oficial
+                        </a>
+                        <a href="./images/servicios.pdf" target="_blank" class="cta-button neon-orange">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                viewBox="0 0 16 16" style="margin-right: 8px;">
+                                <path
+                                    d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" />
+                                <path
+                                    d="M5.5 10.5A.5.5 0 0 1 6 10h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 6 8h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5zm0-2A.5.5 0 0 1 6 6h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z" />
+                            </svg>
+                            SERVICIOS URGENTES - VER LISTA
+                        </a>
+                    </div>
+                </div>
+
+                <div class="services-stack">
+                    <!-- Servicio 1: Reparación Mac -->
+                    <div class="service-row">
+                        <div class="service-image">
+                            <img src="./images/reparacionmac1.jpeg"
+                                alt="Centro de Servicio Mac CDMX reparación tarjeta lógica mojada" loading="lazy">
+                        </div>
+                        <div class="service-content">
+                            <h3>Reparación Especializada Mac</h3>
+                            <h4>Especialistas en MacBook Pro, Air e iMac</h4>
+                            <p>¿Te dijeron que "cambies la lógica"? Nosotros la reparamos. Rescate de equipos mojados,
+                                micro-soldadura a nivel componente, cambio de pantallas y baterías originales.</p>
+                            <div class="service-icons">
+                                <span>💧 Mac Mojada</span>
+                                <span>🔧 Tarjeta Lógica</span>
+                                <span>🔋 Baterías</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Servicio 2: Reparación iPhone -->
+                    <div class="service-row">
+                        <div class="service-image">
+                            <img src="./images/displayiphone1.jpeg"
+                                alt="Reparación de pantalla iPhone precio CDMX y Face ID" loading="lazy">
+                        </div>
+                        <div class="service-content">
+                            <h3>Reparación iPhone</h3>
+                            <h4>Reparación de Pantalla iPhone y Face ID</h4>
+                            <p>Cambio de display y batería con piezas de alta calidad. Reparación de Face ID, cristal
+                                trasero y problemas de carga. Sin mensajes de error, conservando tu True Tone.</p>
+                            <div class="service-icons">
+                                <span>📱 Displays</span>
+                                <span>⚡ Carga</span>
+                                <span>🆔 Face ID</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Servicio 3: Multimarca -->
+                    <div class="service-row">
+                        <div class="service-image">
+                            <img src="./images/multimarca.jpg" alt="Reparación de Computadoras Multimarca"
+                                class="contain-img" loading="lazy">
+                        </div>
+                        <div class="service-content">
+                            <h3>Reparación Multimarca</h3>
+                            <h4>Soluciones para todas las plataformas</h4>
+                            <p>No solo somos expertos en Apple. Damos nueva vida a tu laptop Windows o PC Gamer.
+                                Mantenimiento térmico, actualización de SSD/RAM y reparación de bisagras.</p>
+                            <div class="service-icons">
+                                <span>💻 Laptops</span>
+                                <span>🎮 Gaming</span>
+                                <span>🚀 Upgrades</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Servicio 4: Redes -->
+                    <div class="service-row">
+                        <div class="service-image">
+                            <img src="./images/soportered.jpg" alt="Instalación de Redes WiFi y Cableado"
+                                class="contain-img network-img" loading="lazy">
+                        </div>
+                        <div class="service-content">
+                            <h3>Instalación de Redes</h3>
+                            <h4>Conectividad total para Hogar y Empresa</h4>
+                            <p>Olvídate del "Internet lento". Diseñamos e instalamos redes WiFi 6 de alto rendimiento y
+                                cableado estructurado para que navegues a la máxima velocidad en cada rincón.</p>
+                            <div class="service-icons">
+                                <span>📡 WiFi 6</span>
+                                <span>🌐 Cableado</span>
+                                <span>🔒 Seguridad</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bloque 1: Atracción y Primer Impacto (Continuación) -->
+        <section class="section-padded standards-section">
+            <div class="container">
+                <div class="standards-grid">
+                    <div class="standards-images">
+                        <img src="./images/ios26.png" alt="Desarrollo iOS iPadOS - estándares Apple México"
+                            class="std-img img-large" loading="lazy">
+                        <img src="./images/mac26.png" alt="Desarrollo macOS - aplicaciones empresariales Apple"
+                            class="std-img img-small" loading="lazy">
+                    </div>
+                    <div class="standards-content">
+                        <h2>Calidad y Estándares de Nivel Profesional</h2>
+                        <p>Contamos con <strong>18 años de experiencia</strong> como soporte técnico especialista en
+                            sistemas Apple. Dominamos el troubleshooting de todos los dispositivos, contamos con varias
+                            certificaciones y hemos entrenado a usuarios, ingenieros y empleados de muchas empresas
+                            privadas y colegios privados de México.</p>
+                        <p>Siempre estamos actualizados en lo más nuevo de hardware y software, listos para aplicar
+                            nuestras habilidades bajo los <strong>estándares más estrictos</strong>,
+                            garantizando soluciones precisas y de vanguardia.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-padded ecosystem-section">
+            <div class="container">
+                <div class="ecosystem-split">
+                    <div class="ecosystem-content">
+                        <h2>Expertos en Reparación Mac y Ecosistema Apple para Negocios</h2>
+                        <p class="section-description ecosystem-desc">Soluciones completas para gestionar el ciclo de
+                            vida de tus dispositivos Apple, desde la puesta en marcha hasta el soporte. En Mac Wave, te
+                            acompañamos en cada fase con servicios expertos y especializados, todo diseñado para
+                            maximizar tu retorno de inversión y garantizar la continuidad operativa.
+                        </p>
+                    </div>
+                    <div class="ecosystem-image">
+                        <img src="./images/apple-empresa.jpg"
+                            alt="Ecosistema Apple para empresas MacBook iPhone iPad integrados gestión"
+                            class="ecosystem-img" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bloque 2: Casos Específicos y Mejoras -->
+        <!-- Seccion OpenCore / Revivir Mac Vieja -->
+        <section id="opencore" class="section-padded opencore-section">
+            <div class="container">
+                <div class="compatibility-split">
+                    <div class="compatibility-content">
+                        <span class="section-subtitle">Tu Mac Puede Volver a la Vida 🚀</span>
+                        <h2>Instalamos macOS Sonoma y Sequoia en Macs "No Soportadas"</h2>
+                        <p>No la tires. Con nuestra optimización certificada <strong>OpenCore Legacy Patcher</strong>,
+                            tu Mac antigua (2012-2017) puede correr el sistema operativo más nuevo, tener funciones
+                            modernas y sentirse rápida otra vez.</p>
+                        <p><strong>¿Qué logramos?</strong></p>
+                        <ul style="list-style: none; padding: 0; margin-bottom: 20px; color: var(--text-secondary);">
+                            <li>✅ Seguridad actualizada (Apps bancarias funcionan)</li>
+                            <li>✅ Modo Oscuro y Stage Manager</li>
+                            <li>✅ Compatible con Office 365, Adobe CC y IA</li>
+                            <li>✅ Ahorras miles de pesos vs comprar una nueva</li>
+                        </ul>
+                        <a href="https://wa.me/525535757364?text=Hola,%20quisiera%20revivir%20mi%20Mac%20con%20OpenCore"
+                            class="cta-button primary" target="_blank">Revivir mi Mac Ahora</a>
+                    </div>
+                    <div class="compatibility-image" style="position: relative;">
+                        <img src="images/opencore_transformation.png"
+                            alt="Antes y después: MacBook Pro 2012 revivida con macOS Sonoma y Sequoia"
+                            class="compatibility-img" loading="lazy">
+                        <div class="image-text-overlay"
+                            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.7); color: white; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 1.2rem; text-align: center; width: 80%;">
+                            ¿Mac Vieja? <br> <span style="color: var(--accent-orange); font-size: 1.4rem;">¡Sistema
+                                Nuevo!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-padded employee-access-section">
+            <div class="container">
+                <div class="employee-access-grid">
+                    <div class="employee-access-image">
+                        <img src="./images/iphone.png" alt="Plan empleados iPhone descuento nómina México"
+                            class="iphone-img" loading="lazy">
+                    </div>
+                    <div class="employee-access-content">
+                        <h2>Reparación Inteligente: Ahorra sin Perder Calidad</h2>
+                        <p>Si un iPhone fuera de garantía sufre daño en display, batería o por líquidos,
+                            <strong>nosotros sí lo podemos reparar</strong>. A diferencia de las costosas sustituciones
+                            de unidad completa, nosotros reparamos a nivel componente, amortiguando significativamente
+                            el gasto.
+                        </p>
+                        <p>Cambiamos piezas cumpliendo estrictamente los estándares de fábrica para evitar mensajes de
+                            "pieza desconocida", garantizando funcionalidad perfecta. Por eso estamos certificados:
+                            reparamos lo que otros solo reemplazan.</p>
+                    </div>
+                </div>
+        </section>
+
+        <section class="section-padded configure-mac-section">
+            <div class="container">
+                <div class="configure-mac-grid">
+                    <div class="configure-mac-content">
+                        <h2>Configura tu Mac a tu medida</h2>
+                        <p>¿Editas videos? ¿Modelado en 3D? ¿Trabajas edición de audio? Solicita el equipo que más te
+                            guste con las especificaciones que necesites, añade memoria RAM, mejora la tarjeta de
+                            gráficos o aumenta el espacio en tu disco duro, estas son solo algunas de las posibilidades
+                            que te damos para tener la Mac que necesitas.</p>
+                    </div>
+                    <div class="configure-mac-image">
+                        <img src="./images/imac.png"
+                            alt="Configuración personalizada iMac especificaciones empresariales Apple" class="imac-img"
+                            loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Software Licenses Section - ULTRA MODERN -->
+        <section id="software" class="software-section">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-subtitle orange">Lo Mejor en Software</span>
+                    <h2 class="section-title">¿Necesitas software? Aquí obtenlo de forma simple y rápida.</h2>
+                    <p class="section-description" style="color: #ccc;">Activación genuina y soporte profesional
+                        garantizado.</p>
+                </div>
+
+                <div class="software-grid">
+                    <!-- Antivirus Card -->
+                    <div class="modern-software-card antivirus">
+                        <div class="card-top">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Antivirus</h3>
+                            <span class="brand-label">Genuinas Mac & Windows</span>
+                        </div>
+                        <div class="card-mid">
+                            <div class="software-list-modern">
+                                <div class="software-item-modern"><span class="soft-name">ESET NOD32 1 año</span><span
+                                        class="soft-price">$300</span></div>
+                                <div class="software-item-modern"><span class="soft-name">Eset Internet
+                                        Security</span><span class="soft-price highlight-green">$330</span></div>
+                                <div class="software-item-modern"><span class="soft-name">Kaspersky Total
+                                        Security</span><span class="soft-price">$300</span></div>
+                                <div class="software-item-modern"><span class="soft-name">McAfee Total
+                                        Protection</span><span class="soft-price">$270</span></div>
+                            </div>
+                        </div>
+                        <div class="card-bottom">
+                            <a href="https://wa.me/525535757364" class="modern-btn secondary">Asesoría Técnica</a>
+                            <a href="https://wa.me/525535757364" class="modern-btn primary">+ Comprar Ahora</a>
+                        </div>
+                    </div>
+
+                    <!-- Office Card -->
+                    <div class="modern-software-card office">
+                        <div class="card-top">
+                            <i class="fas fa-file-word"></i>
+                            <h3>Office</h3>
+                            <span class="brand-label">Genuinas Mac & Windows</span>
+                        </div>
+                        <div class="card-mid">
+                            <div class="software-list-modern">
+                                <div class="software-item-modern"><span class="soft-name">Office 2021
+                                        Permanente</span><span class="soft-price">$300</span></div>
+                                <div class="software-item-modern"><span class="soft-name">Office Mac
+                                        Reinstalable</span><span class="soft-price highlight-gold">$550</span></div>
+                                <div class="software-item-modern"><span class="soft-name">Office 2024
+                                        Permanente</span><span class="soft-price">$350</span></div>
+                                <div class="software-item-modern"><span class="soft-name">Office 365 Propio</span><span
+                                        class="soft-price">$500</span></div>
+                            </div>
+                        </div>
+                        <div class="card-bottom">
+                            <a href="https://wa.me/525535757364" class="modern-btn secondary">Instalación Mac</a>
+                            <a href="https://wa.me/525535757364" class="modern-btn primary">+ Comprar Ahora</a>
+                        </div>
+                    </div>
+
+                    <!-- Windows Card -->
+                    <div class="modern-software-card windows">
+                        <div class="card-top">
+                            <i class="fab fa-windows"></i>
+                            <h3>Windows</h3>
+                            <span class="brand-label">Genuinas Mac & Windows</span>
+                        </div>
+                        <div class="card-mid">
+                            <div class="software-list-modern">
+                                <div class="software-item-modern"><span class="soft-name">Windows 10 Pro</span><span
+                                        class="soft-price">$300</span></div>
+                                <div class="software-item-modern"><span class="soft-name">Windows 11 Pro</span><span
+                                        class="soft-price highlight-green">$300</span></div>
+                                <div class="software-item-modern"><span class="soft-name">Windows Server
+                                        Std.</span><span class="soft-price">$400</span></div>
+                            </div>
+                        </div>
+                        <div class="card-bottom">
+                            <a href="https://wa.me/525535757364" class="modern-btn secondary">Activación Remota</a>
+                            <a href="https://wa.me/525535757364" class="modern-btn primary">+ Comprar Ahora</a>
+                        </div>
+                    </div>
+
+                    <!-- Otros Card -->
+                    <div class="modern-software-card others">
+                        <div class="card-top">
+                            <i class="fas fa-paint-brush"></i>
+                            <h3>Creatividad</h3>
+                            <span class="brand-label">Genuinas Mac & Windows</span>
+                        </div>
+                        <div class="card-mid">
+                            <div class="software-list-modern">
+                                <div class="software-item-modern"><span class="soft-name">Adobe PDF
+                                        Permanente</span><span class="soft-price">$350</span></div>
+                                <div class="software-item-modern"><span class="soft-name">Canva Pro 1 año</span><span
+                                        class="soft-price">$300</span></div>
+                                <div class="software-item-modern"><span class="soft-name">Adobe Creative
+                                        (Mes)</span><span class="soft-price highlight-red">$450</span></div>
+                                <div class="software-item-modern"><span class="soft-name">Nitro PDF 1 año</span><span
+                                        class="soft-price">$300</span></div>
+                            </div>
+                        </div>
+                        <div class="card-bottom">
+                            <a href="https://wa.me/525535757364" class="modern-btn secondary">Soporte Diseño</a>
+                            <a href="https://wa.me/525535757364" class="modern-btn primary">+ Comprar Ahora</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center" style="margin-top: 60px;">
+                    <a href="https://wa.me/525535757364?text=Hola, busco asesoría técnica profesional"
+                        class="cta-button primary large-cta"
+                        style="background: #28D146; color: white; border: none; font-weight: 800; box-shadow: 0 10px 30px rgba(40, 209, 70, 0.4);">COMPRAR
+                        POR WHATSAPP</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-padded compatibility-section">
+            <div class="container">
+                <div class="compatibility-split">
+                    <div class="compatibility-image">
+                        <img src="./images/mac-trabajo.jpg"
+                            alt="Mac compatibilidad Microsoft Office G Suite Salesforce empresas"
+                            class="compatibility-img" loading="lazy">
+                    </div>
+                    <div class="compatibility-content">
+                        <span class="section-subtitle">Compatibilidad</span>
+                        <h2>Soporte Apple y Apps de Productividad: Integración Total para tu Mac</h2>
+                        <p>Conéctate fácilmente a los sistemas para empresas como Salesforce, SAP, IBM y muchos más. Las
+                            apps ofrecen un alto nivel de seguridad y están listas para trabajar. Microsoft Office, G
+                            Suite, Slack, Cisco Webex, Quip y Skype están disponibles en la App Store y ofrecen todas
+                            las funciones que conoces y esperas.</p>
+                        <p>Transforma tu manera de hacer las cosas. Con más de 235,000 apps para profesionales en la App
+                            Store, nunca volverás a trabajar igual. Descubre apps para las tareas del día a día, para
+                            mejorar la experiencia de los clientes y para optimizar las operaciones.
+                            <strong>Reparación de MacBook Pro y Air en CDMX</strong> con integración profesional de
+                            software.
+                        </p>
+                        <p><strong>En Mac Wave T2 tenemos la experiencia que necesitas:</strong> Instalamos,
+                            configuramos y recomendamos los mejores equipos para tu negocio. Integramos perfectamente
+                            tus equipos Windows existentes, optimizamos tu red corporativa y gestionamos la migración
+                            completa de tu personal a Mac, incluyendo capacitación especializada para garantizar una
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bloque 3: Soluciones Empresariales B2B -->
+        <section class="section-padded security-management-section">
+            <div class="container">
+                <div class="security-header">
+                    <h2>Soporte Apple y Seguridad de Datos para tu Negocio</h2>
+                    <p>Gestión Simple. Seguridad Avanzada</p>
+                </div>
+                <div class="grid-2-cols">
+                    <!-- Card 1: Seguridad -->
+                    <div class="info-card">
+                        <div class="card-image-container">
+                            <img src="./images/macbook1.png"
+                                alt="Seguridad Apple empresarial protección datos MacBook CDMX" class="card-img"
+                                loading="lazy">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-subtitle">Seguridad</span>
+                            <h3>La seguridad es lo primero, segundo y tercero</h3>
+                            <p>Mejoramos las relaciones de negocio entre nuestros clientes y sus empleados, canales de
+                                distribución y/o consumidores finales para asegurar el correcto funcionamiento e impacto
+                                y alcanzar las metas de negocio por medio de plataformas web y/o aplicaciones móviles
+                                donde podrán redimir lo último en productos Apple.</p>
+                            <p><strong>Contamos con la experiencia y certificación</strong> para ayudarlos a brindar la
+                                mejor seguridad de sus activos y salvaguardar la información, que es lo más importante
+                                para su empresa.</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Gestión -->
+                    <div class="info-card">
+                        <div class="card-image-container">
+                            <img src="./images/macbook2.png"
+                                alt="Apple Business Manager gestión dispositivos empresas México" class="card-img"
+                                loading="lazy">
+                        </div>
+                        <div class="card-content">
+                            <span class="card-subtitle">Apple Business Manager</span>
+                            <h3>Implementa dispositivos Apple sin mover un dedo</h3>
+                            <p>No importa si tienes diez o diez mil dispositivos Apple: podrás asignarlos y
+                                administrarlos fácilmente con Apple Business Manager. Funciona a la perfección con
+                                soluciones de administración de dispositivos móviles, para que puedas configurar la Mac,
+                                el iPad, el iPhone y el Apple TV de forma remota, sin necesidad de hacerlo manualmente.
+                            </p>
+                            <p><strong>Pregúntanos, te asesoramos</strong> y te daremos las mejores opciones para que
+                                tengas los equipos más eficientes con las configuraciones específicas y la seguridad y
+                                eficiencia necesarias para trabajar en tu empresa.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="section-padded acquisition-section">
+            <div class="container">
+                <div class="acquisition-content">
+                    <div class="acquisition-image-container">
+                        <img src="./images/apple.jpg" alt="Financiamiento equipos Apple empresas México Mac iPad iPhone"
+                            class="acquisition-img" loading="lazy">
+                    </div>
+                    <div class="acquisition-text">
+                        <h3>Adquiere los mejores equipos para tu empresa</h3>
+                        <p>Puedes acceder a la tecnología que necesitas para tu organización o institución de forma
+                            simple, flexible y amigable. Los productos Apple están diseñados para durar y mantener un
+                            alto valor residual, por eso son una buena inversión.</p>
+                        <p><strong>Apple en tu Empresa, Escuela, Pequeño Negocio, Oficina o Casa.</strong> Con nuestras
+                            pólizas incluimos asesorías y configuraciones profesionales para garantizar el máximo
+                            rendimiento. Te ofrecemos la flexibilidad de hacer cambios según vayan cambiando las
+                            necesidades de tu organización o institución, adaptándonos a tu crecimiento.</p>
+                    </div>
+
+                    <div class="acquisition-features-grid">
+                        <!-- Feature 1 -->
+                        <div class="feature-item">
+                            <img src="./images/1.png" alt="Estructuras de pago innovadoras para equipos Apple"
+                                class="feature-img" loading="lazy">
+                            <h4 class="feature-title">Canales Seguros de Adquisición</h4>
+                            <p class="feature-desc">Contamos con los canales adecuados para que adquieras tus equipos
+                                Mac de manera segura y confiable. Te acompañamos en todo el proceso de compra, desde la
+                                selección hasta la entrega, garantizando transparencia y el mejor servicio.</p>
+                        </div>
+
+                        <!-- Feature 2 -->
+                        <div class="feature-item">
+                            <img src="./images/2.png" alt="Contratos claros financiamiento Apple términos transparentes"
+                                class="feature-img" loading="lazy">
+                            <h4 class="feature-title">18 Años de Experiencia Certificada</h4>
+                            <p class="feature-desc">Somos especialistas en sistemas Apple con dominio completo de
+                                troubleshooting en todos los dispositivos. Contamos con múltiples certificaciones Apple
+                                y hemos entrenado a usuarios, ingenieros y empleados de reconocidas empresas privadas y
+                                colegios de élite en México. Nuestra experiencia es tu garantía.</p>
+                        </div>
+
+                        <!-- Feature 3 -->
+                        <div class="feature-item">
+                            <img src="./images/3.png" alt="Términos flexibles leasing Apple - renovación equipos"
+                                class="feature-img" loading="lazy">
+                            <h4 class="feature-title">Soporte Profesional Sin Nómina Elevada</h4>
+                            <p class="feature-desc">Compramos tus equipos viejos o los reciclamos responsablemente.
+                                Administramos tus nuevos Mac con pólizas simples y altamente efectivas, mucho más
+                                económicas que mantener un equipo completo de ingenieros TI en nómina mensual. Optimiza
+                                tu presupuesto sin sacrificar calidad.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            </div>
+        </section>
+
+
+
+
+
+
+        <!-- Nueva Sección: Modalidades de Servicio -->
+        <section class="service-modes-section">
+            <div class="container">
+                <div class="section-header text-center">
+                    <span class="section-subtitle">Flexibilidad Total</span>
+                    <h2 class="section-title">Modalidades de Reparación y Soporte Mac</h2>
+                </div>
+
+                <div class="modes-grid">
+                    <!-- Pólizas -->
+                    <div class="mode-card policy-card" itemscope itemtype="https://schema.org/Service">
+                        <meta itemprop="serviceType" content="Pólizas de Soporte Empresarial Apple">
+                        <div class="mode-content">
+                            <h3 itemprop="name">Pólizas de Soporte Empresarial</h3>
+                            <p itemprop="description">Tranquilidad garantizada con contratos mensuales o anuales.
+                                Incluye visitas programadas, mantenimiento preventivo y tiempos de respuesta
+                                prioritarios.</p>
+                            <ul class="mode-features">
+                                <li>✓ Mantenimiento Preventivo</li>
+                                <li>✓ Soporte Prioritario</li>
+                                <li>✓ Equipos de préstamo</li>
+                            </ul>
+                            <a href="#contacto" class="cta-button primary">Cotizar Póliza</a>
+                        </div>
+                    </div>
+
+                    <!-- Soporte Remoto -->
+                    <div class="mode-card remote-card" itemscope itemtype="https://schema.org/Service">
+                        <meta itemprop="serviceType" content="Soporte Remoto Apple">
+                        <div class="mode-content">
+                            <h3 itemprop="name">Soporte Remoto Inmediato</h3>
+                            <p itemprop="description">Resolvemos problemas de software, configuración y correo al
+                                instante. Conexión segura vía TeamViewer o Splashtop sin esperar a un técnico.</p>
+                            <ul class="mode-features">
+                                <li>✓ Respuesta en < 15 min</li>
+                                <li>✓ Sin costo de viáticos</li>
+                                <li>✓ Cobertura Nacional</li>
+                            </ul>
+                            <a href="https://wa.me/525535757364" class="cta-button primary">Solicitar Ayuda Remota</a>
+                        </div>
+                    </div>
+                </div>
+
+                <section id="planes" class="section-padded pricing-section">
+                    <div class="container">
+                        <h2>Planes de Soporte a tu Medida.</h2>
+                        <p class="section-description">Elige la cobertura que tu negocio necesita para prosperar sin
+
+                        <div class="pricing-grid">
+                            <div class="pricing-card">
+                                <h3>Básico</h3>
+                                <p class="price-tag"><span>$1,499</span> / semanal</p>
+                                <ul>
+                                    <li>Soporte inicial (hasta 10 equipos)</li>
+                                    <li>Configuración de dispositivos y redes básicas</li>
+                                    <li>Integración inicial de impresoras</li>
+                                    <li>Soporte remoto limitado</li>
+                                </ul>
+                                <div class="pricing-buttons" style="display: flex; flex-direction: column; gap: 15px;">
+                                    <a href="https://wa.me/525535757364?text=Hola,%20quiero%20contratar%20el%20Plan%20Básico"
+                                        target="_blank" rel="noopener noreferrer" class="cta-button card-cta primary"
+                                        style="width: 100%; box-sizing: border-box;">Contratar Ahora</a>
+                                </div>
+                            </div>
+                            <div class="pricing-card featured">
+                                <h3>Avanzado</h3>
+                                <p class="price-tag"><span>$9,499</span> / mensual</p>
+                                <ul>
+                                    <li>Soporte completo (hasta 25 equipos)</li>
+                                    <li>Mantenimiento preventivo y correctivo</li>
+                                    <li>Actualizaciones periódicas y copias de seguridad</li>
+                                    <li>Velocidad y seguridad de red optimizadas</li>
+                                    <li>Soporte remoto y presencial prioritario</li>
+                                </ul>
+                                <div class="pricing-buttons" style="display: flex; flex-direction: column; gap: 15px;">
+                                    <a href="https://wa.me/525535757364?text=Hola,%20quiero%20contratar%20el%20Plan%20Avanzado"
+                                        target="_blank" rel="noopener noreferrer" class="cta-button card-cta primary"
+                                        style="width: 100%; box-sizing: border-box;">Contratar Ahora</a>
+                                </div>
+                            </div>
+                            <div class="pricing-card">
+                                <h3>Premium</h3>
+                                <p class="price-tag"><span>$11,499</span> / mensual</p>
+                                <ul>
+                                    <li>Soporte VIP (más de 25 equipos)</li>
+                                    <li>Atención personalizada 24/7</li>
+                                    <li>Resolución de problemas avanzados</li>
+                                    <li>Consultoría tecnológica estratégica</li>
+                                    <li>Ingeniero dedicado y reportes trimestrales</li>
+                                </ul>
+                                <div class="pricing-buttons" style="display: flex; flex-direction: column; gap: 15px;">
+                                    <a href="https://wa.me/525535757364?text=Hola,%20quiero%20contratar%20el%20Plan%20Premium"
+                                        target="_blank" rel="noopener noreferrer" class="cta-button card-cta primary"
+                                        style="width: 100%; box-sizing: border-box;">Contratar Ahora</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Bloque 4: Conversión y Dudas -->
+                <section class="section-padded success-stories-section" style="background-color: var(--bg-secondary);">
+                    <div class="container">
+                        <!-- Casos de Éxito (Extraído) -->
+                        <div class="success-stories-container">
+                            <div class="section-header text-center">
+                                <span class="section-subtitle">Milagros Técnicos</span>
+                                <h2 class="section-title">De lo Inservible a lo Impecable</h2>
+                                <p class="section-desc">No es magia, es ingeniería. Transformamos equipos totalmente
+                                    dañados en
+                                    herramientas potentes y funcionales, superando las expectativas de cada cliente.</p>
+                            </div>
+
+                            <div class="video-grid">
+                                <!-- Foto 1: MacBook Pro Logic Board (User Provided) -->
+                                <div class="video-card">
+                                    <div class="story-badge">Reparación Exitosa</div>
+                                    <div class="video-thumbnail">
+                                        <img src="./images/mac-repair-logic.jpg?v=absolute_final"
+                                            alt="MacBook Pro abierta con tarjeta lógica expuesta">
+                                        <div class="play-button">▶</div>
+                                    </div>
+                                    <h4>Resurrección de Placa Lógica</h4>
+                                    <p>Intervención experta en el corazón de una MacBook Pro. Logramos que equipos
+                                        declarados
+                                        como 'insalvables' vuelvan a brillar con una reparación precisa a nivel
+                                        componente.</p>
+                                </div>
+
+                                <!-- Foto 2: iMac Maintenance -->
+                                <div class="video-card">
+                                    <div class="story-badge">Mantenimiento Crítico</div>
+                                    <h4>Upgrade Masivo y Limpieza</h4>
+                                    <p>Rescate de un sistema agónico por niveles críticos de polvo. Realizamos limpieza
+                                        profunda
+                                        y upgrade profesional. De un equipo lento a una velocidad asombrosa.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Visibile FAQ Section for SEO Rich Snippets -->
+                <section id="faq" class="section-padded faq-section">
+                    <div class="container">
+                        <div class="section-header text-center" style="margin-bottom: 60px;">
+                            <span class="section-subtitle">Preguntas Frecuentes</span>
+                            <h2 class="section-title">Todo lo que necesitas saber sobre tu reparación</h2>
+                        </div>
+                        <div class="faq-container">
+                            <div class="faq-item">
+                                <button class="faq-question">
+                                    <h3>¿Cuánto cobran por revisar una Mac?</h3>
+                                    <span class="faq-icon">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>En Mac Wave T2 ofrecemos <strong>diagnóstico 100% GRATUITO</strong> para todos
+                                        los modelos de
+                                        MacBook Pro y MacBook Air. Nuestro objetivo es que conozcas el problema real y
+                                        el costo
+                                        total antes de comprometerte a cualquier gasto. ¡Sin cargos ocultos!</p>
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question">
+                                    <h3>¿Cuánto cuesta restaurar un Mac?</h3>
+                                    <span class="faq-icon">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Restaurar una Mac (formateo, instalación de sistema macOS Sonoma/Sequoia y
+                                        limpieza interna)
+                                        tiene un costo base altamente competitivo. Esto incluye respaldo de archivos y
+                                        optimización
+                                        total para que tu equipo vuele como nuevo.</p>
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question">
+                                    <h3>¿Puedes simplemente presentarte en una tienda Apple para repararlo?</h3>
+                                    <span class="faq-icon">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Sí, pero en las tiendas oficiales suelen decir que equipos con más de 5 años son
+                                        "vintage" y
+                                        no tienen piezas, o te cobran la tarjeta lógica completa. En <strong>Mac Wave
+                                            T2</strong>
+                                        reparamos a nivel componente, rescatando tu equipo a una fracción del costo
+                                        oficial.</p>
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question">
+                                    <h3>¿Cuánto tardan en reparar un Mac?</h3>
+                                    <span class="faq-icon">+</span>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>La mayoría de los cambios (pantallas, baterías, SDD) se realizan el <strong>mismo
+                                            día</strong>. Las reparaciones complejas de micro-soldadura suelen tardar de
+                                        24 a 48
+                                        horas tras la aprobación del presupuesto gratuito.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="contacto" class="section-padded cta-contact-section"
+                    style="background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('./images/computadoras.jpg'); background-attachment: fixed; background-size: cover; color: white;">
+                    <div class="container text-center">
+                        <h2 style="font-size: 3rem; margin-bottom: 20px;">Listo para Elevar tu Soporte Técnico?</h2>
+                        <p class="section-description"
+                            style="color: #eee; font-size: 1.2rem; max-width: 800px; margin: 0 auto 40px;">Permítenos
+                            entender
+                            tus necesidades. Nuestro equipo experto está listo
+                            para ayudarte a encontrar la solución perfecta.</p>
+
+                        <div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                            <a href="#" id="open-calendar-btn" class="cta-button primary large-cta"
+                                style="display: block; width: fit-content; margin: 0 auto;">Agendar Cita</a>
+                            <p style="font-size: 1.1rem; opacity: 0.9;">¿Deseas más información o alguna cotización?</p>
+                        </div>
+                    </div>
+                </section>
+    </main>
+
+    <script>
+        // FAQ Accordion Script
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                faqItem.classList.toggle('active');
+
+                // Close other items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    if (item !== faqItem) {
+                        item.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <footer class="main-footer">
+        <div class="container footer-grid">
+            <div class="footer-col brand-info">
+                <h3 style="font-size: 2em; color: var(--text-primary); margin-bottom: 10px;">Mac Wave T2</h3>
+                <p class="tagline"
+                    style="font-style: normal; color: var(--accent-orange); font-weight: 700; margin-bottom: 20px;">
+                    Soporte especializado desde hace 18 años.</p>
+                <p style="font-size: 0.9em; color: var(--text-muted);">CDMX y Chalco. Diagnóstico gratuito y
+                    reparaciones certificadas.</p>
+                <p style="margin-top: 20px; font-weight: 600;">contacto@macwave.com.mx</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="#soluciones">Soluciones</a></li>
+                    <li><a href="#planes">Planes</a></li>
+                    <li><a href="#nosotros">Nosotros</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Cobertura en CDMX y EdoMex</h4>
+                <ul style="font-size: 0.85em; color: var(--text-muted); line-height: 1.6;">
+                    <li>✓ Polanco / Santa Fe / Interlomas</li>
+                    <li>✓ Roma / Condesa / Coyoacán</li>
+                    <li>✓ Del Valle / Narvarte / Pedregal</li>
+                    <li>✓ Lomas / Satélite / Chalco</li>
+                    <li>✓ Cobertura total en CDMX y EdoMex</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <ul>
+                    <li><!-- <a href="#">Aviso de Privacidad</a> -->Aviso de Privacidad</li>
+                    <li><!-- <a href="#">Términos y Condiciones</a> -->Términos y Condiciones</li>
+                    <li><!-- <a href="#">Código de Conducta</a> -->Código de Conducta</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4
+                    style="color: var(--accent-orange); font-size: 0.8em; text-transform: uppercase; letter-spacing: 2px;">
+                    Presencia en CDMX</h4>
+                <p style="font-size: 0.75rem; color: #555; line-height: 1.6;">Atención especializada en zonas premium:
+                    Polanco, Santa Fe, Interlomas y más.</p>
+            </div>
+        </div>
+
+        <!-- SEO Footer Keywords Block -->
+        <div class="seo-footer-block" style="background: #111; padding: 40px 0; border-top: 1px solid #222;">
+            <div class="container">
+                <div class="seo-grid">
+                    <div class="seo-column">
+                        <h4>Reparación Mac</h4>
+                        <ul>
+                            <li><a href="#">Reparación Mac CDMX</a></li>
+                            <li><a href="#">Cambio de Pantalla MacBook</a></li>
+                            <li><a href="#">Reparación Mac Mojada</a></li>
+                            <li><a href="#">Batería MacBook Air/Pro</a></li>
+                            <li><a href="#">Reparación Teclado MacBook</a></li>
+                        </ul>
+                    </div>
+                    <div class="seo-column">
+                        <h4>Soporte Especializado</h4>
+                        <ul>
+                            <li><a href="#">Soporte Técnico Apple</a></li>
+                            <li><a href="#">Mantenimiento Preventivo Mac</a></li>
+                            <li><a href="#">Actualizar Mac Vieja (OpenCore)</a></li>
+                            <li><a href="#">Instalar macOS Sonoma y Sequoia</a></li>
+                            <li><a href="#">Mac Lenta Solución</a></li>
+                        </ul>
+                    </div>
+                    <div class="seo-column">
+                        <h4>Servicios y Cobertura</h4>
+                        <ul>
+                            <li><a href="#">Centro de Servicio Mac Polanco</a></li>
+                            <li><a href="#">Reparación iMac CDMX</a></li>
+                            <li><a href="#">Servicio a Domicilio Mac</a></li>
+                            <li><a href="#">Precios Reparación Mac</a></li>
+                            <li><a href="#">Especialistas Apple Certificados</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <p style="margin-top: 30px; font-size: 0.7rem; color: #444; text-align: center;">
+                    Mac Wave T2 es una empresa independiente de servicios de soporte y no está afiliada directamente con
+                    Apple Inc.
+                    MacBook, iPhone, y iPad son marcas registradas de Apple Inc.
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom-mini"
+            style="border-top: 1px solid #111; padding: 30px 0; background: #000; text-align: center;">
+            <div class="container" style="color: #333; font-size: 0.75em;">
+                <p>&copy; 2026 Mac Wave T2. Todos los derechos reservados. | Sitio desarrollado e impulsado por <a
+                        href="https://intersite.netlify.app" target="_blank"
+                        style="color: #555; text-decoration: none;">InterSite</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scheduling Modal -->
+    <div id="scheduling-modal" class="modal-overlay">
+        <div class="modal-container">
+            <button id="close-modal" class="close-modal-btn">&times;</button>
+
+            <div class="modal-left-panel">
+                <div class="modal-profile">
+                    <div class="profile-img-placeholder">JD</div>
+                    <h3>Solicitar una reunión con Ing. Joel Duran</h3>
+                </div>
+
+                <div class="modal-calendar-header">
+                    <button class="calendar-nav-btn">&lt;</button>
+                    <span class="current-month">febrero 2026</span>
+                    <button class="calendar-nav-btn">&gt;</button>
+                </div>
+
+                <div class="calendar-grid">
+                    <div class="calendar-day-header">LUN.</div>
+                    <div class="calendar-day-header">MAR.</div>
+                    <div class="calendar-day-header">MIÉ.</div>
+                    <div class="calendar-day-header">JUE.</div>
+                    <div class="calendar-day-header">VIE.</div>
+                    <div class="calendar-day-header">SÁB.</div>
+                    <div class="calendar-day-header">DOM.</div>
+
+                    <!-- Empty cells for start of month -->
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+                    <div class="calendar-day empty"></div>
+
+                    <div class="calendar-day disabled">1</div>
+                    <div class="calendar-day disabled">2</div>
+                    <div class="calendar-day">3</div>
+                    <div class="calendar-day">4</div>
+                    <div class="calendar-day">5</div>
+                    <div class="calendar-day">6</div>
+                    <div class="calendar-day">7</div>
+                    <div class="calendar-day disabled">8</div>
+                    <div class="calendar-day disabled">9</div>
+                    <div class="calendar-day">10</div>
+                    <div class="calendar-day">11</div>
+                    <div class="calendar-day">12</div>
+                    <div class="calendar-day">13</div>
+                    <div class="calendar-day">14</div>
+                    <div class="calendar-day disabled">15</div>
+                    <div class="calendar-day disabled">16</div>
+                    <div class="calendar-day">17</div>
+                    <div class="calendar-day">18</div>
+                    <div class="calendar-day">19</div>
+                    <div class="calendar-day">20</div>
+                    <div class="calendar-day">21</div>
+                    <div class="calendar-day disabled">22</div>
+                    <div class="calendar-day disabled">23</div>
+                    <div class="calendar-day">24</div>
+                    <div class="calendar-day">25</div>
+                    <div class="calendar-day">26</div>
+                    <div class="calendar-day">27</div>
+                    <div class="calendar-day">28</div>
+                    <div class="calendar-day disabled">29</div>
+                    <div class="calendar-day disabled">30</div>
+                </div>
+
+                <div class="calendar-alert">
+                    <p><strong>No hay fechas disponibles en noviembre</strong></p>
+                    <a href="#" class="next-month-link">Ver mes siguiente &gt;</a>
+                </div>
+            </div>
+
+            <div class="modal-right-panel">
+                <div class="modal-header-right">
+                    <div class="step-indicator">
+                        <div class="step active">
+                            <span class="step-circle"></span>
+                            <span class="step-label">ELIGE UNA HORA</span>
+                        </div>
+                        <div class="step-line"></div>
+                        <div class="step">
+                            <span class="step-circle"></span>
+                            <span class="step-label">TU INFORMACIÓN</span>
+                        </div>
+                    </div>
+                    <div class="logo-modal">
+                        <span class="logo-brand" style="color: #000;">Mac Wave T2</span>
+                    </div>
+                </div>
+
+                <div class="duration-selector">
+                    <h4>¿Cuánto tiempo necesitas?</h4>
+                    <div class="duration-options">
+                        <button class="duration-btn active" data-duration="15">15 minutos</button>
+                        <button class="duration-btn" data-duration="30">30 minutos</button>
+                        <button class="duration-btn" data-duration="60">1 hora</button>
+                    </div>
+                </div>
+
+                <div class="availability-message" style="text-align: center; margin-top: 20px;">
+                    <!-- Placeholder for dynamic content -->
+                    <div id="booking-confirmation-container" style="display: none;">
+                        <h3 style="margin-bottom: 15px; color: #333;">Fecha Seleccionada: <span id="selected-date-text"
+                                style="color: var(--accent-orange);"></span></h3>
+                        <a href="#" id="confirm-whatsapp-btn" class="cta-button primary"
+                            style="width: 100%; display: block; text-align: center; background: #25D366; border-color: #25D366;"
+                            onclick="gtag('event', 'booking_submitted', { 'event_category': 'conversion', 'event_label': 'calendar' });">
+                            CONFIRMAR CITA POR WHATSAPP
+                        </a>
+                        <p style="font-size: 0.8rem; margin-top: 10px; color: #666;">Se abrirá WhatsApp con los detalles
+                            de tu cita.</p>
+                    </div>
+
+                    <div id="no-selection-message">
+                        <p style="color: #666;">Selecciona una fecha en el calendario para continuar.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+
+</html>

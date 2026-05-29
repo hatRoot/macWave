@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta name="robots" content="noindex, nofollow, noarchive">
+ <title>Generador de ODS | macWave T2</title>
+
+ <meta name="description"
+ content="Herramienta interna de generación de Órdenes de Servicio para el laboratorio macWave T2.">
+ <meta name="keywords"
+ content="reparación mac, soporte tecnico apple, reparacion macbook, logic board, recuperar datos macbook, apple repair, cdmx, macbook mojada">
+ <meta name="author" content="Mac Wave T2">
+ <meta property="og:title" content="Mac Wave T2 | Soporte Técnico de Reparaciones MacBook Apple">
+ <meta property="og:description"
+ content="Centro de servicio de Reparaciones MacBook en reparación de equipos Mac. Diagnóstico preciso, cambio de display, reparación de tarjeta lógica en CDMX.">
+ <meta property="og:type" content="website">
+
+ <!-- Dependencies -->
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link
+ href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;600;700&display=swap"
+ rel="stylesheet">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+ <link rel="stylesheet" href="sidebar-ods.css">
+
+ <style>
+ :root {
+ --primary: #ff6600;
+ --primary-hover: #ff7700;
+ --bg-dark: #000000;
+ --card-bg: rgba(28, 28, 30, 0.7);
+ --text-main: #f5f5f7;
+ --text-dim: #86868b;
+ --border: rgba(255, 255, 255, 0.1);
+ --radius: 12px;
+ --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+ --accent-red: #ff6600;
+ --apple-blue: #ff6600;
+ --preview-bg: #ffffff;
+ --terms-teal: #ff6600;
+
+ /* MacWave GSX Theme */
+ --mac-bg: #000000;
+ --mac-sidebar: #1C1C1E;
+ --mac-card: #1C1C1E;
+ --mac-card-hover: #2C2C2E;
+ --mac-border: #38383A;
+ --mac-text: #F5F5F7;
+ --mac-text-muted: #8E8E93;
+ --mac-blue: #ff6600;
+ --mac-green: #30D158;
+ --mac-red: #ff3b30;
+ --mac-input-bg: #2C2C2E;
+ }
+
+ .ps-dot-row {
+ display: flex;
+ align-items: baseline;
+ justify-content: space-between;
+ margin-bottom: 2px;
+ }
+ .ps-dot-label {
+ flex-shrink: 0;
+ padding-right: 4px;
+ }
+ .ps-dot-dots {
+ flex-grow: 1;
+ border-bottom: 1.5px dotted #ccc;
+ height: 10px;
+ margin: 0 4px;
+ }
+ .ps-dot-value {
+ flex-shrink: 0;
+ padding-left: 4px;
+ font-weight: bold;
+ text-align: right;
+ min-width: 80px;
+ }
+ 
+ .bank-input-readonly {
+ background: rgba(255, 255, 255, 0.05) !important;
+ color: #888 !important;
+ cursor: not-allowed !important;
+ }
+ .bank-input-tarjeta-restricted {
+ border: 1px solid rgba(255, 59, 48, 0.3) !important;
+ }
+
+ * {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+ font-family: 'Inter', -apple-system, sans-serif;
+ -webkit-font-smoothing: antialiased;
+ }
+
+ h1,
+ h2,
+ h3,
+ .heading {
+ font-family: 'Outfit', sans-serif;
+ }
+
+ body {
+ background-color: var(--mac-bg);
+ color: var(--mac-text);
+ height: 100vh;
+ display: flex;
+ flex-direction: row;
+ overflow: hidden;
+ background-image: radial-gradient(circle at top right, rgba(0, 113, 227, 0.05), transparent);
+ }
+
+ /* Embedded Mode */
+ body.embedded .app-sidebar {
+ display: none !important;
+ }
+
+ body.embedded .app-main {
+ padding: 20px !important;
+ }
+
+
+
+ .app-main {
+ flex-grow: 1;
+ display: flex;
+ flex-direction: column;
+ overflow-y: auto;
+ position: relative;
+ padding: 40px;
+ }
+
+ .app-container {
+ max-width: 1440px;
+ margin: 0 auto;
+ }
+
+ header {
+ margin-bottom: 30px;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ }
+
+ header h1 {
+ font-size: 2rem;
+ font-weight: 700;
+ letter-spacing: -0.02em;
+ }
+
+ header p {
+ color: var(--text-dim);
+ font-size: 0.9rem;
+ }
+
+ .dashboard-grid {
+ display: grid;
+ grid-template-columns: 1fr 1.2fr;
+ gap: 32px;
+ align-items: start;
+ }
+
+ .glass-card {
+ background: var(--card-bg);
+ backdrop-filter: blur(20px);
+ border: 1px solid var(--border);
+ border-radius: var(--radius);
+ padding: 24px;
+ box-shadow: var(--glass-shadow);
+ }
+
+ .section-title {
+ font-size: 1.2rem;
+ font-weight: 600;
+ margin-bottom: 20px;
+ display: flex;
+ align-items: center;
+ gap: 12px;
+ color: var(--text-main);
+ }
+
+ .form-grid {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ gap: 16px;
+ }
+
+ .form-group {
+ display: flex;
+ flex-direction: column;
+ gap: 6px;
+ }
+
+ label {
+ font-size: 0.75rem;
+ font-weight: 600;
+ color: var(--text-dim);
+ text-transform: uppercase;
+ letter-spacing: 0.05em;
+ }
+
+ input,
+ select {
+ background: rgba(255, 255, 255, 0.04);
+ border: 1px solid var(--border);
+ border-radius: 8px;
+ padding: 12px;
+ color: #fff;
+ transition: all 0.2s;
+ }
+
+ input::placeholder {
+ color: rgba(255, 255, 255, 0.3);
+ font-size: 0.85rem;
+ }
+
+ .readonly-faint {
+ opacity: 0.4;
+ /* Made it slightly fainter as requested */
+ cursor: default;
+ }
+
+ input:focus {
+ outline: none;
+ border-color: var(--primary);
+ box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+ }
+
+ .items-header {
+ display: grid;
+ grid-template-columns: 2fr 100px 70px 48px;
+ gap: 10px;
+ padding: 10px;
+ font-size: 0.7rem;
+ font-weight: 700;
+ color: var(--text-dim);
+ text-transform: uppercase;
+ }
+
+ .item-row {
+ display: grid;
+ grid-template-columns: 2fr 100px 70px 48px;
+ gap: 10px;
+ margin-bottom: 8px;
+ }
+
+ .remove-btn {
+ background: rgba(255, 59, 48, 0.1);
+ color: var(--accent-red);
+ border: none;
+ border-radius: 6px;
+ cursor: pointer;
+ }
+
+ .btn {
+ padding: 14px;
+ border-radius: 8px;
+ font-weight: 700;
+ cursor: pointer;
+ border: 1px solid rgba(255, 255, 255, 0.1);
+ transition: all 0.25s ease;
+ position: relative;
+ overflow: hidden;
+ display: inline-flex;
+ align-items: center;
+ justify-content: center;
+ gap: 10px;
+ text-transform: uppercase;
+ font-size: 13px;
+ }
+
+ .btn::before {
+ content: '';
+ position: absolute;
+ top: 0;
+ left: 0;
+ right: 0;
+ height: 50%;
+ background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+ pointer-events: none;
+ z-index: 1;
+ }
+
+ .btn-primary {
+ background: linear-gradient(180deg,
+ rgba(255, 102, 0, 0.6) 0%,
+ rgba(255, 102, 0, 0.4) 50%,
+ rgba(150, 50, 0, 0.8) 50.1%,
+ rgba(180, 60, 0, 0.9) 100%);
+ color: #fff;
+ width: 100%;
+ border-color: rgba(255, 102, 0, 0.5);
+ box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 15px rgba(255, 102, 0, 0.3);
+ }
+
+ .btn-primary:hover {
+ border-color: #ff6600;
+ background: linear-gradient(180deg,
+ rgba(255, 120, 20, 0.7) 0%,
+ rgba(255, 100, 0, 0.5) 50%,
+ rgba(180, 60, 0, 0.9) 50.1%,
+ rgba(255, 102, 0, 1) 100%);
+ box-shadow:
+ 0 0 20px rgba(255, 102, 0, 0.5),
+ inset 0 1px 0 rgba(255, 255, 255, 0.4);
+ transform: translateY(-1px);
+ }
+
+ .btn-secondary {
+ background: linear-gradient(180deg,
+ rgba(255, 215, 0, 0.4) 0%,
+ rgba(255, 191, 0, 0.2) 50%,
+ rgba(80, 50, 0, 0.8) 50.1%,
+ rgba(100, 70, 0, 0.9) 100%);
+ color: #ffc43d;
+ border-color: rgba(255, 215, 0, 0.4);
+ box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 4px 12px rgba(0, 0, 0, 0.5);
+ }
+
+ .btn-secondary:hover {
+ border-color: #ffd700;
+ color: #fff;
+ background: linear-gradient(180deg,
+ rgba(255, 255, 100, 0.5) 0%,
+ rgba(255, 215, 0, 0.3) 50%,
+ rgba(150, 110, 0, 0.9) 50.1%,
+ rgba(255, 191, 0, 1) 100%);
+ box-shadow:
+ 0 0 25px rgba(255, 215, 0, 0.5),
+ inset 0 1px 0 rgba(255, 255, 255, 0.4);
+ transform: translateY(-1px);
+ }
+
+ /* WYSIWYG PREVIEW - GOLD STANDARD CLONE */
+ .preview-canvas {
+ background: var(--preview-bg);
+ width: 100%;
+ min-height: 800px;
+ border-radius: 2px;
+ box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+ position: relative;
+ color: #000;
+ padding: 28px 35px 60px 35px;
+ font-family: 'Helvetica', Arial, sans-serif;
+ overflow: visible;
+ }
+
+ .ps-content {
+ width: 100%;
+ height: 100%;
+ display: flex;
+ flex-direction: column;
+ }
+
+ .ps-header {
+ display: flex;
+ justify-content: space-between;
+ align-items: flex-start;
+ margin-bottom: 25px;
+ }
+
+ .ps-logo-col {
+ width: 80px;
+ }
+
+ .ps-title-col {
+ flex: 1;
+ text-align: center;
+ }
+
+ .ps-meta-col {
+ width: 150px;
+ text-align: right;
+ }
+
+ .ps-logo {
+ width: 80px;
+ height: auto;
+ }
+
+ .ps-title-col h1 {
+ font-family: Arial, sans-serif;
+ font-size: 18px;
+ font-weight: bold;
+ margin-bottom: 4px;
+ }
+
+ .ps-title-col p {
+ font-size: 10px;
+ color: #86868b;
+ }
+
+ .ps-quote-folio {
+ color: var(--accent-red);
+ font-weight: 900;
+ font-style: italic;
+ font-size: 8.5px;
+ /* Reduced by half (from 16px) */
+ margin-bottom: 8px;
+ }
+
+ .ps-meta-data {
+ font-size: 10px;
+ line-height: 1.6;
+ color: #333;
+ }
+
+ .ps-dot-row {
+ display: flex;
+ justify-content: flex-end;
+ width: 100%;
+ }
+
+ .ps-dot-label {
+ flex-shrink: 0;
+ }
+
+ .ps-dot-dots {
+ overflow: hidden;
+ white-space: nowrap;
+ margin: 0 4px;
+ color: #888;
+ }
+
+ .ps-dot-value {
+ font-weight: bold;
+ min-width: 85px;
+ /* Wider so it matches the input width better */
+ text-align: right;
+ color: #000;
+ }
+
+ .ps-client-area {
+ margin-bottom: 10px;
+ font-size: 13px;
+ }
+
+ .ps-client-area .label {
+ color: #0071e3;
+ font-weight: bold;
+ }
+
+ .ps-client-area .value {
+ color: #86868b;
+ margin-left: 8px;
+ }
+
+ .ps-table {
+ width: 100%;
+ border-collapse: separate;
+ border-spacing: 0;
+ margin-top: 25px;
+ overflow: hidden;
+ border-radius: 15px;
+ /* Perfect rounded corners */
+ border: 1px solid #eee;
+ }
+
+ .ps-table th {
+ background: #000;
+ color: #fff;
+ padding: 9px 14px;
+ font-size: 10px;
+ text-transform: uppercase;
+ font-weight: 800;
+ text-align: center;
+ border: none;
+ }
+
+ .ps-table td {
+ padding: 9px 14px;
+ border-bottom: 1px solid #eee;
+ font-size: 10px;
+ font-weight: 800;
+ color: var(--accent-red);
+ text-align: center;
+ }
+
+ .ps-table td:first-child {
+ text-align: left;
+ }
+
+ .ps-table tbody tr:nth-child(even) {
+ background-color: #f5f5f7;
+ }
+
+ .ps-table tr:last-child td {
+ border-bottom: none;
+ }
+
+ .ps-total-row {
+ margin-top: 15px;
+ padding-top: 10px;
+ border-top: 1px solid #eee;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ }
+
+ .ps-total-label {
+ color: #000;
+ font-weight: 500;
+ font-size: 16px;
+ }
+
+ .ps-total-value {
+ color: #ff6600;
+ font-weight: 700;
+ font-size: 16px;
+ }
+
+ .ps-terms {
+ color: var(--terms-teal);
+ font-size: 8px;
+ font-weight: 800;
+ line-height: 1.6;
+ margin-top: 20px;
+ text-align: left;
+ }
+
+ .ps-terms p {
+ margin-bottom: 2px;
+ }
+
+ .ps-bank-area {
+ margin-top: 10px;
+ margin-bottom: 10px;
+ border-top: 1px solid #eee;
+ padding-top: 10px;
+ }
+
+ .ps-bank-qr-row {
+ display: flex;
+ align-items: flex-start;
+ justify-content: space-between;
+ gap: 12px;
+ }
+
+ .ps-bank-info {
+ flex: 1;
+ }
+
+ .ps-qr-block {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 4px;
+ }
+
+ .ps-qr-block canvas,
+ .ps-qr-block img {
+ width: 70px !important;
+ height: 70px !important;
+ }
+
+ .ps-qr-label {
+ font-size: 5.5px;
+ color: #888;
+ text-align: center;
+ }
+
+ .ps-bank-title {
+ color: var(--terms-teal);
+ font-weight: 900;
+ font-size: 11px;
+ margin-bottom: 10px;
+ }
+
+ .ps-bank-main {
+ color: #004d60;
+ font-size: 16px;
+ font-weight: 900;
+ margin-bottom: 8px;
+ }
+
+ .ps-bank-details {
+ font-size: 11px;
+ color: var(--terms-teal);
+ line-height: 1.5;
+ font-weight: 700;
+ }
+
+ .ps-disclaimer {
+ margin-top: 10px;
+ font-size: 6.5px;
+ color: #000;
+ line-height: 1.2;
+ text-align: left;
+ border-top: 1px solid #eee;
+ padding-top: 10px;
+ font-weight: bold;
+ }
+
+ .ps-cert-row {
+ display: flex;
+ justify-content: flex-start;
+ align-items: center;
+ margin-top: 10px;
+ gap: 15px;
+ }
+
+ .ps-cert-icon {
+ height: 35px;
+ display: flex;
+ align-items: center;
+ }
+
+ .ps-cert-icon img {
+ width: auto;
+ height: auto;
+ max-width: 60px;
+ max-height: 100%;
+ object-fit: contain;
+ display: block;
+ }
+
+ .ps-partner-row {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ margin-top: 20px;
+ gap: 8px;
+ }
+
+ .ps-partner-icon {
+ flex: 1;
+ height: 35px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ }
+
+ .ps-partner-icon img {
+ width: auto;
+ height: auto;
+ max-width: 100%;
+ max-height: 100%;
+ object-fit: contain;
+ display: block;
+ }
+
+ .ps-apple-pro-container {
+ display: flex;
+ justify-content: space-evenly;
+ align-items: center;
+ margin-top: 8px;
+ margin-bottom: 8px;
+ flex-wrap: wrap;
+ gap: 6px;
+ }
+
+ .ps-apple-pro-icon {
+ height: 39px;
+ display: flex;
+ align-items: center;
+ }
+
+ .ps-apple-pro-icon img {
+ max-height: 100%;
+ width: auto;
+ object-fit: contain;
+ }
+
+ .ps-footer {
+ margin-top: auto;
+ display: flex;
+ justify-content: space-between;
+ align-items: flex-end;
+ font-size: 7px;
+ border-top: 1px solid #eee;
+ padding-top: 8px;
+ }
+
+ .ps-footer-col {
+ font-weight: bold;
+ flex: 1;
+ }
+
+ /* Modals styles removed to speed up workflow */
+
+ /* iOS style switch */
+ .switch {
+ position: relative;
+ display: inline-block;
+ width: 44px;
+ height: 24px;
+ }
+
+ .switch input { 
+ opacity: 0;
+ width: 0;
+ height: 0;
+ }
+
+ .slider {
+ position: absolute;
+ cursor: pointer;
+ top: 0;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ background-color: rgba(255,255,255,0.1);
+ transition: .4s;
+ border-radius: 24px;
+ border: 1px solid rgba(255,255,255,0.1);
+ }
+
+ .slider:before {
+ position: absolute;
+ content: "";
+ height: 18px;
+ width: 18px;
+ left: 2px;
+ bottom: 2px;
+ background-color: white;
+ transition: .4s;
+ border-radius: 50%;
+ box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+ }
+
+ input:checked + .slider {
+ background-color: var(--mac-green);
+ border-color: var(--mac-green);
+ }
+
+ input:checked + .slider:before {
+ transform: translateX(20px);
+ }
+
+ .section-separator {
+ height: 1px;
+ background: rgba(255,255,255,0.08);
+ margin: 20px 0;
+ width: 100%;
+ }
+
+ .header-with-toggle {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ width: 100%;
+ }
+
+ .ps-watermark {
+ min-height: 150px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ border: 1px solid #f0f0f0;
+ border-radius: 12px;
+ margin: 20px 0;
+ position: relative;
+ background: #fafafa;
+ }
+
+ .ps-watermark::before {
+ content: "macWave.com.mx";
+ font-size: 40px;
+ font-weight: 900;
+ color: rgba(0,0,0,0.03);
+ transform: rotate(-15deg);
+ white-space: nowrap;
+ }
+
+ @media (max-width: 1000px) {
+ .dashboard-grid {
+ grid-template-columns: 1fr;
+ }
+ }
+ </style>
+
+  <link rel="canonical" href="https://macwave.com.mx/ods">
+</head>
+
+<body>
+ <!-- Apple Sidebar Navigation -->
+ <!-- Windows Vista Aero Sidebar Navigation -->
+ <aside class="app-sidebar">
+ <div class="sidebar-brand" style="margin-bottom: 32px; display: flex; align-items: center; gap: 12px;">
+  <img src="./images/logo_dashboard_white.png" alt="Logo macWave T2"
+ style="width: 44px; border-radius: 4px; filter: drop-shadow(0 0 8px rgba(255,255,255,0.2));">
+ <div style="font-size: 16px; font-weight: 800; color: #fff; letter-spacing: -0.5px;">DASHBOARD</div>
+ </div>
+
+ <nav class="nav-group">
+ <div class="nav-label">OPERACIONES</div>
+ <button class="nav-item" onclick="window.location.href='dashboard-ods.html?view=list'">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
+ </svg>
+ Reparaciones (ODS)
+ </button>
+ <button class="nav-item active" onclick="window.location.href="ods"">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <path d="M12 5v14M5 12h14" />
+ </svg>
+ Nueva ODS (PDF)
+ </button>
+ <button class="nav-item" onclick="window.location.href='dashboard-ods.html?view=kanban'">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+ <line x1="9" y1="3" x2="9" y2="21" />
+ <line x1="15" y1="3" x2="15" y2="21" />
+ </svg>
+ TABLERO DE ODS
+ </button>
+ <script>
+ if (sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel') {
+ document.write(`
+ <button class="nav-item" onclick="window.location.href='dashboard-ods.html?view=finance'">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+ Balances Finanzas
+ </button>
+ `);
+ }
+ </script>
+ </nav>
+
+ <nav class="nav-group" style="padding-top: 16px;">
+ <button class="nav-item" onclick="window.location.href='dashboard-ods.html?view=tickets'">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <path d="M15 5l-1.41 1.41L15.17 8H4v2h11.17l-1.58 1.59L15 13l4-4-4-4z" />
+ </svg>
+ Generar Ticket & Historial
+ </button>
+ </nav>
+
+ <nav class="nav-group" style="margin-top:auto;">
+ <button class="nav-item" style="color: var(--mac-red);" id="logout-btn-side"
+ onclick="sessionStorage.clear(); window.location.href="tecnicos";">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+ </svg>
+ Cerrar Sesión
+ </button>
+ </nav>
+ </aside>
+
+ <main class="app-main">
+ <header style="margin-bottom: 40px; display: block;">
+ <h1 style="font-size: 2.5rem; letter-spacing: -1px; margin-bottom: 4px;">ORDEN DE SERVICIO</h1>
+ <div style="display: flex; gap: 20px; align-items: center;">
+ <p id="live-clock" style="color: var(--mac-text-muted); font-size: 14px; font-weight: 500;"></p>
+ <div style="width: 1px; height: 14px; background: rgba(255,255,255,0.2);"></div>
+ <p id="active-user-display" style="color: var(--primary); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;"></p>
+ </div>
+ </header>
+
+ <div class="dashboard-grid">
+ <!-- CONTROLS -->
+ <section class="controls-side">
+ <div class="glass-card">
+ <div class="section-title">CLIENTE</div>
+ <form id="quote-form">
+ <div class="form-grid">
+ <div class="form-group">
+ <label>Cliente</label>
+ <input type="text" id="client-name" placeholder="Ej. Juan Pérez">
+ </div>
+ <div class="form-group">
+ <label>Proyecto</label>
+ <input type="text" id="project-name" placeholder="Ej. Reparación de MacBook Pro">
+ </div>
+ <div class="form-group">
+ <label>Número de Serie del Equipo</label>
+ <input type="text" id="serial-number" placeholder="Ej. C02ABC123456">
+ </div>
+ <div class="form-group">
+ <label>Técnico</label>
+ <input type="text" id="tech-name" placeholder="Ej. Joel Duran">
+ </div>
+ <div class="form-group">
+ <label>Fecha de Emisión</label>
+ <input type="text" id="quote-date" placeholder="Ej. 22/02/2026">
+ </div>
+ <div class="form-group">
+ <label>Folio ODS</label>
+ <input type="text" id="quote-number" placeholder="Ej. RPC-9999">
+ </div>
+ <div class="form-group">
+ <label for="delivery-time">Tiempo de Entrega / Entrega Estimada:</label>
+ <input type="datetime-local" id="delivery-time" style="width: 100%; height: 50px;">
+ </div>
+ </div>
+
+ <div class="section-separator"></div>
+
+ <!-- FOTOS DEL EQUIPO (Visible ONLY if Concepts and Bank are OFF) -->
+ <div id="photos-controls-wrapper" style="display: none; margin-top: 15px;">
+ <div class="section-title">EVIDENCIAS FOTOGRÁFICAS</div>
+ <p style="font-size: 10px; color: var(--mac-text-muted); margin-bottom: 12px;">Se habilitan al apagar Conceptos y Banco.</p>
+ <div style="margin-top: 12px;">
+ <button type="button" class="btn btn-secondary" style="width: 100%; font-size: 12px; height: 48px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700;" onclick="document.getElementById('upload-photos').click()">
+ <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+ SUBIR EVIDENCIAS DE FOTO
+ </button>
+ <input type="file" id="upload-photos" multiple accept="image/*" style="display: none;">
+ </div>
+ </div>
+
+ <div id="photos-separator" class="section-separator" style="display: none;"></div>
+
+ <div class="header-with-toggle" style="margin-top: 10px;">
+ <div class="section-title" style="margin-bottom: 0;">CONCEPTOS</div>
+ <label class="switch">
+ <input type="checkbox" id="toggle-concepts">
+ <span class="slider"></span>
+ </label>
+ </div>
+ 
+ <div id="concepts-controls-wrapper" style="margin-top: 20px; display: none;">
+ <div class="items-header">
+ <span>Descripción</span>
+ <span style="text-align: right;">Unitario</span>
+ <span style="text-align: center;">Cant</span>
+ <span></span>
+ </div>
+ <div id="items-container"></div>
+ <button type="button" id="add-item-btn" class="btn btn-secondary"
+ style="width: 100%; height: 40px; margin-top: 10px;">+
+ AGREGAR CONCEPTO</button>
+ </div>
+
+ <div class="section-separator" style="background: rgba(255,255,255,0.15);"></div>
+
+ <div class="form-group" style="margin-top: 15px;">
+ <label>Notas / Observaciones*</label>
+ <textarea id="ods-notes"
+ placeholder="Escribe aquí cualquier nota, condición especial u observación del equipo..."
+ style="width: 100%; height: 100px; padding: 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #fff; font-size: 0.9rem; resize: vertical;"></textarea>
+ </div>
+
+
+ <div class="section-separator" style="background: rgba(255,255,255,0.15);"></div>
+
+ <div class="header-with-toggle" style="margin-top: 10px;">
+ <div class="section-title" style="margin-bottom: 0;">CONFIGURACIÓN BANCARIA</div>
+ <label class="switch">
+ <input type="checkbox" id="toggle-bank">
+ <span class="slider"></span>
+ </label>
+ </div>
+
+ <div id="bank-controls-wrapper" style="margin-top: 20px; display: none;">
+ <div class="form-grid">
+ <div class="form-group">
+ <label>CLABE</label>
+ <input type="text" id="clabe" placeholder="Ej. 012 180..." value="012 180015766935846">
+ </div>
+ <div class="form-group">
+ <label>CUENTA</label>
+ <input type="text" id="account-number" placeholder="Ej. 1576..." value="1576693584">
+ </div>
+ <div class="form-group">
+ <label>TARJETA</label>
+ <input type="text" id="card-number" placeholder="Ej. 4152..."
+ value="4152 3144 2988 0571">
+ </div>
+ </div>
+ </div>
+
+ <button type="submit" class="btn btn-primary" style="margin-top: 30px; height: 50px;">GENERAR
+ ORDEN DE
+ SERVICIO PDF</button>
+
+ <div style="position: relative; width: 100%;">
+ <button type="button" class="btn btn-secondary"
+ style="width: 100%; margin-top: 12px; height: 50px;">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+ stroke-width="2">
+ <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+ </svg>
+ IMPORTAR DESDE PDF
+ </button>
+ <input type="file" class="pdf-file-input" accept="application/pdf"
+ style="position: absolute; top: 12px; left: 0; width: 100%; height: 50px; opacity: 0; cursor: pointer;">
+ </div>
+ </form>
+ </div>
+ </section>
+
+ <!-- PREVIEW (CLONE) -->
+ <section class="preview-side">
+ <div id="preview-canvas" class="preview-canvas">
+ <!-- CONTENT REPLICATED BY JS -->
+ </div>
+ </section>
+ </div>
+ </main>
+
+
+ <!-- ODS Management Panel removed, moved to dashboard-ods.html -->
+
+
+ <!-- Modals removed for direct generation -->
+
+ <!-- Supabase -->
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <script src="logo_const.js"></script>
+ <script>
+ // Detect if embedded
+ if (window.self !== window.top || new URLSearchParams(window.location.search).get('embed') === 'true') {
+ document.body.classList.add('embedded');
+ }
+
+ // Session Security Check
+ if (sessionStorage.getItem('macwave_session') !== 'authorized') {
+ window.location.href = 'tecnicos.html';
+ }
+
+ // ── Supabase Client ──────────────────────────────────
+ const SUPABASE_URL = 'https://lifxtyhvgnxjjqgbzare.supabase.co';
+ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpZnh0eWh2Z254ampxZ2J6YXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MzAzNTgsImV4cCI6MjA4NzMwNjM1OH0.YCOLJUZaw5LNAyDyNrzhlJJJeUltRadrnjC1oNUCgFI';
+ window._sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+ document.addEventListener('DOMContentLoaded', () => {
+ // Live Clock and User Display
+ const updateHeaderInfo = () => {
+ const clockEl = document.getElementById('live-clock');
+ const userEl = document.getElementById('active-user-display');
+ const now = new Date();
+
+ if (clockEl) {
+ clockEl.textContent = now.toLocaleTimeString('es-MX', { 
+ hour: '2-digit', minute: '2-digit', second: '2-digit',
+ hour12: false 
+ });
+ }
+ 
+ if (userEl) {
+ const fullUser = sessionStorage.getItem('macwave_user') || 'Técnico';
+ const shortName = fullUser.split('.')[0].split('@')[0];
+ userEl.textContent = `TÉCNICO: ${shortName}`;
+ }
+
+ // Initialize quote-date if empty
+ const dateInput = document.getElementById('quote-date');
+ if (dateInput && !dateInput.value) {
+ const day = String(now.getDate()).padStart(2, '0');
+ const month = String(now.getMonth() + 1).padStart(2, '0');
+ const year = now.getFullYear();
+ const hours = String(now.getHours()).padStart(2, '0');
+ const minutes = String(now.getMinutes()).padStart(2, '0');
+ dateInput.value = `${day}/${month}/${year} ${hours}:${minutes}`;
+ }
+ };
+ 
+ updateHeaderInfo();
+ setInterval(updateHeaderInfo, 1000);
+
+ const itemsContainer = document.getElementById('items-container');
+ const previewCanvas = document.getElementById('preview-canvas');
+ const form = document.getElementById('quote-form');
+
+ // ── QR code generator ──────────────────────────────────
+ let qrTimeout;
+ const generatePreviewQR = () => {
+ clearTimeout(qrTimeout);
+ qrTimeout = setTimeout(() => {
+ const qrDiv = document.getElementById('preview-qr-canvas');
+ if (!qrDiv || typeof QRCode === 'undefined') return;
+ qrDiv.innerHTML = '';
+ const folio = document.getElementById('quote-number').value || 'ODS';
+ const client = document.getElementById('client-name').value || '';
+ const serial = document.getElementById('serial-number').value || '';
+ const url = `https://macwave.com.mx/status-ods.html?folio=${encodeURIComponent(folio)}&cliente=${encodeURIComponent(client)}&serie=${encodeURIComponent(serial)}`;
+ new QRCode(qrDiv, { text: url, width: 70, height: 70, correctLevel: QRCode.CorrectLevel.M });
+ }, 50);
+ };
+
+ // ── Photo Upload Logic ──────────────────────────────────
+ window._allPhotos = []; // Store as { data, desc, type }
+
+ const handlePhotoUpload = async (event) => {
+ const files = Array.from(event.target.files);
+ if (!files || files.length === 0) return;
+
+ // Check for overall limit
+ const MAX_PHOTOS = 30; // Increased from 5 to 30
+ if (window._allPhotos.length + files.length > MAX_PHOTOS) {
+ alert(`SISTEMA: Solo se permiten un máximo de ${MAX_PHOTOS} fotografías de evidencia por ODS.`);
+ event.target.value = ''; // Reset input
+ return;
+ }
+
+ document.body.style.cursor = 'wait';
+ for (const file of files) {
+ if (window._allPhotos.length >= MAX_PHOTOS) break;
+
+ try {
+ const dataUrl = await new Promise((resolve, reject) => {
+ const reader = new FileReader();
+ reader.onload = (e) => {
+ const img = new Image();
+ img.onload = () => {
+ const canvas = document.createElement('canvas');
+ const ctx = canvas.getContext('2d');
+ // FORCE SQUARE 400x400 for smaller PDF size
+ const SIZE = 400;
+ canvas.width = SIZE;
+ canvas.height = SIZE;
+ 
+ const minDim = Math.min(img.width, img.height);
+ const sourceX = (img.width - minDim) / 2;
+ const sourceY = (img.height - minDim) / 2;
+ 
+ ctx.drawImage(img, sourceX, sourceY, minDim, minDim, 0, 0, SIZE, SIZE);
+ resolve(canvas.toDataURL('image/jpeg', 0.4));
+ };
+ img.onerror = () => reject(new Error('Img Error'));
+ img.src = e.target.result;
+ };
+ reader.onerror = () => reject(new Error('Error al leer el archivo'));
+ reader.readAsDataURL(file);
+ });
+
+ const description = prompt(`[FOTO ${window._allPhotos.length + 1}] Introduce una descripción corta (Ej. Vista general, Golpe en tapa):`) || 'Evidencia de equipo';
+ 
+ window._allPhotos.push({
+ data: dataUrl,
+ desc: description.toUpperCase()
+ });
+ 
+ update(); // Update preview after each photo
+ } catch (err) {
+ console.error("Error al procesar foto:", err);
+ alert("Error al procesar la foto: " + err.message);
+ }
+ }
+ document.body.style.cursor = 'default';
+ event.target.value = ''; // Reset input
+ };
+
+ document.getElementById('upload-photos').addEventListener('change', handlePhotoUpload);
+
+ // Set Current Date and Time
+ const quoteDateInput = document.getElementById('quote-date');
+ if (quoteDateInput) {
+ const now = new Date();
+ const day = String(now.getDate()).padStart(2, '0');
+ const month = String(now.getMonth() + 1).padStart(2, '0');
+ const year = now.getFullYear();
+ const hours = String(now.getHours()).padStart(2, '0');
+ const minutes = String(now.getMinutes()).padStart(2, '0');
+ quoteDateInput.value = `${day}/${month}/${year} ${hours}:${minutes}`;
+ }
+
+ // Auto-fill Technician based on session user
+ const currentUser = sessionStorage.getItem('macwave_user');
+ const isAdmin = (currentUser === 'joel.duran.mendoza@me.com' || currentUser === 'joel' || currentUser === 'root');
+ const techNameInput = document.getElementById('tech-name');
+ if (techNameInput) {
+ if (currentUser === 'joel.duran.mendoza@me.com' || currentUser === 'joel') {
+ techNameInput.value = 'Joel Duran';
+ } else if (currentUser === 'root') {
+ techNameInput.value = 'ADMIN';
+ }
+
+ if (techNameInput.value) {
+ // Trigger update preview
+ setTimeout(() => techNameInput.dispatchEvent(new Event('input')), 100);
+ }
+ }
+
+ // Technician Phone Mapping
+ const TECH_PHONES = {
+ 'JOEL DURAN': '5535757364',
+ // Add more technicians if needed
+ };
+
+
+ // Folio Auto-Increment Format: MW-YYYYMMDD-NNNN
+ const getNextFolio = (inc = false) => {
+ let num = parseInt(localStorage.getItem('quote_folio_counter') || '9481');
+ if (inc) {
+ num++;
+ localStorage.setItem('quote_folio_counter', num);
+ }
+ const now = new Date();
+ const yyyy = now.getFullYear();
+ const mm = String(now.getMonth() + 1).padStart(2, '0');
+ const dd = String(now.getDate()).padStart(2, '0');
+ return `MW-${yyyy}${mm}${dd}-${num}`;
+ };
+
+ const syncFolioFromSupabase = async () => {
+ try {
+ const { data, error } = await window._sbClient
+ .from('ordenes_servicio')
+ .select('folio')
+ .order('created_at', { ascending: false })
+ .limit(20); // Check recent ones in case of deletions or manual edits
+
+ if (data && data.length > 0) {
+ let maxNum = 9480; // Baseline: user last manual folio was 9480
+ data.forEach(item => {
+ if (item.folio && item.folio.includes('-')) {
+ const parts = item.folio.split('-');
+ const numPart = parseInt(parts[parts.length - 1]);
+ if (!isNaN(numPart) && numPart > maxNum) {
+ maxNum = numPart;
+ }
+ }
+ });
+
+ // Increment to the NEXT available number
+ const nextNum = maxNum + 1;
+ localStorage.setItem('quote_folio_counter', nextNum);
+
+ // Force update the input ONLY if the currently displayed number is lower than or equal to maxNum
+ const quoteInput = document.getElementById('quote-number');
+ if (quoteInput) {
+ const currentVal = quoteInput.value;
+ if (currentVal.includes('-')) {
+ const currentParts = currentVal.split('-');
+ const currentNum = parseInt(currentParts[currentParts.length - 1]);
+ if (!isNaN(currentNum) && currentNum <= maxNum) {
+ quoteInput.value = getNextFolio();
+ update();
+ }
+ } else if (!currentVal || currentVal.includes('RPC')) {
+ // Reset old RPC style
+ quoteInput.value = getNextFolio();
+ update();
+ }
+ }
+ }
+ } catch (e) {
+ console.error("Folio Sync Error:", e);
+ }
+ };
+
+ // Call sync immediately
+ syncFolioFromSupabase();
+
+ // --- DATA PERSISTENCE LOGIC ---
+ const saveFormData = () => {
+ const data = {
+ client: document.getElementById('client-name').value,
+ project: document.getElementById('project-name').value,
+ serial: document.getElementById('serial-number').value,
+ tech: document.getElementById('tech-name').value,
+ date: document.getElementById('quote-date').value,
+ folio: document.getElementById('quote-number').value,
+ delivery: document.getElementById('delivery-time').value,
+ clabe: document.getElementById('clabe').value,
+ account: document.getElementById('account-number').value,
+ card: document.getElementById('card-number').value,
+ notes: document.getElementById('ods-notes').value,
+ items: Array.from(document.querySelectorAll('.item-row')).map(row => ({
+ d: row.querySelector('.i-desc').value,
+ p: row.querySelector('.i-price').value,
+ q: row.querySelector('.i-qty').value
+ }))
+ };
+ localStorage.setItem('ods_temp_draft', JSON.stringify(data));
+ };
+
+ const loadFormData = () => {
+ const raw = localStorage.getItem('ods_temp_draft');
+ if (!raw) {
+ if (itemsContainer) {
+ itemsContainer.innerHTML = '';
+ for (let i = 0; i < 5; i++) createRow({ d: '', p: 0, q: 0 });
+ }
+ return;
+ }
+ try {
+ const data = JSON.parse(raw);
+ document.getElementById('client-name').value = data.client || '';
+ document.getElementById('project-name').value = data.project || '';
+ document.getElementById('serial-number').value = data.serial || '';
+ document.getElementById('tech-name').value = data.tech || '';
+ document.getElementById('quote-date').value = data.date || '';
+ document.getElementById('quote-number').value = data.folio || getNextFolio();
+ document.getElementById('delivery-time').value = data.delivery || '';
+ document.getElementById('clabe').value = data.clabe || '';
+ document.getElementById('account-number').value = data.account || '';
+ document.getElementById('card-number').value = data.card || '';
+ document.getElementById('ods-notes').value = data.notes || '';
+
+ if (data.items && data.items.length > 0) {
+ itemsContainer.innerHTML = '';
+ data.items.slice(0, 5).forEach(item => createRow(item));
+ }
+ update();
+ } catch (e) {
+ console.error("Error loading draft:", e);
+ }
+ };
+
+ function createRow(item = { d: '', p: 0, q: 1 }) {
+ if (document.querySelectorAll('.item-row').length >= 5) return;
+
+ const div = document.createElement('div');
+ div.className = 'item-row';
+ div.innerHTML = `
+ <input type="text" class="i-desc" value="${item.d}" placeholder="Concepto de Servicio o Producto..." list="catalog-list-data">
+ <input type="number" class="i-price" value="${item.p}" placeholder="0.00" step="0.01" style="text-align: right;">
+ <input type="number" class="i-qty" value="${item.q}" min="0" step="1" style="text-align: center;">
+ <button type="button" class="remove-btn">✕</button>
+ `;
+
+ // Auto-populate price if item from catalog is selected
+ div.querySelector('.i-desc').addEventListener('input', (e) => {
+ const val = e.target.value;
+ const opt = document.querySelector(`#catalog-list-data option[value="${val}"]`);
+ if (opt) {
+ const price = opt.dataset.precio;
+ div.querySelector('.i-price').value = price;
+ update();
+ }
+ });
+ div.querySelector('.remove-btn').onclick = () => { div.remove(); update(); };
+ div.querySelectorAll('input').forEach(i => i.oninput = update);
+ itemsContainer.appendChild(div);
+ update();
+ }
+
+ document.getElementById('add-item-btn').onclick = () => createRow({ d: '', p: 0, q: 1 });
+
+
+ // --- Reset Customer Fields on Load (Ensures cleanup after init) ---
+ const resetFields = () => {
+ const fieldsToReset = ['client-name', 'project-name', 'serial-number', 'delivery-time', 'ods-notes'];
+ fieldsToReset.forEach(id => {
+ const el = document.getElementById(id);
+ if (el) el.value = '';
+ });
+ // Clear persistence
+ localStorage.removeItem('ods_temp_draft');
+ // New Folio read current without incrementing (next PDF will increment)
+ document.getElementById('quote-number').value = getNextFolio();
+ // Clear items and recreate initial empty rows
+ if (itemsContainer) {
+ itemsContainer.innerHTML = '';
+ // Re-add 5 empty rows
+ for (let i = 0; i < 5; i++) {
+ createRow({ d: '', p: 0, q: 0 });
+ }
+ }
+ };
+
+ // Load persistent data if exists, otherwise clean start
+ loadFormData();
+
+ // Load persistent data if exists, otherwise clean start
+ loadFormData();
+
+ // Global real-time preview and save
+ form.querySelectorAll('input').forEach(i => i.oninput = update);
+ form.querySelectorAll('select').forEach(i => i.onchange = update);
+ document.getElementById('ods-notes').oninput = update;
+
+ // --- PDF IMPORT LOGIC ---
+ const pdfInputs = document.querySelectorAll('.pdf-file-input');
+ const pdfSpinner = document.getElementById('pdf-loading-spinner-side');
+
+ const handlePDFUpload = async (e) => {
+ const file = e.target.files[0];
+ if (!file) return;
+
+ if (pdfSpinner) pdfSpinner.style.display = 'inline-block';
+
+ try {
+ const arrayBuffer = await file.arrayBuffer();
+ const pdfData = new Uint8Array(arrayBuffer);
+
+ // Initialize PDF.js
+ const pdfjsLib = window.pdfjsLib || window['pdfjs-dist/build/pdf'];
+ if (!pdfjsLib) {
+ throw new Error("SDK de PDF no cargado correctamente.");
+ }
+ // Setup worker
+ pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+ const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
+ const page = await pdf.getPage(1);
+ const textContent = await page.getTextContent();
+
+ // Combine all text items into a single string for easier regex/searching
+ // We join with spaces to keep words separate
+ const rawText = textContent.items.map(item => item.str).join(' ');
+
+ console.log("Extracted PDF Text:", rawText);
+
+ // Helper function to extract text between two strings or using regex
+ const extractAfter = (text, label) => {
+ const idx = text.indexOf(label);
+ if (idx === -1) return '';
+ const start = idx + label.length;
+ // Find a reasonable end (like the next known label or a long enough gap, but since it's flattened, we might just grab the next few words)
+ // It's safer to use regex for specific patterns if the structure is known
+ return text.substring(start).trim();
+ };
+
+ // Extract values using Regex based on the known PDF structure
+
+ // 1. Folio: "ODS N° RPC-1234"
+ const folioMatch = rawText.match(/ODS N°\s*([A-Z0-9-]+)/i);
+ if (folioMatch) document.getElementById('quote-number').value = folioMatch[1].trim();
+
+ // 2. Client: "Estimado(a) Sr: Juan Perez" -> looks for text after "Sr:" until "Oportunidad"
+ const clientMatch = rawText.match(/Estimado\(a\) Sr:\s*(.*?)\s*Oportunidad \/ Proyecto:/i);
+ if (clientMatch) document.getElementById('client-name').value = clientMatch[1].trim();
+
+ // 3. Project: "Oportunidad / Proyecto: Reparacion..."
+ const projectMatch = rawText.match(/Oportunidad \/ Proyecto:\s*(.*?)\s*Número de Serie/i);
+ if (projectMatch) document.getElementById('project-name').value = projectMatch[1].trim();
+
+ // 4. Serial Number
+ const serialMatch = rawText.match(/Número de Serie del equipo :\s*(.*?)\s*DESCRIPCIÓN/i);
+ if (serialMatch) document.getElementById('serial-number').value = serialMatch[1].trim();
+
+ // 5. Date: "Fecha: ............ 24/02/2026"
+ // The dots might be present or stripped, pdfjs often reads them as individual characters or spaces
+ const dateMatch = rawText.match(/Fecha:\s*(?:\.+)?\s*(\d{1,2}\/\d{1,2}\/\d{4})/i);
+ if (dateMatch) document.getElementById('quote-date').value = dateMatch[1].trim();
+
+ // 6. Technician
+ const techMatch = rawText.match(/Técnico:\s*(?:\.+)?\s*([A-Za-z\s]+)\s*Moneda:/i);
+ if (techMatch) document.getElementById('tech-name').value = techMatch[1].trim();
+
+ // 7. Delivery Time
+ const deliveryMatch = rawText.match(/Tiempo de entrega:\s*(.*?)\s*ENTREGA TENTATIVA/i);
+ if (deliveryMatch) document.getElementById('delivery-time').value = deliveryMatch[1].trim();
+
+ // Note finding (Observaciones)
+ const notesMatch = rawText.match(/OBSERVACIONES:\s*(.*?)\s*\*\*\*Precios sujetos/i);
+ if (notesMatch) {
+ document.getElementById('ods-notes').value = notesMatch[1].trim();
+ } else {
+ document.getElementById('ods-notes').value = '';
+ }
+
+ // Extracting Items (This is the most complex part as it's a table)
+ // We look for everything between "SUB TOTAL" and either "OBSERVACIONES:" or "TOTAL"
+ let tableSectionMatch = rawText.match(/SUB TOTAL\s+(.*?)\s+(?:OBSERVACIONES:|TOTAL\s+\$)/i);
+ if (tableSectionMatch) {
+ let tableText = tableSectionMatch[1].trim();
+ // Try to find price patterns like "$ 1,500.00 1 $ 1,500.00"
+ // Since pdf.js flattens text, a row usually looks like: "Descripción $ 100.00 1 $ 100.00"
+ // This regex looks for: 
+ // 1. Description (any text)
+ // 2. Unit Price ($ XX.XX)
+ // 3. Qty (Number)
+ // 4. Subtotal ($ XX.XX)
+ const rowRegex = /(.*?)\s+\$\s*([\d,]+\.\d{2})\s+(\d+)\s+\$\s*([\d,]+\.\d{2})/g;
+ const items = [];
+ let match;
+
+ while ((match = rowRegex.exec(tableText)) !== null) {
+ items.push({
+ d: match[1].trim(),
+ p: parseFloat(match[2].replace(/,/g, '')),
+ q: parseInt(match[3], 10)
+ });
+ }
+
+ // Populate items
+ if (items.length > 0) {
+ itemsContainer.innerHTML = '';
+ items.forEach(item => {
+ // Ignore empty padding rows
+ if (item.d !== "" && item.p > 0) {
+ createRow(item);
+ }
+ });
+ // Fill remaining with empty if less than 5
+ while (document.querySelectorAll('.item-row').length < 5) {
+ createRow({ d: '', p: 0, q: 0 });
+ }
+ }
+ }
+
+ // Force update UI
+ update();
+ alert("✅ PDF importado con éxito. Por favor revisa que todos los campos se hayan extraído correctamente.");
+
+ } catch (error) {
+ console.error("Error parsing PDF:", error);
+ alert("❌ Ocurrió un error al intentar leer el PDF. Asegúrate de que sea un PDF generado por este sistema.\nDetalles: " + error.message);
+ } finally {
+ if (pdfSpinner) pdfSpinner.style.display = 'none';
+ update();
+ }
+ };
+
+ pdfInputs.forEach(input => input.addEventListener('change', handlePDFUpload));
+
+ window.removePhoto = (index) => {
+ if(confirm("¿Quitar esta fotografía de la ODS?")) {
+ window._allPhotos.splice(index, 1);
+ update();
+ }
+ };
+
+ function update() {
+ const client = document.getElementById('client-name').value;
+ const project = document.getElementById('project-name').value;
+ const tech = document.getElementById('tech-name').value;
+ const date = document.getElementById('quote-date').value;
+ const folio = document.getElementById('quote-number').value;
+ const rawDelivery = document.getElementById('delivery-time').value;
+ const formatDate = (val) => {
+ if (!val) return '';
+ if (val.includes('T')) {
+ try {
+ const d = new Date(val);
+ return d.toLocaleString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', '');
+ } catch(e) { return val; }
+ }
+ return val;
+ };
+ const deliveryTime = formatDate(rawDelivery) || 'POR DEFINIR';
+ const serialNumber = document.getElementById('serial-number').value || 'N/A';
+ const clabeVal = document.getElementById('clabe').value;
+ const accountVal = document.getElementById('account-number').value;
+ const cardVal = document.getElementById('card-number').value;
+ const odsNotes = document.getElementById('ods-notes').value || '';
+ const currency = 'MXN';
+
+ let total = 0;
+ let itemsHtml = '';
+
+ const allRows = Array.from(document.querySelectorAll('.item-row'));
+ allRows.forEach((row, idx) => {
+ const d = row.querySelector('.i-desc').value;
+ const p = parseFloat(row.querySelector('.i-price').value) || 0;
+ const q = parseFloat(row.querySelector('.i-qty').value) || 0;
+ const sub = p * q;
+ total += sub;
+ itemsHtml += `
+ <tr>
+ <td style="text-align: left; height: 24px;">${d}</td>
+ <td style="text-align: right;">$ ${p.toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+ <td style="text-align: center;">${q}</td>
+ <td style="text-align: right;">$ ${sub.toLocaleString('en-US', { minimumFractionDigits: 2 })}</td>
+ </tr>
+ `;
+ });
+ // Ensure at least 5 rows for layout consistency if fewer are present
+ if (allRows.length < 5) {
+ const emptyRowsNeeded = 5 - allRows.length;
+ for (let i = 0; i < emptyRowsNeeded; i++) {
+ itemsHtml += `
+ <tr>
+ <td style="height: 24px;">&nbsp;</td>
+ <td>&nbsp;</td>
+ <td>&nbsp;</td>
+ <td>&nbsp;</td>
+ </tr>
+ `;
+ }
+ }
+
+ // Enforce 5 Item Limit
+ const addItemBtn = document.getElementById('add-item-btn');
+ if (addItemBtn) {
+ if (allRows.length >= 5) {
+ addItemBtn.disabled = true;
+ addItemBtn.style.opacity = '0.5';
+ addItemBtn.style.cursor = 'not-allowed';
+ } else {
+ addItemBtn.disabled = false;
+ addItemBtn.style.opacity = '1';
+ addItemBtn.style.cursor = 'pointer';
+ }
+ }
+
+ previewCanvas.innerHTML = `
+ <div class="ps-content">
+ <div class="ps-header">
+ <div class="ps-logo-col" style="text-align: center;">
+ <img src="./images/logo_dashboard_white.png" class="ps-logo" alt="Logo macWave" style="width: 50px; height: 50px; border-radius: 8px; margin-bottom: 2px;">
+
+ <div style="font-size: 9px; font-weight: 700; color: #1d1d1f; line-height: 1;">macWave.com.mx</div>
+ </div>
+ <div class="ps-title-col" style="padding-left: 20px;">
+ <h2 style="font-size: 16px;">Laboratorio de reparación de computadoras Apple</h2>
+
+ <p>Apple Certified Device Support 2025</p>
+ </div>
+ <div class="ps-meta-col">
+ <div class="ps-quote-folio">ODS N° ${folio}</div>
+ <div class="ps-meta-data">
+ <div class="ps-dot-row">
+ <span class="ps-dot-label">Fecha:</span>
+ <span class="ps-dot-dots"></span>
+ <span class="ps-dot-value">${date}</span>
+ </div>
+ <div class="ps-dot-row">
+ <span class="ps-dot-label">Técnico:</span>
+ <span class="ps-dot-dots"></span>
+ <span class="ps-dot-value">${tech}</span>
+ </div>
+ <div class="ps-dot-row" style="opacity: 0.8">
+ <span class="ps-dot-label">Moneda:</span>
+ <span class="ps-dot-dots"></span>
+ <span class="ps-dot-value" style="font-weight: bold">${currency}</span>
+ </div>
+ </div>
+ </div>
+ </div>
+
+ <div class="ps-client-area">
+ <p><span class="label">Estimado(a) Sr:</span><span class="value">${client}</span></p>
+ <p><span class="label">Oportunidad / Proyecto:</span><span class="value">${project}</span></p>
+ <p><span class="label">Número de Serie del equipo :</span><span class="value">${serialNumber}</span></p>
+ </div>
+
+ ${document.getElementById('toggle-concepts').checked ? `
+ <table class="ps-table">
+ <thead>
+ <tr>
+ <th style="width: 50%">DESCRIPCIÓN DEL SERVICIO O PRODUCTO</th>
+ <th style="width: 20%">PRECIO UNITARIO</th>
+ <th style="width: 10%">UNIDAD</th>
+ <th style="width: 20%">SUB TOTAL</th>
+ </tr>
+ </thead>
+ <tbody>${itemsHtml}</tbody>
+ </table>
+
+ <div class="ps-total-row">
+ <span class="ps-total-label">TOTAL</span>
+ <span class="ps-total-value">$ ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+ </div>
+ ` : ''}
+
+ <!-- PHOTO GALLERY / WATERMARK SECTION (FLEXIBLE GRID) -->
+ ${(!document.getElementById('toggle-concepts').checked && !document.getElementById('toggle-bank').checked) ? `
+ <div class="ps-watermark" style="min-height: 80px; height: auto; padding: 12px 10px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; align-items: start; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px; overflow: visible;">
+ ${(window._allPhotos || []).length > 0 ? (window._allPhotos || []).map((p, idx) => `
+ <div style="width: 100%; max-width: 130px; background: white; border: 1px solid #eee; border-radius: 4px; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative;">
+ <button onclick="window.removePhoto(${idx})" style="position: absolute; top: -6px; right: -6px; background: #FF453A; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">×</button>
+ <div style="width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 3px; background: #000;">
+ <img src="${p.data}" alt="Evidencia de daño" style="width: 100%; height: 100%; object-fit: cover;">
+
+ </div>
+ <div style="margin-top: 4px; font-size: 7px; font-weight: 800; color: #ff6600; text-transform: uppercase; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${p.desc}</div>
+ </div>
+ `).join('') : `
+ <div style="grid-column: 1 / -1; font-size: 10px; color: #ccc; font-weight: 700;">REGISTRO FOTOGRÁFICO DE EVIDENCIA</div>
+ `}
+ </div>
+ ` : ''}
+
+
+ ${odsNotes ? `
+ <div style="margin-top: 15px; padding: 10px; border: 1px dashed #ccc; border-radius: 8px; font-size: 10px; color: #333; line-height: 1.4; background: #fafafa;">
+ <strong style="color: #666; display: block; margin-bottom: 4px; text-transform: uppercase; font-size: 8px;">Notas / Observaciones Iniciales:</strong>
+ ${odsNotes.replace(/\n/g, '<br>')}
+ </div>
+ ` : ''}
+
+ <div class="ps-terms">
+ <p>Vigencia de la ODS : 1 día para aceptación de la misma.</p>
+ <p>Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.</p>
+ <p>Condiciones: El cliente acepta los <a href="terminos" target="_blank" style="color: inherit; font-weight: bold;">Términos y Condiciones</a> publicados en macwave.com.mx/terminos.html.</p>
+ <p style="font-size: 9px; font-weight: 900;">PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.</p>
+ <p>Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.</p>
+ </div>
+
+ <div class="ps-bank-area">
+ <div class="ps-bank-qr-row" style="display: flex; gap: 20px; align-items: stretch;">
+ <div class="ps-bank-info" style="flex: 1;">
+ ${document.getElementById('toggle-bank').checked ? `
+ <div class="ps-bank-title">PAGAR A ESTE BANCO</div>
+ <div class="ps-bank-main">BBVA</div>
+ <div class="ps-bank-details">
+ CUENTA CLABE : ${clabeVal}<br>
+ NUMERO DE CUENTA : ${accountVal}<br>
+ NUMERO DE TARJETA BBVA : ${cardVal}
+ </div>
+ ` : `
+ <div class="ps-watermark" style="height: 100px; width: 100%; border: none; background: transparent; margin: 0; display: flex; align-items: center; justify-content: center; opacity: 0.6;">
+ <span style="font-size: 20px; font-weight: 900; color: #eee; transform: rotate(-5deg); letter-spacing: 1px;">macWave.com.mx</span>
+ </div>
+ `}
+ </div>
+ <div class="ps-qr-block" style="width: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-left: 1px solid #f0f0f0; padding-left: 15px;">
+ <div id="preview-qr-canvas"></div>
+ </div>
+ </div>
+ </div>
+
+ <div class="ps-disclaimer">
+ <p>***Precios sujetos a cambios sin previo aviso, en variación al dólar americano o disponibilidad en el mercado de Asia</p>
+ <p style="margin-top: 5px; font-weight: normal; font-size: 6px;">*El servicio incluye mantenimiento, resolución de problemas en el sistema, instalación de hardware y sistema operativo, migración o instalación de software con licencia adquirida.</p>
+ <p style="margin-top: 8px; font-weight: normal; font-size: 5.5px; line-height: 1.1;">AVISO: EQUIPOS EN ABANDONO POR MÁS DE 30 DÍAS NATURALES A PARTIR DEL DÍA QUE SE DEJÓ EL EQUIPO, SERÁN DESTRUIDOS SIN GENERAR NINGÚN TIPO DE RESPONSABILIDAD A macWave Y SU EQUIPO. USTED ACEPTA YA ESTE ACUERDO, LA REVISIÓN GENERA UN COSTO DE $499 POR DIAGNÓSTICO Y USO DEL LABORATORIO, SERÁN TOMADOS EN CUENTA SI DECIDE REPARAR AQUÍ EL EQUIPO HOY. CONSULTA TÉRMINOS Y CONDICIONES EN EL SITIO WEB. ¡EQUIPOS APAGADOS O MOJADOS NO LLEVAN GARANTÍA! EL SOFTWARE COMO OFFICE SE ENVÍA POR URL Y EL USUARIO DEBE INSTALARLO Y NOTIFICAR PARA ACTIVARLO.</p>
+ </div>
+
+
+ <div class="ps-apple-pro-container">
+ ${BOTTOM_CERT_LOGOS.map(logo => `
+ <div class="ps-apple-pro-icon">
+ <img src="${logo.data}" alt="Logo partner">
+
+ </div>
+ `).join('')}
+ </div>
+
+ <div class="ps-footer" style="margin-top: 25px; border-top: 2px solid #000; padding-top: 10px; display: flex; justify-content: space-between; align-items: flex-start; font-size: 7px; color: #000;">
+ <div style="font-weight: bold; width: 33%; text-align: left;">
+ ESPECIALISTAS EN TECNOLOGIA ROLDU SAS. DE C.V
+ </div>
+ <div style="text-align: center; width: 33%;">
+ </div>
+ <div style="text-align: right; width: 33%;">
+ sitio web: https://macwave.com.mx<br>mail: soporte@macwave.com.mx
+ </div>
+ </div>
+ </div>
+ `;
+ 
+ // Regenerate QR stably
+ generatePreviewQR();
+ }
+
+ const executeGeneration = async () => {
+ const { jsPDF } = window.jspdf;
+ const doc = new jsPDF('p', 'mm', 'a4', true); // Enabled compression
+ const currentFolio = document.getElementById('quote-number').value;
+ const fileName = `${currentFolio}.pdf`;
+ doc.setProperties({ title: currentFolio });
+
+ const client = document.getElementById('client-name').value;
+ const project = document.getElementById('project-name').value;
+ const tech = document.getElementById('tech-name').value;
+ const date = document.getElementById('quote-date').value;
+ const folio = document.getElementById('quote-number').value;
+ const currency = 'MXN';
+ const clabeVal = document.getElementById('clabe').value;
+ const accountVal = document.getElementById('account-number').value;
+ const cardVal = document.getElementById('card-number').value;
+
+ const deliveryTime = document.getElementById('delivery-time').value || 'POR DEFINIR';
+ const serialNumber = document.getElementById('serial-number').value || 'N/A';
+ const odsNotes = document.getElementById('ods-notes').value || '';
+
+ const items = [];
+ let total = 0;
+ const allRows = Array.from(document.querySelectorAll('.item-row'));
+ allRows.forEach((row) => {
+ const d = row.querySelector('.i-desc').value;
+ const p = parseFloat(row.querySelector('.i-price').value) || 0;
+ const q = parseInt(row.querySelector('.i-qty').value) || 0;
+ const sub = p * q;
+ total += sub;
+ items.push([d, `$ ${p.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, q, `$ ${sub.toLocaleString('en-US', { minimumFractionDigits: 2 })}`]);
+ });
+ // Ensure layout consistency in PDF if fewer than 5 rows
+ if (items.length < 5) {
+ while (items.length < 5) {
+ items.push(['', '', '', '']);
+ }
+ }
+
+ // 1. Header (IMPROVED ALIGNMENT & SPACING)
+ // Proportional Logo
+ const logoW = 32;
+ const logoH = (RECOVERY_PRO_BADGE.h && RECOVERY_PRO_BADGE.w) ? ((RECOVERY_PRO_BADGE.h * logoW) / RECOVERY_PRO_BADGE.w) : 10;
+ doc.addImage(RECOVERY_PRO_BADGE.data, 'PNG', 12, 10, logoW, logoH);
+
+ // macWave.com.mx under logo
+ doc.setFont("helvetica", "bold");
+ doc.setFontSize(9);
+ doc.setTextColor(0, 0, 0);
+ doc.text("macWave.com.mx", 12 + (logoW / 2), 10 + logoH + 4, { align: "center" });
+
+ doc.setFont("helvetica", "bold");
+ doc.setFontSize(16);
+ doc.setTextColor(0);
+ // Title at x=50, y=22 to prevent overlap
+ doc.text("Laboratorio de reparación de computadoras Apple", 50, 22);
+
+ doc.setFontSize(9);
+ doc.setFont("helvetica", "normal");
+ doc.setTextColor(134, 134, 139);
+ doc.text("Apple Certified Device Support 2025", 50, 28);
+
+ doc.setTextColor(255, 102, 0); // Halloween Orange
+ doc.setFont("helvetica", "bolditalic");
+ doc.setFontSize(10);
+ doc.text(`ODS N° ${folio}`, 198, 15, { align: "right" });
+
+ doc.setTextColor(0, 0, 0);
+ doc.setFontSize(8);
+ const mY = 32;
+ const labelX = 145; 
+ const valueX = 198;
+ const dotXStart = labelX + 15;
+
+ const drawDotRow = (label, value, y) => {
+ doc.setFont("helvetica", "normal");
+ doc.setTextColor(0, 0, 0);
+ doc.text(label, labelX, y);
+ 
+ // Draw dots accurately
+ doc.setDrawColor(200, 200, 200);
+ doc.setLineWidth(0.1);
+ doc.setLineDash([0.5, 0.5], 0);
+ // Calculate dot line end
+ const valWidth = doc.getTextWidth(value);
+ doc.line(labelX + doc.getTextWidth(label) + 2, y - 1, valueX - valWidth - 2, y - 1);
+ doc.setLineDash([], 0); // reset
+
+ doc.setFont("helvetica", "bold");
+ doc.text(value, valueX, y, { align: "right" });
+ };
+
+ drawDotRow("Fecha:", date, mY);
+ drawDotRow("Técnico:", tech, mY + 6);
+ drawDotRow("Moneda:", currency, mY + 12);
+
+ // --- 2. Client Info (Fixed Space 55-85mm) ---
+ const clientY = 55;
+ doc.setFontSize(10);
+ doc.setTextColor(255, 102, 0);
+ doc.setFont("helvetica", "bold");
+ doc.text("Estimado(a) Sr:", 15, clientY);
+ doc.setFont("helvetica", "normal");
+ doc.setTextColor(0, 0, 0);
+ 
+ // Limit client name to 1 line
+ const clientText = doc.splitTextToSize(client, 140)[0] || '';
+ doc.text(clientText, 45, clientY);
+
+ doc.setTextColor(255, 102, 0);
+ doc.setFont("helvetica", "bold");
+ doc.text("Oportunidad / Proyecto:", 15, clientY + 7);
+ doc.setFont("helvetica", "normal");
+ doc.setTextColor(0, 0, 0);
+
+ // Wrap project text but constrain to 2 lines to keep layout fixed
+ const splitProject = doc.splitTextToSize(project, 130).slice(0, 2);
+ doc.text(splitProject, 60, clientY + 7);
+
+ doc.setTextColor(255, 102, 0);
+ doc.setFont("helvetica", "bold");
+ doc.text("Número de Serie del equipo :", 15, clientY + 18);
+ doc.setFont("helvetica", "normal");
+ doc.setTextColor(0, 0, 0);
+ doc.text(serialNumber, 70, clientY + 18);
+
+ // --- 3. MAIN BODY (Starts at 85mm) ---
+ const bodyStartY = 80;
+ let nextSectionY = 180; // High default for end of body
+ 
+ const showConcepts = document.getElementById('toggle-concepts').checked;
+ const showBank = document.getElementById('toggle-bank').checked;
+
+ if (showConcepts) {
+ doc.autoTable({
+ startY: bodyStartY,
+ head: [['DESCRIPCIÓN DEL SERVICIO O PRODUCTO', 'PRECIO UNITARIO', 'UNIDAD', 'SUB TOTAL']],
+ body: items,
+ theme: 'plain',
+ headStyles: {
+ fillColor: [0, 0, 0], textColor: [255, 255, 255],
+ halign: 'center', fontSize: 9, minCellHeight: 10, valign: 'middle'
+ },
+ bodyStyles: {
+ textColor: [0, 0, 0], fontSize: 9, minCellHeight: 10, valign: 'middle'
+ },
+ alternateRowStyles: { fillColor: [245, 245, 247] },
+ columnStyles: {
+ 0: { cellWidth: 100, halign: 'left' },
+ 1: { halign: 'right' },
+ 2: { halign: 'center' },
+ 3: { halign: 'right' }
+ },
+ margin: { left: 15, right: 15 },
+ didDrawCell: (data) => {
+ if (data.section === 'body') {
+ doc.setDrawColor(220, 220, 220);
+ doc.setLineWidth(0.15);
+ doc.line(data.cell.x, data.cell.y + data.cell.height, data.cell.x + data.cell.width, data.cell.y + data.cell.height);
+ }
+ }
+ });
+
+ nextSectionY = doc.lastAutoTable.finalY + 10;
+ 
+ // Draw Total
+ doc.setFontSize(13);
+ doc.setTextColor(0);
+ doc.setFont("helvetica", "bold");
+ doc.text("TOTAL", 150, nextSectionY);
+ doc.setTextColor(255, 102, 0);
+ doc.text(`$ ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 195, nextSectionY, { align: "right" });
+ 
+ }
+
+ // PHOTO GRID AREA (Only show if both Conceptos and Bank are OFF)
+ const showPhotos = !showConcepts && !showBank;
+ if (showPhotos) {
+ const rowHeight = 45;
+ const numPhotos = window._allPhotos.length;
+ const rows = numPhotos > 5 ? 2 : 1;
+ const gridH = rows * rowHeight; 
+ const gridY = showConcepts ? nextSectionY : bodyStartY;
+ 
+ doc.setDrawColor(245, 245, 247);
+ doc.setLineWidth(0.1);
+ doc.roundedRect(15, gridY, 180, gridH, 2, 2, 'D');
+ 
+ const photoW = 34;
+ const gap = 2.5;
+ const startX = 15;
+ 
+ for (let i = 0; i < (rows * 5); i++) {
+ const rowIdx = Math.floor(i / 5);
+ const colIdx = i % 5;
+ const p = (window._allPhotos || [])[i];
+ const cX = startX + (colIdx * (photoW + gap)) + 1;
+ const cY = gridY + 3 + (rowIdx * rowHeight);
+ 
+ if (p) {
+ try {
+ doc.addImage(p.data, 'JPEG', cX, cY, photoW, photoW, undefined, 'FAST');
+ doc.setFontSize(5);
+ doc.setTextColor(50);
+ doc.setFont("helvetica", "bold");
+ doc.text(p.desc.substring(0, 20), cX + (photoW/2), cY + photoW + 3, { align: "center", maxWidth: photoW });
+ } catch(e) { console.error("Error adding image to PDF:", e); }
+ } else if (i < 5) { // Only show empty slots for the first row
+ doc.setDrawColor(240, 240, 240);
+ doc.setLineWidth(0.05);
+ doc.rect(cX, cY, photoW, photoW, 'D');
+ doc.setFontSize(6);
+ doc.setTextColor(230, 230, 230);
+ doc.text(`${i + 1}`, cX + (photoW/2), cY + (photoW/2), { align: "center" });
+ }
+ }
+ nextSectionY = gridY + gridH + 5;
+ }
+
+
+ // --- 4. NOTES / OBSERVATIONS (Fixed space or below body) ---
+ let notesY = nextSectionY;
+ if (odsNotes) {
+ doc.setFontSize(7);
+ doc.setTextColor(51, 51, 51);
+ doc.setFont("helvetica", "bold");
+ doc.text("OBSERVACIONES / NOTAS DE LABORATORIO:", 15, notesY);
+ doc.setFont("helvetica", "normal");
+ const splitNotes = doc.splitTextToSize(odsNotes, 180);
+ doc.text(splitNotes, 15, notesY + 4);
+ notesY += 6 + (splitNotes.length * 3.5); // Dynamic height based on actual content
+ } else {
+ notesY += 5;
+ }
+
+ // --- 5. TERMS (Fixed Y 215mm) ---
+ const termsY = 210;
+ doc.setFontSize(7.5);
+ doc.setTextColor(0, 0, 0); 
+ doc.setFont("helvetica", "bold");
+ doc.text(`Vigencia de la ODS : 1 día para aceptación de la misma.`, 15, termsY);
+ doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.", 15, termsY + 5);
+ doc.text("Condiciones: El cliente acepta los términos y condiciones en macwave.com.mx/terminos.html", 15, termsY + 11);
+ doc.setFontSize(9);
+ doc.setTextColor(255, 102, 0);
+ doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, termsY + 17);
+ doc.setFontSize(7.5);
+ doc.setTextColor(0, 0, 0);
+ doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.`, 15, termsY + 23);
+
+ // --- 6. BANK SECTION / QR (Fixed Y 240mm) ---
+ const bankY = 240;
+ const showBankInPDF = document.getElementById('toggle-bank').checked;
+
+ if (showBankInPDF) {
+ doc.setFontSize(10);
+ doc.setTextColor(255, 102, 0);
+ doc.text("PAGAR A ESTE BANCO", 15, bankY);
+ doc.setFontSize(15);
+ doc.text("BBVA", 60, bankY);
+ doc.setFontSize(10);
+ doc.setFont("helvetica", "bold");
+ doc.text(`CUENTA CLABE : ${clabeVal}`, 15, bankY + 7);
+ doc.text(`NUMERO DE CUENTA : ${accountVal}`, 15, bankY + 14);
+ doc.text(`NUMERO DE TARJETA BBVA : ${cardVal}`, 15, bankY + 21);
+ } else {
+ doc.setFontSize(22);
+ doc.setTextColor(235, 235, 235);
+ doc.setFont("helvetica", "bold");
+ doc.text("macWave.com.mx", 80, bankY + 15, { align: "center", angle: 5 });
+ }
+
+ // QR CODE (Fixed position)
+ try {
+ const qrCanvas = document.querySelector('#preview-qr-canvas canvas');
+ if (qrCanvas) {
+ const qrData = qrCanvas.toDataURL("image/png");
+ doc.addImage(qrData, 'PNG', 165, bankY - 5, 30, 30);
+ }
+ } catch (e) {}
+
+ // --- 7. DISCLAIMER (Fixed Y 268mm) ---
+ const discY = 268;
+ doc.setFontSize(6.5);
+ doc.setTextColor(0);
+ doc.setFont("helvetica", "bold");
+ doc.text("***Precios sujetos a cambios sin previo aviso, en variación al dólar americano", 15, discY);
+ doc.setFontSize(5.5);
+ doc.setFont("helvetica", "normal");
+ const noticeText = "AVISO: EQUIPOS EN ABANDONO POR MÁS DE 30 DÍAS NATURALES A PARTIR DEL DÍA QUE SE DEJÓ EL EQUIPO, SERÁN DESTRUIDOS SIN GENERAR NINGÚN TIPO DE RESPONSABILIDAD A macWave Y SU EQUIPO. USTED ACEPTA YA ESTE ACUERDO, LA REVISIÓN GENERA UN COSTO DE $499 POR DIAGNÓSTICO Y USO DEL LABORATORIO, SERÁN TOMADOS EN CUENTA SI DECIDE REPARAR AQUÍ EL EQUIPO HOY. CONSULTA TÉRMINOS Y CONDICIONES EN EL SITIO WEB. ¡EQUIPOS APAGADOS O MOJADOS NO LLEVAN GARANTÍA! EL SOFTWARE COMO OFFICE SE ENVÍA POR URL Y EL USUARIO DEBE INSTALARLO Y NOTIFICAR PARA ACTIVARLO.";
+ const splitN = doc.splitTextToSize(noticeText, 180);
+ doc.text(splitN, 15, discY + 4);
+
+ // --- 8. FOOTER / CERT LOGOS (Fixed Bottom) ---
+ const certY = 282;
+ const footerY = 292;
+ 
+ // Certification Logos
+ const maxCertW = 20;
+ const maxCertH = 8;
+ let startX = 15;
+ const gap = (180 - (BOTTOM_CERT_LOGOS.length * maxCertW)) / (BOTTOM_CERT_LOGOS.length - 1);
+
+ BOTTOM_CERT_LOGOS.forEach((logo, idx) => {
+ const ratio = (logo.w && logo.h) ? (logo.w / logo.h) : 1;
+ let dW = maxCertH * ratio;
+ if (dW > maxCertW) dW = maxCertW;
+ try {
+ doc.addImage(logo.data, 'PNG', startX, certY, dW, maxCertH);
+ } catch (e) {}
+ startX += maxCertW + gap;
+ });
+
+ doc.setFontSize(6);
+ doc.setFont("helvetica", "bold");
+ doc.text("ESPECIALISTAS EN TECNOLOGIA ROLDU SAS. DE C.V", 15, footerY);
+ doc.setFont("helvetica", "normal");
+ doc.text(`https://macwave.com.mx | soporte@macwave.com.mx`, 195, footerY, { align: "right" });
+
+ // Increment folio counter AFTER capturing it for current PDF/Supabase
+
+ // Descarga directa con el nombre correcto
+ doc.save(fileName);
+
+ // También intentar abrir en nueva pestaña para previsualización
+ try {
+ const pdfBlob = doc.output('blob');
+ const pdfUrl = URL.createObjectURL(pdfBlob);
+ window.open(pdfUrl, '_blank');
+ } catch (e) { console.error("Error opening preview:", e); }
+
+ // Increment folio counter AFTER capturing it for current PDF/Supabase
+ // Then read the new (next) folio number and display it on the form
+ getNextFolio(true); // increments counter once
+ document.getElementById('quote-number').value = getNextFolio(); // reads without incrementing again
+
+ // ── Auto-save ODS to Supabase ────────────────────────
+ const odsData = {
+ folio: currentFolio,
+ cliente: document.getElementById('client-name').value || '',
+ proyecto: document.getElementById('project-name').value || '',
+ tecnico: document.getElementById('tech-name').value || '',
+ serie: document.getElementById('serial-number').value || '',
+ fecha: document.getElementById('quote-date').value || '',
+ monto: total, // Use the total calculated in the submit handler
+ status: 'Recibido',
+ notas: JSON.stringify([{
+ date: document.getElementById('quote-date').value || new Date().toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+ status: 'Recibido',
+ text: document.getElementById('ods-notes').value || 'Ingreso a laboratorio.',
+ img: (window._allPhotos && window._allPhotos.length > 0) ? window._allPhotos[0].data : null, photos: (window._allPhotos && window._allPhotos.length > 0) ? window._allPhotos.map(p => p.data) : []
+ }])
+ };
+ try {
+ await window._sbClient.from('ordenes_servicio').insert([odsData]);
+ console.log('ODS guardado en Supabase:', odsData.folio);
+ } catch (e) {
+ console.warn('No se pudo guardar ODS en Supabase:', e.message);
+ }
+ };
+
+ form.onsubmit = async (e) => {
+ e.preventDefault();
+ await executeGeneration();
+ };
+
+
+
+ if (!isAdmin) {
+ // Disable inputs in bank config
+ document.querySelectorAll('#bank-controls-wrapper input').forEach(input => {
+ input.readOnly = true;
+ input.classList.add('bank-input-readonly');
+ if (input.id === 'card-number') {
+ input.classList.add('bank-input-tarjeta-restricted');
+ }
+ input.title = "Solo administradores pueden modificar estos datos";
+ });
+ }
+
+ // Listen for toggle change to hide/show controls
+ document.getElementById('toggle-concepts').addEventListener('change', (e) => {
+ const wrapper = document.getElementById('concepts-controls-wrapper');
+ wrapper.style.display = e.target.checked ? 'block' : 'none';
+ checkPhotosVisibility();
+ update();
+ });
+
+ document.getElementById('toggle-bank').addEventListener('change', (e) => {
+ const wrapper = document.getElementById('bank-controls-wrapper');
+ wrapper.style.display = e.target.checked ? 'block' : 'none';
+ checkPhotosVisibility();
+ update();
+ });
+
+ function checkPhotosVisibility() {
+ const conceptsOff = !document.getElementById('toggle-concepts').checked;
+ const bankOff = !document.getElementById('toggle-bank').checked;
+ const photosWrapper = document.getElementById('photos-controls-wrapper');
+ const photosSep = document.getElementById('photos-separator');
+ 
+ if (conceptsOff && bankOff) {
+ photosWrapper.style.display = 'block';
+ photosSep.style.display = 'block';
+ } else {
+ photosWrapper.style.display = 'none';
+ photosSep.style.display = 'none';
+ }
+ }
+
+ // Attach all live-update listeners to regenerate preview
+ document.querySelectorAll('#quote-form input, #quote-form select, #toggle-concepts, #toggle-bank, #ods-notes').forEach(el =>
+ el.addEventListener('input', () => {
+ update();
+ })
+ );
+ // Initial QR and update
+ setTimeout(generatePreviewQR, 200);
+ checkPhotosVisibility();
+ update();
+
+ // --- Catalog Integration (Pull from Dashboard Catalog) ---
+ const mwCatalog = JSON.parse(localStorage.getItem('mw_finance_catalog')) || [];
+ if (mwCatalog.length > 0) {
+ const dl = document.createElement('datalist');
+ dl.id = 'catalog-list-data';
+ mwCatalog.forEach(item => {
+ const opt = document.createElement('option');
+ // Format: "CLAVE - Nombre"
+ opt.value = item.clave ? `${item.clave} - ${item.nombre}` : item.nombre;
+ opt.dataset.precio = item.precio || 0;
+ dl.appendChild(opt);
+ });
+ document.body.appendChild(dl);
+ }
+
+ // Logout Handler
+ const finalLogoutBtn = document.getElementById('logout-btn-side');
+ if (finalLogoutBtn) {
+ finalLogoutBtn.onclick = () => {
+ sessionStorage.clear();
+ window.location.href = 'tecnicos.html';
+ };
+ }
+ });
+ </script>
+</body>
+
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Generador de Cotizaciones - macWave</title>
+ <link rel="stylesheet" href="styles.css">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+
+<body>
+ <div class="app-container">
+ <header>
+ <div class="logo-area">
+ <img src="img/RecoveryPro_Header.png" alt="Logo" class="main-logo">
+ <div class="header-text">
+ <h1>Laboratorio de reparación de computadoras Apple</h1>
+ <p>Apple Certified Device Support 2025</p>
+ </div>
+ </div>
+ </header>
+
+ <main class="main-content">
+ <section class="form-section">
+ <div class="glass-card">
+ <h2>Datos de la Cotización</h2>
+ <form id="quote-form">
+ <div class="form-grid">
+ <div class="form-group">
+ <label for="client-name">Cliente</label>
+ <input type="text" id="client-name" placeholder="Ej: Erik">
+ </div>
+ <div class="form-group">
+ <label for="project-name">Proyecto / Oportunidad</label>
+ <input type="text" id="project-name" placeholder="Ej: Reparacion iPhone 16 Pro Max">
+ </div>
+ <div class="form-group">
+ <label for="tech-name">Técnico</label>
+ <input type="text" id="tech-name" value="JOEL DURAN">
+ </div>
+ <div class="form-group">
+ <label for="quote-date">Fecha</label>
+ <input type="date" id="quote-date">
+ </div>
+ <div class="form-group">
+ <label for="quote-number">No. Cotización</label>
+ <input type="text" id="quote-number" placeholder="Ej: RPC-9199">
+ </div>
+ <div class="form-group">
+ <label for="currency">Moneda</label>
+ <select id="currency">
+ <option value="MXN">MXN</option>
+ <option value="USD">USD</option>
+ </select>
+ </div>
+ </div>
+
+ <h3>Servicios y Productos</h3>
+ <div id="items-container">
+ <div class="item-header">
+ <span>Descripción</span>
+ <span>Precio Unit.</span>
+ <span>Cant.</span>
+ <span>Acción</span>
+ </div>
+ <!-- Items will be added here -->
+ </div>
+ <button type="button" id="add-item-btn" class="secondary-btn">+ Agregar Item</button>
+
+ <div class="bank-details-section">
+ <h3>Datos Bancarios</h3>
+ <div class="form-grid">
+ <div class="form-group">
+ <label for="bank-name">Banco</label>
+ <input type="text" id="bank-name" value="BBVA">
+ </div>
+ <div class="form-group">
+ <label for="clabe">CLABE</label>
+ <input type="text" id="clabe" value="012 180015766935846">
+ </div>
+ <div class="form-group">
+ <label for="account-number">Número de Cuenta</label>
+ <input type="text" id="account-number" value="1576693584">
+ </div>
+ <div class="form-group">
+ <label for="card-number">Número de Tarjeta</label>
+ <input type="text" id="card-number" value="4152 3144 2988 0571">
+ </div>
+ </div>
+ </div>
+
+ <div class="actions">
+ <button type="submit" class="primary-btn">Generar Cotización PDF</button>
+ <button type="button" id="generate-ticket-btn" class="secondary-btn"
+ style="background: var(--accent); color: white; border: none;">Generar Ticket de
+ Visita</button>
+ </div>
+ </form>
+ </div>
+ </section>
+
+ <section class="preview-section">
+ <div class="preview-header">
+ <h2>Vista Previa</h2>
+ </div>
+ <div id="pdf-preview-canvas" class="preview-canvas">
+ <!-- Dynamic preview will render here -->
+ <div class="empty-preview">Completa los datos para ver la vista previa</div>
+ </div>
+ </section>
+ </main>
+ </div>
+ <script src="logo_const.js"></script>
+ <script src="app.js"></script>
+ <div id="ticket-modal" class="modal-overlay" style="display: none;">
+ <div class="golden-ticket">
+ <button class="close-ticket" id="close-ticket-modal">&times;</button>
+ <h1 class="ticket-main-title" style="margin-top: 20px;">SERVICIO TÉCNICO</h1>
+
+ <div class="ticket-folio-box">
+ <p class="folio-label">TU CÓDIGO ÚNICO:</p>
+ <p id="ticket-folio-display" class="folio-number">G-000000-000</p>
+ </div>
+
+ <div class="ticket-form">
+ <label>¿Cómo nos conociste?</label>
+ <select id="ticket-source">
+ <option value="google maps">GOOGLE MAPS</option>
+ <option value="Internet">INTERNET</option>
+ <option value="Recomendacion">RECOMENDACIÓN</option>
+ </select>
+
+ <div class="input-group">
+ <input type="text" id="ticket-client-name" placeholder="Nombre del cliente:">
+ </div>
+ <div class="input-group">
+ <input type="datetime-local" id="ticket-date" style="width: 100%; border: 1px solid #ccc; padding: 12px; border-radius: 8px;">
+ </div>
+
+ <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+ <div style="font-size: 11px; font-weight: 700; color: #333; text-align: center; line-height: 1.4;">
+ <strong>Servicio a Domicilio y Recolección CDMX</strong><br>
+ <em style="color: blue;">macWave.com.mx</em>
+ </div>
+ </div>
+
+ <button id="send-ticket-whatsapp" class="whatsapp-gold-btn" style="background:#006add; color:white;">
+ GENERAR TICKET DE VISITA
+ </button>
+ </div>
+ </div>
+ </div>
+</body>
+
+</html>

@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <meta name="robots" content="noindex, nofollow, noarchive">
+ <title>macWave Estado de tu Orden de Servicio</title>
+ <meta name="description" content="Consulta el estado actual de tu reparación Mac en macWave México. Ingresa tu folio MW o número de serie para seguimiento en tiempo real.">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+ <style>
+ :root {
+ --bg: #0a0a0f;
+ --card: #13131a;
+ --border: #1e1e2e;
+ --accent: #0071e3;
+ --accent2: #34aadc;
+ --green: #30d158;
+ --yellow: #ffd60a;
+ --orange: #ff9f0a;
+ --red: #ff453a;
+ --text: #f5f5f7;
+ --muted: #6e6e73;
+ }
+
+ * {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+ }
+
+ body {
+ font-family: 'Inter', sans-serif;
+ background: var(--bg);
+ color: var(--text);
+ min-height: 100vh;
+ }
+
+ /* ─── HEADER ─── */
+ .header {
+ background: linear-gradient(135deg, #0d0d1a 0%, #0a1628 100%);
+ border-bottom: 1px solid var(--border);
+ padding: 20px 24px;
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ }
+
+ .header-brand {
+ display: flex;
+ align-items: center;
+ gap: 14px;
+ }
+
+ .header-brand h1 {
+ font-size: 1.3rem;
+ font-weight: 900;
+ letter-spacing: -0.5px;
+ }
+
+ .header-brand h1 span {
+ color: var(--accent);
+ }
+
+ .header-sub {
+ font-size: 0.72rem;
+ color: var(--muted);
+ margin-top: 2px;
+ }
+
+ .header-badge {
+ background: var(--accent);
+ color: #fff;
+ font-size: 0.65rem;
+ font-weight: 700;
+ padding: 4px 10px;
+ border-radius: 20px;
+ letter-spacing: 0.5px;
+ }
+
+ /* ─── SEARCH ─── */
+ .search-section {
+ max-width: 700px;
+ margin: 48px auto 0;
+ padding: 0 20px;
+ }
+
+ .search-title {
+ font-size: 2.2rem;
+ font-weight: 900;
+ text-align: center;
+ background: linear-gradient(135deg, var(--text), var(--accent2));
+ -webkit-background-clip: text;
+ background-clip: text;
+ -webkit-text-fill-color: transparent;
+ margin-bottom: 8px;
+ }
+
+ .search-sub {
+ text-align: center;
+ color: var(--muted);
+ font-size: 0.9rem;
+ margin-bottom: 32px;
+ }
+
+ .search-bar {
+ display: flex;
+ gap: 10px;
+ background: var(--card);
+ border: 1px solid var(--border);
+ border-radius: 14px;
+ padding: 8px 8px 8px 18px;
+ transition: border-color 0.2s;
+ }
+
+ .search-bar:focus-within {
+ border-color: var(--accent);
+ }
+
+ .search-bar input {
+ flex: 1;
+ background: none;
+ border: none;
+ outline: none;
+ color: var(--text);
+ font-size: 0.95rem;
+ font-family: inherit;
+ }
+
+ .search-bar input::placeholder {
+ color: var(--muted);
+ }
+
+ .btn-search {
+ background: var(--accent);
+ color: #fff;
+ border: none;
+ border-radius: 10px;
+ padding: 10px 22px;
+ font-size: 0.85rem;
+ font-weight: 700;
+ cursor: pointer;
+ transition: opacity 0.2s;
+ }
+
+ .btn-search:hover {
+ opacity: 0.8;
+ }
+
+ /* ─── RESULT CARD ─── */
+ .result-section {
+ max-width: 760px;
+ margin: 36px auto 60px;
+ padding: 0 20px;
+ }
+
+ .ods-card {
+ background: var(--card);
+ border: 1px solid var(--border);
+ border-radius: 20px;
+ overflow: hidden;
+ margin-bottom: 24px;
+ }
+
+ .ods-card-header {
+ background: linear-gradient(135deg, #0d1829, #091120);
+ padding: 20px 24px;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ border-bottom: 1px solid var(--border);
+ }
+
+ .ods-folio {
+ font-size: 1.1rem;
+ font-weight: 900;
+ color: var(--accent2);
+ }
+
+ .ods-client {
+ font-size: 0.8rem;
+ color: var(--muted);
+ margin-top: 4px;
+ }
+
+ .ods-serial {
+ font-size: 0.75rem;
+ color: var(--muted);
+ margin-top: 2px;
+ }
+
+ .status-badge {
+ padding: 6px 14px;
+ border-radius: 20px;
+ font-size: 0.72rem;
+ font-weight: 700;
+ letter-spacing: 0.5px;
+ }
+
+ /* ─── PROGRESS TRACKER ─── */
+ .tracker {
+ padding: 32px 24px;
+ }
+
+ .tracker-title {
+ font-size: 0.75rem;
+ color: var(--muted);
+ margin-bottom: 24px;
+ font-weight: 600;
+ letter-spacing: 1px;
+ text-transform: uppercase;
+ }
+
+ .steps {
+ display: flex;
+ align-items: flex-start;
+ justify-content: space-between;
+ position: relative;
+ }
+
+ .steps-progress-bg {
+ position: absolute;
+ top: 18px;
+ left: 5%;
+ width: 90%;
+ height: 2px;
+ background: var(--border);
+ z-index: 0;
+ }
+
+ .steps-progress-fill {
+ position: absolute;
+ top: 18px;
+ left: 5%;
+ height: 2px;
+ background: var(--accent);
+ z-index: 0;
+ transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+ box-shadow: 0 0 10px var(--accent);
+ }
+
+ .step {
+ flex: 1;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 10px;
+ position: relative;
+ z-index: 1;
+ }
+
+ .step-circle {
+ width: 36px;
+ height: 36px;
+ border-radius: 50%;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 1rem;
+ background: var(--red);
+ /* Pending state background is red */
+ border: 2px solid var(--red);
+ transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+ color: #fff;
+ /* Pending text is white */
+ box-shadow: 0 0 10px rgba(255, 69, 58, 0.4);
+ }
+
+ .step.done .step-circle {
+ background: var(--green);
+ border-color: var(--green);
+ color: #000;
+ box-shadow: 0 0 15px rgba(48, 209, 88, 0.5);
+ transform: scale(1.05);
+ }
+
+ .step.active .step-circle {
+ background: var(--accent);
+ border-color: var(--accent);
+ color: #fff;
+ box-shadow: 0 0 20px rgba(0, 113, 227, 0.8);
+ animation: futuristic-pulse 2s infinite;
+ transform: scale(1.15);
+ }
+
+ @keyframes futuristic-pulse {
+ 0% {
+ box-shadow: 0 0 0 0 rgba(0, 113, 227, 0.7);
+ }
+
+ 70% {
+ box-shadow: 0 0 0 15px rgba(0, 113, 227, 0);
+ }
+
+ 100% {
+ box-shadow: 0 0 0 0 rgba(0, 113, 227, 0);
+ }
+ }
+
+ .step-label {
+ font-size: 0.65rem;
+ font-weight: 600;
+ text-align: center;
+ color: #fff;
+ /* Always white label text */
+ line-height: 1.3;
+ transition: color 0.3s;
+ }
+
+ .step.pending .step-label {
+ opacity: 0.7;
+ /* Slightly dim pending labels */
+ }
+
+ .step.active .step-label {
+ color: var(--accent2);
+ text-shadow: 0 0 8px rgba(52, 170, 220, 0.5);
+ }
+
+ /* ─── EMPTY STATE ─── */
+ .empty-state {
+ text-align: center;
+ padding: 60px 20px;
+ color: var(--muted);
+ }
+
+ .empty-icon {
+ font-size: 3rem;
+ margin-bottom: 12px;
+ }
+
+ .empty-state h3 {
+ font-size: 1rem;
+ margin-bottom: 6px;
+ color: var(--text);
+ }
+
+ .empty-state p {
+ font-size: 0.82rem;
+ }
+
+ @media (max-width: 520px) {
+ .step-label {
+ font-size: 0.55rem;
+ }
+
+ .search-title {
+ font-size: 1.6rem;
+ }
+
+ .steps::before {
+ top: 15px;
+ }
+
+ .step-circle {
+ width: 30px;
+ height: 30px;
+ font-size: 0.8rem;
+ }
+
+.header {
+padding: 14px 12px;
+gap: 8px;
+flex-wrap: wrap;
+}
+
+.header > a:first-child {
+min-width: 0;
+flex: 1 1 auto;
+}
+
+.header h1 {
+font-size: 1.05rem !important;
+line-height: 1.05 !important;
+word-break: break-word;
+}
+
+.header-sub {
+font-size: 0.62rem;
+}
+
+.search-section {
+margin-top: 24px;
+}
+
+.search-bar {
+flex-direction: column;
+padding: 10px;
+gap: 8px;
+}
+
+.btn-search {
+width: 100%;
+}
+
+.ods-folio,
+.ods-client,
+.ods-serial {
+word-break: break-word;
+}
+ }
+
+ /* ─── QR SCANNER ─── */
+ .qr-scan-btn {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ gap: 10px;
+ width: 100%;
+ margin-top: 14px;
+ padding: 14px 20px;
+ background: rgba(0, 113, 227, 0.1);
+ color: var(--accent);
+ border: 1px solid rgba(0, 113, 227, 0.3);
+ border-radius: 14px;
+ font-size: 0.95rem;
+ font-weight: 700;
+ font-family: inherit;
+ cursor: pointer;
+ transition: background 0.2s, border-color 0.2s;
+ -webkit-tap-highlight-color: transparent;
+ }
+
+ .qr-scan-btn:active {
+ background: rgba(0, 113, 227, 0.2);
+ border-color: var(--accent);
+ }
+
+ .qr-scan-btn svg {
+ flex-shrink: 0;
+ }
+
+ /* Scanner Modal */
+ .qr-modal-overlay {
+ display: none;
+ position: fixed;
+ inset: 0;
+ z-index: 999999;
+ background: rgba(0, 0, 0, 0.95);
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ padding: 20px;
+ }
+
+ .qr-modal-overlay.active {
+ display: flex;
+ }
+
+ .qr-modal-header {
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ width: 100%;
+ max-width: 400px;
+ margin-bottom: 20px;
+ }
+
+ .qr-modal-title {
+ font-size: 1.1rem;
+ font-weight: 700;
+ color: #fff;
+ }
+
+ .qr-modal-close {
+ width: 36px;
+ height: 36px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ background: rgba(255, 255, 255, 0.1);
+ border: none;
+ border-radius: 50%;
+ color: #fff;
+ font-size: 18px;
+ cursor: pointer;
+ -webkit-tap-highlight-color: transparent;
+ }
+
+ .qr-modal-close:active {
+ background: rgba(255, 255, 255, 0.2);
+ }
+
+ #qr-reader {
+ width: 100%;
+ max-width: 400px;
+ border-radius: 20px;
+ overflow: hidden;
+ border: 2px solid rgba(0, 113, 227, 0.4);
+ box-shadow: 0 0 40px rgba(0, 113, 227, 0.15);
+ }
+
+ #qr-reader video {
+ border-radius: 18px;
+ }
+
+ .qr-hint {
+ color: var(--muted);
+ font-size: 0.8rem;
+ text-align: center;
+ margin-top: 16px;
+ max-width: 300px;
+ }
+ 
+  /* Lightbox Modal */
+  .lightbox-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    z-index: 10000000;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .lightbox-overlay.active {
+    display: flex;
+    opacity: 1;
+  }
+  .lightbox-content {
+    max-width: 90%;
+    max-height: 85%;
+    object-fit: contain;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  }
+  .lightbox-overlay.active .lightbox-content {
+    transform: scale(1);
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lightbox-close:active {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(0.9);
+  }
+</style>
+
+  <link rel="canonical" href="https://macwave.com.mx/status-ods">
+</head>
+
+<body>
+
+ <div class="header">
+ <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 12px;">
+  <img src="./images/logo_dashboard_white.png" alt="Logo macWave México"
+  style="height: 42px; width: auto; border-radius: 4px;">
+
+ <div>
+ <h1
+ style="font-size: 1.4rem; font-weight: 900; letter-spacing: -0.5px; color: #fff; margin: 0; line-height: 1;">
+ mac<span>Wave</span> <span style="font-weight: 300;">México</span></h1>
+ <div style="font-size: 0.7rem; color: var(--muted); margin-top: 2px;">Para tu dispositivo Apple fuera de garantía
+ </div>
+ </div>
+ </a>
+ <a href="https://wa.me/525535757364?text=Hola%20me%20ayudas%20a%20reparar%20mi%20Mac%3F"
+ target="_blank"
+ style="background: #25D366; color: #fff; padding: 8px 16px; border-radius: 50px; font-size: 0.8rem; font-weight: 900; text-decoration: none; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4); border: 2px solid #25D366; transition: 0.2s;">
+ <svg style="width: 16px; height: 16px; fill: currentColor;" viewBox="0 0 24 24">
+ <path
+ d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+ </svg>
+ <span>AYUDA</span>
+ </a>
+ </div>
+
+ <div class="search-section">
+ <div class="search-title">Consulta tu equipo con tu ODS (Orden De Servicio)</div>
+ <div class="search-sub">Ingresa tu folio MW, nombre de cliente o número de serie</div>
+ <div class="search-bar">
+ <input type="text" id="search-input" placeholder="Folio MW, nombre o número de serie...">
+ <button class="btn-search" onclick="doSearch()">Consultar</button>
+ </div>
+ <button class="qr-scan-btn" id="qr-scan-btn" onclick="openQRScanner()">
+ <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+ <path
+ d="M0 .5A.5.5 0 0 1 .5 0h3a.5.5 0 0 1 0 1H1v2.5a.5.5 0 0 1-1 0v-3Zm12 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0V1h-2.5a.5.5 0 0 1-.5-.5ZM.5 12a.5.5 0 0 1 .5.5V15h2.5a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5Zm15 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H15v-2.5a.5.5 0 0 1 .5-.5ZM4 4h1v1H4V4Zm2 0h1v1H6V4Zm2 0h1v1H8V4Zm0 2h1v1H8V6Zm-2 0h1v1H6V6Zm-2 0h1v1H4V6Zm8-2h1v1h-1V4Zm-2 2h1v1h-1V6Zm2 0h1v1h-1V6Zm-4 2h1v1H8V8Zm2 0h1v1h-1V8Zm2 0h1v1h-1V8ZM4 8h1v1H4V8Zm2 0h1v1H6V8Zm-2 2h1v1H4v-1Zm2 0h1v1H6v-1Zm4 0h1v1h-1v-1Zm2 0h1v1h-1v-1Zm-4 2h1v1H8v-1Zm2 0h1v1h-1v-1Z" />
+ </svg>
+ Escanear QR con Cámara
+ </button>
+ </div>
+
+ <!-- QR Scanner Modal -->
+ <div class="qr-modal-overlay" id="qr-modal">
+ <div class="qr-modal-header">
+ <span class="qr-modal-title">📷 Escanear QR de tu ODS</span>
+ <button class="qr-modal-close" onclick="closeQRScanner()">✕</button>
+ </div>
+ <div id="qr-reader"></div>
+ <p class="qr-hint">Apunta la cámara al código QR de tu Orden de Servicio</p>
+ </div>
+
+ <div class="result-section" id="result-section"></div>
+
+ <div class="footer-google-reviews" style="background: rgba(0, 90, 200, 0.18); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); text-align: center; padding: 24px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; border-radius: 24px; margin: 30px auto 0; max-width: 260px; border: 1px solid rgba(100, 180, 255, 0.35); box-shadow: 0 8px 40px rgba(0, 113, 227, 0.25), inset 0 1px 0 rgba(255,255,255,0.15);">
+ <div style="margin-bottom: 6px;">
+ <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 40px; height: 40px; display: inline-block;">
+ <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+ <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+ <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05" />
+ <path d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+ </svg>
+ </div>
+ 
+ <div style="color: #F4B400; font-size: 22px; line-height: 1; margin-bottom: 8px; letter-spacing: 2px;">
+ ★★★★★
+ </div>
+
+ <p style="color: rgba(255, 255, 255, 0.92); font-size: 0.85rem; font-weight: 500; margin: 0 auto; line-height: 1.4;">
+ Orgullosamente <strong style="font-weight: 700; color: #fff;">5 estrellas</strong> en Google
+ </p>
+ </div>
+
+ <div class="footer"
+ style="margin-top: 60px; padding: 40px 20px; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; color: var(--muted); font-size: 0.8rem;">
+ <p style="margin-bottom: 10px;">&copy; 2026 Mac Wave México. Todos los derechos reservados.</p>
+ <p>Sitio desarrollado e impulsado por <a href="https://intersite.netlify.app" target="_blank"
+ style="color: var(--accent); text-decoration: none; font-weight: 700;">InterSite</a> | <a
+ href="terminos" style="color: inherit; text-decoration: underline;">Términos y Condiciones</a></p>
+ </div>
+
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+ <script>
+ const _sb = supabase.createClient(
+ 'https://lifxtyhvgnxjjqgbzare.supabase.co',
+ 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpZnh0eWh2Z254ampxZ2J6YXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MzAzNTgsImV4cCI6MjA4NzMwNjM1OH0.YCOLJUZaw5LNAyDyNrzhlJJJeUltRadrnjC1oNUCgFI'
+ );
+
+ const STEPS = [
+ { key: 'Recibido', label: 'Recibido', icon: '📩' },
+ { key: 'Diagnóstico', label: 'Diagnóstico', icon: '🔍' },
+ { key: 'Reparación', label: 'Reparación', icon: '🔧' },
+ { key: 'Equipo reparado', label: 'Listo', icon: '✅' },
+ { key: 'Equipo entregado', label: 'Entregado', icon: '📦' },
+ ];
+
+ const STATUS_COLORS = {
+ 'Recibido': { bg: '#1a1800', text: '#FFD60A' }, // Yellow
+ 'Diagnóstico': { bg: '#1a1800', text: '#FFD60A' }, // Yellow
+ 'Espera de aprobación y pago': { bg: '#1a0000', text: '#FF453A' }, // Red
+ 'Espera de piezas': { bg: '#1a0000', text: '#FF453A' }, // Red
+ 'Reparación': { bg: '#1a1800', text: '#FFD60A' }, // Yellow
+ 'Equipo reparado': { bg: '#001a0a', text: '#30D158' }, // Green
+ 'Equipo entregado': { bg: '#001a0a', text: '#30D158' }, // Green
+ 'Equipo sin reparar': { bg: '#1a0000', text: '#FF453A' }, // Red
+ 'Nota General': { bg: '#111111', text: '#8E8E93' } // Gray
+ };
+
+ // Read URL params (from QR scan)
+ const params = new URLSearchParams(window.location.search);
+ const pFolio = params.get('folio') || '';
+
+ if (pFolio) {
+ document.getElementById('search-input').value = pFolio;
+ }
+
+ function renderODS(ods) {
+ const sc = STATUS_COLORS[ods.status] || STATUS_COLORS['Recibido'];
+
+ // Historial (Timeline) logic
+ let historial = [];
+ try {
+ // Si 'notas' es un JSON string (nuevo formato)
+ historial = JSON.parse(ods.notas || '[]');
+ if (!Array.isArray(historial)) throw new Error('Not an array');
+ } catch (e) {
+ // Formato legacy (texto plano)
+ if (ods.notas) {
+ historial = [{
+ date: ods.fecha || 'Fecha de ingreso',
+ status: 'Nota General',
+ text: ods.notas,
+ img: null
+ }];
+ } else {
+ historial = [{
+ date: ods.fecha || '',
+ status: 'Recibido',
+ text: 'Equipo recibido e ingresado al sistema.',
+ img: null
+ }];
+ }
+ }
+
+  // Show newest on top without mutating the original chronological order
+  const timelineHtml = historial.slice().reverse().map((ev, i) => {
+ const isLatest = i === 0;
+ let evColor, evBg;
+
+ const isEntregado = ods.status === 'Equipo entregado' || ods.status === 'Equipo reparado';
+
+ if (isEntregado) {
+ evColor = '#30D158';
+ evBg = '#001a0a';
+ } else {
+ if (i === 0) {
+ if (historial.length === 1) {
+ evColor = '#30D158';
+ evBg = '#001a0a';
+ } else {
+ evColor = '#FF453A';
+ evBg = '#1a0000';
+ }
+ } else if (i === 1) {
+ if (historial.length === 2) {
+ evColor = '#30D158';
+ evBg = '#001a0a';
+ } else {
+ evColor = '#FFD60A';
+ evBg = '#1a1800';
+ }
+ } else {
+ evColor = '#30D158';
+ evBg = '#001a0a';
+ }
+ }
+
+ return `
+ <div class="tl-item" style="display: flex; gap: 16px; margin-bottom: 24px; position: relative;">
+ <!-- Línea conectora -->
+ ${i !== historial.length - 1 ? '<div style="position: absolute; left: 15px; top: 32px; bottom: -24px; width: 2px; background: var(--border);"></div>' : ''}
+ 
+ <!-- Punto -->
+ <div style="width: 32px; height: 32px; border-radius: 50%; background: ${evBg}; border: 2px solid ${evColor}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1; margin-top: 2px;">
+ <div style="width: 8px; height: 8px; border-radius: 50%; background: ${evColor}; ${isLatest ? 'box-shadow: 0 0 10px ' + evColor : ''};"></div>
+ </div>
+
+ <!-- Contenido -->
+ <div style="flex: 1; background: #1c1c1e; border: 1px solid var(--border); border-radius: 14px; padding: 16px;">
+ <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+ <div>
+ <span style="display: inline-block; font-size: 0.75rem; font-weight: 700; color: ${evColor}; text-transform: uppercase; letter-spacing: 0.5px; border-radius: 4px; border: 1px solid ${evColor}; padding: 2px 6px; margin-bottom: 6px;">${ev.status}</span>
+ <div style="color: var(--muted); font-size: 0.75rem;">${ev.date}</div>
+ </div>
+ </div>
+${ev.text && !ev.text.startsWith('Cambio de estatus vía Tablero') ? `<div style="font-size: 0.88rem; color: #E0E0E6; line-height: 1.5;">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
+${(() => {
+const evPhotos = [];
+if (ev.img) evPhotos.push(ev.img);
+if (Array.isArray(ev.photos)) evPhotos.push(...ev.photos.filter(Boolean));
+if (!evPhotos.length) return '';
+return `<div style="margin-top: 12px; display:grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px;">
+${evPhotos.map((p, idx) => `<img src="${p}" onclick="openLightbox(this.src)" style="width:100%; height:120px; object-fit:cover; border-radius: 8px; border: 1px solid var(--border); cursor: zoom-in;" alt="Evidencia Técnica ${idx + 1}">`).join('')}
+</div>`;
+})()}
+ </div>
+ </div>
+ `;
+ }).join('');
+
+const photos = historial.flatMap(h => {
+const list = [];
+if (h.img) list.push(h.img);
+if (Array.isArray(h.photos)) list.push(...h.photos.filter(Boolean));
+return list;
+});
+ const galleryHtml = photos.length > 0 ? `
+ <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05);">
+ <div class="tracker-title" style="margin-bottom: 20px; color: #fff; font-size: 1.1rem; letter-spacing: 1px;">EVIDENCIAS FOTOGRÁFICAS</div>
+ <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px;">
+ ${photos.map((p, idx) => `
+ <div style="aspect-ratio: 1; overflow: hidden; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: #111;" 
+ onclick="openLightbox(this.querySelector('img').src)"
+ onmouseover="this.style.transform='scale(1.05)'; this.style.borderColor='rgba(255,255,255,0.3)';" 
+ onmouseout="this.style.transform='scale(1)'; this.style.borderColor='rgba(255,255,255,0.1)';">
+ <img src="${p}" style="width: 100%; height: 100%; object-fit: cover;" alt="Evidencia ${idx + 1}">
+ </div>
+ `).join('')}
+ </div>
+ </div>
+ ` : '';
+
+ return `
+ <div class="ods-card">
+ <div class="ods-card-header">
+ <div>
+ <div class="ods-folio">${ods.folio}</div>
+ <div class="ods-client">Cliente: ${ods.cliente || ''}</div>
+ ${ods.serie ? `<div class="ods-serial">Serie: ${ods.serie}</div>` : ''}
+ </div>
+ <span class="status-badge" style="background:${sc.bg}; color:${sc.text};">
+ ${(ods.status || 'RECIBIDO').toUpperCase()}
+ </span>
+ </div>
+ <div class="tracker" style="padding: 32px 24px;">
+ <div class="tracker-title">Historial y Evidencias de Reparación</div>
+ <div class="timeline" style="margin-top: 20px;">
+ ${timelineHtml}
+ </div>
+ ${galleryHtml}
+ </div>
+ </div>`;
+ }
+
+ async function doSearch() {
+ let query = document.getElementById('search-input').value.trim();
+ const rs = document.getElementById('result-section');
+ if (!query) { rs.innerHTML = ''; return; }
+
+ // Si solo buscan el número (ej: 9473), lo dejamos tal cual para que el ilike lo encuentre
+ // Limpiamos la búsqueda de caracteres extraños pero mantenemos flexibilidad
+ let searchStr = query.replace(/ /g, '%');
+ 
+ rs.innerHTML = '<div style="color:#8e8e93;text-align:center;padding:30px;">Buscando información técnica...</div>';
+
+ // Search by Folio, Name or Serial (Súper Flexible Mode)
+ const { data, error } = await _sb
+ .from('ordenes_servicio')
+ .select('*')
+ .or(`folio.ilike.%${searchStr}%,cliente.ilike.%${searchStr}%,serie.ilike.%${searchStr}%`)
+ .order('created_at', { ascending: false });
+
+ if (error || !data || data.length === 0) {
+ rs.innerHTML = `
+ <div class="empty-state">
+ <div class="empty-icon">❌</div>
+ <h3>Búsqueda sin resultados</h3>
+ <p>Verifica que el folio, nombre o serie sean correctos.</p>
+ </div>`;
+ return;
+ }
+
+ let htmlOutput = `
+ <div style="background:rgba(48, 209, 88, 0.15); border: 1px solid #30d158; color:#30d158; padding:12px 20px; border-radius:14px; text-align:center; font-weight:800; font-size: 0.95rem; margin-bottom:24px; box-shadow:0 4px 15px rgba(48,209,88,0.1); display:flex; align-items:center; justify-content:center; gap:8px;">
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+ ¡ORDEN DE SERVICIO ENCONTRADA!
+ </div>
+ `;
+
+ rs.innerHTML = htmlOutput + data.map(renderODS).join('');
+
+ // Futuristic progress bar animation
+ setTimeout(() => {
+ data.forEach(ods => {
+ const currentIdx = STEPS.findIndex(s => s.key === (ods.status || 'Recibido'));
+ let progressPercent = 0;
+ if (currentIdx > 0) {
+ progressPercent = (currentIdx / (STEPS.length - 1)) * 90;
+ }
+ const fillEl = document.getElementById(`progress-fill-${ods.folio}`);
+ if (fillEl) {
+ fillEl.style.width = `${progressPercent}%`;
+ }
+ });
+ }, 50);
+ }
+
+ document.getElementById('search-input').addEventListener('keydown', e => {
+ if (e.key === 'Enter') doSearch();
+ });
+
+ // Trigger search if folio is present in URL
+ if (pFolio) {
+ setTimeout(doSearch, 300);
+ }
+
+ /* ─── QR SCANNER ─── */
+ let qrScanner = null;
+
+ function openQRScanner() {
+ const modal = document.getElementById('qr-modal');
+ modal.classList.add('active');
+ document.body.style.overflow = 'hidden';
+
+ qrScanner = new Html5Qrcode('qr-reader');
+
+ const config = {
+ fps: 10,
+ qrbox: { width: 250, height: 250 }
+ };
+
+ qrScanner.start(
+ { facingMode: 'environment' },
+ config,
+ (decodedText) => {
+ handleQRResult(decodedText);
+ },
+ (errorMessage) => {
+ // Start ignorando errores de frame
+ }
+ ).catch((err) => {
+ console.warn('Fallo cámara trasera, intentando fallback...', err);
+ qrScanner.start(
+ { facingMode: 'user' },
+ config,
+ (decodedText) => {
+ handleQRResult(decodedText);
+ },
+ (errorMessage) => { }
+ ).catch((fallbackErr) => {
+ console.error('Error total cámara:', fallbackErr);
+ alert('No se pudo acceder a la cámara. Revisa los permisos de Safari (Ajustes > Safari > Cámara).');
+ closeQRScanner();
+ });
+ });
+ }
+
+ function closeQRScanner() {
+ const modal = document.getElementById('qr-modal');
+ modal.classList.remove('active');
+ document.body.style.overflow = '';
+
+ if (qrScanner) {
+ qrScanner.stop().then(() => {
+ qrScanner.clear();
+ qrScanner = null;
+ }).catch(() => {
+ qrScanner = null;
+ });
+ }
+ }
+
+ function handleQRResult(text) {
+ // Close scanner first
+ closeQRScanner();
+
+ // Extract folio from QR content
+ // QR could be a URL like status-ods.html?folio=MW-001 or just the folio itself
+ let folio = text;
+ try {
+ const url = new URL(text);
+ const f = url.searchParams.get('folio');
+ if (f) folio = f;
+ } catch (e) {
+ // Not a URL, use text as-is (it's probably just the folio)
+ folio = text;
+ }
+
+ // Set input and search
+ document.getElementById('search-input').value = folio;
+ setTimeout(doSearch, 200);
+ }
+ 
+  /* Lightbox Functions */
+  function openLightbox(src) {
+    const modal = document.getElementById('lightbox-modal');
+    const img = document.getElementById('lightbox-img');
+    if (!modal || !img) return;
+
+    img.src = src;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    const modal = document.getElementById('lightbox-modal');
+    if (!modal) return;
+
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+</script>
+  <!-- Lightbox Modal -->
+  <div id="lightbox-modal" class="lightbox-overlay" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <img id="lightbox-img" class="lightbox-content" src="" alt="Vista previa" onclick="event.stopPropagation()">
+  </div>
+
+</body>
+</html>

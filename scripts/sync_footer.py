@@ -2,7 +2,13 @@ import sys
 import os
 
 def replace_footer(target_files):
-    with open('/Users/joelduran/Documents/GitHub/MacWaveT2/index.html', 'r', encoding='utf-8') as f:
+    # Try current directory first, then fallback to parent of script directory
+    base_dir = '.'
+    if not os.path.exists(os.path.join(base_dir, 'index.html')):
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        
+    index_path = os.path.join(base_dir, 'index.html')
+    with open(index_path, 'r', encoding='utf-8') as f:
         content = f.read()
     
     start_tag = '<footer class="main-footer">'
@@ -14,11 +20,10 @@ def replace_footer(target_files):
         return
         
     end_idx = content.find(end_tag, start_idx) + len(end_tag)
-    
     footer_content = content[start_idx:end_idx]
     
     for filename in target_files:
-        filepath = os.path.join('/Users/joelduran/Documents/GitHub/MacWaveT2', filename)
+        filepath = os.path.join(base_dir, filename)
         if not os.path.exists(filepath):
             continue
             

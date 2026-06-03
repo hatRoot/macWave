@@ -4060,7 +4060,7 @@ html, body {
   .cta-button.primary {
     padding: 8px 16px !important;
     font-size: 0.85rem !important;
-    max-width: 200px !important;
+    max-width: 100% !important;
   }
   
   /* Fix iPhone viewport issues */

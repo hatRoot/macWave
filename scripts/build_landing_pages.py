@@ -3,7 +3,9 @@ import os
 import re
 
 # Base path
-ROOT_DIR = '/Users/joelduran/Documents/GitHub/MacWaveT2'
+ROOT_DIR = '.'
+if not os.path.exists(os.path.join(ROOT_DIR, 'reparaciones.html')):
+    ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REPARACIONES_FILE = os.path.join(ROOT_DIR, 'reparaciones.html')
 
 pages_data = [

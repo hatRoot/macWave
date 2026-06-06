@@ -1,9 +1,7 @@
 import os
 import re
 
-ROOT_DIR = '.'
-if not os.path.exists(os.path.join(ROOT_DIR, 'reparaciones.html')):
-    ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT_DIR = '/Users/joelduran/Documents/GitHub/MacWaveT2'
 REPARACIONES_FILE = os.path.join(ROOT_DIR, 'reparaciones.html')
 
 p = {
@@ -73,6 +71,12 @@ footer_part = '</main>' + template.split('</main>')[1]
 page_html = header_part
 page_html = re.sub(r'<title>.*?</title>', f'<title>{p["meta_title"]}</title>', page_html)
 page_html = re.sub(r'<meta name="description"\s+content=".*?">', f'<meta name="description" content="{p["meta_desc"]}">', page_html, flags=re.DOTALL)
+
+# Fix SEO Canonical and og:url
+page_name = p["filename"].replace(".html", "")
+page_html = re.sub(r'<link\s+rel=["\']canonical["\']\s+href=["\'][^"\']+["\']>', f'<link rel="canonical" href="https://macwave.com.mx/{page_name}">', page_html, flags=re.IGNORECASE)
+page_html = re.sub(r'<meta\s+property=["\']og:url["\']\s+content=["\'][^"\']+["\']>', f'<meta property="og:url" content="https://macwave.com.mx/{page_name}">', page_html, flags=re.IGNORECASE)
+
 
 main_content = f"""
     <!-- PAIN HERO -->

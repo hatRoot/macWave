@@ -5,6 +5,9 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <meta name="robots" content="noindex, nofollow, noarchive">
+ <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+ <meta http-equiv="Pragma" content="no-cache">
+ <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://lifxtyhvgnxjjqgbzare.supabase.co; frame-ancestors 'none'; base-uri 'self';">
  <title>Acceso Técnicos | macWave T2</title>
  <meta name="description" content="Portal de acceso para técnicos autorizados de macWave T2. Gestión interna de reparaciones Apple.">
 
@@ -198,14 +201,33 @@
  </div>
  </div>
 
- <!-- Supabase Library -->
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <script src="js/supabase-config.js"></script>
+ <script src="js/ops-shared.js?v=hotfix-2c"></script>
  <script>
- // Supabase configuration
- const SUPABASE_URL = 'https://lifxtyhvgnxjjqgbzare.supabase.co';
- const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpZnh0eWh2Z254ampxZ2J6YXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MzAzNTgsImV4cCI6MjA4NzMwNjM1OH0.YCOLJUZaw5LNAyDyNrzhlJJJeUltRadrnjC1oNUCgFI';
+ const supabaseClient = MacWaveOps.createSupabaseClient();
 
- const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+ function normalizeAuthEmail(value) {
+   return String(value || '').trim().toLowerCase();
+ }
+
+ function mapSupabaseAuthError(err) {
+   const raw = err?.message || err?.error_description || String(err || '');
+   const msg = String(raw || '').toLowerCase();
+   if (msg.includes('invalid login credentials')) {
+     return 'Email o contraseña incorrectos.';
+   }
+   if (msg.includes('email not confirmed')) {
+     return 'Tu email aún no está confirmado en Supabase Auth.';
+   }
+   if (msg.includes('user not found')) {
+     return 'Usuario no encontrado.';
+   }
+   if (msg.includes('too many requests')) {
+     return 'Demasiados intentos. Espera un momento e intenta de nuevo.';
+   }
+   return raw || 'Error de autenticación.';
+ }
 
  const loginForm = document.getElementById('login-form');
  const emailInput = document.getElementById('email');
@@ -222,61 +244,36 @@
  submitBtn.textContent = 'Verificando...';
 
  const email = emailInput.value.trim();
- const password = passwordInput.value.trim();
+ const password = passwordInput.value;
 
- // Root / Admin Bypass
- if (email === 'root' && password === 'admin') {
- sessionStorage.setItem('macwave_session', 'authorized');
- sessionStorage.setItem('macwave_user', 'root');
- window.location.href = 'dashboard-ods.html';
- return;
- }
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
 
- // Joel Specific Bypass (Manual credentials)
- if (email === 'joel.duran.mendoza@me.com' && password === 'Joshua1986') {
- // Attempt Supabase login in background to get a session
- supabaseClient.auth.signInWithPassword({ email, password }).then(({ error }) => {
- if (error) console.warn("Supabase background login failed:", error.message);
- else console.log("Supabase session established for Joel.");
- });
- 
- sessionStorage.setItem('macwave_session', 'authorized');
- sessionStorage.setItem('macwave_user', 'joel');
- window.location.href = 'dashboard-ods.html';
- return;
- }
+    if (error) throw error;
 
- // Steve Jobs Bypass (Procell)
- if (email === 'procell.bip@gmail.com' && password === 'Llave2026$') {
- sessionStorage.setItem('macwave_session', 'authorized');
- sessionStorage.setItem('macwave_user', 'procell.bip@gmail.com');
- window.location.href = 'dashboard-ods.html';
- return;
- }
+    const authEmail = normalizeAuthEmail(data.user?.email || email);
+    if (!authEmail) throw new Error('No se recibió email de la sesión. Intenta de nuevo.');
 
- try {
- const { data, error } = await supabaseClient.auth.signInWithPassword({
- email: email,
- password: password,
- });
+    // FIX OPS: bootstrap automático del admin real tras Auth (sin bypass).
+    if (MacWaveOps.isPrimaryAdminEmail(authEmail)) {
+      await MacWaveOps.ensurePrimaryAdminAccess(supabaseClient, authEmail);
+    }
 
- if (error) throw error;
+    const role = await MacWaveOps.resolveOpsAccess(supabaseClient, authEmail);
+    if (!role) {
+      await supabaseClient.auth.signOut();
+      throw new Error('Tu cuenta no tiene acceso al panel técnico. Contacta al administrador.');
+    }
 
- // Joel Super User Restriction (Email check for Supabase users)
- const authorizedEmails = ['joel.duran.mendoza@me.com', 'joel@macwave.com.mx', 'contabilidad@macwave.com.mx', 'contacto@macwave.com.mx'];
-
- if (authorizedEmails.includes(email.toLowerCase())) {
- sessionStorage.setItem('macwave_session', 'authorized');
- sessionStorage.setItem('macwave_user', email);
- window.location.href = 'cotizaciones.html';
- } else {
- await supabaseClient.auth.signOut();
- throw new Error('Lo sentimos, solo el administrador tiene acceso a este panel.');
- }
+    window.location.href = 'dashboard-ods.html';
 
  } catch (error) {
- console.error('Login error:', error.message);
- errorMessage.textContent = error.message;
+ console.error('Login error:', error);
+ const uiMsg = error?.name === 'AuthApiError' ? mapSupabaseAuthError(error) : (error?.message || mapSupabaseAuthError(error));
+ errorMessage.textContent = uiMsg;
  errorMessage.style.display = 'block';
  } finally {
  submitBtn.disabled = false;

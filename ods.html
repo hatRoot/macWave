@@ -5,6 +5,7 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <meta name="robots" content="noindex, nofollow, noarchive">
+ <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://lifxtyhvgnxjjqgbzare.supabase.co https://*.supabase.co; frame-ancestors 'self'; base-uri 'self';">
  <title>Generador de ODS | macWave T2</title>
 
  <meta name="description"
@@ -1004,22 +1005,31 @@
 
  <!-- Supabase -->
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <script src="js/supabase-config.js"></script>
+ <script src="js/ops-shared.js?v=hotfix-2b"></script>
  <script src="logo_const.js"></script>
  <script>
- // Detect if embedded
  if (window.self !== window.top || new URLSearchParams(window.location.search).get('embed') === 'true') {
  document.body.classList.add('embedded');
  }
 
- // Session Security Check
- if (sessionStorage.getItem('macwave_session') !== 'authorized') {
- window.location.href = 'tecnicos.html';
+ window._sbClient = MacWaveOps.createSupabaseClient();
+ (async function requireSupabaseSession() {
+ const { data } = await window._sbClient.auth.getSession();
+ if (!data?.session) {
+ sessionStorage.clear();
+ window.location.replace('tecnicos.html');
+ return;
  }
-
- // ── Supabase Client ──────────────────────────────────
- const SUPABASE_URL = 'https://lifxtyhvgnxjjqgbzare.supabase.co';
- const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpZnh0eWh2Z254ampxZ2J6YXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MzAzNTgsImV4cCI6MjA4NzMwNjM1OH0.YCOLJUZaw5LNAyDyNrzhlJJJeUltRadrnjC1oNUCgFI';
- window._sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+ const role = await MacWaveOps.verifyTechnicianAccess(window._sbClient, data.session.user.email);
+ if (!role) {
+ await window._sbClient.auth.signOut();
+ sessionStorage.clear();
+ window.location.replace('tecnicos.html');
+ }
+ sessionStorage.setItem('macwave_user', data.session.user.email || '');
+ sessionStorage.setItem('macwave_role', role);
+ })();
 
  document.addEventListener('DOMContentLoaded', () => {
  // Live Clock and User Display
@@ -1069,9 +1079,8 @@
  if (!qrDiv || typeof QRCode === 'undefined') return;
  qrDiv.innerHTML = '';
  const folio = document.getElementById('quote-number').value || 'ODS';
- const client = document.getElementById('client-name').value || '';
- const serial = document.getElementById('serial-number').value || '';
- const url = `https://macwave.com.mx/status-ods.html?folio=${encodeURIComponent(folio)}&cliente=${encodeURIComponent(client)}&serie=${encodeURIComponent(serial)}`;
+ const token = window._currentTrackingToken || '';
+ const url = MacWaveOps.trackingUrl(folio, token);
  new QRCode(qrDiv, { text: url, width: 70, height: 70, correctLevel: QRCode.CorrectLevel.M });
  }, 50);
  };
@@ -1155,7 +1164,7 @@
 
  // Auto-fill Technician based on session user
  const currentUser = sessionStorage.getItem('macwave_user');
- const isAdmin = (currentUser === 'joel.duran.mendoza@me.com' || currentUser === 'joel' || currentUser === 'root');
+ const isAdmin = sessionStorage.getItem('macwave_role') === 'admin';
  const techNameInput = document.getElementById('tech-name');
  if (techNameInput) {
  if (currentUser === 'joel.duran.mendoza@me.com' || currentUser === 'joel') {
@@ -1304,7 +1313,7 @@
  div.className = 'item-row';
  div.innerHTML = `
  <input type="text" class="i-desc" value="${item.d}" placeholder="Concepto de Servicio o Producto..." list="catalog-list-data">
- <input type="number" class="i-price" value="${item.p}" placeholder="0.00" step="0.01" style="text-align: right;">
+ <input type="number" class="i-price" value="${item.p}" placeholder="0.00" style="text-align: right;">
  <input type="number" class="i-qty" value="${item.q}" min="0" step="1" style="text-align: center;">
  <button type="button" class="remove-btn">✕</button>
  `;
@@ -1714,6 +1723,7 @@
  ESPECIALISTAS EN TECNOLOGIA ROLDU SAS. DE C.V
  </div>
  <div style="text-align: center; width: 33%;">
+ Visítanos en MacWave Sucursal Condesa<br>Salvador Alvarado 72 oficina 208, CDMX
  </div>
  <div style="text-align: right; width: 33%;">
  sitio web: https://macwave.com.mx<br>mail: soporte@macwave.com.mx
@@ -1954,9 +1964,9 @@
  doc.setFont("helvetica", "bold");
  doc.text("OBSERVACIONES / NOTAS DE LABORATORIO:", 15, notesY);
  doc.setFont("helvetica", "normal");
- const splitNotes = doc.splitTextToSize(odsNotes, 180);
+ const splitNotes = doc.splitTextToSize(odsNotes, 180).slice(0, 4); // Limit to 4 lines
  doc.text(splitNotes, 15, notesY + 4);
- notesY += 6 + (splitNotes.length * 3.5); // Dynamic height based on actual content
+ notesY += 20; // Fixed jump for notes
  } else {
  notesY += 5;
  }
@@ -2043,6 +2053,7 @@
  doc.setFont("helvetica", "bold");
  doc.text("ESPECIALISTAS EN TECNOLOGIA ROLDU SAS. DE C.V", 15, footerY);
  doc.setFont("helvetica", "normal");
+ doc.text("Salvador Alvarado 72 oficina 208, CDMX", 105, footerY, { align: "center" });
  doc.text(`https://macwave.com.mx | soporte@macwave.com.mx`, 195, footerY, { align: "right" });
 
  // Increment folio counter AFTER capturing it for current PDF/Supabase
@@ -2062,25 +2073,37 @@
  getNextFolio(true); // increments counter once
  document.getElementById('quote-number').value = getNextFolio(); // reads without incrementing again
 
- // ── Auto-save ODS to Supabase ────────────────────────
- const odsData = {
+ const trackingToken = MacWaveOps.generateTrackingToken();
+ window._currentTrackingToken = trackingToken;
+ const hist = [MacWaveOps.createTimelineEvent({
+ date: document.getElementById('quote-date').value || new Date().toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+ status: 'Recibido',
+ text: document.getElementById('ods-notes').value || 'Ingreso a laboratorio.',
+ img: null,
+ internal: false,
+ })];
+ const odsData = MacWaveOps.enrichOrdenPatch({
  folio: currentFolio,
  cliente: document.getElementById('client-name').value || '',
  proyecto: document.getElementById('project-name').value || '',
  tecnico: document.getElementById('tech-name').value || '',
  serie: document.getElementById('serial-number').value || '',
  fecha: document.getElementById('quote-date').value || '',
- monto: total, // Use the total calculated in the submit handler
+ monto: total,
  status: 'Recibido',
- notas: JSON.stringify([{
- date: document.getElementById('quote-date').value || new Date().toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
- status: 'Recibido',
- text: document.getElementById('ods-notes').value || 'Ingreso a laboratorio.',
- img: (window._allPhotos && window._allPhotos.length > 0) ? window._allPhotos[0].data : null, photos: (window._allPhotos && window._allPhotos.length > 0) ? window._allPhotos.map(p => p.data) : []
- }])
- };
+ tracking_token: trackingToken,
+ notas: JSON.stringify(hist),
+ }, document.getElementById('quote-date').value);
  try {
- await window._sbClient.from('ordenes_servicio').insert([odsData]);
+ const { data: inserted, error } = await window._sbClient.from('ordenes_servicio').insert([odsData]).select('id, folio').single();
+ if (error) throw error;
+ await MacWaveOps.logAudit(window._sbClient, {
+ ods_id: inserted?.id,
+ folio: currentFolio,
+ action: 'ods_created',
+ details: { source: 'ods_generator', tracking_token: trackingToken },
+ });
+ generatePreviewQR();
  console.log('ODS guardado en Supabase:', odsData.folio);
  } catch (e) {
  console.warn('No se pudo guardar ODS en Supabase:', e.message);

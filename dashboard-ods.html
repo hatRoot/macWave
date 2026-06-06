@@ -5,9 +5,9 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
  <meta name="robots" content="noindex, nofollow, noarchive">
+ <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; connect-src 'self' https://lifxtyhvgnxjjqgbzare.supabase.co https://*.supabase.co; frame-src 'self'; frame-ancestors 'none'; base-uri 'self';">
  <title>Dashboard ODS | macWave T2</title>
  <meta name="description" content="Dashboard interno para la gestión de órdenes de servicio de macWave T2.">
-
  <!-- Apple Web App Experience -->
  <meta name="apple-mobile-web-app-capable" content="yes">
  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -15,9 +15,31 @@
  <link rel="apple-touch-icon" href="./images/logo_dashboard_white.png">
 
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <script src="js/supabase-config.js"></script>
+ <script src="js/ops-shared.js?v=hotfix-2b"></script>
+ <script>
+  (async function requireSupabaseSession() {
+    const client = MacWaveOps.createSupabaseClient();
+    const { data } = await client.auth.getSession();
+    if (!data?.session) {
+      sessionStorage.clear();
+      window.location.replace('tecnicos.html');
+      return;
+    }
+    const authEmail = (data.session.user.email || '').trim().toLowerCase();
+    const role = await MacWaveOps.resolveOpsAccess(client, authEmail);
+    if (!role) {
+      await client.auth.signOut();
+      sessionStorage.clear();
+      window.location.replace('tecnicos.html');
+      return;
+    }
+  })();
+ </script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
  <link rel="stylesheet" href="sidebar-ods.css">
+ <link rel="stylesheet" href="css/ops-audit.css">
 
  <style>
  :root {
@@ -588,34 +610,17 @@ white-space: nowrap;
  outline: none;
  transition: border 0.2s;
  }
-.form-control:focus {
+
+ .form-control:focus {
  border-color: var(--mac-blue);
  }
 
-  textarea.form-control {
-  resize: vertical;
-  min-height: 80px;
-  }
+ textarea.form-control {
+ resize: vertical;
+ min-height: 80px;
+ }
 
-  /* Compact detail form overrides */
-  .info-section .form-control {
-  padding: 8px 12px;
-  font-size: 13px;
-  }
-  .info-section .form-group label {
-  font-size: 10px;
-  margin-bottom: 2px;
-  margin-top: 4px;
-  }
-  .info-section .card {
-  padding: 16px;
-  }
-  .info-section .form-grid {
-  gap: 12px;
-  grid-template-columns: 1fr 1fr 1fr;
-  }
-
-  /* Financial Field */
+ /* Financial Field */
  .price-input {
  position: relative;
  }
@@ -1062,8 +1067,6 @@ word-break: break-word;
 
 <body>
 
- </script>
- 
  <div id="upload-progress-overlay">
  <div class="progress-spinner"></div>
  <div id="upload-progress-text" style="font-weight: bold; font-size: 14px;">Preparando fotos...</div>
@@ -1120,6 +1123,13 @@ word-break: break-word;
  </svg>
  TABLERO DE ODS
  </button>
+ <button class="nav-item" onclick="switchView('activity')" id="nav-activity">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <circle cx="12" cy="12" r="10" />
+ <polyline points="12 6 12 12 16 14" />
+ </svg>
+ Activity
+ </button>
  <button class="nav-item" onclick="switchView('finance')" id="nav-finance" style="display: none;">
  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
  <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
@@ -1139,7 +1149,7 @@ word-break: break-word;
  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
  <circle cx="12" cy="12" r="3" />
  <path
- d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010-2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+ d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
  </svg>
  Ajustes
  </button>
@@ -1259,8 +1269,10 @@ word-break: break-word;
  <option value="Hardware">Hardware/Pieza</option>
  <option value="Software">Software</option>
  </select>
- <input type="number" id="cat-costo" class="modal-input" placeholder="Costo Prov ($)" step="0.01" style="flex: 1; margin: 0;">
- <input type="number" id="cat-precio" class="modal-input" placeholder="Precio Público ($)" step="0.01" style="flex: 1; margin: 0;">
+ <input type="number" id="cat-costo" class="modal-input" placeholder="Costo Prov ($)"
+ style="flex: 1; margin: 0;">
+ <input type="number" id="cat-precio" class="modal-input" placeholder="Precio Público ($)"
+ style="flex: 1; margin: 0;">
  <button class="nav-item"
  style="background: var(--mac-blue); color: white; width: max-content; margin: 0; padding: 0 30px;"
  onclick="addCatalogItem()">+ Gurdar en Catálogo</button>
@@ -1310,7 +1322,7 @@ word-break: break-word;
  <label
  style="color: #fff; font-size: 14px; font-weight: 600; margin-bottom: 8px; display: block;">Comisión
  de Tarjeta %</label>
- <input type="number" id="conf-comision" class="modal-input" value="3.5" step="0.01"
+ <input type="number" id="conf-comision" class="modal-input" value="3.5"
  style="margin-bottom: 40px; background: rgba(0,0,0,0.5);">
 
  <button class="nav-item"
@@ -1442,10 +1454,14 @@ word-break: break-word;
  </div>
  
  <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px;">
+ <a href="https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" target="_blank" style="text-decoration: none; display: flex; flex-direction: column; align-items: center;">
+ <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA" alt="QR Taller" style="width: 100px; height: 100px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ccc;">
  <div style="font-size: 11px; font-weight: 700; color: #333; text-align: center; line-height: 1.4;">
- <strong>Servicio a Domicilio y Recolección CDMX</strong><br>
- <em style="color: var(--mac-blue);">macWave.com.mx</em>
+ <strong>Av. México Coyoacán 276</strong><br>
+ Sta Cruz Atoyac, Benito Juárez, CDMX.<br>
+ <em style="color: var(--mac-blue);">Escanea o da click para abrir en Google Maps</em>
  </div>
+ </a>
  </div>
  </div>
 
@@ -1514,6 +1530,41 @@ word-break: break-word;
  </div>
  </div>
 
+ <!-- Activity / Audit Log -->
+ <div class="workspace" id="activity-view-container" style="display: none; height: 100%;">
+ <div class="audit-panel">
+ <header class="audit-header">
+ <h1>Activity</h1>
+ <p>Historial operativo interno — trazabilidad de cambios en ODS, fotos y visitas</p>
+ </header>
+ <div class="audit-toolbar">
+ <input type="search" id="audit-search" class="audit-search" placeholder="Buscar folio o técnico (mín. 3 caracteres en servidor)…" autocomplete="off">
+ <select id="audit-action-filter" class="audit-filter-action" aria-label="Tipo de acción">
+ <option value="">Todas las acciones</option>
+ <option value="ods_created">ODS creada</option>
+ <option value="status_change">Cambio de estatus</option>
+ <option value="meta_update">Datos actualizados</option>
+ <option value="photos_uploaded">Fotos subidas</option>
+ <option value="gallery_photos_added">Galería</option>
+ <option value="photo_deleted">Foto eliminada</option>
+ <option value="ticket_created">Ticket visita</option>
+ <option value="payment_update">Pago</option>
+ <option value="warranty_update">Garantía</option>
+ </select>
+ <input type="text" id="audit-actor-filter" class="audit-filter-action" placeholder="Técnico (email)" autocomplete="off">
+ <input type="text" id="audit-status-filter" class="audit-filter-action" placeholder="Estatus (ej. Reparación)" autocomplete="off">
+ <input type="date" id="audit-date-from" class="audit-filter-date" aria-label="Desde">
+ <input type="date" id="audit-date-to" class="audit-filter-date" aria-label="Hasta">
+ <button type="button" class="audit-btn audit-btn-primary" id="audit-refresh">Actualizar</button>
+ </div>
+ <div class="audit-stats" id="audit-stats"></div>
+ <div class="audit-feed" id="audit-feed" role="feed" aria-busy="false"></div>
+ <div class="audit-load-more-wrap">
+ <button type="button" class="audit-btn audit-load-more" id="audit-load-more" style="display: none;">Cargar más actividad</button>
+ </div>
+ </div>
+ </div>
+
  <!-- ODS View (Iframe) -->
  <div class="workspace" id="quote-view-container"
  style="display: none; height: 100%; border: none; background: #000; overflow: hidden;">
@@ -1546,47 +1597,6 @@ word-break: break-word;
  <button class="btn btn-primary" id="btn-save-quick-ods" onclick="saveQuickODS()">Crear Orden</button>
  </div>
  </div>
- </div>
-
- <!-- Edit Timeline Event Modal -->
- <div class="modal-overlay" id="edit-event-modal" style="display: none;">
-   <div class="modal-card" style="width: 480px;">
-     <h3 style="margin-bottom: 12px; font-size: 18px; color: var(--mac-blue);">✏️ Editar Secuencia de Reparación</h3>
-     <p style="font-size: 12px; color: var(--mac-text-muted); margin-bottom: 15px;">Modifica los detalles del evento seleccionado. Si deseas cambiar las imágenes de la galería, utiliza la galería general.</p>
-     
-     <input type="hidden" id="edit-event-ods-id">
-     <input type="hidden" id="edit-event-idx">
-     
-     <div class="form-group" style="margin-bottom: 15px;">
-       <label style="font-size: 12px; color: var(--mac-text-muted); display: block; margin-bottom: 5px;">Fecha del Evento</label>
-       <input type="text" id="edit-event-date" class="form-control" style="background: var(--mac-input-bg); border: 1px solid var(--mac-border); color: #fff; width: 100%; border-radius: 6px; padding: 8px;">
-     </div>
-     
-     <div class="form-group" style="margin-bottom: 15px;">
-       <label style="font-size: 12px; color: var(--mac-text-muted); display: block; margin-bottom: 5px;">Estatus del Evento</label>
-       <select id="edit-event-status" class="form-control" style="background: var(--mac-input-bg); border: 1px solid var(--mac-border); color: #fff; width: 100%; border-radius: 6px; padding: 8px;">
-         <option value="Recibido">Recibido</option>
-         <option value="Diagnóstico">Diagnóstico</option>
-         <option value="Presupuesto">Presupuesto</option>
-         <option value="Espera de piezas">Espera de piezas</option>
-         <option value="En reparación">En reparación</option>
-         <option value="Equipo reparado">Equipo reparado</option>
-         <option value="Equipo sin reparar">Equipo sin reparar</option>
-         <option value="Equipo entregado">Equipo entregado</option>
-         <option value="Nota General">Nota General</option>
-       </select>
-     </div>
-     
-     <div class="form-group" style="margin-bottom: 20px;">
-       <label style="font-size: 12px; color: var(--mac-text-muted); display: block; margin-bottom: 5px;">Anotaciones / Detalles</label>
-       <textarea id="edit-event-text" class="form-control" rows="5" style="background: var(--mac-input-bg); border: 1px solid var(--mac-border); color: #fff; width: 100%; border-radius: 6px; padding: 8px; resize: vertical; font-family: inherit; font-size: 13px;" placeholder="Detalles del avance de reparación..."></textarea>
-     </div>
-     
-     <div style="display: flex; gap: 10px; justify-content: flex-end;">
-       <button class="btn" onclick="document.getElementById('edit-event-modal').style.display='none'; document.getElementById('edit-event-modal').classList.remove('active');" style="background: #2c2c2e; border: 1px solid var(--mac-border); color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer;">Cancelar</button>
-       <button class="btn btn-primary" onclick="window.saveTimelineEventEdit()" style="background: var(--mac-blue); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;">💾 Guardar Cambios</button>
-     </div>
-   </div>
  </div>
 
  <!-- Ticket Modal -->
@@ -1634,11 +1644,28 @@ word-break: break-word;
  </div>
  </div>
 
+ <script src="js/dashboard/audit-log.js"></script>
  <script>
  // Supabase Init
- const _sbUrl = 'https://lifxtyhvgnxjjqgbzare.supabase.co';
- const _sbKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpZnh0eWh2Z254ampxZ2J6YXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MzAzNTgsImV4cCI6MjA4NzMwNjM1OH0.YCOLJUZaw5LNAyDyNrzhlJJJeUltRadrnjC1oNUCgFI';
- const supabaseClient = window.supabase.createClient(_sbUrl, _sbKey);
+ const supabaseClient = MacWaveOps.createSupabaseClient();
+
+ async function mwPersistOrden(id, patch, auditAction, auditDetails) {
+ const o = allODS.find((x) => x.id === id);
+ MacWaveOps.enrichOrdenPatch(patch, o?.fecha || patch.fecha);
+ const { error, count } = await supabaseClient.from('ordenes_servicio').update(patch).eq('id', id);
+ if (!error && auditAction) {
+ await MacWaveOps.logAudit(supabaseClient, {
+ ods_id: id,
+ folio: o?.folio || patch.folio,
+ action: auditAction,
+ details: auditDetails || {},
+ });
+ if (currentView === 'activity' && window.MacWaveAuditLog) {
+ MacWaveAuditLog.refresh();
+ }
+ }
+ return { error, count };
+ }
 
  const STATUS_CONFIG = {
  'Recibido': { color: '#FFD60A' }, // Yellow
@@ -1661,7 +1688,7 @@ word-break: break-word;
  let currentView = 'list'; // 'list' or 'kanban'
 
  const userRole = sessionStorage.getItem('macwave_user');
- const isAdmin = (userRole === 'joel.duran.mendoza@me.com' || userRole === 'joel' || userRole === 'root');
+ const isAdmin = sessionStorage.getItem('macwave_role') === 'admin';
 
  // Init admin UI
  window.addEventListener('DOMContentLoaded', () => {
@@ -1837,7 +1864,7 @@ word-break: break-word;
  `DTSTART:${formatDate(targetDate)}`,
  `DTEND:${formatDate(endDate)}`,
  `DESCRIPTION:Folio: ${folio}\\nCliente: ${name}\\nOrigen: ${source}\\nWhatsApp: ${phone}\\nSitio: Mac Wave T2`,
- 'LOCATION:Servicio a Domicilio y Recolección CDMX - macWave.com.mx',
+ 'LOCATION:Av. México Coyoacán 276\\, Sta Cruz Atoyac\\, CDMX',
  'END:VEVENT',
  'END:VCALENDAR'
  ].join('\r\n');
@@ -1861,7 +1888,7 @@ word-break: break-word;
 
  if (!dateVal || !timeVal) return alert("Completa los datos para compartir.");
 
- const shareText = `📅 NUEVA CITA - Mac Wave\n\nFolio: ${folio}\nCliente: ${name}\nWhatsApp: ${phone}\nFecha Correo: ${dateVal} ${timeVal}\n\n🌐 macWave.com.mx | Servicio a Domicilio CDMX`;
+ const shareText = `📅 NUEVA CITA - Mac Wave\n\nFolio: ${folio}\nCliente: ${name}\nWhatsApp: ${phone}\nFecha Correo: ${dateVal} ${timeVal}\n\nUbicación: Av. México Coyoacán 276, Sta Cruz Atoyac, CDMX`;
 
  if (navigator.share) {
  try {
@@ -1924,7 +1951,7 @@ word-break: break-word;
 
  const formatDate = (date) => date.toISOString().replace(/-|:|\.\d+/g, '');
 
- const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Cita MacWave - ${folio} (${name})\nDTSTART:${formatDate(startDate)}\nDTEND:${formatDate(endDate)}\nDESCRIPTION:Cita de servicio técnico agendada. Folio: ${folio}.\nLOCATION:Servicio a Domicilio CDMX - macWave.com.mx\nEND:VEVENT\nEND:VCALENDAR`;
+ const icsContent = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Cita MacWave - ${folio} (${name})\nDTSTART:${formatDate(startDate)}\nDTEND:${formatDate(endDate)}\nDESCRIPTION:Cita de servicio técnico agendada. Folio: ${folio}.\nLOCATION:MacWave, Av. México Coyoacán 276, Sta Cruz Atoyac, CDMX\nEND:VEVENT\nEND:VCALENDAR`;
 
  const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
  const link = document.createElement('a');
@@ -1957,7 +1984,7 @@ word-break: break-word;
 
  const shareData = {
  title: `Cita MacWave - ${folio}`,
- text: `🎟️ TICKET CREADO: ${folio}\nCliente: ${name}\n\n🌐 macWave.com.mx | Servicio a Domicilio CDMX\n📅 Agendar en calendario cruzado:\n`,
+ text: `🎟️ TICKET CREADO: ${folio}\nCliente: ${name}\n\n📍 Ubicación: Av. México Coyoacán 276, CDMX\n📅 Agendar en calendario cruzado:\n`,
  url: gCalLink
  };
 
@@ -2008,6 +2035,12 @@ word-break: break-word;
  try {
  const { data, error } = await supabaseClient.from('tickets_taller').insert([ticketData]).select();
  if (error) throw error;
+
+ await MacWaveOps.logAudit(supabaseClient, {
+ folio,
+ action: 'ticket_created',
+ details: { cliente: name, origen: source, telefono_last4: phone.slice(-4) },
+ });
 
  // Update local and storage with the actual data from DB (including generated ID)
  if (data && data[0]) {
@@ -2151,7 +2184,8 @@ word-break: break-word;
  'finance': 'finance-view-container',
  'tickets': 'tickets-view-container',
  'settings': 'settings-view-container',
- 'quote': 'quote-view-container'
+ 'quote': 'quote-view-container',
+ 'activity': 'activity-view-container',
  };
 
  // Reset active states
@@ -2177,6 +2211,10 @@ word-break: break-word;
  if (view === 'quote') {
  target.style.display = 'block';
  }
+ if (view === 'activity') {
+ target.style.display = 'flex';
+ target.style.flexDirection = 'column';
+ }
  }
 
  // Mark active button
@@ -2194,10 +2232,29 @@ word-break: break-word;
  if (view === 'tickets') renderTicketsList();
  if (view === 'settings') renderUsers();
  if (view === 'quote') {
- // No extra render needed for iframe usually, but we could reload it if needed
  console.log("ODS View Active");
  }
+ if (view === 'activity' && window.MacWaveAuditLog) {
+ MacWaveAuditLog.onViewActive();
+ }
  }, 0);
+ }
+
+ function openOdsFromAudit(odsId, folio) {
+ switchView('list');
+ const search = document.getElementById('search-input');
+ if (folio && search) search.value = folio;
+ const target = allODS.find(
+ (o) => (odsId && o.id === odsId) || (folio && o.folio === folio)
+ );
+ if (target) {
+ currentSelectedId = target.id;
+ window.currentSelectedId = target.id;
+ renderSidebar(folio || '');
+ renderDetail(target);
+ } else if (folio) {
+ renderSidebar(folio);
+ }
  }
 
  // --- USER MANAGEMENT LOGIC ---
@@ -2721,7 +2778,14 @@ const statuses = [...configuredStatuses, ...dynamicStatuses];
  const now = new Date();
  const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
 
- const newODS = {
+ const hist = [MacWaveOps.createTimelineEvent({
+ date: dateStr,
+ status: targetInitialStatus,
+ text: 'Orden creada directamente desde el Tablero Kanban.',
+ img: null,
+ internal: false,
+ })];
+ const newODS = MacWaveOps.enrichOrdenPatch({
  folio,
  cliente,
  proyecto,
@@ -2729,13 +2793,9 @@ const statuses = [...configuredStatuses, ...dynamicStatuses];
  status: targetInitialStatus,
  fecha: dateStr,
  tecnico: 'Asignado vía Trello',
- notas: JSON.stringify([{
- date: dateStr,
- status: targetInitialStatus,
- text: 'Orden creada directamente desde el Tablero Kanban.',
- img: null
- }])
- };
+ tracking_token: MacWaveOps.generateTrackingToken(),
+ notas: JSON.stringify(hist),
+ }, dateStr);
 
  try {
  const { data, error } = await supabaseClient
@@ -2744,6 +2804,13 @@ const statuses = [...configuredStatuses, ...dynamicStatuses];
  .select();
 
  if (error) throw error;
+
+ await MacWaveOps.logAudit(supabaseClient, {
+ ods_id: data[0].id,
+ folio,
+ action: 'ods_created',
+ details: { source: 'kanban', status: targetInitialStatus },
+ });
 
  allODS.unshift(data[0]);
  closeQuickCreate();
@@ -2810,23 +2877,24 @@ const statuses = [...configuredStatuses, ...dynamicStatuses];
  const now = new Date();
  const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
 
- historial.push({
+ historial.push(MacWaveOps.createTimelineEvent({
  date: dateStr,
  status: newStatus,
- text: '',
- img: null
- });
+ text: 'Cambio de estatus vía Tablero',
+ img: null,
+ internal: false
+ }));
 
  const newNotasString = JSON.stringify(historial);
  ods.notas = newNotasString;
 
  renderKanban();
 
- // Persist to Supabase
- const { error } = await supabaseClient
- .from('ordenes_servicio')
- .update({ status: newStatus, notas: newNotasString })
- .eq('id', draggedODSId);
+ const { error } = await mwPersistOrden(draggedODSId, { status: newStatus, notas: newNotasString }, 'status_change', {
+ from: oldStatus,
+ to: newStatus,
+ via: 'kanban',
+ });
 
  if (error) {
  alert('Error al actualizar: ' + error.message);
@@ -2843,7 +2911,7 @@ const statuses = [...configuredStatuses, ...dynamicStatuses];
  }
 
  function renderSidebar(query = '') {
- const isJoel = sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel';
+ const isJoel = sessionStorage.getItem('macwave_role') === 'admin';
  const listContainer = document.getElementById('ods-list');
  listContainer.innerHTML = '';
 
@@ -2898,27 +2966,11 @@ filtered.sort((a, b) => {
  currentSelectedId = o.id;
  window.currentSelectedId = o.id;
 
- const isJoel = sessionStorage.getItem('macwave_user') === 'joel.duran.mendoza@me.com' || sessionStorage.getItem('macwave_user') === 'joel';
-  const detailView = document.getElementById('detail-view');
-  const statusColor = getStatusColor(o.status);
+ const isJoel = sessionStorage.getItem('macwave_role') === 'admin';
+ const detailView = document.getElementById('detail-view');
+ const statusColor = getStatusColor(o.status);
 
-  let parsedCliente = o.cliente || '';
-  let parsedPhone = '';
-  if (parsedCliente.includes(' | Tel: ')) {
-  const parts = parsedCliente.split(' | Tel: ');
-  parsedCliente = parts[0];
-  parsedPhone = parts[1];
-  }
-
-  let parsedProyecto = o.proyecto || '';
-  let parsedPin = '';
-  if (parsedProyecto.includes(' | PIN: ')) {
-  const parts = parsedProyecto.split(' | PIN: ');
-  parsedProyecto = parts[0];
-  parsedPin = parts[1];
-  }
-
-  let historial = [];
+ let historial = [];
  try {
  historial = JSON.parse(o.notas || '[]');
  if (!Array.isArray(historial)) throw new Error('Not array');
@@ -2944,32 +2996,23 @@ filtered.sort((a, b) => {
  evColor = '#30D158';
  }
  }
-  const originalIdx = arr.length - 1 - i;
-  return `
-  <div class="timeline-item" style="--item-color: ${evColor}; position: relative; margin-bottom: 24px;">
-  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">
-    <div>
-      <div class="timeline-date">${ev.date}</div>
-      <div class="timeline-status" style="color: ${evColor}">${ev.status}</div>
-    </div>
-    <div style="display: flex; gap: 6px; margin-top: -2px;">
-      <button onclick="window.editTimelineEvent('${o.id}', ${originalIdx})" style="background: none; border: none; color: var(--mac-blue); cursor: pointer; font-size: 11px; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; background: rgba(10, 132, 255, 0.1); font-weight: bold;" title="Editar anotación">✏️ Editar</button>
-      <button onclick="window.deleteTimelineEvent('${o.id}', ${originalIdx})" style="background: none; border: none; color: var(--mac-red); cursor: pointer; font-size: 11px; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; background: rgba(255, 69, 58, 0.1); font-weight: bold;" title="Eliminar evento">🗑️ Borrar</button>
-    </div>
-  </div>
-  ${ev.text ? `<div class="timeline-note">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
-  ${(() => {
-  const evPhotos = [];
-  if (ev.img) evPhotos.push(ev.img);
-  if (Array.isArray(ev.photos)) evPhotos.push(...ev.photos.filter(Boolean));
-  if (!evPhotos.length) return '';
-  return `<div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px,1fr)); gap:8px; margin-top:10px;">
-  ${evPhotos.map((img, idx) => `<img src="${img}" class="timeline-img" style="margin:0; width:100%; height:110px; object-fit:cover;" alt="Evidencia de servicio ${idx + 1}">`).join('')}
-  </div>`;
-  })()}
+ return `
+ <div class="timeline-item" style="--item-color: ${evColor};">
+ <div class="timeline-date">${ev.date}</div>
+ <div class="timeline-status" style="color: ${evColor}">${ev.status}</div>
+ ${ev.text && !ev.text.startsWith('Cambio de estatus vía Tablero') ? `<div class="timeline-note">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
+ ${(() => {
+ const evPhotos = [];
+ if (ev.img) evPhotos.push(ev.img);
+ if (Array.isArray(ev.photos)) evPhotos.push(...ev.photos.filter(Boolean));
+ if (!evPhotos.length) return '';
+ return `<div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px,1fr)); gap:8px; margin-top:10px;">
+ ${evPhotos.map((img, idx) => `<img src="${img}" class="timeline-img" style="margin:0; width:100%; height:110px; object-fit:cover;" alt="Evidencia de servicio ${idx + 1}">`).join('')}
+ </div>`;
+ })()}
 
-  </div>
-  `;
+ </div>
+ `;
  }).join('') || '<div style="font-size:12px; color:var(--mac-text-muted);">Sin historial registrado.</div>';
 
 const photos = historial.flatMap((h, noteIdx) => {
@@ -2985,9 +3028,9 @@ const photos = historial.flatMap((h, noteIdx) => {
  <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; color: var(--mac-blue);">
  <span>Galería de Evidencias (${photos.length})</span>
  <div style="display: flex; gap: 8px;">
- <button onclick="/* removed */" style="background: var(--mac-blue); color: #fff; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1;" title="Añadir fotos">+</button>
+ <button onclick="document.getElementById('gallery-upload-${o.id}').click()" style="background: var(--mac-blue); color: #fff; border: none; width: 28px; height: 28px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1;" title="Añadir fotos">+</button>
  </div>
- <input type="file" id="gallery-upload-${o.id}" style="display:none;" multiple accept="image/*" style="display: none;" onchange="window.uploadGalleryPhotos(event, '${o.id}')">
+ <input type="file" id="gallery-upload-${o.id}" multiple accept="image/*" style="display: none;" onchange="window.uploadGalleryPhotos(event, '${o.id}')">
  </div>
  <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 15px;">
  ${photos && photos.length > 0 ? `
@@ -3019,8 +3062,8 @@ const photos = historial.flatMap((h, noteIdx) => {
  <div style="font-size: 13px; color: var(--mac-text-muted);">ID del Sistema: ${o.id}</div>
  </div>
  <div style="display:flex;gap:10px;">
- 
- <button class="btn btn-danger" id="btn-delete" style="border-color: var(--mac-red);">Eliminar Orden</button>
+ <button class="btn btn-primary" id="btn-save-meta">Guardar Cambios</button>
+ <button class="btn btn-danger" id="btn-delete" style="border-color: var(--mac-red);">Eliminar</button>
  </div>
  </div>
 
@@ -3032,23 +3075,15 @@ const photos = historial.flatMap((h, noteIdx) => {
  <div class="form-grid">
  <div class="form-group" style="grid-column: span 2;">
  <label>Cliente</label>
- <input type="text" id="inp-cliente" class="form-control" value="${parsedCliente}" placeholder="Nombre del cliente">
+ <input type="text" id="inp-cliente" class="form-control" value="${o.cliente || ''}" placeholder="Nombre del cliente">
  </div>
  <div class="form-group">
- <label>Teléfono</label>
- <input type="text" id="inp-telefono" class="form-control" value="${parsedPhone}" placeholder="Ej. 55 1234 5678">
- </div>
- <div class="form-group" style="grid-column: span 2;">
  <label>Proyecto / Equipo</label>
- <input type="text" id="inp-proyecto" class="form-control" value="${parsedProyecto}" placeholder="Ej. MacBook Pro A2338">
- </div>
- <div class="form-group">
- <label>Contraseña / PIN</label>
- <input type="text" id="inp-pin" class="form-control" value="${parsedPin}" placeholder="Opcional">
+ <input type="text" id="inp-proyecto" class="form-control" value="${o.proyecto || ''}" placeholder="Ej. MacBook Pro A2338">
  </div>
  <div class="form-group">
  <label>Número de Serie</label>
- <input type="text" id="inp-serie" class="form-control" value="${o.serie || ''}" placeholder="Ej. C02CG123DC78">
+ <input type="text" id="inp-serie" class="form-control" value="${o.serie || ''}" style="font-family: monospace;" placeholder="C02...">
  </div>
  <div class="form-group">
  <label>Técnico Asignado</label>
@@ -3058,7 +3093,7 @@ const photos = historial.flatMap((h, noteIdx) => {
  <label>Fecha de Entrada</label>
  <input type="text" id="inp-fecha" class="form-control" value="${o.fecha || ''}">
  </div>
- <div class="form-group" style="grid-column: span 3;">
+ <div class="form-group" style="grid-column: span 2;">
  <label>Monto de ODS / Venta</label>
  <div class="price-input">
  <input type="number" id="inp-monto" class="form-control" value="${o.monto || '0'}" step="0.01">
@@ -3155,31 +3190,9 @@ const photos = historial.flatMap((h, noteIdx) => {
  z-index: 10;
  border: none;
 }
-.slot-remove {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  background: #ff3b30;
-  color: white;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  z-index: 10;
-  border: none;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-  opacity: 1; /* Siempre visible */
-  transition: transform 0.1s ease;
+.photo-slot:hover .slot-remove {
+ opacity: 1;
 }
-.slot-remove:hover {
-  transform: scale(1.15);
-}
-
 .progress-bar-container {
  background: #333;
  height: 4px;
@@ -3207,50 +3220,46 @@ ${statusOptions}
 </div>
 
 <!-- PhotoFlow Module -->
-<div class="form-group photo-module" style="margin-bottom: 16px; background: rgba(255,255,255,0.02); padding: 15px; border-radius: 10px; border: 1px solid var(--mac-border);">
-  <label style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: 600;">
-    <span>📸 Fotos de Evidencia</span>
-    <span id="photo-counter" style="color: var(--mac-text-muted); font-size: 11px;">(0 seleccionadas)</span>
-  </label>
+<div class="form-group photo-module" style="margin-bottom: 16px;">
+<label>📸 Evidencia Fotográfica <span id="photo-counter" style="color: var(--mac-text-muted); font-size: 11px;">(0 seleccionadas)</span></label>
 
-  <!-- Botón de Control Principal -->
-  <button type="button" id="btn-select-photos" onclick="document.getElementById('inp-new-img')?.click()" style="width: 100%; height: 50px; background: #2c2c2e; border: 2px dashed #444; border-radius: 8px; color: #fff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 14px; font-weight: 700; transition: all 0.2s ease;">
-    <span style="font-size: 18px;">📷</span> Subir fotos de evidencia
-  </button>
-  <input type="file" id="inp-new-img" accept="image/*,image/webp,image/png,image/jpeg" multiple style="display: none;">
+<!-- Botón Principal -->
+<button type="button" id="btn-select-photos" onclick="document.getElementById('inp-new-img')?.click()" style="min-width: 120px; margin-bottom: 10px; background: #2c2c2e; border: 1px solid var(--mac-border); padding: 8px 12px; border-radius: 8px; color: #fff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 700;">
+ <span style="font-size: 14px;">📁</span> Seleccionar
+</button>
+<input type="file" id="inp-new-img" accept="image/*,image/webp,image/png,image/jpeg" multiple style="display: none;">
 
-  <!-- Grid de Preview Numerado -->
-  <div id="photo-queue-container" style="display: none; margin-top: 12px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--mac-text-muted); margin-bottom: 8px;">
-      <span>Vista previa de fotos seleccionadas:</span>
-      <button type="button" id="btn-clear-photos" style="background: none; border: none; color: var(--mac-red); cursor: pointer; font-size: 11px; display: inline-flex; align-items: center; gap: 3px; font-weight: 600;">🗑️ Limpiar selección</button>
-    </div>
-    <div id="photo-queue-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; max-height: 300px; overflow-y: auto; padding: 2px;">
-      <!-- Slots se generan dinámicamente -->
-    </div>
+<!-- Grid de Preview Numerado -->
+<div id="photo-queue-container" style="display: none; margin-top: 12px;">
+ <div style="font-size: 11px; color: var(--mac-text-muted); margin-bottom: 8px;">
+ Vista previa (pasa el mouse para eliminar):
+ </div>
+ <div id="photo-queue-grid" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; max-height: 300px; overflow-y: auto;">
+ <!-- Slots se generan dinámicamente -->
+ </div>
 
-    <!-- Barra de Progreso -->
-    <div id="upload-progress" style="display: none; margin-top: 12px;">
-      <div class="progress-bar-container">
-        <div id="upload-progress-bar" class="progress-bar-fill"></div>
-      </div>
-      <div id="upload-progress-text" style="font-size: 10px; color: var(--mac-text-muted); margin-top: 4px; text-align: center;">
-        Listo para subir
-      </div>
-    </div>
-  </div>
+ <!-- Barra de Progreso -->
+ <div id="upload-progress" style="display: none;">
+ <div class="progress-bar-container">
+ <div id="upload-progress-bar" class="progress-bar-fill"></div>
+ </div>
+ <div id="upload-progress-text" style="font-size: 10px; color: var(--mac-text-muted); margin-top: 4px; text-align: center;">
+ Listo para subir
+ </div>
+ </div>
+
+ <!-- Controles -->
+<div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;">
+ <button type="button" id="btn-clear-photos" style="flex: 1; background: transparent; border: 1px solid var(--mac-red); color: var(--mac-red); padding: 10px; border-radius: 6px; cursor: pointer; font-size: 12px;">
+ 🗑️ Limpiar Todo
+ </button>
+<button type="button" id="btn-upload-photos" style="min-width: 110px; background: var(--mac-green); color: #04260d; border: 1px solid #1ea74a; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 800;">
+ ⬆ Subir (<span id="upload-count">0</span>)
+ </button>
+ </div>
 </div>
-
-<!-- Panel de Control de Acciones al Final del Formulario -->
-<div style="display: flex; gap: 10px; margin-top: 20px;">
-  <button type="button" class="btn" id="btn-add-event" style="flex: 1.2; justify-content: center; height: 46px; background: var(--mac-green); border: none; color: #04260d; font-weight: 800; font-size: 14px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(48,209,88,0.25);">
-    ⬆ Subir
-  </button>
-  <button type="button" class="btn" id="btn-save-meta" style="flex: 1; justify-content: center; height: 46px; background: #2c2c2e; border: 1px solid var(--mac-border); color: #fff; font-weight: 700; font-size: 14px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;">
-    💾 Guardar Cambios
-  </button>
 </div>
-
+ <button type="button" class="btn btn-primary" id="btn-add-event" style="width: 100%; justify-content: center; background: var(--mac-green); border-color: var(--mac-green);">Actualizar Historial</button>
  </div>
  </div>
 
@@ -3267,7 +3276,6 @@ ${statusOptions}
 
  if (isJoel) setTimeout(() => window.calculateBalance(), 100);
  // Bind Event Listeners
-
  document.getElementById('btn-save-meta').onclick = async function () {
  const btn = this;
  btn.innerText = 'Guardando...';
@@ -3275,26 +3283,18 @@ ${statusOptions}
 
  try {
  const monto = parseFloat(document.getElementById('inp-monto').value) || 0;
-  const baseCliente = document.getElementById('inp-cliente').value;
-  const tel = document.getElementById('inp-telefono').value;
-  const finalCliente = tel ? `${baseCliente} | Tel: ${tel}` : baseCliente;
-
-  const baseProyecto = document.getElementById('inp-proyecto').value;
-  const pin = document.getElementById('inp-pin').value;
-  const finalProyecto = pin ? `${baseProyecto} | PIN: ${pin}` : baseProyecto;
-
-  const meta = {
-  cliente: finalCliente,
-  proyecto: finalProyecto,
-  tecnico: document.getElementById('inp-tecnico').value,
-  serie: document.getElementById('inp-serie').value,
-  fecha: document.getElementById('inp-fecha').value,
-  monto: monto
-  };
+ const meta = {
+ cliente: document.getElementById('inp-cliente').value,
+ proyecto: document.getElementById('inp-proyecto').value,
+ tecnico: document.getElementById('inp-tecnico').value,
+ serie: document.getElementById('inp-serie').value,
+ fecha: document.getElementById('inp-fecha').value,
+ monto: monto
+ };
 
  // Finance columns (cost_pieces, cost_supplies, venta_hw) removed as they don't exist in Supabase schema
 
- const { error } = await supabaseClient.from('ordenes_servicio').update(meta).eq('id', o.id);
+ const { error } = await mwPersistOrden(o.id, meta, 'meta_update', { fields: Object.keys(meta) });
  if (error) throw error;
 
  Object.assign(o, meta);
@@ -3329,391 +3329,448 @@ ${statusOptions}
  }
  };
 
-   document.getElementById('btn-add-event').onclick = async function () {
-    if (window.PhotoFlow) {
-      return window.PhotoFlow.startUpload();
-    }
-  };
+ document.getElementById('btn-add-event').onclick = async function () {
+ const btn = this;
+ const newStatus = document.getElementById('inp-new-status').value;
+ const text = document.getElementById('inp-new-text').value;
+ const fileInput = document.getElementById('inp-new-img');
+
+ if (!newStatus) return alert("Selecciona un estatus");
+
+ btn.innerText = "Procesando...";
+ btn.disabled = true;
+
+ try {
+ const now = new Date();
+ const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
+ now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+ let newHistorial = [];
+ try {
+ newHistorial = JSON.parse(o.notas || '[]');
+ if (!Array.isArray(newHistorial)) throw new Error('Not array');
+ } catch (err) {
+ if (o.notas) newHistorial = [{ date: o.fecha || '', status: 'Nota General', text: o.notas, img: null }];
+ }
+
+newHistorial.push(MacWaveOps.createTimelineEvent({ date: dateStr, status: newStatus, text: text, img: null, internal: false }));
+
+ const newNotasString = JSON.stringify(newHistorial);
+
+ const { error } = await mwPersistOrden(o.id, { status: newStatus, notas: newNotasString }, 'status_change', {
+ to: newStatus,
+ note: text,
+ });
+ if (error) throw error;
+
+ o.status = newStatus;
+ o.notas = newNotasString;
+ const idx = allODS.findIndex(x => x.id === o.id);
+ if (idx > -1) { allODS[idx].status = newStatus; allODS[idx].notas = newNotasString; }
+
+ renderSidebar(document.getElementById('search-input').value);
+ renderDetail(o);
+
+ } catch (e) {
+ alert('Error: ' + e.message);
+ btn.innerText = "Actualizar Historial";
+ btn.disabled = false;
+ }
+ };
 
 // ========== PHOTOFLOW V2 - SISTEMA DE GESTIÓN DE FOTOS ==========
 
 window.PhotoFlow = {
-  queue: [],
-  maxConcurrent: 3,
-  isProcessing: false,
+ queue: [],
+ maxConcurrent: 3,
+ isProcessing: false,
 
-  init() {
-    this.queue = [];
-    this.isProcessing = false;
-    const selectBtn = document.getElementById('btn-select-photos');
-    const fileInput = document.getElementById('inp-new-img');
-    if (fileInput) fileInput.value = '';
-    const pq = document.getElementById('photo-queue-container');
-    if (pq) pq.style.display = 'none';
-    const pc = document.getElementById('photo-counter');
-    if (pc) pc.textContent = '(0 seleccionadas)';
+ init() {
+ this.queue = [];
+ this.isProcessing = false;
+ const selectBtn = document.getElementById('btn-select-photos');
+ const fileInput = document.getElementById('inp-new-img');
+ if (fileInput) fileInput.value = '';
+ const pq = document.getElementById('photo-queue-container');
+ if (pq) pq.style.display = 'none';
+ const pc = document.getElementById('photo-counter');
+ if (pc) pc.textContent = '(0 seleccionadas)';
 
-    if (selectBtn) selectBtn.onclick = () => fileInput?.click();
-    if (fileInput) fileInput.onchange = (e) => this.handleSelection(e.target.files);
+ if (selectBtn) selectBtn.onclick = () => fileInput?.click();
+ if (fileInput) fileInput.onchange = (e) => this.handleSelection(e.target.files);
 
-    const clearBtn = document.getElementById('btn-clear-photos');
-    const uploadBtn = document.getElementById('btn-upload-photos') || document.getElementById('btn-add-event');
+ const clearBtn = document.getElementById('btn-clear-photos');
+ const uploadBtn = document.getElementById('btn-upload-photos');
 
-    if (clearBtn) clearBtn.onclick = () => this.clearQueue();
-    if (uploadBtn) uploadBtn.onclick = () => this.startUpload();
-    this.updateStats();
-  },
+ if (clearBtn) clearBtn.onclick = () => this.clearQueue();
+ if (uploadBtn) uploadBtn.onclick = () => this.startUpload();
+ this.updateStats();
+ },
 
-  async handleSelection(files) {
-    if (!files || !files.length) return;
+ async handleSelection(files) {
+ if (!files || !files.length) return;
 
-    // Agregar a cola
-    const startIndex = this.queue.length;
-    Array.from(files).forEach((file, i) => {
-      this.queue.push({
-        file,
-        id: `photo-${Date.now()}-${startIndex + i}`,
-        index: startIndex + i + 1,
-        status: 'pending'
-      });
-    });
+ // Agregar a cola
+ const startIndex = this.queue.length;
+ Array.from(files).forEach((file, i) => {
+ this.queue.push({
+ file,
+ id: `photo-${Date.now()}-${startIndex + i}`,
+ index: startIndex + i + 1,
+ status: 'pending'
+ });
+ });
 
-    // UI: Mostrar contenedor
-    const container = document.getElementById('photo-queue-container');
-    const counter = document.getElementById('photo-counter');
+ // UI: Mostrar contenedor
+ const container = document.getElementById('photo-queue-container');
+ const uploadBtn = document.getElementById('btn-upload-photos');
+ const counter = document.getElementById('photo-counter');
 
-    if (container) container.style.display = 'block';
-    if (counter) counter.textContent = `(${this.queue.length} seleccionadas)`;
+ if (container) container.style.display = 'block';
+ if (counter) counter.textContent = `(${this.queue.length} seleccionadas)`;
 
-    // Renderizar slots
-    await this.renderSlots();
+ document.getElementById('upload-count').textContent = this.queue.length;
 
-    // Generar thumbnails en paralelo (throttled)
-    await this.generateThumbnails();
-  },
+ // Renderizar slots
+ await this.renderSlots();
 
-  async renderSlots() {
-    const grid = document.getElementById('photo-queue-grid');
-    if (!grid) return;
+ // Generar thumbnails en paralelo (throttled)
+ await this.generateThumbnails();
+ },
 
-    grid.innerHTML = '';
+ async renderSlots() {
+ const grid = document.getElementById('photo-queue-grid');
+ if (!grid) return;
 
-    this.queue.forEach(item => {
-      const slot = document.createElement('div');
-      slot.id = item.id;
-      slot.className = 'photo-slot';
-      if (item.thumbnail) {
-        slot.style.backgroundImage = `url(${item.thumbnail})`;
-        slot.style.backgroundSize = 'cover';
-        slot.classList.add('ready');
-      }
-      slot.innerHTML = `
-        <div class="slot-number">${item.index}</div>
-        <div class="slot-status">${item.thumbnail ? '✓' : '⏳'}</div>
-        <button type="button" class="slot-remove" onclick="window.PhotoFlow.removeItem('${item.id}')">×</button>
-      `;
-      grid.appendChild(slot);
-    });
-  },
+ grid.innerHTML = '';
 
-  async generateThumbnails() {
-    const batchSize = this.maxConcurrent;
-    for (let i = 0; i < this.queue.length; i += batchSize) {
-      const batch = this.queue.slice(i, i + batchSize);
-      await Promise.all(batch.map(item => this.createThumbnail(item)));
-    }
-  },
+ this.queue.forEach(item => {
+ const slot = document.createElement('div');
+ slot.id = item.id;
+ slot.className = 'photo-slot';
+ slot.innerHTML = `
+ <div class="slot-number">${item.index}</div>
+ <div class="slot-status">⏳</div>
+ <button type="button" class="slot-remove" onclick="PhotoFlow.removeItem('${item.id}')">×</button>
+ `;
+ grid.appendChild(slot);
+ });
+ },
 
-  createThumbnail(item) {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          const size = 200;
-          canvas.width = size;
-          canvas.height = size;
+ async generateThumbnails() {
+ const batchSize = this.maxConcurrent;
 
-          const minDim = Math.min(img.width, img.height);
-          const sx = (img.width - minDim) / 2;
-          const sy = (img.height - minDim) / 2;
-          ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
+ for (let i = 0; i < this.queue.length; i += batchSize) {
+ const batch = this.queue.slice(i, i + batchSize);
+ await Promise.all(batch.map(item => this.createThumbnail(item)));
+ }
+ },
 
-          item.thumbnail = canvas.toDataURL('image/jpeg', 0.6);
+ createThumbnail(item) {
+ return new Promise((resolve) => {
+ const reader = new FileReader();
+ reader.onload = (e) => {
+ const img = new Image();
+ img.onload = () => {
+ const canvas = document.createElement('canvas');
+ const ctx = canvas.getContext('2d');
+ const size = 200;
+ canvas.width = size;
+ canvas.height = size;
 
-          const slot = document.getElementById(item.id);
-          if (slot) {
-            slot.style.backgroundImage = `url(${item.thumbnail})`;
-            slot.style.backgroundSize = 'cover';
-            slot.classList.add('ready');
-            const status = slot.querySelector('.slot-status');
-            if (status) status.textContent = '✓';
-          }
-          resolve();
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(item.file);
-    });
-  },
+ const minDim = Math.min(img.width, img.height);
+ const sx = (img.width - minDim) / 2;
+ const sy = (img.height - minDim) / 2;
+ ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, size, size);
 
-  removeItem(id) {
-    const index = this.queue.findIndex(item => item.id === id);
-    if (index === -1) return;
+ item.thumbnail = canvas.toDataURL('image/jpeg', 0.6);
 
-    this.queue.splice(index, 1);
+ const slot = document.getElementById(item.id);
+ if (slot) {
+ slot.style.backgroundImage = `url(${item.thumbnail})`;
+ slot.style.backgroundSize = 'cover';
+ slot.classList.add('ready');
+ const status = slot.querySelector('.slot-status');
+ if (status) status.textContent = '✓';
+ }
 
-    // Re-indexar
-    this.queue.forEach((item, i) => {
-      item.index = i + 1;
-      item.id = `photo-${Date.now()}-${i}`;
-    });
+ resolve();
+ };
+ img.src = e.target.result;
+ };
+ reader.readAsDataURL(item.file);
+ });
+ },
 
-    this.renderSlots();
-    this.updateStats();
+ removeItem(id) {
+ const index = this.queue.findIndex(item => item.id === id);
+ if (index === -1) return;
 
-    if (this.queue.length === 0) {
-      this.clearQueue(true);
-    }
-  },
+ this.queue.splice(index, 1);
 
-  clearQueue(silent = false) {
-    if (!this.queue.length) return;
-    if (!silent && !confirm(`¿Eliminar ${this.queue.length} fotos seleccionadas?`)) return;
+ // Re-indexar
+ this.queue.forEach((item, i) => {
+ item.index = i + 1;
+ item.id = `photo-${Date.now()}-${i}`;
+ });
 
-    this.queue = [];
-    const container = document.getElementById('photo-queue-container');
-    const grid = document.getElementById('photo-queue-grid');
-    const progress = document.getElementById('upload-progress');
-    const counter = document.getElementById('photo-counter');
-    const fileInput = document.getElementById('inp-new-img');
+ this.renderSlots();
+ this.updateStats();
 
-    if (container) container.style.display = 'none';
-    if (grid) grid.innerHTML = '';
-    if (progress) progress.style.display = 'none';
-    if (counter) counter.textContent = '(0 seleccionadas)';
-    if (fileInput) fileInput.value = '';
-    this.updateStats();
-  },
+ if (this.queue.length === 0) {
+ this.clearQueue();
+ }
+ },
 
-  updateStats() {
-    const queueLen = this.queue.length;
-    const counter = document.getElementById('photo-counter');
-    if (counter) counter.textContent = `(${queueLen} seleccionadas)`;
-    const progress = document.getElementById('upload-progress');
-    if (progress) progress.style.display = 'none';
-    const progressBar = document.getElementById('upload-progress-bar');
-    if (progressBar) progressBar.style.width = '0%';
-    const progressText = document.getElementById('upload-progress-text');
-    if (progressText) {
-      progressText.textContent = 'Listo para subir';
-      progressText.style.color = 'var(--mac-text-muted)';
-    }
-    const uploadBtn = document.getElementById('btn-add-event');
-    if (uploadBtn) {
-      uploadBtn.disabled = false;
-      uploadBtn.innerHTML = '⬆ Subir';
-      uploadBtn.style.background = 'var(--mac-green)';
-    }
-  },
+ clearQueue() {
+ if (!this.queue.length) return;
+ if (!confirm(`¿Eliminar ${this.queue.length} fotos seleccionadas?`)) return;
 
-  async startUpload() {
-    const odsId = window.currentSelectedId || currentSelectedId;
-    if (!odsId) {
-      alert('Error: No se identificó la orden de servicio');
-      return;
-    }
+ this.queue = [];
+ const container = document.getElementById('photo-queue-container');
+ const grid = document.getElementById('photo-queue-grid');
+ const uploadBtn = document.getElementById('btn-upload-photos');
+ const progress = document.getElementById('upload-progress');
+ const counter = document.getElementById('photo-counter');
+ const fileInput = document.getElementById('inp-new-img');
 
-    const newStatus = document.getElementById('inp-new-status')?.value;
-    const text = document.getElementById('inp-new-text')?.value || '';
-    if (!newStatus) {
-      alert('Selecciona un estatus');
-      return;
-    }
+ if (container) container.style.display = 'none';
+ if (grid) grid.innerHTML = '';
+if (uploadBtn) {
+uploadBtn.disabled = false;
+uploadBtn.innerHTML = '⬆ Subir (<span id="upload-count">0</span>)';
+uploadBtn.style.background = 'var(--mac-green)';
+}
+ if (progress) progress.style.display = 'none';
+ if (counter) counter.textContent = '(0 seleccionadas)';
+ if (fileInput) fileInput.value = '';
 
-    const uploadBtn = document.getElementById('btn-add-event');
-    const progressDiv = document.getElementById('upload-progress');
-    const progressBar = document.getElementById('upload-progress-bar');
-    const progressText = document.getElementById('upload-progress-text');
+ document.getElementById('upload-count').textContent = '0';
+ },
 
-    if (uploadBtn) uploadBtn.disabled = true;
-    if (uploadBtn) uploadBtn.textContent = '⏳ Guardando...';
+ updateStats() {
+ const counter = document.getElementById('photo-counter');
+ const uploadCount = document.getElementById('upload-count');
+ if (counter) counter.textContent = `(${this.queue.length} seleccionadas)`;
+ if (uploadCount) uploadCount.textContent = this.queue.length;
+ },
 
-    const odsSource = (Array.isArray(window.allODS) && window.allODS.length) ? window.allODS : allODS;
-    const ods = odsSource?.find(o => o.id === odsId);
-    if (!ods) {
-      alert('Error: ODS no encontrada');
-      if (uploadBtn) {
-        uploadBtn.disabled = false;
-        uploadBtn.textContent = '⬆ Subir';
-      }
-      return;
-    }
+ async startUpload() {
+ const odsId = window.currentSelectedId || currentSelectedId;
+ if (!odsId) {
+ alert('Error: No se identificó la orden de servicio');
+ return;
+ }
+if (!this.queue.length) {
+ alert('Primero selecciona al menos una foto.');
+ return;
+}
 
-    let hist = [];
-    try {
-      hist = JSON.parse(ods.notas || '[]');
-      if (!Array.isArray(hist)) hist = [];
-    } catch (e) {
-      hist = [];
-    }
+ const uploadBtn = document.getElementById('btn-upload-photos');
+ const progressDiv = document.getElementById('upload-progress');
+ const progressBar = document.getElementById('upload-progress-bar');
+ const progressText = document.getElementById('upload-progress-text');
 
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
-      now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+ if (uploadBtn) uploadBtn.disabled = true;
+ if (uploadBtn) uploadBtn.textContent = '⏳ Procesando...';
+ if (progressDiv) progressDiv.style.display = 'block';
 
-    const photoUrls = [];
-    const total = this.queue.length;
+ const odsSource = (Array.isArray(window.allODS) && window.allODS.length) ? window.allODS : allODS;
+ const ods = odsSource?.find(o => o.id === odsId);
+ if (!ods) {
+ alert('Error: ODS no encontrada');
+ return;
+ }
 
-    if (total > 0) {
-      if (progressDiv) progressDiv.style.display = 'block';
-      let completed = 0;
+ let hist = [];
+ try {
+ hist = JSON.parse(ods.notas || '[]');
+ if (!Array.isArray(hist)) hist = [];
+ } catch (e) {
+ hist = [];
+ }
 
-      for (let i = 0; i < this.queue.length; i++) {
-        const item = this.queue[i];
-        if (progressText) {
-          progressText.textContent = `Procesando y comprimiendo foto ${i + 1} de ${total}...`;
-        }
+ const now = new Date();
+ const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
+ now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
 
-        try {
-          const base64Img = await this.compressImage(item.file);
-          photoUrls.push(base64Img);
+ const photoUrls = [];
+ const total = this.queue.length;
+ let completed = 0;
 
-          const slot = document.getElementById(item.id);
-          if (slot) {
-            slot.classList.add('ready', 'uploaded');
-            const status = slot.querySelector('.slot-status');
-            if (status) status.textContent = '✓';
-          }
-        } catch (err) {
-          console.error('Error procesando foto:', err);
-          const slot = document.getElementById(item.id);
-          if (slot) {
-            slot.classList.add('failed');
-            const status = slot.querySelector('.slot-status');
-            if (status) {
-              status.textContent = '✗';
-              status.style.color = 'var(--mac-red)';
-            }
-          }
-        }
+ // Procesar en chunks de 3
+ const chunkSize = 3;
 
-        completed++;
-        if (progressBar) {
-          progressBar.style.width = `${(completed / total) * 100}%`;
-        }
-      }
-    }
+ for (let i = 0; i < this.queue.length; i += chunkSize) {
+ const chunk = this.queue.slice(i, i + chunkSize);
 
-    // Guardar en la base de datos (con o sin fotos)
-    try {
-      if (progressText) progressText.textContent = 'Guardando en la nube...';
+ if (progressText) {
+ progressText.textContent = `Comprimiendo y subiendo ${i + 1}-${Math.min(i + chunkSize, total)} de ${total}...`;
+ }
 
-      const newEntry = {
-        date: dateStr,
-        status: newStatus,
-        text: text,
-        photos: photoUrls
-      };
+ const results = await Promise.allSettled(
+ chunk.map(async (item) => {
+ try {
+ // Comprimir
+ const compressed = await this.compressImage(item.file);
 
-      hist.push(newEntry);
+ // Generar nombre único
+ const timestamp = Date.now();
+const fileName = `ods_${odsId}/${timestamp}_${item.index}.jpg`;
 
-      const newNotas = JSON.stringify(hist);
-      const { error } = await supabaseClient
-        .from('ordenes_servicio')
-        .update({ 
-          notas: newNotas,
-          status: newStatus
-        })
-        .eq('id', odsId);
+ // Subir a Storage
+ const { data, error } = await supabaseClient.storage
+ .from('ods-photos')
+.upload(fileName, compressed, {
+contentType: 'image/jpeg',
+ upsert: false
+ });
 
-      if (error) throw error;
+ if (error) throw error;
 
-      ods.notas = newNotas;
-      ods.status = newStatus;
+ // Obtener URL pública
+ const { data: publicUrl } = supabaseClient.storage
+ .from('ods-photos')
+ .getPublicUrl(fileName);
 
-      const idxLocal = allODS.findIndex(x => x.id === odsId);
-      if (idxLocal > -1) {
-        allODS[idxLocal].notas = newNotas;
-        allODS[idxLocal].status = newStatus;
-      }
-      if (Array.isArray(window.allODS)) {
-        const idxWindow = window.allODS.findIndex(x => x.id === odsId);
-        if (idxWindow > -1) {
-          window.allODS[idxWindow].notas = newNotas;
-          window.allODS[idxWindow].status = newStatus;
-        }
-      }
+ // Actualizar UI
+ const slot = document.getElementById(item.id);
+ if (slot) {
+ slot.classList.add('uploaded');
+ const status = slot.querySelector('.slot-status');
+ if (status) status.textContent = '☁️';
+ }
 
-      if (progressText) {
-        progressText.textContent = total > 0 ? `✓ ${photoUrls.length} de ${total} fotos guardadas` : '✓ Historial actualizado';
-        progressText.style.color = 'var(--mac-green)';
-      }
-      if (uploadBtn) {
-        uploadBtn.innerHTML = '✓ Guardado';
-        uploadBtn.style.background = 'var(--mac-green)';
-      }
+ return publicUrl.publicUrl;
+ } catch (err) {
+ console.error('Error subiendo foto:', err);
 
-      // Reset fields
-      document.getElementById('inp-new-text').value = '';
-      this.clearQueue(true);
+ const slot = document.getElementById(item.id);
+ if (slot) {
+ slot.classList.add('failed');
+ const status = slot.querySelector('.slot-status');
+ if (status) {
+ status.textContent = '✗';
+ status.style.color = 'var(--mac-red)';
+ }
+ }
 
-      // Refrescar vista
-      renderSidebar(document.getElementById('search-input').value);
-      setTimeout(() => {
-        if (window.renderDetail) window.renderDetail(ods);
-      }, 800);
+ throw err;
+ }
+ })
+ );
 
-    } catch (e) {
-      console.error("Upload error:", e);
-      alert('Error al actualizar ODS: ' + e.message);
-      if (uploadBtn) {
-        uploadBtn.disabled = false;
-        uploadBtn.innerHTML = '⬆ Reintentar';
-        uploadBtn.style.background = 'var(--mac-green)';
-      }
-    }
-  },
+ results.forEach(result => {
+ if (result.status === 'fulfilled') {
+ photoUrls.push(result.value);
+ }
+ });
 
-  compressImage(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
+ completed += chunk.length;
+ if (progressBar) {
+ progressBar.style.width = `${(completed / total) * 100}%`;
+ }
+ }
 
-          let { width, height } = img;
-          const maxDim = 900;
+ // Guardar en base de datos
+ if (photoUrls.length > 0) {
+ if (progressText) progressText.textContent = 'Guardando metadatos...';
 
-          if (width > maxDim || height > maxDim) {
-            const ratio = Math.min(maxDim / width, maxDim / height);
-            width = Math.floor(width * ratio);
-            height = Math.floor(height * ratio);
-          }
+ const noteText = document.getElementById('inp-new-text')?.value || '';
+ const isInternal = /^\[INTERNO\]/i.test(noteText.trim());
+ hist.push(MacWaveOps.createTimelineEvent({
+ date: dateStr,
+ status: document.getElementById('inp-new-status')?.value || ods.status,
+ text: noteText,
+ photos: photoUrls,
+ internal: isInternal
+ }));
 
-          canvas.width = width;
-          canvas.height = height;
-          ctx.drawImage(img, 0, 0, width, height);
+ const newNotas = JSON.stringify(hist);
+ const { error } = await mwPersistOrden(odsId, { notas: newNotas }, 'photos_uploaded', {
+ count: photoUrls.length,
+ });
 
-          // JPG de compresión 0.35 para minimizar peso de Base64 sin perder detalles técnicos
-          let dataUrl = canvas.toDataURL('image/jpeg', 0.35);
-          resolve(dataUrl);
-        };
-        img.onerror = reject;
-        img.src = e.target.result;
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  }
+ if (error) throw error;
+
+ ods.notas = newNotas;
+ const idxLocal = allODS.findIndex(x => x.id === odsId);
+ if (idxLocal > -1) allODS[idxLocal].notas = newNotas;
+ if (Array.isArray(window.allODS)) {
+ const idxWindow = window.allODS.findIndex(x => x.id === odsId);
+ if (idxWindow > -1) window.allODS[idxWindow].notas = newNotas;
+ }
+
+ // Limpiar cola
+ this.queue = [];
+
+ if (progressText) {
+ progressText.textContent = `✓ ${photoUrls.length} de ${total} fotos subidas`;
+ progressText.style.color = 'var(--mac-green)';
+ }
+if (uploadBtn) {
+uploadBtn.innerHTML = '✓ Subido';
+uploadBtn.style.background = 'var(--mac-green)';
+}
+
+ // Refrescar vista
+ setTimeout(() => {
+ if (window.renderDetail) window.renderDetail(ods);
+ }, 800);
+ } else {
+ if (progressText) {
+ progressText.textContent = 'Error: No se pudo subir ninguna foto';
+ progressText.style.color = 'var(--mac-red)';
+ }
+ if (uploadBtn) {
+ uploadBtn.disabled = false;
+uploadBtn.innerHTML = '⬆ Reintentar';
+ }
+ }
+ },
+
+ compressImage(file) {
+ return new Promise((resolve, reject) => {
+ const reader = new FileReader();
+ reader.onload = (e) => {
+ const img = new Image();
+ img.onload = () => {
+ const canvas = document.createElement('canvas');
+ const ctx = canvas.getContext('2d');
+
+ let { width, height } = img;
+const maxDim = 900;
+
+ if (width > maxDim || height > maxDim) {
+ const ratio = Math.min(maxDim / width, maxDim / height);
+ width = Math.floor(width * ratio);
+ height = Math.floor(height * ratio);
+ }
+
+ canvas.width = width;
+ canvas.height = height;
+ ctx.drawImage(img, 0, 0, width, height);
+
+// JPG agresivo para minimizar peso sin romper legibilidad
+ canvas.toBlob((blob) => {
+ if (!blob) {
+ reject(new Error('Compresión fallida'));
+ return;
+ }
+ resolve(blob);
+}, 'image/jpeg', 0.35);
+ };
+ img.onerror = reject;
+ img.src = e.target.result;
+ };
+ reader.onerror = reject;
+ reader.readAsDataURL(file);
+ });
+ }
 };
 
-  // DOMContentLoaded ya pasó al cargar la página; al renderizar el detalle hay que enlazar controles ahora.
-  window.PhotoFlow.init();
+ // DOMContentLoaded ya pasó al cargar la página; al renderizar el detalle hay que enlazar controles ahora.
+ window.PhotoFlow.init();
 }
 
 window.deleteGalleryPhoto = async function(odsId, noteIdx, e, photoIdx = null) {
@@ -3734,7 +3791,7 @@ if(hist[noteIdx]) {
  }
  const newNotas = JSON.stringify(hist);
  ods.notas = newNotas;
- const { error } = await supabaseClient.from('ordenes_servicio').update({notas: newNotas}).eq('id', odsId);
+ const { error } = await mwPersistOrden(odsId, { notas: newNotas }, 'photo_deleted', { noteIdx });
  if(error) throw error;
  renderDetail(ods);
  } catch(e) {
@@ -3787,13 +3844,13 @@ if(hist[noteIdx]) {
  reader.readAsDataURL(file);
  });
  
- hist.push({ date: dateStr, status: ods.status || 'Recibido', text: '', img: base64Img });
+ hist.push(MacWaveOps.createTimelineEvent({ date: dateStr, status: ods.status || 'Recibido', text: '', img: base64Img, internal: false }));
  }
  
  progressText.innerText = "Guardando en la nube...";
  const newNotas = JSON.stringify(hist);
  ods.notas = newNotas;
- const { error } = await supabaseClient.from('ordenes_servicio').update({notas: newNotas}).eq('id', odsId);
+ const { error } = await mwPersistOrden(odsId, { notas: newNotas }, 'gallery_photos_added', { count: files.length });
  if(error) throw error;
  
  renderDetail(ods);
@@ -3819,6 +3876,12 @@ if(hist[noteIdx]) {
 
  // Run
  document.addEventListener('DOMContentLoaded', () => {
+ if (window.MacWaveAuditLog) {
+ MacWaveAuditLog.init({
+ supabaseClient,
+ onOpenOds: openOdsFromAudit,
+ });
+ }
  initVistaGlow();
  const urlParams = new URLSearchParams(window.location.search);
  const viewParam = urlParams.get('view');

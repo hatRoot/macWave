@@ -5,6 +5,7 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <meta name="robots" content="noindex, nofollow, noarchive">
+ <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://lifxtyhvgnxjjqgbzare.supabase.co; frame-ancestors 'none'; base-uri 'self';">
  <title>macWave Estado de tu Orden de Servicio</title>
  <meta name="description" content="Consulta el estado actual de tu reparación Mac en macWave México. Ingresa tu folio MW o número de serie para seguimiento en tiempo real.">
  <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -502,62 +503,7 @@ word-break: break-word;
  margin-top: 16px;
  max-width: 300px;
  }
- 
-  /* Lightbox Modal */
-  .lightbox-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    z-index: 10000000;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  .lightbox-overlay.active {
-    display: flex;
-    opacity: 1;
-  }
-  .lightbox-content {
-    max-width: 90%;
-    max-height: 85%;
-    object-fit: contain;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    transform: scale(0.9);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.1);
-  }
-  .lightbox-overlay.active .lightbox-content {
-    transform: scale(1);
-  }
-  .lightbox-close {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    border: none;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    font-size: 24px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s, transform 0.2s;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    -webkit-tap-highlight-color: transparent;
-  }
-  .lightbox-close:active {
-    background: rgba(255, 255, 255, 0.25);
-    transform: scale(0.9);
-  }
-</style>
+ </style>
 
   <link rel="canonical" href="https://macwave.com.mx/status-ods">
 </head>
@@ -573,7 +519,7 @@ word-break: break-word;
  <h1
  style="font-size: 1.4rem; font-weight: 900; letter-spacing: -0.5px; color: #fff; margin: 0; line-height: 1;">
  mac<span>Wave</span> <span style="font-weight: 300;">México</span></h1>
- <div style="font-size: 0.7rem; color: var(--muted); margin-top: 2px;">Para tu dispositivo Apple fuera de garantía
+ <div style="font-size: 0.7rem; color: var(--muted); margin-top: 2px;">Para tu equipo fuera de garantía
  </div>
  </div>
  </a>
@@ -644,12 +590,11 @@ word-break: break-word;
  </div>
 
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <script src="js/supabase-config.js"></script>
+ <script src="js/ops-shared.js"></script>
  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
  <script>
- const _sb = supabase.createClient(
- 'https://lifxtyhvgnxjjqgbzare.supabase.co',
- 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxpZnh0eWh2Z254ampxZ2J6YXJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MzAzNTgsImV4cCI6MjA4NzMwNjM1OH0.YCOLJUZaw5LNAyDyNrzhlJJJeUltRadrnjC1oNUCgFI'
- );
+ const _sb = MacWaveOps.createSupabaseClient();
 
  const STEPS = [
  { key: 'Recibido', label: 'Recibido', icon: '📩' },
@@ -671,44 +616,35 @@ word-break: break-word;
  'Nota General': { bg: '#111111', text: '#8E8E93' } // Gray
  };
 
- // Read URL params (from QR scan)
+ // Read URL params (from QR scan) — token preferido sobre folio
  const params = new URLSearchParams(window.location.search);
+ const pToken = params.get('token') || '';
  const pFolio = params.get('folio') || '';
 
- if (pFolio) {
- document.getElementById('search-input').value = pFolio;
+ if (pToken || pFolio) {
+ document.getElementById('search-input').value = pToken || pFolio;
  }
 
  function renderODS(ods) {
  const sc = STATUS_COLORS[ods.status] || STATUS_COLORS['Recibido'];
 
- // Historial (Timeline) logic
  let historial = [];
- try {
- // Si 'notas' es un JSON string (nuevo formato)
- historial = JSON.parse(ods.notas || '[]');
- if (!Array.isArray(historial)) throw new Error('Not an array');
- } catch (e) {
- // Formato legacy (texto plano)
- if (ods.notas) {
- historial = [{
- date: ods.fecha || 'Fecha de ingreso',
- status: 'Nota General',
- text: ods.notas,
- img: null
- }];
+ if (Array.isArray(ods.timeline) && ods.timeline.length) {
+ historial = MacWaveOps.timelineFromClientColumn(ods.timeline, ods.fecha);
  } else {
+ historial = MacWaveOps.filterClientTimeline(MacWaveOps.parseHistorial(ods.notas, ods.fecha));
+ }
+ if (!historial.length) {
  historial = [{
  date: ods.fecha || '',
- status: 'Recibido',
- text: 'Equipo recibido e ingresado al sistema.',
+ status: ods.status || 'Recibido',
+ text: 'Tu equipo está siendo atendido por nuestro equipo técnico.',
  img: null
  }];
  }
- }
+ historial.reverse();
 
-  // Show newest on top without mutating the original chronological order
-  const timelineHtml = historial.slice().reverse().map((ev, i) => {
+ const timelineHtml = historial.map((ev, i) => {
  const isLatest = i === 0;
  let evColor, evBg;
 
@@ -754,18 +690,18 @@ word-break: break-word;
  <div style="flex: 1; background: #1c1c1e; border: 1px solid var(--border); border-radius: 14px; padding: 16px;">
  <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
  <div>
- <span style="display: inline-block; font-size: 0.75rem; font-weight: 700; color: ${evColor}; text-transform: uppercase; letter-spacing: 0.5px; border-radius: 4px; border: 1px solid ${evColor}; padding: 2px 6px; margin-bottom: 6px;">${ev.status}</span>
- <div style="color: var(--muted); font-size: 0.75rem;">${ev.date}</div>
+ <span style="display: inline-block; font-size: 0.75rem; font-weight: 700; color: ${evColor}; text-transform: uppercase; letter-spacing: 0.5px; border-radius: 4px; border: 1px solid ${evColor}; padding: 2px 6px; margin-bottom: 6px;">${MacWaveOps.escapeHtml(ev.status)}</span>
+ <div style="color: var(--muted); font-size: 0.75rem;">${MacWaveOps.escapeHtml(ev.date)}</div>
  </div>
  </div>
-${ev.text && !ev.text.startsWith('Cambio de estatus vía Tablero') ? `<div style="font-size: 0.88rem; color: #E0E0E6; line-height: 1.5;">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
+${ev.text && !ev.text.startsWith('Cambio de estatus vía Tablero') ? `<div style="font-size: 0.88rem; color: #E0E0E6; line-height: 1.5;">${MacWaveOps.escapeHtml(ev.text).replace(/\\n/g, '<br>')}</div>` : ''}
 ${(() => {
 const evPhotos = [];
 if (ev.img) evPhotos.push(ev.img);
 if (Array.isArray(ev.photos)) evPhotos.push(...ev.photos.filter(Boolean));
 if (!evPhotos.length) return '';
 return `<div style="margin-top: 12px; display:grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px;">
-${evPhotos.map((p, idx) => `<img src="${p}" onclick="openLightbox(this.src)" style="width:100%; height:120px; object-fit:cover; border-radius: 8px; border: 1px solid var(--border); cursor: zoom-in;" alt="Evidencia Técnica ${idx + 1}">`).join('')}
+${evPhotos.map((p, idx) => `<img src="${p}" style="width:100%; height:120px; object-fit:cover; border-radius: 8px; border: 1px solid var(--border);" alt="Evidencia Técnica ${idx + 1}">`).join('')}
 </div>`;
 })()}
  </div>
@@ -785,7 +721,7 @@ return list;
  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px;">
  ${photos.map((p, idx) => `
  <div style="aspect-ratio: 1; overflow: hidden; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); background: #111;" 
- onclick="openLightbox(this.querySelector('img').src)"
+ onclick="window.open(this.querySelector('img').src)"
  onmouseover="this.style.transform='scale(1.05)'; this.style.borderColor='rgba(255,255,255,0.3)';" 
  onmouseout="this.style.transform='scale(1)'; this.style.borderColor='rgba(255,255,255,0.1)';">
  <img src="${p}" style="width: 100%; height: 100%; object-fit: cover;" alt="Evidencia ${idx + 1}">
@@ -799,12 +735,12 @@ return list;
  <div class="ods-card">
  <div class="ods-card-header">
  <div>
- <div class="ods-folio">${ods.folio}</div>
- <div class="ods-client">Cliente: ${ods.cliente || ''}</div>
- ${ods.serie ? `<div class="ods-serial">Serie: ${ods.serie}</div>` : ''}
+ <div class="ods-folio">${MacWaveOps.escapeHtml(ods.folio)}</div>
+ <div class="ods-client">Cliente: ${MacWaveOps.escapeHtml(ods.cliente || '')}</div>
+ ${ods.serie_masked ? `<div class="ods-serial">Serie: ${MacWaveOps.escapeHtml(ods.serie_masked)}</div>` : ''}
  </div>
  <span class="status-badge" style="background:${sc.bg}; color:${sc.text};">
- ${(ods.status || 'RECIBIDO').toUpperCase()}
+ ${MacWaveOps.escapeHtml((ods.status || 'RECIBIDO').toUpperCase())}
  </span>
  </div>
  <div class="tracker" style="padding: 32px 24px;">
@@ -818,29 +754,40 @@ return list;
  }
 
  async function doSearch() {
- let query = document.getElementById('search-input').value.trim();
+ const rawQuery = document.getElementById('search-input').value.trim();
  const rs = document.getElementById('result-section');
- if (!query) { rs.innerHTML = ''; return; }
+ if (!rawQuery) { rs.innerHTML = ''; return; }
 
- // Si solo buscan el número (ej: 9473), lo dejamos tal cual para que el ilike lo encuentre
- // Limpiamos la búsqueda de caracteres extraños pero mantenemos flexibilidad
- let searchStr = query.replace(/ /g, '%');
- 
- rs.innerHTML = '<div style="color:#8e8e93;text-align:center;padding:30px;">Buscando información técnica...</div>';
+ const looksLikeToken = /^[a-f0-9]{32,64}$/i.test(rawQuery);
+ const token = looksLikeToken ? rawQuery : (pToken || null);
+ const folio = looksLikeToken ? null : MacWaveOps.sanitizeSearchInput(rawQuery);
 
- // Search by Folio, Name or Serial (Súper Flexible Mode)
- const { data, error } = await _sb
- .from('ordenes_servicio')
- .select('*')
- .or(`folio.ilike.%${searchStr}%,cliente.ilike.%${searchStr}%,serie.ilike.%${searchStr}%`)
- .order('created_at', { ascending: false });
+ rs.innerHTML = '<div style="color:#8e8e93;text-align:center;padding:30px;">Buscando tu orden...</div>';
 
- if (error || !data || data.length === 0) {
+ const { data, error } = await MacWaveOps.fetchPublicTracking(_sb, {
+ p_token: token,
+ p_folio: folio,
+ });
+
+ if (error) {
+ const msg = error.message && error.message.includes('Demasiados')
+ ? 'Has realizado muchas búsquedas. Intenta de nuevo en unos minutos.'
+ : 'No pudimos consultar tu orden. Verifica tu folio o escanea el QR.';
+ rs.innerHTML = `
+ <div class="empty-state">
+ <div class="empty-icon">⏳</div>
+ <h3>Consulta no disponible</h3>
+ <p>${MacWaveOps.escapeHtml(msg)}</p>
+ </div>`;
+ return;
+ }
+
+ if (!data || data.length === 0) {
  rs.innerHTML = `
  <div class="empty-state">
  <div class="empty-icon">❌</div>
  <h3>Búsqueda sin resultados</h3>
- <p>Verifica que el folio, nombre o serie sean correctos.</p>
+ <p>Verifica que el folio o el código QR sean correctos.</p>
  </div>`;
  return;
  }
@@ -852,20 +799,13 @@ return list;
  </div>
  `;
 
- rs.innerHTML = htmlOutput + data.map(renderODS).join('');
+ rs.innerHTML = htmlOutput + data.map((row) => renderODS(row)).join('');
 
- // Futuristic progress bar animation
  setTimeout(() => {
- data.forEach(ods => {
- const currentIdx = STEPS.findIndex(s => s.key === (ods.status || 'Recibido'));
- let progressPercent = 0;
- if (currentIdx > 0) {
- progressPercent = (currentIdx / (STEPS.length - 1)) * 90;
- }
+ data.forEach((ods) => {
+ const progressPercent = typeof ods.progress === 'number' ? ods.progress : 0;
  const fillEl = document.getElementById(`progress-fill-${ods.folio}`);
- if (fillEl) {
- fillEl.style.width = `${progressPercent}%`;
- }
+ if (fillEl) fillEl.style.width = `${progressPercent}%`;
  });
  }, 50);
  }
@@ -874,8 +814,7 @@ return list;
  if (e.key === 'Enter') doSearch();
  });
 
- // Trigger search if folio is present in URL
- if (pFolio) {
+ if (pToken || pFolio) {
  setTimeout(doSearch, 300);
  }
 
@@ -939,15 +878,15 @@ return list;
  // Close scanner first
  closeQRScanner();
 
- // Extract folio from QR content
- // QR could be a URL like status-ods.html?folio=MW-001 or just the folio itself
  let folio = text;
+ let token = null;
  try {
  const url = new URL(text);
+ token = url.searchParams.get('token');
  const f = url.searchParams.get('folio');
- if (f) folio = f;
+ if (token) folio = token;
+ else if (f) folio = f;
  } catch (e) {
- // Not a URL, use text as-is (it's probably just the folio)
  folio = text;
  }
 
@@ -955,31 +894,6 @@ return list;
  document.getElementById('search-input').value = folio;
  setTimeout(doSearch, 200);
  }
- 
-  /* Lightbox Functions */
-  function openLightbox(src) {
-    const modal = document.getElementById('lightbox-modal');
-    const img = document.getElementById('lightbox-img');
-    if (!modal || !img) return;
-
-    img.src = src;
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeLightbox() {
-    const modal = document.getElementById('lightbox-modal');
-    if (!modal) return;
-
-    modal.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-</script>
-  <!-- Lightbox Modal -->
-  <div id="lightbox-modal" class="lightbox-overlay" onclick="closeLightbox()">
-    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
-    <img id="lightbox-img" class="lightbox-content" src="" alt="Vista previa" onclick="event.stopPropagation()">
-  </div>
-
+ </script>
 </body>
 </html>

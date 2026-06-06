@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Casos Reales | En mantenimiento | macWave México</title>
+  <meta name="description" content="Galería de casos reales en preparación. Próximamente en macWave México.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://macwave.com.mx/casos-reales">
+  <link rel="icon" type="image/png" href="https://macwave.com.mx/images/favicon1.png">
+  <meta name="theme-color" content="#000000">
+  <link rel="stylesheet" href="style.css?v=26.5.3">
+  <script>
+    function toggleMobileMenu(e) {
+      if (e) { e.preventDefault(); e.stopPropagation(); }
+      var body = document.body;
+      var btn = document.getElementById('mobile-menu-toggle');
+      var isNowActive = body.classList.toggle('menu-active');
+      if (btn) { if (isNowActive) btn.classList.add('active'); else btn.classList.remove('active'); }
+    }
+  </script>
+  <style>
+    .mw-maintenance {
+      min-height: 55vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 24px 80px;
+      background: #0a0a0c;
+      text-align: center;
+    }
+    .mw-maintenance-inner {
+      max-width: 520px;
+    }
+    .mw-maintenance-badge {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #ff6600;
+      border: 1px solid rgba(255, 102, 0, 0.35);
+      background: rgba(255, 102, 0, 0.08);
+    }
+    .mw-maintenance h1 {
+      font-size: clamp(1.8rem, 5vw, 2.4rem);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 16px;
+      letter-spacing: -0.03em;
+    }
+    .mw-maintenance p {
+      color: #a0a0a8;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      margin-bottom: 28px;
+    }
+    .mw-maintenance a.mw-btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 100px;
+      background: #ff6600;
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .mw-maintenance a.mw-btn:hover {
+      background: #ff8533;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="cloned-topbar">
+    <div class="container">
+      <div class="cloned-topbar-left">
+        <span>Servicio a domicilio sin costo en CDMX</span>
+      </div>
+      <div class="cloned-topbar-right">
+        <a href="tel:5535757364" class="cloned-topbar-item"><span>55-3575-7364</span></a>
+      </div>
+    </div>
+  </div>
+
+  <header class="cloned-header">
+    <div class="container">
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menú" onclick="toggleMobileMenu(event)">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="cloned-logo-container logo">
+        <a href="/" class="logo-link">
+          <img src="./images/negro.png" alt="macWave México" class="logo-img">
+          <div class="logo-text-container">
+            <span class="logo-brand"><strong>macWave</strong> <span style="font-weight: 300;">México</span></span>
+          </div>
+        </a>
+      </div>
+      <nav class="cloned-nav">
+        <a href="/reparaciones.html" class="cloned-nav-link">Reparaciones</a>
+        <a href="/empresas.html" class="cloned-nav-link">Empresas</a>
+        <a href="/software.html" class="cloned-nav-link">Software</a>
+        <a href="/casos-reales.html" class="cloned-nav-link active">Casos Reales</a>
+      </nav>
+      <nav class="main-nav">
+        <button class="mobile-nav-close" onclick="toggleMobileMenu(event)" aria-label="Cerrar menú">✕</button>
+        <div class="mobile-menu-content">
+          <div class="mobile-nav-links">
+            <a href="/reparaciones.html" class="nav-link" style="--i:1">Reparaciones</a>
+            <a href="/empresas.html" class="nav-link" style="--i:2">Empresas</a>
+            <a href="/software.html" class="nav-link" style="--i:3">Software</a>
+            <a href="/casos-reales.html" class="nav-link active" style="--i:4">Casos Reales</a>
+          </div>
+        </div>
+      </nav>
+      <a href="https://wa.me/525535757364?text=Hola%20me%20ayudas%20a%20reparar%20mi%20Mac%3F" target="_blank" rel="noopener noreferrer" class="cloned-header-cta">Solicitar servicio</a>
+    </div>
+  </header>
+
+  <main class="mw-maintenance">
+    <div class="mw-maintenance-inner">
+      <span class="mw-maintenance-badge">En mantenimiento</span>
+      <h1>Casos Reales</h1>
+      <p>Estamos preparando esta sección. Próximamente verás algo interesante.</p>
+      <a href="/reparaciones.html" class="mw-btn">Ver reparaciones</a>
+    </div>
+  </main>
+
+  <footer class="main-footer">
+    <div class="footer-bottom-mini" style="border-top: 1px solid #111; padding: 15px 0; background: #000; text-align: center;">
+      <div class="container" style="color: #666; font-size: 0.75em;">
+        <p>&copy; 2026 Mac Wave T2. <a href="/" style="color: inherit;">Volver al inicio</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js?v=26.5.3"></script>
+</body>
+
+</html>

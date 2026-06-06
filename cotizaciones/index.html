@@ -5,6 +5,27 @@
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title>Generador de Cotizaciones - macWave</title>
+ <meta name="robots" content="noindex, nofollow, noarchive">
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <script src="../js/supabase-config.js"></script>
+ <script src="../js/ops-shared.js?v=hotfix-2b"></script>
+ <script>
+  (async function requireSupabaseSession() {
+    const client = MacWaveOps.createSupabaseClient();
+    const { data } = await client.auth.getSession();
+    if (!data?.session) {
+      sessionStorage.clear();
+      window.location.replace('../tecnicos.html');
+      return;
+    }
+    const role = await MacWaveOps.verifyTechnicianAccess(client, data.session.user.email);
+    if (!role) {
+      await client.auth.signOut();
+      sessionStorage.clear();
+      window.location.replace('../tecnicos.html');
+    }
+  })();
+ </script>
  <link rel="stylesheet" href="styles.css">
  <link rel="preconnect" href="https://fonts.googleapis.com">
  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

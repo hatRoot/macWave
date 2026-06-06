@@ -87,7 +87,109 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
 
-  <!-- Schema.org JSON-LD consolidado: bloque único en línea 224 -->
+  <!-- Schema.org JSON-LD - LocalBusiness + WebSite + SearchAction -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://macwave.com.mx/#website",
+        "url": "https://macwave.com.mx/",
+        "name": "macWave México - Reparación Mac Nivel Componente",
+        "description": "Especialistas en reparación Mac a nivel componente en CDMX. 18 años de experiencia, 2 años de garantía.",
+        "publisher": { "@id": "https://macwave.com.mx/#localbusiness" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://macwave.com.mx/?s={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://macwave.com.mx/#localbusiness",
+        "name": "macWave México",
+        "alternateName": "Mac Wave T2",
+        "url": "https://macwave.com.mx/",
+        "logo": "https://macwave.com.mx/images/logo_dashboard_white.png",
+        "image": [
+          "https://macwave.com.mx/images/dispositivos.jpg",
+          "https://macwave.com.mx/images/bateria_solucion.jpg"
+        ],
+        "description": "Especialistas en reparación Mac a nivel componente en CDMX. Baterías con 2 años de garantía por escrito. Servicio mismo día.",
+        "telephone": "+525535757364",
+        "email": "contacto@macwave.com.mx",
+        "priceRange": "$$",
+        "currenciesAccepted": "MXN",
+        "paymentAccepted": "Efectivo, Transferencia, Tarjeta de crédito/debito",
+        "areaServed": {
+          "@type": "Place",
+          "name": "Ciudad de México y área metropolitana"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Servicio a Domicilio y Recolección en CDMX",
+          "addressLocality": "Ciudad de México",
+          "addressRegion": "CDMX",
+          "postalCode": "11560",
+          "addressCountry": "MX"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "19.432608",
+          "longitude": "-99.133209"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "09:00",
+            "closes": "20:00"
+          },
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": "Saturday",
+            "opens": "10:00",
+            "closes": "16:00"
+          }
+        ],
+        "sameAs": [
+          "https://www.facebook.com/macwavemx",
+          "https://www.instagram.com/macwavemx",
+          "https://wa.me/525535757364"
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Servicios de Reparación Mac",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cambio de Batería MacBook" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reparación de Tarjeta Lógica" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cambio de Teclado MacBook" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Mac Mojada - Urgencia" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reparación Flexgate" } }
+          ]
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://macwave.com.mx/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@id": "https://macwave.com.mx/",
+              "name": "Inicio"
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 
   <!-- Performance Optimization: Preload Critical Assets -->
   <link rel="preload" href="./images/logo_dashboard_white.png" as="image">
@@ -95,7 +197,7 @@
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
   as="style">
 
-  <link rel="stylesheet" href="style.css?v=26.3.0">
+  <link rel="stylesheet" href="style.css?v=26.5.3">
 
   <script>
   // Definición global e inmediata para evitar fallos en iPhone
@@ -114,8 +216,10 @@
   }
   </script>
 
-  <!-- Caveat Brush font (decorative) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://www.googletagmanager.com">
 
   <!-- Comprehensive Structured Data (JSON-LD) for SEO -->
   <script type="application/ld+json">
@@ -324,85 +428,342 @@
 </head>
 
 <body>
-  <!-- Emergency Ticker Top Bar -->
-  <div class="emergency-ticker">
-  <div class="container">
-  🆘 ¿Mac Mojada o Batería Inflada? BATERÍAS APPLE CON 2 AÑOS DE GARANTÍA POR ESCRITO.
-  </div>
-  </div>
-
-
-  <header class="main-header">
-  <div class="container header-content">
-
-  <!-- Hamburguesa móvil -->
-  <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menú"
-  onclick="toggleMobileMenu(event)">
-  <span></span><span></span><span></span>
-  </button>
-
-  <!-- IZQUIERDA: Logo -->
-  <div class="logo">
-  <a href="/" class="logo-link">
-  <img src="./images/logo_dashboard_white.png" alt="Logo Mac Wave T2" class="logo-img">
-  <div class="logo-text-container">
-  <span class="logo-brand"><strong>macWave</strong> <span
-  style="font-weight: 300;">México</span></span>
-  <span class="logo-subtext">Para tu dispositivo Apple fuera de garantía</span>
-  </div>
-  </a>
-  </div>
-
-  <!-- CENTRO: 3 enlaces -->
-  <nav class="main-nav">
-  <button class="mobile-nav-close" onclick="toggleMobileMenu(event)" aria-label="Cerrar menú">✕</button>
-  
-  <div class="mobile-menu-content">
-  <div class="mobile-nav-links">
-  <a href="reparaciones" class="nav-link" style="--i:1">Reparaciones</a>
-  <a href="empresas" class="nav-link" style="--i:2">Empresas</a>
-  <a href="software" class="nav-link" style="--i:3">Software</a>
+        <!-- Cloned Top Bar -->
+  <div class="cloned-topbar">
+    <div class="container">
+      <div class="cloned-topbar-left">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 0a.5.5 0 0 1 .5.5v11.793l3.147-3.146a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 12.293V.5A.5.5 0 0 1 8 0zM0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7z"/>
+        </svg>
+        <span>Servicio a domicilio sin costo en CDMX</span>
+      </div>
+      <div class="cloned-topbar-right">
+        <div class="cloned-topbar-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+          </svg>
+          <span>Lun - Vie: 9:00 - 18:00</span>
+        </div>
+        <a href="tel:5535757364" class="cloned-topbar-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M3.654 1.328a.678.678 0 0 0-.57-.383 1.834 1.834 0 0 0-1.424.59 2.76 2.76 0 0 0-.746 1.984c.159 1.488.948 3.013 2.119 4.185 1.171 1.171 2.697 1.96 4.185 2.119.8.086 1.583-.242 1.984-.746.39-.48.59-1.116.59-1.424a.678.678 0 0 0-.383-.57l-2.634-1.202a.678.678 0 0 0-.71.128l-.71.71a2.182 2.182 0 0 1-1.045-.51 2.182 2.182 0 0 1-.51-1.045l.71-.71a.678.678 0 0 0 .128-.71L3.654 1.328z"/>
+          </svg>
+          <span>55-3575-7364</span>
+        </a>
+        <a href="https://wa.me/525535757364?text=Hola%20me%20ayudas%20a%20reparar%20mi%20Mac%3F" target="_blank" rel="noopener noreferrer" class="cloned-topbar-item whatsapp-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
+          </svg>
+          <span>WhatsApp</span>
+        </a>
+      </div>
+    </div>
   </div>
 
-  <div class="mobile-nav-footer">
-  <a href="status-ods" class="status-pill">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right:8px; vertical-align:middle;">
-  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-  <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.247 1.856a.5.5 0 0 1-.494.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z" />
-  </svg>
-  ¿Cómo va tu reparación?
-  </a>
-  <a href="https://wa.me/525535757364?text=Hola%20me%20ayudas%20a%20reparar%20mi%20Mac%3F" class="wa-pill" target="_blank" onclick="gtag('event','whatsapp_click',{'event_category':'contact','event_label':'mobile_menu'});">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right:8px; vertical-align:middle;">
-  <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
-  </svg>
-  WhatsApp
-  </a>
-  </div>
-  </div>
-  </nav>
+  <!-- Cloned Main White Header -->
+  <header class="cloned-header">
+    <div class="container">
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menú" onclick="toggleMobileMenu(event)">
+        <span></span><span></span><span></span>
+      </button>
 
+      <div class="cloned-logo-container logo">
+        <a href="/" class="logo-link">
+          <img src="./images/negro.png" alt="Logo Mac Wave T2" class="logo-img">
+          <div class="logo-text-container">
+            <span class="logo-brand"><strong>macWave</strong> <span style="font-weight: 300;">México</span></span>
+            <span class="logo-subtext">Para tu dispositivo Apple fuera de garantía</span>
+          </div>
+        </a>
+      </div>
 
+      <!-- Desktop Nav -->
+      <nav class="cloned-nav">
+        <a href="/reparaciones.html" class="cloned-nav-link">Reparaciones</a>
+        <a href="/empresas.html" class="cloned-nav-link">Empresas</a>
+        <a href="/software.html" class="cloned-nav-link">Software</a>
+        <a href="/casos-reales.html" class="cloned-nav-link">Casos Reales</a>
+      </nav>
 
+      <!-- Reusing main-nav overlay structure for Mobile Slide Menu -->
+      <nav class="main-nav">
+        <button class="mobile-nav-close" onclick="toggleMobileMenu(event)" aria-label="Cerrar menú">✕</button>
+        <div class="mobile-menu-content">
+          <div class="mobile-nav-links">
+            <a href="/reparaciones.html" class="nav-link" style="--i:1">Reparaciones</a>
+            <a href="/empresas.html" class="nav-link" style="--i:2">Empresas</a>
+            <a href="/software.html" class="nav-link" style="--i:3">Software</a>
+            <a href="/casos-reales.html" class="nav-link" style="--i:4">Casos Reales</a>
+          </div>
+        </div>
+      </nav>
 
-
-  <!-- DERECHA: Botón WhatsApp -->
-  <div class="header-actions">
-  <a href="https://wa.me/525535757364?text=Hola%20me%20ayudas%20a%20reparar%20mi%20Mac%3F"
-  target="_blank" rel="noopener noreferrer" class="cta-button header-cta"
-  style="background: rgba(48,209,88,0.15); color: #30D158; border: 1px solid rgba(48,209,88,0.45); padding: 8px 16px; font-size: 0.85rem; white-space: nowrap; text-decoration: none;"
-  onclick="gtag('event', 'whatsapp_click', { 'event_category': 'contact', 'event_label': 'header' });">
-  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
-  viewBox="0 0 16 16" style="margin-right:8px;">
-  <path
-  d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
-  </svg>
-  Escribir por WhatsApp
-  </a>
-  </div>
-  </div>
+      <a href="https://wa.me/525535757364?text=Hola%20me%20ayudas%20a%20reparar%20mi%20Mac%3F" target="_blank" rel="noopener noreferrer" class="cloned-header-cta">
+        Solicitar servicio
+      </a>
+    </div>
   </header>
-  <main>
+
+<main>
+    <!-- Cloned Slider Section -->
+    <section class="cloned-slider-section">
+      <div class="container">
+        <div class="cloned-slider-grid">
+          <div class="cloned-slider-left">
+            <h2 class="cloned-slider-heading">
+              NO SALGAS DE TU CASA,<br>
+              <span class="orange-text">NOSOTROS VAMOS</span><br>
+              POR TU MAC
+            </h2>
+            <p class="cloned-slider-desc">
+              Reparamos tu Mac con la misma calidad y te la entregamos en la puerta de tu <span class="orange-highlight">casa u oficina.</span>
+            </p>
+            
+            <div class="cloned-checklist">
+              <!-- Item 1 -->
+              <div class="cloned-checklist-item">
+                <div class="cloned-checklist-icon-wrap">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.777 11.777 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7.159 7.159 0 0 0 1.048-.625 11.777 11.777 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.541 1.541 0 0 0-1.044-1.263 62.467 62.467 0 0 0-2.887-.87C9.843.266 8.69 0 8 0zm2.146 5.146a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647z"/>
+                  </svg>
+                </div>
+                <div class="cloned-checklist-content">
+                  <span class="cloned-checklist-title">Confiable</span>
+                  <span class="cloned-checklist-text">Técnicos expertos en reparación Apple.</span>
+                </div>
+              </div>
+              <!-- Item 2 -->
+              <div class="cloned-checklist-item">
+                <div class="cloned-checklist-icon-wrap">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
+                  </svg>
+                </div>
+                <div class="cloned-checklist-content">
+                  <span class="cloned-checklist-title">Cómodo</span>
+                  <span class="cloned-checklist-text">No pierdas tiempo, nosotros vamos por ella.</span>
+                </div>
+              </div>
+              <!-- Item 3 -->
+              <div class="cloned-checklist-item">
+                <div class="cloned-checklist-icon-wrap">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+                  </svg>
+                </div>
+                <div class="cloned-checklist-content">
+                  <span class="cloned-checklist-title">Seguro</span>
+                  <span class="cloned-checklist-text">Transporte seguro y asegurado.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Image Slider Right -->
+          <div class="cloned-slider-right">
+            <div class="cloned-slides-wrapper">
+              <div class="cloned-slide active">
+                <img src="./images/slider_domicilio.jpg" alt="Servicio a Domicilio MacWave - Chevy Aveo y entrega de MacBook">
+              </div>
+              <div class="cloned-slide">
+                <img src="./images/slider_mojada.jpg" alt="¿Se Mojó tu Mac? Reparación a Nivel Componente">
+              </div>
+              <div class="cloned-slide">
+                <img src="./images/slider_bateria.jpg" alt="Baterías MacBook Pro con 2 Años de Garantía">
+              </div>
+            </div>
+            
+            <!-- Navigation Arrows -->
+            <div class="cloned-slider-arrow arrow-left" id="slider-prev-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+              </svg>
+            </div>
+            <div class="cloned-slider-arrow arrow-right" id="slider-next-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+              </svg>
+            </div>
+            
+            <!-- Dots -->
+            <div class="cloned-slider-dots">
+              <span class="cloned-slider-dot active" data-index="0"></span>
+              <span class="cloned-slider-dot" data-index="1"></span>
+              <span class="cloned-slider-dot" data-index="2"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lightbox Overlay para Slider -->
+    <div class="slider-lightbox" id="sliderLightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
+      <button class="slider-lightbox-close" id="lightboxClose" aria-label="Cerrar">&#x2715;</button>
+      <button class="slider-lightbox-nav slider-lightbox-prev" id="lightboxPrev" aria-label="Anterior">&#8592;</button>
+      <div class="slider-lightbox-img-wrap">
+        <img class="slider-lightbox-img" id="lightboxImg" src="" alt="Imagen ampliada">
+      </div>
+      <button class="slider-lightbox-nav slider-lightbox-next" id="lightboxNext" aria-label="Siguiente">&#8594;</button>
+      <div class="slider-lightbox-counter" id="lightboxCounter">1 / 3</div>
+    </div>
+    
+    <!-- Cloned Steps Bar Section -->
+    <section class="cloned-steps-section">
+      <div class="container">
+        <div class="cloned-steps-container">
+          <div class="cloned-steps-wrapper-inline">
+            <!-- Step 1 -->
+            <div class="cloned-step-item whatsapp-step">
+              <div class="cloned-step-icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+                </svg>
+              </div>
+              <div class="cloned-step-text-wrap">
+                <span class="cloned-step-title">1. Escríbenos</span>
+                <span class="cloned-step-desc">por WhatsApp</span>
+              </div>
+            </div>
+            
+            <div class="cloned-step-arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+              </svg>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="cloned-step-item">
+              <div class="cloned-step-icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 6.02V10h1.5a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 12 6.02zM4 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                </svg>
+              </div>
+              <div class="cloned-step-text-wrap">
+                <span class="cloned-step-title">2. Vamos</span>
+                <span class="cloned-step-desc">por tu Mac</span>
+              </div>
+            </div>
+            
+            <div class="cloned-step-arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+              </svg>
+            </div>
+            
+            <!-- Step 3 -->
+            <div class="cloned-step-item">
+              <div class="cloned-step-icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M0 1.25A.75.75 0 0 1 .75.5h14.5a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1-.75-.75V1.25zM1.5 13.5h13V4.5h-13v9zm0-10.5h13V2h-13v1z"/>
+                  <path d="M11.5 7.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0zm-1.5 2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                </svg>
+              </div>
+              <div class="cloned-step-text-wrap">
+                <span class="cloned-step-title">3. La reparamos</span>
+                <span class="cloned-step-desc">con calidad Apple</span>
+              </div>
+            </div>
+            
+            <div class="cloned-step-arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+              </svg>
+            </div>
+            
+            <!-- Step 4 -->
+            <div class="cloned-step-item">
+              <div class="cloned-step-icon-wrap">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/>
+                  <path d="M8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                </svg>
+              </div>
+              <div class="cloned-step-text-wrap">
+                <span class="cloned-step-title">4. Te la entregamos</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Orange Button CTA -->
+          <a href="https://wa.me/525535757364?text=Hola%20quiero%20servicio%20a%20domicilio%20sin%20costo" target="_blank" class="cloned-free-cta">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 1.25A.75.75 0 0 1 .75.5h14.5a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1-.75-.75V1.25zM1.5 13.5h13V4.5h-13v9zm0-10.5h13V2h-13v1z"/>
+            </svg>
+            <div class="cloned-free-cta-text">
+              <span>Servicio a domicilio</span>
+              <strong class="cloned-free-cta-sub">sin costo</strong>
+            </div>
+          </a>
+          
+          <!-- Apple Certification Badge -->
+          <div class="cloned-apple-cert">
+            <span class="cloned-apple-cert-icon"></span>
+            <div class="cloned-apple-cert-text">
+              Apple Consulting System Engineer<br>
+              <strong>ACSP</strong> Apple Certified Support Professional
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Cloned Services Section -->
+    <section class="cloned-services-section">
+      <div class="container">
+        <div class="cloned-services-tag">Servicios</div>
+        <h2 class="cloned-services-headline">¿Qué podemos hacer por tu Mac?</h2>
+        <p class="cloned-services-sub">Contamos con soluciones profesionales para todo tipo de fallas en equipos Apple.</p>
+        
+        <div class="cloned-services-row">
+          <!-- Card 1: Diagnóstico -->
+          <div class="cloned-service-card" onclick="window.location.href='#soluciones'">
+            <div class="cloned-service-icon-box">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <rect x="3" y="3" width="18" height="13" rx="2"></rect>
+              </svg>
+            </div>
+            <span class="cloned-service-title">Diagnóstico</span>
+            <span class="cloned-service-text">Revisamos tu equipo para encontrar la mejor solución.</span>
+          </div>
+          <!-- Card 2: Reparación de hardware -->
+          <div class="cloned-service-card" onclick="window.location.href='#soluciones'">
+            <div class="cloned-service-icon-box">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+              </svg>
+            </div>
+            <span class="cloned-service-title">Reparación de hardware</span>
+            <span class="cloned-service-text">Reparamos componentes con piezas de calidad Apple.</span>
+          </div>
+          <!-- Card 3: Reparación de software -->
+          <div class="cloned-service-card" onclick="window.location.href='#soluciones'">
+            <div class="cloned-service-icon-box">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <span class="cloned-service-title">Reparación de software</span>
+            <span class="cloned-service-text">Solucionamos fallas del sistema y recuperación de datos.</span>
+          </div>
+          <!-- Card 4: Instalación y actualización -->
+          <div class="cloned-service-card" onclick="window.location.href='#soluciones'">
+            <div class="cloned-service-icon-box">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </div>
+            <span class="cloned-service-title">Instalación y actualización</span>
+            <span class="cloned-service-text">Instalamos macOS y actualizamos tu equipo.</span>
+          </div>
+        </div>
+      </div>
+    </section>
   <section id="hero-authority" class="hero-section-authority">
   <div class="container">
 
@@ -424,8 +785,7 @@
   <span>ESPECIALISTAS</span> Reparación Mac a Nivel Componente
   </div>
   <h1 class="brush-typography" style="position: relative;">
-  <span class="sr-only">Reparación de Mac en CDMX | Especialistas MacBook Certificados | Baterías MacBook Pro Air con 2 Años de Garantía</span>
-  <span aria-hidden="true" class="text-line" style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 800; letter-spacing: -0.04em; color: #ffffff; font-size: 0.9em; display: block; margin-bottom: 45px;">Reparación de Mac en CDMX | Especialistas MacBook Certificados</span>
+  <span class="text-line" style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 800; letter-spacing: -0.04em; color: #ffffff; font-size: 0.9em; display: block; margin-bottom: 45px;">Reparación de Mac en CDMX | Especialistas MacBook Certificados</span>
   <span class="highlight-wrapper">
   <span class="highlight-bg"></span>
   <span class="text-line question-text">¿Apple te dijo que es "vintage" o que debes cambiar la tarjeta lógica completa?</span>
@@ -593,7 +953,7 @@
   </a>
 
   <!-- Services Button (Blue Variant) -->
-  <a href="./images/servicios.pdf" target="_blank" class="cert-badge cert-badge-blue">
+  <a href="./images/servicios.pdf" download class="cert-badge cert-badge-blue">
   <div class="cert-badge-icon">
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 16 16">
   <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" />
@@ -980,7 +1340,7 @@
   style="background: #f5f5f7; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; color:#1d1d1f;">🔋
   Baterías</span>
   </div>
-  <a href="reparaciones" class="cta-button secondary"
+  <a href="https://macwave.com.mx/reparaciones" class="cta-button secondary"
   style="font-size: 0.85rem; padding: 10px 20px; color: #1d1d1f; border: 1px solid #1d1d1f; border-radius: 50px; background: transparent;">Solicita una reparación</a>
   </div>
   </div>
@@ -1025,7 +1385,7 @@
   style="background: #f5f5f7; padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 500; color:#1d1d1f;">🔍
   Chips T2 / SMC</span>
   </div>
-  <a href="reparaciones" class="cta-button secondary"
+  <a href="https://macwave.com.mx/reparaciones" class="cta-button secondary"
   style="font-size: 0.85rem; padding: 10px 20px; color: #1d1d1f; border: 1px solid #1d1d1f; border-radius: 50px; background: transparent;">Solicita una reparación</a>
   </div>
   </div>
@@ -1216,28 +1576,28 @@
   </p>
   <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; max-width:960px; margin:0 auto;">
   <!-- Batería MacBook -->
-  <a href="bateria-macbook-cdmx" style="display:block; background:#111; border:1px solid #222; border-radius:18px; padding:36px 28px; text-decoration:none; text-align:left; transition:border-color 0.2s, transform 0.2s;" onmouseover="this.style.borderColor='rgba(0,156,223,0.5)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#222';this.style.transform='translateY(0)'">
+  <a href="https://macwave.com.mx/bateria-macbook-cdmx" style="display:block; background:#111; border:1px solid #222; border-radius:18px; padding:36px 28px; text-decoration:none; text-align:left; transition:border-color 0.2s, transform 0.2s;" onmouseover="this.style.borderColor='rgba(0,156,223,0.5)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#222';this.style.transform='translateY(0)'">
   <div style="font-size:2.5rem; margin-bottom:18px;">🔋</div>
   <h3 style="font-size:1.2rem; font-weight:700; color:#fff; margin-bottom:10px;">Cambio de Batería MacBook</h3>
   <p style="font-size:0.9rem; color:#888; line-height:1.55; margin-bottom:18px;">¿Batería que no dura o inflada? La cambiamos hoy mismo. Stock inmediato para todos los modelos Viejos y M-Series. Garantía de 2 años.</p>
   <span style="font-size:0.85rem; color:#009CDF; font-weight:600;">Cotizar Batería Ahora →</span>
   </a>
   <!-- Mac Mojada -->
-  <a href="mac-mojada-cdmx" style="display:block; background:#111; border:1px solid #222; border-radius:18px; padding:36px 28px; text-decoration:none; text-align:left; transition:border-color 0.2s, transform 0.2s;" onmouseover="this.style.borderColor='rgba(255,107,53,0.5)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#222';this.style.transform='translateY(0)'">
+  <a href="https://macwave.com.mx/mac-mojada-cdmx" style="display:block; background:#111; border:1px solid #222; border-radius:18px; padding:36px 28px; text-decoration:none; text-align:left; transition:border-color 0.2s, transform 0.2s;" onmouseover="this.style.borderColor='rgba(255,107,53,0.5)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#222';this.style.transform='translateY(0)'">
   <div style="font-size:2.5rem; margin-bottom:18px;">💧</div>
   <h3 style="font-size:1.2rem; font-weight:700; color:#fff; margin-bottom:10px;">Rescate de Mac Mojada</h3>
   <p style="font-size:0.9rem; color:#888; line-height:1.55; margin-bottom:18px;">¿Derramaste café o agua? Cada minuto cuenta. Apágala y tráela: hacemos limpieza ultrasónica y reparamos la lógica dañada.</p>
   <span style="font-size:0.85rem; color:#ff6b35; font-weight:600;">Diagnóstico Urgente →</span>
   </a>
   <!-- Reparación iMac -->
-  <a href="reparaciones#imac-repair" style="display:block; background:#111; border:1px solid #222; border-radius:18px; padding:36px 28px; text-decoration:none; text-align:left; transition:border-color 0.2s, transform 0.2s;" onmouseover="this.style.borderColor='rgba(0,200,80,0.5)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#222';this.style.transform='translateY(0)'">
+  <a href="https://macwave.com.mx/reparaciones#imac-repair" style="display:block; background:#111; border:1px solid #222; border-radius:18px; padding:36px 28px; text-decoration:none; text-align:left; transition:border-color 0.2s, transform 0.2s;" onmouseover="this.style.borderColor='rgba(0,200,80,0.5)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#222';this.style.transform='translateY(0)'">
   <div style="font-size:2.5rem; margin-bottom:18px;">🖥️</div>
   <h3 style="font-size:1.2rem; font-weight:700; color:#fff; margin-bottom:10px;">Reparación Nivel Componente</h3>
   <p style="font-size:0.9rem; color:#888; line-height:1.55; margin-bottom:18px;">Reparación de tarjetas lógicas MacBook e iMac. Si no enciende o te dijeron que no tiene arreglo, nosotros rescatamos tu equipo.</p>
   <span style="font-size:0.85rem; color:#00c853; font-weight:600;">Conocer Reparaciones →</span>
   </a>
   <!-- Upgrades -->
-  <a href="upgrades" style="display:block; background:#111; border:1px solid #222; border-radius:18px; padding:36px 28px; text-decoration:none; text-align:left; transition:border-color 0.2s, transform 0.2s;" onmouseover="this.style.borderColor='rgba(155,89,182,0.5)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#222';this.style.transform='translateY(0)'">
+  <a href="https://macwave.com.mx/upgrades" style="display:block; background:#111; border:1px solid #222; border-radius:18px; padding:36px 28px; text-decoration:none; text-align:left; transition:border-color 0.2s, transform 0.2s;" onmouseover="this.style.borderColor='rgba(155,89,182,0.5)';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#222';this.style.transform='translateY(0)'">
   <div style="font-size:2.5rem; margin-bottom:18px;">🚀</div>
   <h3 style="font-size:1.2rem; font-weight:700; color:#fff; margin-bottom:10px;">Upgrades SSD, RAM y macOS</h3>
   <p style="font-size:0.9rem; color:#888; line-height:1.55; margin-bottom:18px;">Revive tu Mac antigua. Instalamos SSD ultrarrápidos y sistemas modernos (Sonoma/Sequoia) en equipos no soportados.</p>
@@ -1288,7 +1648,7 @@
 
   <footer class="main-footer">
   <!-- Sección de Google Reseñas -->
-  <div class="footer-google-reviews" style="background: #fbfbfd; text-align: center; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; border-bottom: 1px solid #e5e5ea; margin-top: 0; margin-bottom: 0;">
+  <div class="footer-google-reviews" style="background: #fbfbfd; text-align: center; padding: 20px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; border-bottom: 1px solid #e5e5ea; margin-top: 0; margin-bottom: 0;">
   <div style="margin-bottom: 5px;">
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 70px; height: 70px; display: inline-block;">
   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -1309,48 +1669,28 @@
 
   
 
-  <div class="container footer-grid" style="margin-top: 40px;">
+  <div class="container footer-grid" style="margin-top: 20px;">
   <div class="footer-col brand-info">
-  <h3 style="font-size: 2em; color: var(--text-primary); margin-bottom: 10px;"><strong>macWave</strong>
+  <h3 style="font-size: 1.5em; color: var(--text-primary); margin-bottom: 8px;"><strong>macWave</strong>
   <span style="font-weight: 300;">México</span>
   </h3>
   <p class="tagline"
-  style="font-style: normal; color: var(--accent-orange); font-weight: 700; margin-bottom: 20px;">
+  style="font-style: normal; color: var(--accent-orange); font-weight: 700; margin-bottom: 12px; font-size: 0.85em;">
   Soporte de Reparaciones MacBook desde hace 18 años.</p>
-  <p style="font-size: 0.9em; color: var(--text-muted);">Servicio Técnico de Reparaciones MacBook. Diagnóstico y reparaciones a nivel componente.</p>
-  <p style="margin-top: 20px; font-weight: 600;">
-  <a href="tel:5535757364" style="color: inherit; text-decoration: none; display: block; margin-bottom: 8px;">📞 55-3575-7364</a>
+  <p style="font-size: 0.8em; color: var(--text-muted); margin-bottom: 12px;">Servicio Técnico de Reparaciones MacBook. Diagnóstico y reparaciones a nivel componente.</p>
+  <p style="margin-top: 12px; font-weight: 600; font-size: 0.85em;">
+  <a href="tel:5535757364" style="color: inherit; text-decoration: none; display: block; margin-bottom: 6px;">📞 55-3575-7364</a>
   <a href="mailto:contacto@macwave.com.mx" style="color: inherit; text-decoration: none; display: block;">✉️ contacto@macwave.com.mx</a>
   </p>
-
-  <!-- Botones de acceso interno en el footer -->
-  <div style="margin-top: 24px; display: flex; flex-direction: column; gap: 10px;">
-  <a href="status-ods"
-  style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 8px; background: rgba(255, 204, 0, 0.1); color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.3); font-size: 0.82rem; font-weight: 600; text-decoration: none; width: fit-content;">
-  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor"
-  viewBox="0 0 16 16">
-  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-  <path
-  d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.247 1.856a.5.5 0 0 1-.494.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z" />
-  </svg>
-  ¿Cómo va tu reparación?
-  </a>
-  <a href="tecnicos"
-  style="display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 8px; background: rgba(255, 107, 0, 0.1); color: #ff6b00; border: 1px solid rgba(255, 107, 0, 0.3); font-size: 0.82rem; font-weight: 600; text-decoration: none; width: fit-content;">
-  <span
-  style="width:8px; height:8px; border-radius:50%; background:#ff6b00; display:inline-block;"></span>
-  Acceso Técnicos
-  </a>
-  </div>
   </div>
 
   <div class="footer-col">
   <h4>Navegación</h4>
   <ul>
-  <li><a href="#soluciones">Soluciones</a></li>
-  <li><a href="empresas">Para Empresas</a></li>
-  <li><a href="software">Licencias Software</a></li>
-  <li><a href="reparaciones">Reparaciones</a></li>
+      <li><a href="https://macwave.com.mx/reparaciones">Reparaciones</a></li>
+  <li><a href="/empresas.html">Para Empresas</a></li>
+  <li><a href="/software.html">Licencias Software</a></li>
+  <li><a href="/casos-reales.html">Casos Reales</a></li>
   </ul>
   </div>
 
@@ -1388,16 +1728,12 @@
   
 
   <div class="footer-bottom-mini"
-  style="border-top: 1px solid #111; padding: 30px 0; background: #000; text-align: center;">
+  style="border-top: 1px solid #111; padding: 15px 0; background: #000; text-align: center;">
   <div class="container" style="color: #333; font-size: 0.75em; position: relative;">
   <p>&copy; 2026 Mac Wave T2. Todos los derechos reservados. | Sitio desarrollado e impulsado por <a
   href="https://intersite.netlify.app" target="_blank"
   style="color: #555; text-decoration: none;">InterSite</a></p>
-  <div class="mobile-only-gear"
-  style="margin-top: 15px; font-size: 1.5rem; opacity: 0.1; user-select: none;">
-  <span ondblclick="window.location.href='dashboard-ods'" style="cursor:pointer;"
-  title="Acceso a Dashboard">⚙️</span>
-  </div>
+  <span id="footer-ops-dot" class="footer-ops-dot" role="button" tabindex="0" aria-label="Acceso técnico" title="Doble clic"></span>
   </div>
   </div>
   </footer>
@@ -1529,6 +1865,16 @@
   </svg>
   </a>
 
+  <!-- Modal: Lista de Servicios (Imagen) -->
+  <div class="modal-overlay" id="services-list-modal" role="dialog" aria-modal="true" aria-label="Lista completa de servicios">
+    <div class="modal-container services-list-modal-container" role="document">
+      <button class="close-modal-btn" id="close-services-list-modal" type="button" aria-label="Cerrar">×</button>
+      <div class="services-list-modal-body">
+        <img src="./images/servicios-lista.png" alt="Lista completa de servicios MacWave T2" loading="lazy" decoding="async">
+      </div>
+    </div>
+  </div>
+
 
 
   <!-- Core Web Vitals Monitoring -->
@@ -1569,17 +1915,36 @@
   });
   </script>
 
+  <script>
+  (function () {
+    var dot = document.getElementById('footer-ops-dot');
+    if (!dot) return;
+    dot.addEventListener('dblclick', function () {
+      window.location.href = '/tecnicos.html';
+    });
+  })();
+  </script>
+
   <!-- Optimized JavaScript Loading -->
-  <script src="script.js?v=26.0.0" defer></script>
+  <script src="script.js?v=26.5.3" defer></script>
 
   <!-- Service Worker for Caching (Progressive Web App) -->
   <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/sw.js').then(function(registration) {
-        console.log('SW registered: ', registration);
+      navigator.serviceWorker.register('/sw.js?v=1.5.1-ops').then(function(registration) {
+        registration.update();
+        if (registration.waiting) {
+          registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+        }
       }).catch(function(registrationError) {
-        console.log('SW registration failed: ', registrationError);
+        console.warn('SW registration failed:', registrationError);
+      });
+      navigator.serviceWorker.addEventListener('controllerchange', function() {
+        if (!window.__mwSwReloaded) {
+          window.__mwSwReloaded = true;
+          window.location.reload();
+        }
       });
     });
   }

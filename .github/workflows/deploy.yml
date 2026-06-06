@@ -11,13 +11,14 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       
     - name: Deploy to FTP
-      uses: SamKirkland/FTP-Deploy-Action@4.3.0
+      uses: SamKirkland/FTP-Deploy-Action@4.3.4
       with:
         server: macwave.com.mx
         username: leoncito@macwave.com.mx
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./
         server-dir: /home1/joeldura/public_html/
+        protocol: ftps

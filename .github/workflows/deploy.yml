@@ -1,4 +1,4 @@
-name: Deploy to cPanel via FTP
+name: Deploy to cPanel via SFTP
 
 on:
   push:
@@ -13,12 +13,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Deploy to FTP
-      uses: SamKirkland/FTP-Deploy-Action@4.3.4
+    - name: Deploy to SFTP
+      uses: wlixcc/SFTP-Deploy-Action@v1.2.4
       with:
         server: macwave.com.mx
         username: leoncito@macwave.com.mx
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./
-        server-dir: /home1/joeldura/public_html/
-        protocol: ftps
+        local_path: ./
+        remote_path: /home1/joeldura/public_html/

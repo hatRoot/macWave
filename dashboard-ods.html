@@ -2751,13 +2751,30 @@ const statuses = [...configuredStatuses, ...dynamicStatuses];
  let targetInitialStatus = 'Recibido';
 
  function openQuickCreate(status = 'Recibido') {
- targetInitialStatus = status;
- document.getElementById('quick-create-modal').classList.add('active');
- // Suggest a folio
- const lastFolio = allODS.length > 0 ? allODS[0].folio : 'MW-1000';
- const num = parseInt(lastFolio.replace(/\D/g, '')) || 1000;
- document.getElementById('new-ods-folio').value = `MW-${num + 1}`;
- }
+    targetInitialStatus = status;
+    document.getElementById('quick-create-modal').classList.add('active');
+    
+    // Suggest a folio
+    let maxNum = 9531; // Baseline: we are at 9531, next should be 9532
+    
+    allODS.forEach(item => {
+      if (item.folio && item.folio.includes('-')) {
+        const parts = item.folio.split('-');
+        const numPart = parseInt(parts[parts.length - 1]);
+        if (!isNaN(numPart) && numPart > maxNum) {
+          maxNum = numPart;
+        }
+      }
+    });
+
+    const nextNum = maxNum + 1;
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    
+    document.getElementById('new-ods-folio').value = `MW-${yyyy}${mm}${dd}-${nextNum}`;
+  }
 
  function closeQuickCreate() {
  document.getElementById('quick-create-modal').classList.remove('active');

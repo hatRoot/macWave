@@ -254,6 +254,7 @@ $$;
 -- ---------------------------------------------------------------------------
 -- 7. Vista pública (solo lectura vía PostgREST si se necesita; preferir RPC)
 -- ---------------------------------------------------------------------------
+drop view if exists public.ordenes_servicio_public;
 create or replace view public.ordenes_servicio_public as
 select
   o.id,

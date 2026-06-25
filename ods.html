@@ -1188,7 +1188,7 @@
 
  // Folio Auto-Increment Format: MW-YYYYMMDD-NNNN
  const getNextFolio = (inc = false) => {
- let num = parseInt(localStorage.getItem('quote_folio_counter') || '9481');
+ let num = parseInt(localStorage.getItem('quote_folio_counter') || '9532');
  if (inc) {
  num++;
  localStorage.setItem('quote_folio_counter', num);
@@ -1201,51 +1201,65 @@
  };
 
  const syncFolioFromSupabase = async () => {
- try {
- const { data, error } = await window._sbClient
- .from('ordenes_servicio')
- .select('folio')
- .order('created_at', { ascending: false })
- .limit(20); // Check recent ones in case of deletions or manual edits
+    try {
+      const { data, error } = await window._sbClient
+        .from('ordenes_servicio')
+        .select('folio')
+        .order('created_at', { ascending: false })
+        .limit(20); // Check recent ones in case of deletions or manual edits
 
- if (data && data.length > 0) {
- let maxNum = 9480; // Baseline: user last manual folio was 9480
- data.forEach(item => {
- if (item.folio && item.folio.includes('-')) {
- const parts = item.folio.split('-');
- const numPart = parseInt(parts[parts.length - 1]);
- if (!isNaN(numPart) && numPart > maxNum) {
- maxNum = numPart;
- }
- }
- });
+      let maxNum = 9531; // Baseline: we are at 9531, next should be 9532
 
- // Increment to the NEXT available number
- const nextNum = maxNum + 1;
- localStorage.setItem('quote_folio_counter', nextNum);
+      if (data && data.length > 0) {
+        data.forEach(item => {
+          if (item.folio && item.folio.includes('-')) {
+            const parts = item.folio.split('-');
+            const numPart = parseInt(parts[parts.length - 1]);
+            if (!isNaN(numPart) && numPart > maxNum) {
+              maxNum = numPart;
+            }
+          }
+        });
+      }
 
- // Force update the input ONLY if the currently displayed number is lower than or equal to maxNum
- const quoteInput = document.getElementById('quote-number');
- if (quoteInput) {
- const currentVal = quoteInput.value;
- if (currentVal.includes('-')) {
- const currentParts = currentVal.split('-');
- const currentNum = parseInt(currentParts[currentParts.length - 1]);
- if (!isNaN(currentNum) && currentNum <= maxNum) {
- quoteInput.value = getNextFolio();
- update();
- }
- } else if (!currentVal || currentVal.includes('RPC')) {
- // Reset old RPC style
- quoteInput.value = getNextFolio();
- update();
- }
- }
- }
- } catch (e) {
- console.error("Folio Sync Error:", e);
- }
- };
+      // Increment to the NEXT available number
+      const nextNum = maxNum + 1;
+      localStorage.setItem('quote_folio_counter', nextNum);
+
+      // Force update the input if the currently displayed number is lower than or equal to maxNum
+      const quoteInput = document.getElementById('quote-number');
+      if (quoteInput) {
+        const currentVal = quoteInput.value;
+        if (currentVal.includes('-')) {
+          const currentParts = currentVal.split('-');
+          const currentNum = parseInt(currentParts[currentParts.length - 1]);
+          if (!isNaN(currentNum) && currentNum <= maxNum) {
+            quoteInput.value = getNextFolio();
+            update();
+          }
+        } else if (!currentVal || currentVal.includes('RPC')) {
+          // Reset old RPC style
+          quoteInput.value = getNextFolio();
+          update();
+        }
+      }
+    } catch (e) {
+      console.error("Folio Sync Error:", e);
+      // Fallback correction even on query error
+      const quoteInput = document.getElementById('quote-number');
+      if (quoteInput) {
+        const currentVal = quoteInput.value;
+        if (currentVal.includes('-')) {
+          const currentParts = currentVal.split('-');
+          const currentNum = parseInt(currentParts[currentParts.length - 1]);
+          if (!isNaN(currentNum) && currentNum <= 9531) {
+            quoteInput.value = getNextFolio();
+            update();
+          }
+        }
+      }
+    }
+  };
 
  // Call sync immediately
  syncFolioFromSupabase();
@@ -1289,8 +1303,18 @@
  document.getElementById('serial-number').value = data.serial || '';
  document.getElementById('tech-name').value = data.tech || '';
  document.getElementById('quote-date').value = data.date || '';
- document.getElementById('quote-number').value = data.folio || getNextFolio();
- document.getElementById('delivery-time').value = data.delivery || '';
+  
+  let loadedFolio = data.folio || getNextFolio();
+  if (loadedFolio.includes('-')) {
+    const parts = loadedFolio.split('-');
+    const numPart = parseInt(parts[parts.length - 1]);
+    if (!isNaN(numPart) && numPart <= 9531) {
+      loadedFolio = getNextFolio();
+    }
+  }
+  document.getElementById('quote-number').value = loadedFolio;
+  
+  document.getElementById('delivery-time').value = data.delivery || '';
  document.getElementById('clabe').value = data.clabe || '';
  document.getElementById('account-number').value = data.account || '';
  document.getElementById('card-number').value = data.card || '';

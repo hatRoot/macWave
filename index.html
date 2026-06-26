@@ -111,132 +111,25 @@
       {
         "@type": "LocalBusiness",
         "@id": "https://macwave.com.mx/#localbusiness",
-        "name": "macWave México",
-        "alternateName": "Mac Wave T2",
-        "url": "https://macwave.com.mx/",
-        "logo": "https://macwave.com.mx/images/logo_dashboard_white.png",
-        "image": [
-          "https://macwave.com.mx/images/dispositivos.jpg",
-          "https://macwave.com.mx/images/bateria_solucion.jpg"
-        ],
-        "description": "Especialistas en reparación Mac a nivel componente en CDMX. Baterías con 2 años de garantía por escrito. Servicio mismo día.",
-        "telephone": "+525535757364",
-        "email": "contacto@macwave.com.mx",
-        "priceRange": "$$",
-        "currenciesAccepted": "MXN",
-        "paymentAccepted": "Efectivo, Transferencia, Tarjeta de crédito/debito",
-        "areaServed": {
-          "@type": "Place",
-          "name": "Ciudad de México y área metropolitana"
-        },
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Servicio a Domicilio y Recolección en CDMX",
-          "addressLocality": "Ciudad de México",
-          "addressRegion": "CDMX",
-          "postalCode": "11560",
-          "addressCountry": "MX"
-        },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": "19.432608",
-          "longitude": "-99.133209"
-        },
-        "openingHoursSpecification": [
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-            "opens": "09:00",
-            "closes": "20:00"
-          },
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": "Saturday",
-            "opens": "10:00",
-            "closes": "16:00"
-          }
-        ],
-        "sameAs": [
-          "https://www.facebook.com/macwavemx",
-          "https://www.instagram.com/macwavemx",
-          "https://wa.me/525535757364"
-        ],
-        "hasOfferCatalog": {
-          "@type": "OfferCatalog",
-          "name": "Servicios de Reparación Mac",
-          "itemListElement": [
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cambio de Batería MacBook" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reparación de Tarjeta Lógica" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cambio de Teclado MacBook" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Mac Mojada - Urgencia" } },
-            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reparación Flexgate" } }
-          ]
-        }
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://macwave.com.mx/#breadcrumb",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "item": {
-              "@id": "https://macwave.com.mx/",
-              "name": "Inicio"
-            }
-          }
-        ]
-      }
-    ]
-  }
-  </script>
-
-  <!-- Performance Optimization: Preload Critical Assets -->
-  <link rel="preload" href="./images/logo_dashboard_white.png" as="image">
-  <link rel="preload" href="./images/dispositivos.jpg" as="image">
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-  as="style">
-
-  <link rel="stylesheet" href="style.css?v=26.5.3">
-
-  <script>
-  // Definición global e inmediata para evitar fallos en iPhone
-  function toggleMobileMenu(e) {
-  if (e) {
-  e.preventDefault();
-  e.stopPropagation();
-  }
-  var body = document.body;
-  var btn = document.getElementById('mobile-menu-toggle');
-  var isNowActive = body.classList.toggle('menu-active');
-  if (btn) {
-  if (isNowActive) btn.classList.add('active');
-  else btn.classList.remove('active');
-  }
-  }
-  </script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap" rel="stylesheet">
-  <link rel="preconnect" href="https://www.googletagmanager.com">
-
-  <!-- Comprehensive Structured Data (JSON-LD) for SEO -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "LocalBusiness",
-        "@id": "https://macwave.com.mx/#localbusiness",
         "name": "macWave México - Reparación Mac Nivel Componente",
         "alternateName": ["Mac Wave T2", "macWave", "Baterías MacBook CDMX", "Reparación Mac CDMX"],
         "description": "Especialistas en reparación Mac a nivel componente en CDMX. Baterías MacBook con 2 años de garantía. 18 años experiencia certificada Apple (ACSP). Servicio en Polanco, Santa Fe, Interlomas.",
         "url": "https://macwave.com.mx/",
         "telephone": "+525535757364",
+        "email": "contacto@macwave.com.mx",
+        "logo": "https://macwave.com.mx/images/logo_dashboard_white.png",
         "image": [
           "https://macwave.com.mx/images/logo_dashboard_white.png",
-          "https://macwave.com.mx/images/dispositivos.jpg"
+          "https://macwave.com.mx/images/dispositivos.jpg",
+          "https://macwave.com.mx/images/bateria_solucion.jpg"
+        ],
+        "priceRange": "$$",
+        "currenciesAccepted": "MXN",
+        "paymentAccepted": ["Cash", "Credit Card", "Debit Card", "Bank Transfer"],
+        "areaServed": [
+          "Polanco", "Interlomas", "Santa Fe", "Bosques de las Lomas", "Lomas de Chapultepec",
+          "Tecamachalco", "Pedregal", "Satélite", "Roma", "Condesa", "Coyoacán",
+          "Del Valle", "Narvarte", "Naucalpan", "Huixquilucan", "CDMX", "Estado de México"
         ],
         "address": {
           "@type": "PostalAddress",
@@ -265,25 +158,22 @@
             "closes": "15:00"
           }
         ],
-        "priceRange": "$$",
-        "paymentAccepted": ["Cash", "Credit Card", "Debit Card", "Bank Transfer"],
         "sameAs": [
           "https://www.facebook.com/macwavet2",
           "https://www.instagram.com/macwavet2",
           "https://wa.me/525535757364"
         ],
-        "areaServed": [
-          "Polanco", "Interlomas", "Santa Fe", "Bosques de las Lomas", "Lomas de Chapultepec",
-          "Tecamachalco", "Pedregal", "Satélite", "Roma", "Condesa", "Coyoacán",
-          "Del Valle", "Narvarte", "Naucalpan", "Huixquilucan", "CDMX", "Estado de México"
-        ]
-      },
-      {
-        "@type": "WebSite",
-        "@id": "https://macwave.com.mx/#website",
-        "url": "https://macwave.com.mx/",
-        "name": "macWave México",
-        "publisher": { "@id": "https://macwave.com.mx/#localbusiness" }
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Servicios de Reparación Mac",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cambio de Batería MacBook" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reparación de Tarjeta Lógica" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cambio de Teclado MacBook" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Mac Mojada - Urgencia" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Reparación Flexgate" } }
+          ]
+        }
       },
       {
         "@type": "WebPage",
@@ -293,7 +183,7 @@
         "description": "Especialistas en reparación Mac a nivel componente en CDMX. Baterías MacBook con 2 años de garantía. Servicio mismo día. 18 años experiencia certificada Apple.",
         "isPartOf": { "@id": "https://macwave.com.mx/#website" },
         "primaryImageOfPage": "https://macwave.com.mx/images/dispositivos.jpg",
-        "dateModified": "2026-05-05T12:00:00+00:00"
+        "dateModified": "2026-06-26T12:00:00+00:00"
       },
       {
         "@type": "BreadcrumbList",
@@ -424,6 +314,38 @@
     ]
   }
   </script>
+
+  <!-- Performance Optimization: Preload Critical Assets -->
+  <link rel="preload" href="./images/logo_dashboard_white.png" as="image">
+  <link rel="preload" href="./images/dispositivos.jpg" as="image">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+  as="style">
+
+  <link rel="stylesheet" href="style.css?v=26.5.3">
+
+  <script>
+  // Definición global e inmediata para evitar fallos en iPhone
+  function toggleMobileMenu(e) {
+  if (e) {
+  e.preventDefault();
+  e.stopPropagation();
+  }
+  var body = document.body;
+  var btn = document.getElementById('mobile-menu-toggle');
+  var isNowActive = body.classList.toggle('menu-active');
+  if (btn) {
+  if (isNowActive) btn.classList.add('active');
+  else btn.classList.remove('active');
+  }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+
+
 
 </head>
 
@@ -785,7 +707,9 @@
   <span>ESPECIALISTAS</span> Reparación Mac a Nivel Componente
   </div>
   <h1 class="brush-typography" style="position: relative;">
-  <span class="text-line" style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 800; letter-spacing: -0.04em; color: #ffffff; font-size: 0.9em; display: block; margin-bottom: 45px;">Reparación de Mac en CDMX | Especialistas MacBook Certificados</span>
+  <span class="text-line" style="font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 800; letter-spacing: -0.04em; color: #ffffff; font-size: 0.9em; display: block; margin-bottom: 45px;">Reparación de Mac en CDMX | Especialistas MacBook</span>
+  </h1>
+  <div class="brush-typography-sub" style="position: relative; text-align: center;">
   <span class="highlight-wrapper">
   <span class="highlight-bg"></span>
   <span class="text-line question-text">¿Apple te dijo que es "vintage" o que debes cambiar la tarjeta lógica completa?</span>
@@ -798,7 +722,7 @@
   </svg>
   </span>
   </span>
-  </h1>
+  </div>
   <p style="margin-bottom: 60px;">Sabemos lo mucho que valoras tu Mac. Si te dijeron que <strong>"ya no tiene arreglo"</strong>, ¡nosotros le devolvemos la vida! Somos expertos en rescatar equipos <strong>mojados o que no encienden</strong> en nuestro laboratorio técnico. Visítanos para un diagnóstico honesto y la garantía de que tu equipo volverá a brillar como el primer día.</p>
   <div class="hero-actions">
   <a href="#soluciones" class="cta-button primary">Ver Soluciones</a>

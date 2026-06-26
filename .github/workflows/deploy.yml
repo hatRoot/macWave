@@ -15,7 +15,7 @@ jobs:
       - name: Deploy via FTP to HostGator
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: macwave.com.mx
+          server: 69.6.201.199
           username: leoncito@macwave.com.mx
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./

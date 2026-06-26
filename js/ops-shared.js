@@ -150,10 +150,11 @@
 
   function trackingUrl(folio, token) {
     const base = typeof location !== 'undefined' ? location.origin : 'https://macwave.com.mx';
+    // Usa URL limpia (/status-ods sin .html) — el servidor Apache lo resuelve via .htaccess
     if (token) {
-      return `${base}/status-ods.html?token=${encodeURIComponent(token)}`;
+      return `${base}/status-ods?token=${encodeURIComponent(token)}`;
     }
-    return `${base}/status-ods.html?folio=${encodeURIComponent(folio || '')}`;
+    return `${base}/status-ods?folio=${encodeURIComponent(folio || '')}`;
   }
 
   /** Rate limit local (capa extra antes del RPC). */

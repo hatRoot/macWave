@@ -527,8 +527,15 @@
     }
     document.getElementById('date-display').innerText = displayDate;
 
-    // QR Code
-    document.getElementById('qr-image').src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://maps.app.goo.gl/PeSD75SSGMoCD4qZA&color=222222";
+    // QR Code: apunta al status de la orden (ID de Supabase si disponible, folio como fallback)
+    const ticketId = urlParams.get('id');
+    const trackingBase = 'https://macwave.com.mx/status-ods';
+    const trackingTarget = ticketId
+      ? `${trackingBase}?folio=${encodeURIComponent(folio)}`
+      : `${trackingBase}?folio=${encodeURIComponent(folio)}`;
+    document.getElementById('qr-image').src =
+      `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(trackingTarget)}&color=111111&bgcolor=ffffff`;
+    document.querySelector('.badge-instruction').textContent = 'Escanea para ver tu estatus';
     
     // Set up download filename
     window.ticketFilename = `Ticket_MacWave_${finalFolio}.png`;

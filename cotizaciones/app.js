@@ -132,7 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const qNumber = document.getElementById('quote-number').value || getNextFolio();
         const currency = document.getElementById('currency').value;
 
-        const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://macwave.com.mx";
+        // QR apunta al status de la orden para que el cliente pueda rastrear su equipo
+        const statusUrl = `https://macwave.com.mx/status-ods?folio=${encodeURIComponent(qNumber)}`;
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(statusUrl)}&color=000000`;
 
         previewCanvas.innerHTML = `
             <div class="mock-pdf-content">
@@ -530,7 +532,9 @@ document.addEventListener('DOMContentLoaded', () => {
             doc.text("sitio web : https://macWave.com.mx\nmail: contabilidad@macWave.com.mx", 195, footerY, { align: 'right' });
 
             // QR Code at the bottom right
-            const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://macwave.com.mx";
+            // QR apunta al status de la orden (folio = número de cotización)
+            const statusUrl = `https://macwave.com.mx/status-ods?folio=${encodeURIComponent(qNumber)}`;
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(statusUrl)}&color=000000`;
             await addImageProportional(qrUrl, 182, footerY - vSpace(15), vSpace(12), vSpace(12));
             doc.setFontSize(fSize(5));
             doc.setFont("helvetica", "normal");

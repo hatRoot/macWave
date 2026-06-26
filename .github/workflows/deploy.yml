@@ -19,7 +19,7 @@ jobs:
           username: leoncito@macwave.com.mx
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
-          server-dir: /home1/joeldura/public_html/
+          server-dir: ./
           protocol: ftp
           port: 21
           security: loose

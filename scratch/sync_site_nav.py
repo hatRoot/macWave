@@ -79,7 +79,7 @@ def build_nav(active: Optional[str]) -> str:
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
           <path d="M8 0a.5.5 0 0 1 .5.5v11.793l3.147-3.146a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 12.293V.5A.5.5 0 0 1 8 0zM0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7z"/>
         </svg>
-        <span>Servicio a domicilio sin costo en CDMX</span>
+        <span>Servicio a domicilio en CDMX GRATIS!</span>
       </div>
       <div class="cloned-topbar-right">
         <div class="cloned-topbar-item">

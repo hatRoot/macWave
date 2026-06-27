@@ -1650,22 +1650,74 @@ word-break: break-word;
  const supabaseClient = MacWaveOps.createSupabaseClient();
 
  async function mwPersistOrden(id, patch, auditAction, auditDetails) {
- const o = allODS.find((x) => x.id === id);
- MacWaveOps.enrichOrdenPatch(patch, o?.fecha || patch.fecha);
- const { error, count } = await supabaseClient.from('ordenes_servicio').update(patch).eq('id', id);
- if (!error && auditAction) {
- await MacWaveOps.logAudit(supabaseClient, {
- ods_id: id,
- folio: o?.folio || patch.folio,
- action: auditAction,
- details: auditDetails || {},
- });
- if (currentView === 'activity' && window.MacWaveAuditLog) {
- MacWaveAuditLog.refresh();
- }
- }
- return { error, count };
- }
+  const o = allODS.find((x) => x.id === id);
+
+  if (o && o.isTicketOnly) {
+    // 1. Build the complete new ODS row
+    const newODSRow = {
+      id: o.id, // Keep the same UUID!
+      folio: o.folio,
+      cliente: o.cliente || 'Cliente',
+      proyecto: o.proyecto ? o.proyecto.replace('Ticket: ', '') : 'Reparación de Computadora',
+      tecnico: o.tecnico || 'JOEL DURAN',
+      serie: o.serie || '',
+      fecha: o.fecha || new Date().toLocaleString('es-MX'),
+      monto: o.monto || 0,
+      status: patch.status || o.status || 'Recibido',
+      tracking_token: o.tracking_token || MacWaveOps.generateTrackingToken(),
+      notas: patch.notas || o.notas || '[]',
+    };
+
+    // Enrich with client_timeline
+    MacWaveOps.enrichOrdenPatch(newODSRow, newODSRow.fecha);
+
+    // 2. Insert into Supabase
+    const { error: insertErr } = await supabaseClient.from('ordenes_servicio').insert([newODSRow]);
+    if (insertErr) {
+      return { error: insertErr, count: 0 };
+    }
+
+    // 3. Update the ticket in tickets_taller to set its ods_id = o.id
+    const { error: ticketErr } = await supabaseClient
+      .from('tickets_taller')
+      .update({ ods_id: o.id })
+      .eq('id', o.id);
+
+    if (ticketErr) {
+      console.warn("Failed to link ticket to ODS:", ticketErr.message);
+    }
+
+    // Remove the isTicketOnly flag from our local copy so future updates run as updates!
+    delete o.isTicketOnly;
+    // Update local fields to match new status/patch
+    Object.assign(o, patch);
+
+    if (auditAction) {
+      await MacWaveOps.logAudit(supabaseClient, {
+        ods_id: id,
+        folio: o.folio,
+        action: auditAction,
+        details: auditDetails || {},
+      });
+    }
+    return { error: null, count: 1 };
+  }
+
+  MacWaveOps.enrichOrdenPatch(patch, o?.fecha || patch.fecha);
+  const { error, count } = await supabaseClient.from('ordenes_servicio').update(patch).eq('id', id);
+  if (!error && auditAction) {
+  await MacWaveOps.logAudit(supabaseClient, {
+  ods_id: id,
+  folio: o?.folio || patch.folio,
+  action: auditAction,
+  details: auditDetails || {},
+  });
+  if (currentView === 'activity' && window.MacWaveAuditLog) {
+  MacWaveAuditLog.refresh();
+  }
+  }
+  return { error, count };
+  }
 
  const STATUS_CONFIG = {
  'Recibido': { color: '#FFD60A' }, // Yellow
@@ -1745,6 +1797,36 @@ word-break: break-word;
  // Apply frontend persistence ghost-delete filter
  const deletedFolios = JSON.parse(localStorage.getItem('t800_deleted_folios') || '[]');
  allTickets = (ticketRes.data || []).filter(t => !deletedFolios.includes(t.folio));
+
+  // Link / merge unconverted tickets as virtual ODS records
+  const unconvertedTickets = allTickets.filter(ticket => {
+    // Check if there is an ODS that references this ticket by ID or folio
+    const hasODS = allODS.some(ods => ods.id === ticket.ods_id || (ods.folio && ticket.folio && ods.folio.toLowerCase().includes(ticket.folio.toLowerCase())));
+    return !hasODS;
+  });
+
+  unconvertedTickets.forEach(ticket => {
+    allODS.push({
+      id: ticket.id,
+      folio: ticket.folio,
+      cliente: ticket.cliente,
+      proyecto: 'Ticket: ' + (ticket.origen || 'Visita Taller'),
+      tecnico: ticket.tecnico || 'Asignado vía Ticket',
+      serie: '',
+      fecha: ticket.created_at ? new Date(ticket.created_at).toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + new Date(ticket.created_at).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }) : '',
+      monto: 0,
+      status: 'Recibido',
+      notas: JSON.stringify([{
+        date: ticket.created_at ? new Date(ticket.created_at).toLocaleDateString('es-MX') : '',
+        status: 'Recibido',
+        text: `Ticket de visita registrado. Origen: ${ticket.origen || 'No especificado'}.`,
+        img: null,
+        internal: false
+      }]),
+      created_at: ticket.created_at,
+      isTicketOnly: true
+    });
+  });
 
  // Refresh Current View
  if (currentView === 'list') {
@@ -3330,21 +3412,27 @@ ${statusOptions}
  };
 
  document.getElementById('btn-delete').onclick = async () => {
- if (!confirm(`¿Eliminar la orden ${o.folio} permanentemente?`)) return;
- try {
- const { error, count } = await supabaseClient.from('ordenes_servicio').delete({ count: 'exact' }).eq('id', o.id);
- if (error) throw error;
- if (count === 0) return alert('No se pudo borrar, revise RLS en Supabase.');
+  if (!confirm(`¿Eliminar la orden ${o.folio} permanentemente?`)) return;
+  try {
+  if (o.isTicketOnly) {
+    const { error, count } = await supabaseClient.from('tickets_taller').delete({ count: 'exact' }).eq('id', o.id);
+    if (error) throw error;
+    allTickets = allTickets.filter(x => x.id !== o.id);
+  } else {
+    const { error, count } = await supabaseClient.from('ordenes_servicio').delete({ count: 'exact' }).eq('id', o.id);
+    if (error) throw error;
+    if (count === 0) return alert('No se pudo borrar, revise RLS en Supabase.');
+  }
 
- allODS = allODS.filter(x => x.id !== o.id);
- currentSelectedId = null;
- window.currentSelectedId = null;
- renderSidebar(document.getElementById('search-input').value);
- document.getElementById('detail-view').innerHTML = `<div class="empty-selection"><h3>Orden Eliminada</h3></div>`;
- } catch (e) {
- alert('Error: ' + e.message);
- }
- };
+  allODS = allODS.filter(x => x.id !== o.id);
+  currentSelectedId = null;
+  window.currentSelectedId = null;
+  renderSidebar(document.getElementById('search-input').value);
+  document.getElementById('detail-view').innerHTML = `<div class="empty-selection"><h3>Orden Eliminada</h3></div>`;
+  } catch (e) {
+  alert('Error: ' + e.message);
+  }
+  };
 
  document.getElementById('btn-add-event').onclick = async function () {
  const btn = this;

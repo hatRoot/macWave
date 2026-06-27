@@ -12,6 +12,7 @@
  <script>
   (async function requireSupabaseSession() {
     const client = MacWaveOps.createSupabaseClient();
+    window.supabaseClient = client;
     const { data } = await client.auth.getSession();
     if (!data?.session) {
       sessionStorage.clear();
@@ -158,6 +159,9 @@
 
  <div class="input-group">
  <input type="text" id="ticket-client-name" placeholder="Nombre del cliente:">
+ </div>
+ <div class="input-group">
+ <input type="tel" id="ticket-client-phone" placeholder="WhatsApp (10 dígitos):" maxlength="10" style="width: 100%; border: 1px solid #ccc; padding: 12px; border-radius: 8px; margin-top: 10px; margin-bottom: 10px; box-sizing: border-box;">
  </div>
  <div class="input-group">
  <input type="datetime-local" id="ticket-date" style="width: 100%; border: 1px solid #ccc; padding: 12px; border-radius: 8px;">

@@ -1,6 +1,9 @@
 -- macWave OPS — Fallback para client_timeline en get_public_ods_tracking
 -- Si el client_timeline está vacío (en registros anteriores a FASE 2A),
 -- el RPC reconstruye el timeline público a partir de notas JSON sobre la marcha.
+-- Adicionalmente, si el folio no se encuentra en ordenes_servicio pero existe
+-- en tickets_taller, devuelve un estado inicial 'Recibido' para evitar
+-- que el cliente vea "no se encontró nada" al escanear su ticket.
 
 create or replace function public.get_public_ods_tracking(
   p_token text default null,
@@ -90,6 +93,40 @@ begin
   )
   order by o.created_at desc
   limit case when p_token is not null and trim(p_token) <> '' then 1 else 3 end;
+
+  -- Fallback logic: Si no se encontraron registros en ordenes_servicio,
+  -- y buscamos por folio (p_folio is not null), checamos tickets_taller
+  if not found and p_folio is not null and trim(p_folio) <> '' then
+    return query
+    select jsonb_build_object(
+      'folio', t.folio,
+      'cliente', case
+        when t.cliente is null or t.cliente = '' then ''
+        else split_part(t.cliente, ' ', 1) || ' ***'
+      end,
+      'modelo', 'Ticket de Visita Registrado',
+      'status', 'Recibido',
+      'progress', 10,
+      'fecha', to_char(t.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'America/Mexico_City', 'DD/MM/YYYY HH24:MI'),
+      'garantia_hasta', null,
+      'timeline', jsonb_build_array(
+        jsonb_build_object(
+          'type', 'Recibido',
+          'status', 'Recibido',
+          'message', 'Ticket de visita registrado. Equipo recibido en sucursal/laboratorio.',
+          'timestamp', to_char(t.created_at AT TIME ZONE 'UTC' AT TIME ZONE 'America/Mexico_City', 'DD/MM/YYYY HH24:MI'),
+          'photos', '[]'::jsonb,
+          'clientVisible', true
+        )
+      ),
+      'serie_masked', null,
+      'tracking_token', null
+    )
+    from public.tickets_taller t
+    where t.folio ilike '%' || trim(p_folio) || '%'
+    order by t.created_at desc
+    limit 1;
+  end if;
 end;
 $$;
 

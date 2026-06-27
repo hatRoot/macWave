@@ -1006,7 +1006,7 @@
  <!-- Supabase -->
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
  <script src="js/supabase-config.js"></script>
- <script src="js/ops-shared.js?v=hotfix-2b"></script>
+ <script src="js/ops-shared.js?v=hotfix-3a"></script>
  <script src="logo_const.js"></script>
  <script>
  if (window.self !== window.top || new URLSearchParams(window.location.search).get('embed') === 'true') {
@@ -1031,8 +1031,11 @@
  sessionStorage.setItem('macwave_role', role);
  })();
 
- document.addEventListener('DOMContentLoaded', () => {
- // Live Clock and User Display
+  document.addEventListener('DOMContentLoaded', () => {
+  // Initialize tracking token for the session
+  window._currentTrackingToken = MacWaveOps.generateTrackingToken();
+
+  // Live Clock and User Display
  const updateHeaderInfo = () => {
  const clockEl = document.getElementById('live-clock');
  const userEl = document.getElementById('active-user-display');
@@ -1188,7 +1191,7 @@
 
  // Folio Auto-Increment Format: MW-YYYYMMDD-NNNN
  const getNextFolio = (inc = false) => {
- let num = parseInt(localStorage.getItem('quote_folio_counter') || '9532');
+ let num = parseInt(localStorage.getItem('quote_folio_counter') || '9551');
  if (inc) {
  num++;
  localStorage.setItem('quote_folio_counter', num);
@@ -1208,7 +1211,7 @@
         .order('created_at', { ascending: false })
         .limit(20); // Check recent ones in case of deletions or manual edits
 
-      let maxNum = 9531; // Baseline: we are at 9531, next should be 9532
+      let maxNum = 9550; // Baseline: we are at 9550, next should be 9551
 
       if (data && data.length > 0) {
         data.forEach(item => {
@@ -1252,12 +1255,11 @@
         if (currentVal.includes('-')) {
           const currentParts = currentVal.split('-');
           const currentNum = parseInt(currentParts[currentParts.length - 1]);
-          if (!isNaN(currentNum) && currentNum <= 9531) {
+          if (!isNaN(currentNum) && currentNum <= 9550) {
             quoteInput.value = getNextFolio();
             update();
           }
         }
-      }
     }
   };
 
@@ -1308,7 +1310,7 @@
   if (loadedFolio.includes('-')) {
     const parts = loadedFolio.split('-');
     const numPart = parseInt(parts[parts.length - 1]);
-    if (!isNaN(numPart) && numPart <= 9531) {
+    if (!isNaN(numPart) && numPart <= 9550) {
       loadedFolio = getNextFolio();
     }
   }
@@ -1370,6 +1372,10 @@
  });
  // Clear persistence
  localStorage.removeItem('ods_temp_draft');
+ 
+ // Generate a new tracking token for the next ODS
+ window._currentTrackingToken = MacWaveOps.generateTrackingToken();
+ 
  // New Folio read current without incrementing (next PDF will increment)
  document.getElementById('quote-number').value = getNextFolio();
  // Clear items and recreate initial empty rows
@@ -1380,10 +1386,8 @@
  createRow({ d: '', p: 0, q: 0 });
  }
  }
+ generatePreviewQR();
  };
-
- // Load persistent data if exists, otherwise clean start
- loadFormData();
 
  // Load persistent data if exists, otherwise clean start
  loadFormData();
@@ -2097,7 +2101,7 @@
  getNextFolio(true); // increments counter once
  document.getElementById('quote-number').value = getNextFolio(); // reads without incrementing again
 
- const trackingToken = MacWaveOps.generateTrackingToken();
+ const trackingToken = window._currentTrackingToken || MacWaveOps.generateTrackingToken();
  window._currentTrackingToken = trackingToken;
  const hist = [MacWaveOps.createTimelineEvent({
  date: document.getElementById('quote-date').value || new Date().toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),

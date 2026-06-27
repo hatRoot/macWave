@@ -8,7 +8,7 @@
  <meta name="robots" content="noindex, nofollow, noarchive">
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
  <script src="../js/supabase-config.js"></script>
- <script src="../js/ops-shared.js?v=hotfix-2b"></script>
+ <script src="../js/ops-shared.js?v=hotfix-3a"></script>
  <script>
   (async function requireSupabaseSession() {
     const client = MacWaveOps.createSupabaseClient();
@@ -119,8 +119,7 @@
  <div class="actions">
  <button type="submit" class="primary-btn">Generar Cotización PDF</button>
  <button type="button" id="generate-ticket-btn" class="secondary-btn"
- style="background: var(--accent); color: white; border: none;">Generar Ticket de
- Visita</button>
+ style="background: var(--accent); color: white; border: none;">Servicio a domicilio</button>
  </div>
  </form>
  </div>
@@ -142,7 +141,7 @@
  <div id="ticket-modal" class="modal-overlay" style="display: none;">
  <div class="golden-ticket">
  <button class="close-ticket" id="close-ticket-modal">&times;</button>
- <h1 class="ticket-main-title" style="margin-top: 20px;">SERVICIO TÉCNICO</h1>
+ <h2 class="ticket-main-title" style="margin-top: 20px; font-size: 1.8rem; font-weight: 800; text-align: center;">SERVICIO TÉCNICO</h2>
 
  <div class="ticket-folio-box">
  <p class="folio-label">TU CÓDIGO ÚNICO:</p>

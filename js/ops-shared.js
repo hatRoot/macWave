@@ -179,7 +179,7 @@
     const token = optToken || p_token || null;
     const folio = optFolio || p_folio || null;
 
-    if (!checkLocalRateLimit('tracking', 20, 60000)) {
+    if (!checkLocalRateLimit('tracking', 40, 60000)) {
       return { error: { message: 'Demasiados intentos. Espera un momento.' }, data: null };
     }
     const { data, error } = await client.rpc('get_public_ods_tracking', {

@@ -16,7 +16,7 @@
 
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
  <script src="js/supabase-config.js"></script>
- <script src="js/ops-shared.js?v=hotfix-2b"></script>
+ <script src="js/ops-shared.js?v=hotfix-3a"></script>
  <script>
   (async function requireSupabaseSession() {
     const client = MacWaveOps.createSupabaseClient();
@@ -1798,35 +1798,7 @@ word-break: break-word;
  const deletedFolios = JSON.parse(localStorage.getItem('t800_deleted_folios') || '[]');
  allTickets = (ticketRes.data || []).filter(t => !deletedFolios.includes(t.folio));
 
-  // Link / merge unconverted tickets as virtual ODS records
-  const unconvertedTickets = allTickets.filter(ticket => {
-    // Check if there is an ODS that references this ticket by ID or folio
-    const hasODS = allODS.some(ods => ods.id === ticket.ods_id || (ods.folio && ticket.folio && ods.folio.toLowerCase().includes(ticket.folio.toLowerCase())));
-    return !hasODS;
-  });
 
-  unconvertedTickets.forEach(ticket => {
-    allODS.push({
-      id: ticket.id,
-      folio: ticket.folio,
-      cliente: ticket.cliente,
-      proyecto: 'Ticket: ' + (ticket.origen || 'Visita Taller'),
-      tecnico: ticket.tecnico || 'Asignado vía Ticket',
-      serie: '',
-      fecha: ticket.created_at ? new Date(ticket.created_at).toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + new Date(ticket.created_at).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }) : '',
-      monto: 0,
-      status: 'Recibido',
-      notas: JSON.stringify([{
-        date: ticket.created_at ? new Date(ticket.created_at).toLocaleDateString('es-MX') : '',
-        status: 'Recibido',
-        text: `Ticket de visita registrado. Origen: ${ticket.origen || 'No especificado'}.`,
-        img: null,
-        internal: false
-      }]),
-      created_at: ticket.created_at,
-      isTicketOnly: true
-    });
-  });
 
  // Refresh Current View
  if (currentView === 'list') {
@@ -2837,7 +2809,7 @@ const statuses = [...configuredStatuses, ...dynamicStatuses];
     document.getElementById('quick-create-modal').classList.add('active');
     
     // Suggest a folio
-    let maxNum = 9531; // Baseline: we are at 9531, next should be 9532
+    let maxNum = 9550; // Baseline: we are at 9550, next should be 9551
     
     allODS.forEach(item => {
       if (item.folio && item.folio.includes('-')) {

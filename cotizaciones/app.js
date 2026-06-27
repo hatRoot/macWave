@@ -23,21 +23,61 @@ const showWorkshopTicket = () => {
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('generate-ticket-btn')?.addEventListener('click', showWorkshopTicket);
 
-    // --- Folio Auto-Increment Logic ---
+    // --- Folio Auto-Increment Logic (formato MW-YYYYMMDD-NNNN) ---
     const getNextFolio = (increment = false) => {
-        let lastNum = parseInt(localStorage.getItem('quote_folio_counter') || '9199');
+        let lastNum = parseInt(localStorage.getItem('quote_folio_counter') || '9551');
         if (increment) {
             lastNum++;
             localStorage.setItem('quote_folio_counter', lastNum);
         }
-        return `RPC-${lastNum}`;
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const dd = String(now.getDate()).padStart(2, '0');
+        return `MW-${yyyy}${mm}${dd}-${lastNum}`;
     };
 
-    // Initialize folio in input if empty
+    // Sincronizar contador con el número más alto real en Supabase
+    const syncFolioFromSupabase = async () => {
+        try {
+            const client = window.supabaseClient || MacWaveOps.createSupabaseClient();
+            const { data } = await client
+                .from('ordenes_servicio')
+                .select('folio')
+                .order('created_at', { ascending: false })
+                .limit(20);
+
+            let maxNum = 9550;
+            if (data && data.length > 0) {
+                data.forEach(item => {
+                    if (item.folio && item.folio.includes('-')) {
+                        const parts = item.folio.split('-');
+                        const numPart = parseInt(parts[parts.length - 1]);
+                        if (!isNaN(numPart) && numPart > maxNum) maxNum = numPart;
+                    }
+                });
+            }
+            const nextNum = maxNum + 1;
+            const local = parseInt(localStorage.getItem('quote_folio_counter') || '0');
+            if (nextNum > local) {
+                localStorage.setItem('quote_folio_counter', nextNum);
+                if (quoteNumInput) {
+                    quoteNumInput.value = getNextFolio();
+                    updatePreview();
+                }
+            }
+        } catch (e) {
+            console.warn('Folio sync error:', e.message);
+        }
+    };
+
+    // Initialize folio in input if empty or with old RPC format
     const quoteNumInput = document.getElementById('quote-number');
-    if (quoteNumInput && !quoteNumInput.value) {
+    if (quoteNumInput && (!quoteNumInput.value || quoteNumInput.value.startsWith('RPC-'))) {
         quoteNumInput.value = getNextFolio();
     }
+    // Sync with Supabase to get the real next number
+    syncFolioFromSupabase();
     // --- End Folio Logic ---
 
     document.getElementById('close-ticket-modal')?.addEventListener('click', () => {

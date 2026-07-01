@@ -119,13 +119,38 @@
  background-image: radial-gradient(circle at top right, rgba(0, 113, 227, 0.05), transparent);
  }
 
+ body.embedded {
+ height: 100%;
+ min-height: 100%;
+ overflow: auto;
+ }
+
  /* Embedded Mode */
  body.embedded .app-sidebar {
  display: none !important;
  }
 
+ body.embedded header {
+ display: none;
+ }
+
  body.embedded .app-main {
- padding: 20px !important;
+ padding: 12px !important;
+ height: auto;
+ min-height: 100%;
+ overflow-y: auto;
+ }
+
+ body.embedded .dashboard-grid {
+ grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.2fr);
+ gap: 16px;
+ align-items: start;
+ }
+
+ @media (max-width: 900px) {
+ body.embedded .dashboard-grid {
+ grid-template-columns: 1fr;
+ }
  }
 
 
@@ -1014,24 +1039,36 @@
  }
 
  window._sbClient = MacWaveOps.createSupabaseClient();
- (async function requireSupabaseSession() {
+ window.__odsReady = (async function requireSupabaseSession() {
  const { data } = await window._sbClient.auth.getSession();
  if (!data?.session) {
  sessionStorage.clear();
+ if (window.self !== window.top) {
+ window.top.location.replace('tecnicos.html');
+ } else {
  window.location.replace('tecnicos.html');
- return;
  }
- const role = await MacWaveOps.verifyTechnicianAccess(window._sbClient, data.session.user.email);
+ return null;
+ }
+ const authEmail = (data.session.user.email || '').trim().toLowerCase();
+ const role = await MacWaveOps.resolveOpsAccess(window._sbClient, authEmail);
  if (!role) {
  await window._sbClient.auth.signOut();
  sessionStorage.clear();
+ if (window.self !== window.top) {
+ window.top.location.replace('tecnicos.html');
+ } else {
  window.location.replace('tecnicos.html');
  }
- sessionStorage.setItem('macwave_user', data.session.user.email || '');
+ return null;
+ }
+ sessionStorage.setItem('macwave_user', authEmail);
  sessionStorage.setItem('macwave_role', role);
+ return { authEmail, role };
  })();
 
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', async () => {
+  await window.__odsReady;
   // Initialize tracking token for the session
   window._currentTrackingToken = MacWaveOps.generateTrackingToken();
 
@@ -1166,8 +1203,11 @@
  }
 
  // Auto-fill Technician based on session user
+ function isAdminUser() {
+ return sessionStorage.getItem('macwave_role') === 'admin';
+ }
  const currentUser = sessionStorage.getItem('macwave_user');
- const isAdmin = sessionStorage.getItem('macwave_role') === 'admin';
+ const isAdmin = isAdminUser();
  const techNameInput = document.getElementById('tech-name');
  if (techNameInput) {
  if (currentUser === 'joel.duran.mendoza@me.com' || currentUser === 'joel') {
@@ -1393,9 +1433,12 @@
  loadFormData();
 
  // Global real-time preview and save
+ if (form) {
  form.querySelectorAll('input').forEach(i => i.oninput = update);
  form.querySelectorAll('select').forEach(i => i.onchange = update);
- document.getElementById('ods-notes').oninput = update;
+ }
+ const odsNotesEl = document.getElementById('ods-notes');
+ if (odsNotesEl) odsNotesEl.oninput = update;
 
  // --- PDF IMPORT LOGIC ---
  const pdfInputs = document.querySelectorAll('.pdf-file-input');
@@ -2093,7 +2136,14 @@
  try {
  const pdfBlob = doc.output('blob');
  const pdfUrl = URL.createObjectURL(pdfBlob);
+ if (document.body.classList.contains('embedded') && window.top !== window.self) {
+ const a = document.createElement('a');
+ a.href = pdfUrl;
+ a.download = fileName;
+ a.click();
+ } else {
  window.open(pdfUrl, '_blank');
+ }
  } catch (e) { console.error("Error opening preview:", e); }
 
  // Increment folio counter AFTER capturing it for current PDF/Supabase
@@ -2138,12 +2188,12 @@
  }
  };
 
+ if (form) {
  form.onsubmit = async (e) => {
  e.preventDefault();
  await executeGeneration();
  };
-
-
+ }
 
  if (!isAdmin) {
  // Disable inputs in bank config

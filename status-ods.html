@@ -591,7 +591,7 @@ word-break: break-word;
 
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
  <script src="js/supabase-config.js"></script>
- <script src="js/ops-shared.js?v=hotfix-3a"></script>
+ <script src="js/ops-shared.js"></script>
  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
  <script>
  const _sb = MacWaveOps.createSupabaseClient();
@@ -694,7 +694,7 @@ word-break: break-word;
  <div style="color: var(--muted); font-size: 0.75rem;">${MacWaveOps.escapeHtml(ev.date)}</div>
  </div>
  </div>
-${ev.text && !ev.text.startsWith('Cambio de estatus vía Tablero') ? `<div style="font-size: 0.88rem; color: #E0E0E6; line-height: 1.5; word-break: break-word;">${MacWaveOps.escapeHtml(ev.text).replace(/\\n/g, '<br>')}</div>` : ''}
+${ev.text && !ev.text.startsWith('Cambio de estatus vía Tablero') ? `<div style="font-size: 0.88rem; color: #E0E0E6; line-height: 1.5;">${MacWaveOps.escapeHtml(ev.text).replace(/\\n/g, '<br>')}</div>` : ''}
 ${(() => {
 const evPhotos = [];
 if (ev.img) evPhotos.push(ev.img);

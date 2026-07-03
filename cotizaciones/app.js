@@ -23,115 +23,40 @@ const showWorkshopTicket = () => {
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('generate-ticket-btn')?.addEventListener('click', showWorkshopTicket);
 
-    // --- Folio Auto-Increment Logic (formato MW-YYYYMMDD-NNNN) ---
+    // --- Folio Auto-Increment Logic ---
     const getNextFolio = (increment = false) => {
-        let lastNum = parseInt(localStorage.getItem('quote_folio_counter') || '9551');
+        let lastNum = parseInt(localStorage.getItem('quote_folio_counter') || '9199');
         if (increment) {
             lastNum++;
             localStorage.setItem('quote_folio_counter', lastNum);
         }
-        const now = new Date();
-        const yyyy = now.getFullYear();
-        const mm = String(now.getMonth() + 1).padStart(2, '0');
-        const dd = String(now.getDate()).padStart(2, '0');
-        return `MW-${yyyy}${mm}${dd}-${lastNum}`;
+        return `RPC-${lastNum}`;
     };
 
-    // Sincronizar contador con el número más alto real en Supabase
-    const syncFolioFromSupabase = async () => {
-        try {
-            const client = window.supabaseClient || MacWaveOps.createSupabaseClient();
-            const { data } = await client
-                .from('ordenes_servicio')
-                .select('folio')
-                .order('created_at', { ascending: false })
-                .limit(20);
-
-            let maxNum = 9550;
-            if (data && data.length > 0) {
-                data.forEach(item => {
-                    if (item.folio && item.folio.includes('-')) {
-                        const parts = item.folio.split('-');
-                        const numPart = parseInt(parts[parts.length - 1]);
-                        if (!isNaN(numPart) && numPart > maxNum) maxNum = numPart;
-                    }
-                });
-            }
-            const nextNum = maxNum + 1;
-            const local = parseInt(localStorage.getItem('quote_folio_counter') || '0');
-            if (nextNum > local) {
-                localStorage.setItem('quote_folio_counter', nextNum);
-                if (quoteNumInput) {
-                    quoteNumInput.value = getNextFolio();
-                    updatePreview();
-                }
-            }
-        } catch (e) {
-            console.warn('Folio sync error:', e.message);
-        }
-    };
-
-    // Initialize folio in input if empty or with old RPC format
+    // Initialize folio in input if empty
     const quoteNumInput = document.getElementById('quote-number');
-    if (quoteNumInput && (!quoteNumInput.value || quoteNumInput.value.startsWith('RPC-'))) {
+    if (quoteNumInput && !quoteNumInput.value) {
         quoteNumInput.value = getNextFolio();
     }
-    // Sync with Supabase to get the real next number
-    syncFolioFromSupabase();
     // --- End Folio Logic ---
 
     document.getElementById('close-ticket-modal')?.addEventListener('click', () => {
         document.getElementById('ticket-modal').style.display = 'none';
     });
 
-    document.getElementById('send-ticket-whatsapp')?.addEventListener('click', async () => {
+    document.getElementById('send-ticket-whatsapp')?.addEventListener('click', () => {
         const name = document.getElementById('ticket-client-name').value || 'Cliente';
         const folio = document.getElementById('ticket-folio-display').textContent;
         const sourceVal = document.getElementById('ticket-source')?.value || '';
         const ticketDate = document.getElementById('ticket-date')?.value || '';
-        const phone = document.getElementById('ticket-client-phone')?.value || '';
 
-        const client = window.supabaseClient || MacWaveOps.createSupabaseClient();
-        const ticketData = {
-            folio: folio,
-            cliente: name,
-            telefono: phone,
-            origen: sourceVal,
-            tecnico: 'JOEL DURAN',
-            created_at: ticketDate ? new Date(ticketDate).toISOString() : new Date().toISOString()
-        };
-
-        let badgeUrl = `../ticket-badge.html?name=${encodeURIComponent(name)}&folio=${encodeURIComponent(folio)}&source=${encodeURIComponent(sourceVal)}&date=${encodeURIComponent(ticketDate)}&phone=${encodeURIComponent(phone)}`;
-
-        try {
-            const { data, error } = await client.from('tickets_taller').insert([ticketData]).select();
-            if (error) throw error;
-
-            await MacWaveOps.logAudit(client, {
-                folio: folio,
-                action: 'ticket_created',
-                details: { cliente: name, origen: sourceVal, source: 'quote_generator' }
-            });
-
-            if (data && data[0]) {
-                badgeUrl = `../ticket-badge.html?id=${data[0].id}`;
-            }
-        } catch (e) {
-            console.error("No se pudo guardar el ticket en Supabase:", e.message);
-        }
-
+        const badgeUrl = `../ticket-badge.html?name=${encodeURIComponent(name)}&folio=${encodeURIComponent(folio)}&source=${encodeURIComponent(sourceVal)}&date=${encodeURIComponent(ticketDate)}`;
         window.open(badgeUrl, '_blank');
 
         // Increment and close
         let counter = parseInt(localStorage.getItem('workshop_ticket_counter') || '239');
         localStorage.setItem('workshop_ticket_counter', counter + 1);
         document.getElementById('ticket-modal').style.display = 'none';
-
-        // Clear inputs
-        const phoneInput = document.getElementById('ticket-client-phone');
-        if (phoneInput) phoneInput.value = '';
-        const nameInput = document.getElementById('ticket-client-name');
-        if (nameInput) nameInput.value = '';
     });
 
     const form = document.getElementById('quote-form');
@@ -207,9 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const qNumber = document.getElementById('quote-number').value || getNextFolio();
         const currency = document.getElementById('currency').value;
 
-        // QR apunta al status de la orden para que el cliente pueda rastrear su equipo
-        const statusUrl = `https://macwave.com.mx/status-ods?folio=${encodeURIComponent(qNumber)}`;
-        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(statusUrl)}&color=000000`;
+        const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://macwave.com.mx";
 
         previewCanvas.innerHTML = `
             <div class="mock-pdf-content">
@@ -607,54 +530,11 @@ document.addEventListener('DOMContentLoaded', () => {
             doc.text("sitio web : https://macWave.com.mx\nmail: contabilidad@macWave.com.mx", 195, footerY, { align: 'right' });
 
             // QR Code at the bottom right
-            // QR apunta al status de la orden (folio = número de cotización)
-            const statusUrl = `https://macwave.com.mx/status-ods?folio=${encodeURIComponent(qNumber)}`;
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(statusUrl)}&color=000000`;
+            const qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://macwave.com.mx";
             await addImageProportional(qrUrl, 182, footerY - vSpace(15), vSpace(12), vSpace(12));
             doc.setFontSize(fSize(5));
             doc.setFont("helvetica", "normal");
             doc.text("macwave.com.mx", 188.5, footerY - vSpace(2), { align: 'center' });
-
-            // Save quote details as ODS in Supabase for tracking and status QR resolution
-            const trackingToken = MacWaveOps.generateTrackingToken();
-            const nowTime = new Date();
-            const dateStr = nowTime.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + nowTime.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
-
-            const itemsSummary = items.map(item => `- ${item.qty}x ${item.desc} ($${item.price.toFixed(2)})`).join('\n');
-            const hist = [MacWaveOps.createTimelineEvent({
-                date: dateStr,
-                status: 'Recibido',
-                text: 'Cotización Creada con los siguientes conceptos:\n' + itemsSummary,
-                img: null,
-                internal: false,
-            })];
-
-            const clientDb = window.supabaseClient || MacWaveOps.createSupabaseClient();
-            const newODS = MacWaveOps.enrichOrdenPatch({
-                folio: qNumber,
-                cliente: client || 'Cliente',
-                proyecto: project || 'Cotización de Reparación',
-                serie: '',
-                status: 'Recibido',
-                fecha: dateStr,
-                tecnico: tech || 'JOEL DURAN',
-                monto: total,
-                tracking_token: trackingToken,
-                notas: JSON.stringify(hist),
-            }, dateStr);
-
-            try {
-                const { error } = await clientDb.from('ordenes_servicio').insert([newODS]);
-                if (error) throw error;
-
-                await MacWaveOps.logAudit(clientDb, {
-                    folio: qNumber,
-                    action: 'ods_created',
-                    details: { source: 'quote_generator', tracking_token: trackingToken }
-                });
-            } catch (e) {
-                console.warn('No se pudo guardar la cotización en Supabase:', e.message);
-            }
 
             // Final Action: Open in new tab
             const blobString = doc.output('bloburl');

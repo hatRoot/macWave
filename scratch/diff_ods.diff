@@ -1,0 +1,327 @@
+diff --git a/ods.html b/ods.html
+index da9b014..fd54534 100755
+--- a/ods.html
++++ b/ods.html
+@@ -119,13 +119,38 @@
+  background-image: radial-gradient(circle at top right, rgba(0, 113, 227, 0.05), transparent);
+  }
+ 
++ body.embedded {
++ height: 100%;
++ min-height: 100%;
++ overflow: auto;
++ }
++
+  /* Embedded Mode */
+  body.embedded .app-sidebar {
+  display: none !important;
+  }
+ 
++ body.embedded header {
++ display: none;
++ }
++
+  body.embedded .app-main {
+- padding: 20px !important;
++ padding: 12px !important;
++ height: auto;
++ min-height: 100%;
++ overflow-y: auto;
++ }
++
++ body.embedded .dashboard-grid {
++ grid-template-columns: minmax(280px, 1fr) minmax(320px, 1.2fr);
++ gap: 16px;
++ align-items: start;
++ }
++
++ @media (max-width: 900px) {
++ body.embedded .dashboard-grid {
++ grid-template-columns: 1fr;
++ }
+  }
+ 
+ 
+@@ -1006,7 +1031,7 @@
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-config.js"></script>
+- <script src="js/ops-shared.js?v=hotfix-2b"></script>
++ <script src="js/ops-shared.js?v=hotfix-3a"></script>
+  <script src="logo_const.js"></script>
+  <script>
+  if (window.self !== window.top || new URLSearchParams(window.location.search).get('embed') === 'true') {
+@@ -1014,25 +1039,40 @@
+  }
+ 
+  window._sbClient = MacWaveOps.createSupabaseClient();
+- (async function requireSupabaseSession() {
++ window.__odsReady = (async function requireSupabaseSession() {
+  const { data } = await window._sbClient.auth.getSession();
+  if (!data?.session) {
+  sessionStorage.clear();
++ if (window.self !== window.top) {
++ window.top.location.replace('tecnicos.html');
++ } else {
+  window.location.replace('tecnicos.html');
+- return;
+  }
+- const role = await MacWaveOps.verifyTechnicianAccess(window._sbClient, data.session.user.email);
++ return null;
++ }
++ const authEmail = (data.session.user.email || '').trim().toLowerCase();
++ const role = await MacWaveOps.resolveOpsAccess(window._sbClient, authEmail);
+  if (!role) {
+  await window._sbClient.auth.signOut();
+  sessionStorage.clear();
++ if (window.self !== window.top) {
++ window.top.location.replace('tecnicos.html');
++ } else {
+  window.location.replace('tecnicos.html');
+  }
+- sessionStorage.setItem('macwave_user', data.session.user.email || '');
++ return null;
++ }
++ sessionStorage.setItem('macwave_user', authEmail);
+  sessionStorage.setItem('macwave_role', role);
++ return { authEmail, role };
+  })();
+ 
+- document.addEventListener('DOMContentLoaded', () => {
+- // Live Clock and User Display
++  document.addEventListener('DOMContentLoaded', async () => {
++  await window.__odsReady;
++  // Initialize tracking token for the session
++  window._currentTrackingToken = MacWaveOps.generateTrackingToken();
++
++  // Live Clock and User Display
+  const updateHeaderInfo = () => {
+  const clockEl = document.getElementById('live-clock');
+  const userEl = document.getElementById('active-user-display');
+@@ -1163,8 +1203,11 @@
+  }
+ 
+  // Auto-fill Technician based on session user
++ function isAdminUser() {
++ return sessionStorage.getItem('macwave_role') === 'admin';
++ }
+  const currentUser = sessionStorage.getItem('macwave_user');
+- const isAdmin = sessionStorage.getItem('macwave_role') === 'admin';
++ const isAdmin = isAdminUser();
+  const techNameInput = document.getElementById('tech-name');
+  if (techNameInput) {
+  if (currentUser === 'joel.duran.mendoza@me.com' || currentUser === 'joel') {
+@@ -1188,7 +1231,7 @@
+ 
+  // Folio Auto-Increment Format: MW-YYYYMMDD-NNNN
+  const getNextFolio = (inc = false) => {
+- let num = parseInt(localStorage.getItem('quote_folio_counter') || '9481');
++ let num = parseInt(localStorage.getItem('quote_folio_counter') || '9551');
+  if (inc) {
+  num++;
+  localStorage.setItem('quote_folio_counter', num);
+@@ -1201,51 +1244,64 @@
+  };
+ 
+  const syncFolioFromSupabase = async () => {
+- try {
+- const { data, error } = await window._sbClient
+- .from('ordenes_servicio')
+- .select('folio')
+- .order('created_at', { ascending: false })
+- .limit(20); // Check recent ones in case of deletions or manual edits
+-
+- if (data && data.length > 0) {
+- let maxNum = 9480; // Baseline: user last manual folio was 9480
+- data.forEach(item => {
+- if (item.folio && item.folio.includes('-')) {
+- const parts = item.folio.split('-');
+- const numPart = parseInt(parts[parts.length - 1]);
+- if (!isNaN(numPart) && numPart > maxNum) {
+- maxNum = numPart;
+- }
+- }
+- });
+-
+- // Increment to the NEXT available number
+- const nextNum = maxNum + 1;
+- localStorage.setItem('quote_folio_counter', nextNum);
+-
+- // Force update the input ONLY if the currently displayed number is lower than or equal to maxNum
+- const quoteInput = document.getElementById('quote-number');
+- if (quoteInput) {
+- const currentVal = quoteInput.value;
+- if (currentVal.includes('-')) {
+- const currentParts = currentVal.split('-');
+- const currentNum = parseInt(currentParts[currentParts.length - 1]);
+- if (!isNaN(currentNum) && currentNum <= maxNum) {
+- quoteInput.value = getNextFolio();
+- update();
+- }
+- } else if (!currentVal || currentVal.includes('RPC')) {
+- // Reset old RPC style
+- quoteInput.value = getNextFolio();
+- update();
+- }
+- }
+- }
+- } catch (e) {
+- console.error("Folio Sync Error:", e);
+- }
+- };
++    try {
++      const { data, error } = await window._sbClient
++        .from('ordenes_servicio')
++        .select('folio')
++        .order('created_at', { ascending: false })
++        .limit(20); // Check recent ones in case of deletions or manual edits
++
++      let maxNum = 9550; // Baseline: we are at 9550, next should be 9551
++
++      if (data && data.length > 0) {
++        data.forEach(item => {
++          if (item.folio && item.folio.includes('-')) {
++            const parts = item.folio.split('-');
++            const numPart = parseInt(parts[parts.length - 1]);
++            if (!isNaN(numPart) && numPart > maxNum) {
++              maxNum = numPart;
++            }
++          }
++        });
++      }
++
++      // Increment to the NEXT available number
++      const nextNum = maxNum + 1;
++      localStorage.setItem('quote_folio_counter', nextNum);
++
++      // Force update the input if the currently displayed number is lower than or equal to maxNum
++      const quoteInput = document.getElementById('quote-number');
++      if (quoteInput) {
++        const currentVal = quoteInput.value;
++        if (currentVal.includes('-')) {
++          const currentParts = currentVal.split('-');
++          const currentNum = parseInt(currentParts[currentParts.length - 1]);
++          if (!isNaN(currentNum) && currentNum <= maxNum) {
++            quoteInput.value = getNextFolio();
++            update();
++          }
++        } else if (!currentVal || currentVal.includes('RPC')) {
++          // Reset old RPC style
++          quoteInput.value = getNextFolio();
++          update();
++        }
++      }
++    } catch (e) {
++      console.error("Folio Sync Error:", e);
++      // Fallback correction even on query error
++      const quoteInput = document.getElementById('quote-number');
++      if (quoteInput) {
++        const currentVal = quoteInput.value;
++        if (currentVal.includes('-')) {
++          const currentParts = currentVal.split('-');
++          const currentNum = parseInt(currentParts[currentParts.length - 1]);
++          if (!isNaN(currentNum) && currentNum <= 9550) {
++            quoteInput.value = getNextFolio();
++            update();
++          }
++        }
++    }
++  };
+ 
+  // Call sync immediately
+  syncFolioFromSupabase();
+@@ -1289,8 +1345,18 @@
+  document.getElementById('serial-number').value = data.serial || '';
+  document.getElementById('tech-name').value = data.tech || '';
+  document.getElementById('quote-date').value = data.date || '';
+- document.getElementById('quote-number').value = data.folio || getNextFolio();
+- document.getElementById('delivery-time').value = data.delivery || '';
++  
++  let loadedFolio = data.folio || getNextFolio();
++  if (loadedFolio.includes('-')) {
++    const parts = loadedFolio.split('-');
++    const numPart = parseInt(parts[parts.length - 1]);
++    if (!isNaN(numPart) && numPart <= 9550) {
++      loadedFolio = getNextFolio();
++    }
++  }
++  document.getElementById('quote-number').value = loadedFolio;
++  
++  document.getElementById('delivery-time').value = data.delivery || '';
+  document.getElementById('clabe').value = data.clabe || '';
+  document.getElementById('account-number').value = data.account || '';
+  document.getElementById('card-number').value = data.card || '';
+@@ -1346,6 +1412,10 @@
+  });
+  // Clear persistence
+  localStorage.removeItem('ods_temp_draft');
++ 
++ // Generate a new tracking token for the next ODS
++ window._currentTrackingToken = MacWaveOps.generateTrackingToken();
++ 
+  // New Folio read current without incrementing (next PDF will increment)
+  document.getElementById('quote-number').value = getNextFolio();
+  // Clear items and recreate initial empty rows
+@@ -1356,18 +1426,19 @@
+  createRow({ d: '', p: 0, q: 0 });
+  }
+  }
++ generatePreviewQR();
+  };
+ 
+  // Load persistent data if exists, otherwise clean start
+  loadFormData();
+ 
+- // Load persistent data if exists, otherwise clean start
+- loadFormData();
+-
+  // Global real-time preview and save
++ if (form) {
+  form.querySelectorAll('input').forEach(i => i.oninput = update);
+  form.querySelectorAll('select').forEach(i => i.onchange = update);
+- document.getElementById('ods-notes').oninput = update;
++ }
++ const odsNotesEl = document.getElementById('ods-notes');
++ if (odsNotesEl) odsNotesEl.oninput = update;
+ 
+  // --- PDF IMPORT LOGIC ---
+  const pdfInputs = document.querySelectorAll('.pdf-file-input');
+@@ -2065,7 +2136,14 @@
+  try {
+  const pdfBlob = doc.output('blob');
+  const pdfUrl = URL.createObjectURL(pdfBlob);
++ if (document.body.classList.contains('embedded') && window.top !== window.self) {
++ const a = document.createElement('a');
++ a.href = pdfUrl;
++ a.download = fileName;
++ a.click();
++ } else {
+  window.open(pdfUrl, '_blank');
++ }
+  } catch (e) { console.error("Error opening preview:", e); }
+ 
+  // Increment folio counter AFTER capturing it for current PDF/Supabase
+@@ -2073,7 +2151,7 @@
+  getNextFolio(true); // increments counter once
+  document.getElementById('quote-number').value = getNextFolio(); // reads without incrementing again
+ 
+- const trackingToken = MacWaveOps.generateTrackingToken();
++ const trackingToken = window._currentTrackingToken || MacWaveOps.generateTrackingToken();
+  window._currentTrackingToken = trackingToken;
+  const hist = [MacWaveOps.createTimelineEvent({
+  date: document.getElementById('quote-date').value || new Date().toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' }),
+@@ -2110,12 +2188,12 @@
+  }
+  };
+ 
++ if (form) {
+  form.onsubmit = async (e) => {
+  e.preventDefault();
+  await executeGeneration();
+  };
+-
+-
++ }
+ 
+  if (!isAdmin) {
+  // Disable inputs in bank config

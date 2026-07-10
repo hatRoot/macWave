@@ -482,4 +482,25 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.key === 'ArrowRight')  lightboxGoTo(1);
         });
     }
+
+    // ============================================================
+    // NUEVA SECCIÓN DE REPARACIONES Y CERTIFICACIONES: ANIMACIONES
+    // ============================================================
+    const repairSection = document.querySelector('.mw-repair-section');
+    if (repairSection) {
+        const cards = repairSection.querySelectorAll('.mw-repair-card');
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    cards.forEach(card => {
+                        card.classList.add('mw-repair-visible');
+                    });
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.15
+        });
+        observer.observe(repairSection);
+    }
 });

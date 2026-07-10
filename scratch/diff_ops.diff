@@ -1,0 +1,117 @@
+diff --git a/js/ops-shared.js b/js/ops-shared.js
+index f3e3ae0..5689a39 100755
+--- a/js/ops-shared.js
++++ b/js/ops-shared.js
+@@ -150,10 +150,11 @@
+ 
+   function trackingUrl(folio, token) {
+     const base = typeof location !== 'undefined' ? location.origin : 'https://macwave.com.mx';
++    // Usa URL limpia (/status-ods sin .html) — el servidor Apache lo resuelve via .htaccess
+     if (token) {
+-      return `${base}/status-ods.html?token=${encodeURIComponent(token)}`;
++      return `${base}/status-ods?token=${encodeURIComponent(token)}`;
+     }
+-    return `${base}/status-ods.html?folio=${encodeURIComponent(folio || '')}`;
++    return `${base}/status-ods?folio=${encodeURIComponent(folio || '')}`;
+   }
+ 
+   /** Rate limit local (capa extra antes del RPC). */
+@@ -173,14 +174,96 @@
+     return true;
+   }
+ 
+-  async function fetchPublicTracking(client, { token, folio }) {
+-    if (!checkLocalRateLimit('tracking', 20, 60000)) {
++  async function fetchPublicTracking(client, params) {
++    const { token: optToken, folio: optFolio, p_token, p_folio } = params || {};
++    const token = optToken || p_token || null;
++    const folio = optFolio || p_folio || null;
++
++    if (!checkLocalRateLimit('tracking', 40, 60000)) {
+       return { error: { message: 'Demasiados intentos. Espera un momento.' }, data: null };
+     }
+     const { data, error } = await client.rpc('get_public_ods_tracking', {
+       p_token: token || null,
+       p_folio: folio || null,
+     });
++
++    // Fallback if RPC doesn't exist (e.g. migration FASE 2A not applied on DB)
++    if (error && (error.code === 'PGRST202' || error.status === 404)) {
++      console.warn("RPC get_public_ods_tracking not found in database. Running client-side fallback select...");
++      // Select only columns confirmed to exist in the current DB schema
++      // (client_timeline, tracking_token, garantia_hasta are from FASE 2A migrations
++      // that may not be applied — we derive timeline from notas instead)
++      let query = client
++        .from('ordenes_servicio')
++        .select('id, folio, cliente, proyecto, status, fecha, created_at, notas, serie');
++      
++      if (folio) {
++        // Search by folio using ilike (partial match, same as RPC)
++        query = query.ilike('folio', `%${folio}%`);
++      } else if (token) {
++        // Token search: fall back to exact folio match when tracking_token column is absent
++        query = query.or(`folio.eq.${token},folio.ilike.%${token}%`);
++      } else {
++        return { data: [], error: null };
++      }
++      
++      // Limit to 3 items ordered by created_at desc, same as RPC
++      query = query.order('created_at', { ascending: false }).limit(3);
++      
++      const tableRes = await query;
++      if (tableRes.error) {
++        return { data: null, error: tableRes.error };
++      }
++      
++      const mappedData = (tableRes.data || []).map(o => {
++        // Mask client name: show only first name + ***
++        const maskedClient = o.cliente 
++          ? (o.cliente.split(' ')[0] + ' ***')
++          : '';
++
++        // Mask serial: show only last 4 chars  
++        const maskedSerie = o.serie && o.serie.length > 4
++          ? '***' + o.serie.slice(-4)
++          : (o.serie || null);
++
++        // Compute progress from status
++        const progressVal = (() => {
++          switch (o.status || 'Recibido') {
++            case 'Recibido': return 10;
++            case 'Diagnóstico': return 25;
++            case 'Espera de aprobación y pago': return 35;
++            case 'Espera de piezas': return 45;
++            case 'Reparación': return 65;
++            case 'Equipo reparado': return 90;
++            case 'Equipo entregado': return 100;
++            case 'Equipo sin reparar': return 100;
++            default: return 15;
++          }
++        })();
++
++        // Build timeline from notas JSON (fallback path - FASE 2A columns not available)
++        const parsedHist = parseHistorial(o.notas, o.fecha);
++        const clientHist = buildClientTimeline(parsedHist);
++        const timelineArr = timelineFromClientColumn(clientHist, o.fecha);
++
++        return {
++          folio: o.folio,
++          cliente: maskedClient,
++          modelo: o.proyecto || '',
++          status: o.status || 'Recibido',
++          progress: progressVal,
++          fecha: o.fecha,
++          garantia_hasta: null,
++          timeline: timelineArr,
++          notas: o.notas, // keep notas so renderODS can parse if timeline empty
++          serie_masked: maskedSerie,
++          tracking_token: null,
++        };
++      });
++      
++      return { data: mappedData, error: null };
++    }
++
+     return { data, error };
+   }
+ 

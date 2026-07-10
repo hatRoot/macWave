@@ -5785,4 +5785,22 @@ html, body {
     }
 }
 
+/* ==========================================================================
+   ESTILOS DE PIE DE PÁGINA (FOOTER) - FORZAR COLOR BLANCO
+   ========================================================================== */
+.footer-bottom-mini .container,
+.footer-bottom-mini .container p {
+    color: #ffffff !important;
+}
+
+.footer-bottom-mini .container a {
+    color: #ffffff !important;
+    text-decoration: underline !important;
+}
+
+.footer-bottom-mini .container a:hover {
+    color: #e5e5e7 !important;
+}
+
+
 

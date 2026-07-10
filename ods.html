@@ -894,20 +894,26 @@
 
  <div class="section-separator"></div>
 
- <!-- FOTOS DEL EQUIPO (Visible ONLY if Concepts and Bank are OFF) -->
- <div id="photos-controls-wrapper" style="display: none; margin-top: 15px;">
- <div class="section-title">EVIDENCIAS FOTOGRÁFICAS</div>
- <p style="font-size: 10px; color: var(--mac-text-muted); margin-bottom: 12px;">Se habilitan al apagar Conceptos y Banco.</p>
- <div style="margin-top: 12px;">
- <button type="button" class="btn btn-secondary" style="width: 100%; font-size: 12px; height: 48px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700;" onclick="document.getElementById('upload-photos').click()">
- <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
- SUBIR EVIDENCIAS DE FOTO
- </button>
- <input type="file" id="upload-photos" multiple accept="image/*" style="display: none;">
- </div>
- </div>
+ <!-- FOTOS DEL EQUIPO (Con interruptor de encendido/apagado independiente) -->
+  <div class="header-with-toggle" style="margin-top: 10px;">
+    <div class="section-title" style="margin-bottom: 0;">EVIDENCIAS FOTOGRÁFICAS</div>
+    <label class="switch">
+      <input type="checkbox" id="toggle-photos" checked>
+      <span class="slider"></span>
+    </label>
+  </div>
 
- <div id="photos-separator" class="section-separator" style="display: none;"></div>
+  <div id="photos-controls-wrapper" style="margin-top: 20px; display: block;">
+    <div style="margin-top: 12px;">
+      <button type="button" class="btn btn-secondary" style="width: 100%; font-size: 12px; height: 48px; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700;" onclick="document.getElementById('upload-photos').click()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        SUBIR EVIDENCIAS DE FOTO
+      </button>
+      <input type="file" id="upload-photos" multiple accept="image/*" style="display: none;">
+    </div>
+  </div>
+
+  <div id="photos-separator" class="section-separator"></div>
 
  <div class="header-with-toggle" style="margin-top: 10px;">
  <div class="section-title" style="margin-bottom: 0;">CONCEPTOS</div>
@@ -1645,23 +1651,22 @@
  </div>
  ` : ''}
 
- <!-- PHOTO GALLERY / WATERMARK SECTION (FLEXIBLE GRID) -->
- ${(!document.getElementById('toggle-concepts').checked && !document.getElementById('toggle-bank').checked) ? `
- <div class="ps-watermark" style="min-height: 80px; height: auto; padding: 12px 10px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; align-items: start; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px; overflow: visible;">
- ${(window._allPhotos || []).length > 0 ? (window._allPhotos || []).map((p, idx) => `
- <div style="width: 100%; max-width: 130px; background: white; border: 1px solid #eee; border-radius: 4px; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative;">
- <button onclick="window.removePhoto(${idx})" style="position: absolute; top: -6px; right: -6px; background: #FF453A; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">×</button>
- <div style="width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 3px; background: #000;">
- <img src="${p.data}" alt="Evidencia de daño" style="width: 100%; height: 100%; object-fit: cover;">
-
- </div>
- <div style="margin-top: 4px; font-size: 7px; font-weight: 800; color: #ff6600; text-transform: uppercase; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${p.desc}</div>
- </div>
- `).join('') : `
- <div style="grid-column: 1 / -1; font-size: 10px; color: #ccc; font-weight: 700;">REGISTRO FOTOGRÁFICO DE EVIDENCIA</div>
- `}
- </div>
- ` : ''}
+  <!-- PHOTO GALLERY / WATERMARK SECTION (FLEXIBLE GRID) -->
+  ${document.getElementById('toggle-photos').checked ? `
+  <div class="ps-watermark" style="min-height: 80px; height: auto; padding: 12px 10px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; align-items: start; justify-items: center; position: relative; background: #fafafa; border: 1px dashed #ccc; border-radius: 8px; margin-top: 15px; overflow: visible;">
+  ${(window._allPhotos || []).length > 0 ? (window._allPhotos || []).map((p, idx) => `
+  <div style="width: 100%; max-width: 130px; background: white; border: 1px solid #eee; border-radius: 4px; padding: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; position: relative;">
+  <button onclick="window.removePhoto(${idx})" style="position: absolute; top: -6px; right: -6px; background: #FF453A; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 11px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">×</button>
+  <div style="width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 3px; background: #000;">
+  <img src="${p.data}" alt="Evidencia de daño" style="width: 100%; height: 100%; object-fit: cover;">
+  </div>
+  <div style="margin-top: 4px; font-size: 7px; font-weight: 800; color: #ff6600; text-transform: uppercase; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${p.desc}</div>
+  </div>
+  `).join('') : `
+  <div style="grid-column: 1 / -1; font-size: 10px; color: #ccc; font-weight: 700;">REGISTRO FOTOGRÁFICO DE EVIDENCIA</div>
+  `}
+  </div>
+  ` : ''}
 
 
  ${odsNotes ? `
@@ -1864,7 +1869,7 @@
 
  // --- 3. MAIN BODY (Starts at 85mm) ---
  const bodyStartY = 80;
- let nextSectionY = 180; // High default for end of body
+ let nextSectionY = bodyStartY; // Default to bodyStartY to reclaim space if Concepts is OFF
  
  const showConcepts = document.getElementById('toggle-concepts').checked;
  const showBank = document.getElementById('toggle-bank').checked;
@@ -1909,10 +1914,12 @@
  doc.setTextColor(255, 102, 0);
  doc.text(`$ ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 195, nextSectionY, { align: "right" });
  
+ // Ajuste de Y después del total
+ nextSectionY = nextSectionY + 10;
  }
 
  // PHOTO GRID AREA (Only show if both Conceptos and Bank are OFF)
- const showPhotos = !showConcepts && !showBank;
+ const showPhotos = document.getElementById('toggle-photos').checked;
  if (showPhotos) {
  const rowHeight = 45;
  const numPhotos = window._allPhotos.length;
@@ -1964,9 +1971,14 @@
  doc.setFont("helvetica", "bold");
  doc.text("OBSERVACIONES / NOTAS DE LABORATORIO:", 15, notesY);
  doc.setFont("helvetica", "normal");
- const splitNotes = doc.splitTextToSize(odsNotes, 180).slice(0, 4); // Limit to 4 lines
+ 
+ // Calcular de forma dinámica el espacio disponible antes de los términos en 210mm
+ const spaceLeft = 210 - notesY - 10;
+ const maxLines = Math.max(4, Math.floor(spaceLeft / 4));
+ const splitNotes = doc.splitTextToSize(odsNotes, 180).slice(0, maxLines);
+ 
  doc.text(splitNotes, 15, notesY + 4);
- notesY += 20; // Fixed jump for notes
+ notesY += 4 + (splitNotes.length * 4); // Salto dinámico basado en las líneas reales escritas
  } else {
  notesY += 5;
  }
@@ -2133,41 +2145,29 @@
  document.getElementById('toggle-concepts').addEventListener('change', (e) => {
  const wrapper = document.getElementById('concepts-controls-wrapper');
  wrapper.style.display = e.target.checked ? 'block' : 'none';
- checkPhotosVisibility();
  update();
  });
 
  document.getElementById('toggle-bank').addEventListener('change', (e) => {
  const wrapper = document.getElementById('bank-controls-wrapper');
  wrapper.style.display = e.target.checked ? 'block' : 'none';
- checkPhotosVisibility();
  update();
  });
 
- function checkPhotosVisibility() {
- const conceptsOff = !document.getElementById('toggle-concepts').checked;
- const bankOff = !document.getElementById('toggle-bank').checked;
- const photosWrapper = document.getElementById('photos-controls-wrapper');
- const photosSep = document.getElementById('photos-separator');
- 
- if (conceptsOff && bankOff) {
- photosWrapper.style.display = 'block';
- photosSep.style.display = 'block';
- } else {
- photosWrapper.style.display = 'none';
- photosSep.style.display = 'none';
- }
- }
+ document.getElementById('toggle-photos').addEventListener('change', (e) => {
+ const wrapper = document.getElementById('photos-controls-wrapper');
+ wrapper.style.display = e.target.checked ? 'block' : 'none';
+ update();
+ });
 
  // Attach all live-update listeners to regenerate preview
- document.querySelectorAll('#quote-form input, #quote-form select, #toggle-concepts, #toggle-bank, #ods-notes').forEach(el =>
+ document.querySelectorAll('#quote-form input, #quote-form select, #toggle-concepts, #toggle-bank, #toggle-photos, #ods-notes').forEach(el =>
  el.addEventListener('input', () => {
  update();
  })
  );
  // Initial QR and update
  setTimeout(generatePreviewQR, 200);
- checkPhotosVisibility();
  update();
 
  // --- Catalog Integration (Pull from Dashboard Catalog) ---

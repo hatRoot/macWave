@@ -3253,7 +3253,7 @@ ${statusOptions}
  <button type="button" id="btn-clear-photos" style="flex: 1; background: transparent; border: 1px solid var(--mac-red); color: var(--mac-red); padding: 10px; border-radius: 6px; cursor: pointer; font-size: 12px;">
  🗑️ Limpiar Todo
  </button>
-<button type="button" id="btn-upload-photos" style="min-width: 110px; background: var(--mac-green); color: #04260d; border: 1px solid #1ea74a; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 800;">
+<button type="button" id="btn-upload-photos" style="display: none; min-width: 110px; background: var(--mac-green); color: #04260d; border: 1px solid #1ea74a; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 800;">
  ⬆ Subir (<span id="upload-count">0</span>)
  </button>
  </div>
@@ -3329,54 +3329,73 @@ ${statusOptions}
  }
  };
 
- document.getElementById('btn-add-event').onclick = async function () {
- const btn = this;
- const newStatus = document.getElementById('inp-new-status').value;
- const text = document.getElementById('inp-new-text').value;
- const fileInput = document.getElementById('inp-new-img');
+  document.getElementById('btn-add-event').onclick = async function () {
+  const btn = this;
+  // Resetear estilos si venía de un error previo
+  btn.style.background = 'var(--mac-green)';
+  btn.style.borderColor = 'var(--mac-green)';
 
- if (!newStatus) return alert("Selecciona un estatus");
+  const newStatus = document.getElementById('inp-new-status').value;
+  if (!newStatus) return alert("Selecciona un estatus");
 
- btn.innerText = "Procesando...";
- btn.disabled = true;
+  if (window.PhotoFlow && window.PhotoFlow.queue.length > 0) {
+  // Delegar todo a PhotoFlow (subirá fotos y guardará el texto/estatus simultáneamente)
+  await window.PhotoFlow.startUpload();
+  
+  // Limpiar inputs al terminar con éxito
+  document.getElementById('inp-new-status').value = '';
+  document.getElementById('inp-new-text').value = '';
+  return;
+  }
 
- try {
- const now = new Date();
- const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
- now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+  const text = document.getElementById('inp-new-text').value;
 
- let newHistorial = [];
- try {
- newHistorial = JSON.parse(o.notas || '[]');
- if (!Array.isArray(newHistorial)) throw new Error('Not array');
- } catch (err) {
- if (o.notas) newHistorial = [{ date: o.fecha || '', status: 'Nota General', text: o.notas, img: null }];
- }
+  btn.innerText = "Procesando...";
+  btn.disabled = true;
 
-newHistorial.push(MacWaveOps.createTimelineEvent({ date: dateStr, status: newStatus, text: text, img: null, internal: false }));
+  try {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
+  now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
 
- const newNotasString = JSON.stringify(newHistorial);
+  let newHistorial = [];
+  try {
+  newHistorial = JSON.parse(o.notas || '[]');
+  if (!Array.isArray(newHistorial)) throw new Error('Not array');
+  } catch (err) {
+  if (o.notas) newHistorial = [{ date: o.fecha || '', status: 'Nota General', text: o.notas, img: null }];
+  }
 
- const { error } = await mwPersistOrden(o.id, { status: newStatus, notas: newNotasString }, 'status_change', {
- to: newStatus,
- note: text,
- });
- if (error) throw error;
+ newHistorial.push(MacWaveOps.createTimelineEvent({ date: dateStr, status: newStatus, text: text, img: null, internal: false }));
 
- o.status = newStatus;
- o.notas = newNotasString;
- const idx = allODS.findIndex(x => x.id === o.id);
- if (idx > -1) { allODS[idx].status = newStatus; allODS[idx].notas = newNotasString; }
+  const newNotasString = JSON.stringify(newHistorial);
 
- renderSidebar(document.getElementById('search-input').value);
- renderDetail(o);
+  const { error } = await mwPersistOrden(o.id, { status: newStatus, notas: newNotasString }, 'status_change', {
+  to: newStatus,
+  note: text,
+  });
+  if (error) throw error;
 
- } catch (e) {
- alert('Error: ' + e.message);
- btn.innerText = "Actualizar Historial";
- btn.disabled = false;
- }
- };
+  o.status = newStatus;
+  o.notas = newNotasString;
+  const idx = allODS.findIndex(x => x.id === o.id);
+  if (idx > -1) { allODS[idx].status = newStatus; allODS[idx].notas = newNotasString; }
+
+  renderSidebar(document.getElementById('search-input').value);
+  renderDetail(o);
+
+  btn.innerText = "Actualizar Historial";
+  btn.disabled = false;
+  // Limpiar inputs
+  document.getElementById('inp-new-status').value = '';
+  document.getElementById('inp-new-text').value = '';
+
+  } catch (e) {
+  alert('Error: ' + e.message);
+  btn.innerText = "Actualizar Historial";
+  btn.disabled = false;
+  }
+  };
 
 // ========== PHOTOFLOW V2 - SISTEMA DE GESTIÓN DE FOTOS ==========
 
@@ -3403,7 +3422,7 @@ window.PhotoFlow = {
  const uploadBtn = document.getElementById('btn-upload-photos');
 
  if (clearBtn) clearBtn.onclick = () => this.clearQueue();
- if (uploadBtn) uploadBtn.onclick = () => this.startUpload();
+ // uploadBtn is hidden, so click delegated to btn-add-event
  this.updateStats();
  },
 
@@ -3423,7 +3442,6 @@ window.PhotoFlow = {
 
  // UI: Mostrar contenedor
  const container = document.getElementById('photo-queue-container');
- const uploadBtn = document.getElementById('btn-upload-photos');
  const counter = document.getElementById('photo-counter');
 
  if (container) container.style.display = 'block';
@@ -3529,18 +3547,12 @@ window.PhotoFlow = {
  this.queue = [];
  const container = document.getElementById('photo-queue-container');
  const grid = document.getElementById('photo-queue-grid');
- const uploadBtn = document.getElementById('btn-upload-photos');
  const progress = document.getElementById('upload-progress');
  const counter = document.getElementById('photo-counter');
  const fileInput = document.getElementById('inp-new-img');
 
  if (container) container.style.display = 'none';
  if (grid) grid.innerHTML = '';
-if (uploadBtn) {
-uploadBtn.disabled = false;
-uploadBtn.innerHTML = '⬆ Subir (<span id="upload-count">0</span>)';
-uploadBtn.style.background = 'var(--mac-green)';
-}
  if (progress) progress.style.display = 'none';
  if (counter) counter.textContent = '(0 seleccionadas)';
  if (fileInput) fileInput.value = '';
@@ -3561,19 +3573,21 @@ uploadBtn.style.background = 'var(--mac-green)';
  alert('Error: No se identificó la orden de servicio');
  return;
  }
-if (!this.queue.length) {
+ if (!this.queue.length) {
  alert('Primero selecciona al menos una foto.');
  return;
-}
+ }
 
- const uploadBtn = document.getElementById('btn-upload-photos');
- const progressDiv = document.getElementById('upload-progress');
- const progressBar = document.getElementById('upload-progress-bar');
- const progressText = document.getElementById('upload-progress-text');
+  const uploadBtn = document.getElementById('btn-add-event');
+  const progressDiv = document.getElementById('upload-progress');
+  const progressBar = document.getElementById('upload-progress-bar');
+  const progressText = document.getElementById('upload-progress-text');
 
- if (uploadBtn) uploadBtn.disabled = true;
- if (uploadBtn) uploadBtn.textContent = '⏳ Procesando...';
- if (progressDiv) progressDiv.style.display = 'block';
+  if (uploadBtn) {
+  uploadBtn.disabled = true;
+  uploadBtn.textContent = '⏳ Subiendo fotos...';
+  }
+  if (progressDiv) progressDiv.style.display = 'block';
 
  const odsSource = (Array.isArray(window.allODS) && window.allODS.length) ? window.allODS : allODS;
  const ods = odsSource?.find(o => o.id === odsId);
@@ -3616,13 +3630,13 @@ if (!this.queue.length) {
 
  // Generar nombre único
  const timestamp = Date.now();
-const fileName = `ods_${odsId}/${timestamp}_${item.index}.jpg`;
+ const fileName = `ods_${odsId}/${timestamp}_${item.index}.jpg`;
 
  // Subir a Storage
  const { data, error } = await supabaseClient.storage
  .from('ods-photos')
-.upload(fileName, compressed, {
-contentType: 'image/jpeg',
+ .upload(fileName, compressed, {
+ contentType: 'image/jpeg',
  upsert: false
  });
 
@@ -3666,11 +3680,11 @@ contentType: 'image/jpeg',
  }
  });
 
- completed += chunk.length;
- if (progressBar) {
- progressBar.style.width = `${(completed / total) * 100}%`;
- }
- }
+  completed += chunk.length;
+  if (progressBar) {
+  progressBar.style.width = `${(completed / total) * 100}%`;
+  }
+  }
 
  // Guardar en base de datos
  if (photoUrls.length > 0) {
@@ -3695,10 +3709,10 @@ contentType: 'image/jpeg',
 
  ods.notas = newNotas;
  const idxLocal = allODS.findIndex(x => x.id === odsId);
- if (idxLocal > -1) allODS[idxLocal].notas = newNotas;
+ if (idxLocal > -1) { allODS[idxLocal].notas = newNotas; allODS[idxLocal].status = document.getElementById('inp-new-status')?.value || ods.status; }
  if (Array.isArray(window.allODS)) {
  const idxWindow = window.allODS.findIndex(x => x.id === odsId);
- if (idxWindow > -1) window.allODS[idxWindow].notas = newNotas;
+ if (idxWindow > -1) { window.allODS[idxWindow].notas = newNotas; window.allODS[idxWindow].status = document.getElementById('inp-new-status')?.value || ods.status; }
  }
 
  // Limpiar cola
@@ -3708,10 +3722,14 @@ contentType: 'image/jpeg',
  progressText.textContent = `✓ ${photoUrls.length} de ${total} fotos subidas`;
  progressText.style.color = 'var(--mac-green)';
  }
-if (uploadBtn) {
-uploadBtn.innerHTML = '✓ Subido';
-uploadBtn.style.background = 'var(--mac-green)';
-}
+ if (uploadBtn) {
+ uploadBtn.innerHTML = '✓ Actualizado';
+ uploadBtn.style.background = 'var(--mac-green)';
+ uploadBtn.disabled = false;
+ setTimeout(() => {
+ uploadBtn.innerHTML = 'Actualizar Historial';
+ }, 3000);
+ }
 
  // Refrescar vista
  setTimeout(() => {
@@ -3722,10 +3740,12 @@ uploadBtn.style.background = 'var(--mac-green)';
  progressText.textContent = 'Error: No se pudo subir ninguna foto';
  progressText.style.color = 'var(--mac-red)';
  }
- if (uploadBtn) {
- uploadBtn.disabled = false;
-uploadBtn.innerHTML = '⬆ Reintentar';
- }
+  if (uploadBtn) {
+  uploadBtn.disabled = false;
+ uploadBtn.innerHTML = '❌ Error - Reintentar';
+ uploadBtn.style.background = 'var(--mac-red)';
+ uploadBtn.style.borderColor = 'var(--mac-red)';
+  }
  }
  },
 

@@ -758,15 +758,15 @@ return list;
  const rs = document.getElementById('result-section');
  if (!rawQuery) { rs.innerHTML = ''; return; }
 
- const looksLikeToken = /^[a-f0-9]{32,64}$/i.test(rawQuery);
+ const looksLikeToken = /^[a-f0-9\-]{32,64}$/i.test(rawQuery);
  const token = looksLikeToken ? rawQuery : (pToken || null);
  const folio = looksLikeToken ? null : MacWaveOps.sanitizeSearchInput(rawQuery);
 
  rs.innerHTML = '<div style="color:#8e8e93;text-align:center;padding:30px;">Buscando tu orden...</div>';
 
  const { data, error } = await MacWaveOps.fetchPublicTracking(_sb, {
- p_token: token,
- p_folio: folio,
+ token: token,
+ folio: folio,
  });
 
  if (error) {

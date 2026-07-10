@@ -483,39 +483,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ============================================================
-    // NUEVA SECCIÓN DE REPARACIONES Y CERTIFICACIONES: ANIMACIONES
-    // ============================================================
-    const repairGrid = document.querySelector('.mw-repair-grid');
-    const repairCards = repairGrid ? repairGrid.querySelectorAll('.mw-repair-card') : [];
-
-    if (repairCards.length > 0) {
-        // Activa los estados ocultos iniciales (solo cuando JS está disponible)
-        repairGrid.classList.add('js-repair-anim');
-
-        // Fallback de seguridad: si el observer no dispara en 1.5s, mostrar todas
-        const fallbackTimer = setTimeout(() => {
-            repairCards.forEach(card => card.classList.add('mw-repair-visible'));
-        }, 1500);
-
-        const cardObserver = new IntersectionObserver((entries, obs) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('mw-repair-visible');
-                    obs.unobserve(entry.target);
-
-                    // Si todas son visibles, cancelar fallback
-                    const allVisible = [...repairCards].every(c =>
-                        c.classList.contains('mw-repair-visible')
-                    );
-                    if (allVisible) clearTimeout(fallbackTimer);
-                }
-            });
-        }, {
-            threshold: 0,
-            rootMargin: '0px 0px -20px 0px'
-        });
-
-        repairCards.forEach(card => cardObserver.observe(card));
-    }
 });

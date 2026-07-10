@@ -5392,19 +5392,10 @@ html, body {
     border-radius: 24px;
     padding: 48px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
-                box-shadow 0.4s ease, 
-                border-color 0.4s ease;
-    opacity: 1;          /* Visible por defecto — fallback si JS no carga */
-    will-change: transform, opacity;
+    transition: box-shadow 0.3s ease,
+                border-color 0.3s ease;
+    opacity: 1;
     border: 1px solid transparent;
-}
-
-/* Solo se ocultan ANTES de animar si JS está activo */
-.js-repair-anim .mw-repair-card.mw-repair-animate-left,
-.js-repair-anim .mw-repair-card.mw-repair-animate-right,
-.js-repair-anim .mw-repair-card.mw-repair-animate-bottom {
-    opacity: 0;
 }
 
 /* Card 1 specific colors */
@@ -5474,47 +5465,6 @@ html, body {
 .mw-repair-card:focus-visible {
     outline: 2px solid #0071e3;
     outline-offset: 4px;
-}
-
-/* Animations (De afuera hacia el centro con efecto elástico / fun bounce) */
-/* Solo activas cuando JS agrega .js-repair-anim al contenedor */
-.js-repair-anim .mw-repair-card.mw-repair-animate-left {
-    transform: translate3d(-180px, 0, 0) scale(0.85);
-}
-
-.js-repair-anim .mw-repair-card.mw-repair-animate-right {
-    transform: translate3d(180px, 0, 0) scale(0.85);
-}
-
-.js-repair-anim .mw-repair-card.mw-repair-animate-bottom {
-    transform: translate3d(0, 180px, 0) scale(0.85);
-}
-
-.mw-repair-card.mw-repair-visible {
-    opacity: 1 !important;
-    transform: translate3d(0, 0, 0) scale(1) !important;
-}
-
-/* Transición con cubic-bezier elástico y retraso escalonado (staggered delay) */
-.mw-repair-grid > .mw-repair-card:nth-child(1).mw-repair-visible {
-    transition: transform 1.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                opacity 1.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                border-color 0.4s ease;
-    transition-delay: 0s;
-}
-
-.mw-repair-grid > .mw-repair-card:nth-child(2).mw-repair-visible {
-    transition: transform 1.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                opacity 1.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                border-color 0.4s ease;
-    transition-delay: 0.15s;
-}
-
-.mw-repair-grid > .mw-repair-card:nth-child(3).mw-repair-visible {
-    transition: transform 1.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                opacity 1.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                border-color 0.4s ease;
-    transition-delay: 0.3s;
 }
 
 /* Header section inside the cards */

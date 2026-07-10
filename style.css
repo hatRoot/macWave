@@ -5395,9 +5395,16 @@ html, body {
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
                 box-shadow 0.4s ease, 
                 border-color 0.4s ease;
-    opacity: 0;
+    opacity: 1;          /* Visible por defecto — fallback si JS no carga */
     will-change: transform, opacity;
     border: 1px solid transparent;
+}
+
+/* Solo se ocultan ANTES de animar si JS está activo */
+.js-repair-anim .mw-repair-card.mw-repair-animate-left,
+.js-repair-anim .mw-repair-card.mw-repair-animate-right,
+.js-repair-anim .mw-repair-card.mw-repair-animate-bottom {
+    opacity: 0;
 }
 
 /* Card 1 specific colors */
@@ -5470,21 +5477,22 @@ html, body {
 }
 
 /* Animations (De afuera hacia el centro con efecto elástico / fun bounce) */
-.mw-repair-card.mw-repair-animate-left {
+/* Solo activas cuando JS agrega .js-repair-anim al contenedor */
+.js-repair-anim .mw-repair-card.mw-repair-animate-left {
     transform: translate3d(-180px, 0, 0) scale(0.85);
 }
 
-.mw-repair-card.mw-repair-animate-right {
+.js-repair-anim .mw-repair-card.mw-repair-animate-right {
     transform: translate3d(180px, 0, 0) scale(0.85);
 }
 
-.mw-repair-card.mw-repair-animate-bottom {
+.js-repair-anim .mw-repair-card.mw-repair-animate-bottom {
     transform: translate3d(0, 180px, 0) scale(0.85);
 }
 
 .mw-repair-card.mw-repair-visible {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1 !important;
+    transform: translate3d(0, 0, 0) scale(1) !important;
 }
 
 /* Transición con cubic-bezier elástico y retraso escalonado (staggered delay) */

@@ -50,6 +50,7 @@
  --mac-border: rgba(255, 255, 255, 0.12);
  --mac-text: #FFFFFF;
  --mac-text-muted: #8E8E93;
+ --mac-input-bg: rgba(255,255,255,0.05);
  
  /* Accents unified with Main Brand (Orange/Bronze) */
  --mac-accent: #FF6600; /* Brand Orange */
@@ -62,6 +63,51 @@
  --mac-glass: blur(30px) saturate(150%);
  --mac-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
  }
+
+ /* ── LIGHT MODE ─────────────────────────────────────────────────── */
+ body.light-mode {
+ --mac-bg: #f2f2f7;
+ --mac-sidebar: #e5e5ea;
+ --mac-card: rgba(255, 255, 255, 0.9);
+ --mac-border: rgba(0, 0, 0, 0.10);
+ --mac-text: #1c1c1e;
+ --mac-text-muted: #6c6c70;
+ --mac-input-bg: rgba(0,0,0,0.04);
+ background-image: radial-gradient(circle at top right, #dde8f5, #f2f2f7) !important;
+ }
+ body.light-mode .app-sidebar { background: #e5e5ea; border-right: 1px solid rgba(0,0,0,0.08); }
+ body.light-mode .nav-item { color: #1c1c1e; }
+ body.light-mode .nav-item:hover { background: rgba(0,0,0,0.06); }
+ body.light-mode .sidebar { background: #e5e5ea; border-right: 1px solid rgba(0,0,0,0.08); }
+ body.light-mode .search-box { background: rgba(0,0,0,0.06); color: #1c1c1e; border-color: rgba(0,0,0,0.12); }
+ body.light-mode .ods-item { background: rgba(255,255,255,0.7); border-color: rgba(0,0,0,0.08); }
+ body.light-mode .ods-item:hover { background: rgba(255,255,255,0.95); }
+ body.light-mode .card { background: rgba(255,255,255,0.9); border-color: rgba(0,0,0,0.1); }
+ body.light-mode .form-control { background: rgba(0,0,0,0.04); color: #1c1c1e; border-color: rgba(0,0,0,0.15); }
+ body.light-mode .form-control::placeholder { color: #8e8e93; }
+ body.light-mode .mobile-top-nav { background: rgba(240,240,245,0.95) !important; border-bottom-color: rgba(0,0,0,0.1) !important; }
+ body.light-mode .mobile-nav-item { color: #6c6c70; }
+ body.light-mode .timeline-note { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); }
+ body.light-mode .pf3-btn-select { background: #d1d1d6; border-color: #c7c7cc; color: #1c1c1e; }
+ body.light-mode select.form-control option { background: #fff; color: #1c1c1e; }
+
+ /* ── THEME TOGGLE BUTTON ──────────────────────────────────────── */
+ #btn-theme-toggle {
+ display: flex; align-items: center; gap: 8px;
+ background: transparent; border: 1px solid rgba(255,255,255,0.15);
+ color: var(--mac-text-muted); border-radius: 10px;
+ padding: 9px 14px; cursor: pointer; font-size: 11px; font-weight: 600;
+ transition: all 0.2s; width: 100%; text-align: left;
+ }
+ #btn-theme-toggle:hover { border-color: rgba(255,255,255,0.3); color: var(--mac-text); background: rgba(255,255,255,0.05); }
+ body.light-mode #btn-theme-toggle { border-color: rgba(0,0,0,0.15); color: #6c6c70; }
+ body.light-mode #btn-theme-toggle:hover { border-color: rgba(0,0,0,0.25); color: #1c1c1e; background: rgba(0,0,0,0.04); }
+ #m-btn-theme-toggle {
+ display: flex; flex-direction: column; align-items: center; gap: 2px;
+ color: var(--mac-text-muted); font-size: 9px; font-weight: 700;
+ background: none; border: none; padding: 10px; cursor: pointer;
+ }
+ #m-btn-theme-toggle svg { width: 20px; height: 20px; }
 
  * {
  box-sizing: border-box;
@@ -1091,6 +1137,10 @@ word-break: break-word;
  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-1.41 1.41L15.17 8H4v2h11.17l-1.58 1.59L15 13l4-4-4-4z"/></svg>
  <span>TICKET</span>
  </button>
+ <button class="mobile-nav-item" id="m-btn-theme-toggle" onclick="toggleTheme()" title="Cambiar modo claro/oscuro">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+  <span id="m-theme-label">NOCHE</span>
+ </button>
  </nav>
 
  <!-- Windows Vista Aero Sidebar Navigation -->
@@ -1156,7 +1206,11 @@ word-break: break-word;
  </nav>
 
  <nav class="nav-group" style="margin-top:auto;">
- <button class="nav-item" style="color: var(--mac-red);" id="logout-btn-side">
+ <button id="btn-theme-toggle" onclick="toggleTheme()" title="Cambiar modo claro/oscuro">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+  <span id="theme-label">Modo Claro</span>
+ </button>
+ <button class="nav-item" style="color: var(--mac-red); margin-top:8px;" id="logout-btn-side">
  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
  <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
  </svg>
@@ -3375,16 +3429,16 @@ ${statusOptions}
   <!-- Done Zone: appears after all images successfully uploaded -->
   <div id="pf3-done-zone" class="pf3-done-zone" role="region" aria-label="Acciones post-subida">
     <button type="button" id="pf3-btn-save" class="pf3-btn-save"
-      aria-label="Guardar cambios en el expediente ODS">✓ Guardar cambios</button>
+      aria-label="Guardar fotos + cambios en el expediente ODS">✓ Guardar fotos + cambios</button>
     <button type="button" id="pf3-btn-undo" class="pf3-btn-undo"
-      aria-label="Deshacer y limpiar las fotos procesadas">Deshacer cambios</button>
+      aria-label="Deshacer y limpiar las fotos procesadas">Deshacer</button>
   </div>
 </div>
 
- <!-- Actualizar Historial: guarda notas y cambio de estatus SIN fotos -->
+ <!-- Botón principal unificado: guarda notas + estatus (y fotos si las hay) -->
  <div style="display: flex; justify-content: flex-end; margin-top: 14px;">
   <button type="button" class="btn btn-primary" id="btn-add-event"
-    style="background: var(--mac-blue); border-color: var(--mac-blue); font-size: 11px; padding: 5px 12px; border-radius: 6px; font-weight: 600; width: auto; min-width: 130px;">Actualizar Historial</button>
+    style="background: var(--mac-green); border-color: var(--mac-green); font-size: 11px; padding: 5px 12px; border-radius: 6px; font-weight: 600; width: auto; min-width: 160px;">💾 Guardar Nota / Estatus</button>
  </div>
  </div>
  </div>
@@ -3457,19 +3511,21 @@ ${statusOptions}
 
   document.getElementById('btn-add-event').onclick = async function () {
   const btn = this;
-  // Resetear estilos si venía de un error previo
   btn.style.background = 'var(--mac-green)';
   btn.style.borderColor = 'var(--mac-green)';
 
   const newStatus = document.getElementById('inp-new-status').value;
-  if (!newStatus) return alert("Selecciona un estatus");
-
-  // PhotoFlow V3 maneja el guardado de fotos de forma independiente.
-  // Este botón solo guarda notas de estatus sin fotos.
+  if (!newStatus) return alert('Selecciona un estatus antes de guardar.');
 
   const text = document.getElementById('inp-new-text').value;
 
-  btn.innerText = "Procesando...";
+  // Si hay fotos ya subidas esperando guardarse, usar el flujo de PhotoFlow V3
+  if (window.PhotoFlowV3 && window.PhotoFlowV3.state && window.PhotoFlowV3.state.key === 'done' && window.PhotoFlowV3.queue && window.PhotoFlowV3.queue.filter(it => it.uploadedUrl).length > 0) {
+    window.PhotoFlowV3.saveChanges();
+    return;
+  }
+
+  btn.innerHTML = '⏳ Guardando...';
   btn.disabled = true;
 
   try {
@@ -3485,7 +3541,7 @@ ${statusOptions}
   if (o.notas) newHistorial = [{ date: o.fecha || '', status: 'Nota General', text: o.notas, img: null }];
   }
 
- newHistorial.push(MacWaveOps.createTimelineEvent({ date: dateStr, status: newStatus, text: text, img: null, internal: false }));
+  newHistorial.push(MacWaveOps.createTimelineEvent({ date: dateStr, status: newStatus, text: text, img: null, internal: /^\[INTERNO\]/i.test(text.trim()) }));
 
   const newNotasString = JSON.stringify(newHistorial);
 
@@ -3503,15 +3559,11 @@ ${statusOptions}
   renderSidebar(document.getElementById('search-input').value);
   renderDetail(o);
 
-  btn.innerText = "Actualizar Historial";
-  btn.disabled = false;
-  // Limpiar inputs
-  document.getElementById('inp-new-status').value = '';
-  document.getElementById('inp-new-text').value = '';
-
   } catch (e) {
-  alert('Error: ' + e.message);
-  btn.innerText = "Actualizar Historial";
+  alert('Error al guardar: ' + e.message);
+  btn.style.background = 'var(--mac-red)';
+  btn.style.borderColor = 'var(--mac-red)';
+  btn.innerHTML = '❌ Error - Reintentar';
   btn.disabled = false;
   }
   };
@@ -4112,8 +4164,10 @@ window.PhotoFlowV3 = (function () {
   }
 
   // ── Public: saveChanges ────────────────────────────────────────────
-  async function saveChanges() {
-    if (!_uploadedUrls.length) { showInlineError('No hay fotos procesadas para guardar.'); return; }
+  // También puede ser llamado directamente sin fotos (si se pasan URLs vacías)
+  async function saveChanges(extraUrls) {
+    const urlsToSave = (extraUrls && Array.isArray(extraUrls)) ? extraUrls : _uploadedUrls;
+    if (!urlsToSave.length) { showInlineError('No hay fotos procesadas para guardar. Para guardar solo notas, usa el botón 💾 Guardar Nota / Estatus.'); return; }
 
     const odsId = window.currentSelectedId || currentSelectedId;
     if (!odsId) { showInlineError('Error: no se identificó la ODS.'); return; }
@@ -4145,7 +4199,7 @@ window.PhotoFlowV3 = (function () {
         date:     dateStr,
         status:   newStatus,
         text:     noteText,
-        photos:   _uploadedUrls,
+        photos:   urlsToSave,
         internal: isInternal,
       }));
 
@@ -4154,7 +4208,7 @@ window.PhotoFlowV3 = (function () {
         odsId,
         { status: newStatus, notas: newNotas },
         'photos_uploaded',
-        { count: _uploadedUrls.length }
+        { count: urlsToSave.length }
       );
       if (error) throw error;
 
@@ -4320,6 +4374,28 @@ if(hist[noteIdx]) {
  badge.innerText = '$ ' + utilidadReal.toLocaleString('es-MX');
  }
  };
+
+ // ── THEME TOGGLE ────────────────────────────────────────────────────────
+ window.toggleTheme = function () {
+   const isLight = document.body.classList.toggle('light-mode');
+   localStorage.setItem('mw_theme', isLight ? 'light' : 'dark');
+   const label = document.getElementById('theme-label');
+   const mLabel = document.getElementById('m-theme-label');
+   if (label) label.textContent = isLight ? 'Modo Oscuro' : 'Modo Claro';
+   if (mLabel) mLabel.textContent = isLight ? 'DÍA' : 'NOCHE';
+ };
+
+ // Restore saved theme preference
+ (function () {
+   const saved = localStorage.getItem('mw_theme');
+   if (saved === 'light') {
+     document.body.classList.add('light-mode');
+     const label = document.getElementById('theme-label');
+     const mLabel = document.getElementById('m-theme-label');
+     if (label) label.textContent = 'Modo Oscuro';
+     if (mLabel) mLabel.textContent = 'DÍA';
+   }
+ })();
 
  // Run
  document.addEventListener('DOMContentLoaded', () => {

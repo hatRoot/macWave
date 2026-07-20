@@ -3387,51 +3387,32 @@ ${statusOptions}
 <textarea id="inp-new-text" class="form-control" placeholder="Describe los avances, piezas pedidas o finalización del servicio..."></textarea>
 </div>
 
-<!-- PhotoFlow V3 Module -->
+<!-- Módulo de Evidencia Fotográfica Estilo Apple -->
 <div class="form-group" style="margin-bottom: 16px;">
-  <label style="font-size: 11px; font-weight: 700; color: var(--mac-text-muted); letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; gap: 8px;">
+  <label style="font-size: 11px; font-weight: 700; color: var(--mac-text-muted); letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
     📸 Evidencia Fotográfica
-    <span id="pf3-counter" style="font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 11px;"></span>
   </label>
-
-  <!-- Action Row -->
-  <div class="pf3-action-row">
-    <button type="button" id="pf3-btn-select" class="pf3-btn-select"
-      aria-label="Elegir fotos del expediente">📁 Elegir fotos</button>
-    <button type="button" id="pf3-btn-send" class="pf3-btn-send"
-      aria-label="Comprimir y enviar fotos al expediente ODS en formato JPG">
-      🗜️ Enviar fotos comprimidas (JPG optimizado)
-      <span id="pf3-count-badge" style="background:rgba(255,255,255,0.2);border-radius:4px;padding:0 5px;font-size:10px;">0</span>
-    </button>
-    <button type="button" id="pf3-btn-clear" class="pf3-btn-clear"
-      aria-label="Limpiar lista de fotos seleccionadas">✕ Limpiar</button>
-  </div>
-
-  <input type="file" id="pf3-file-input" accept="image/*" multiple style="display:none;">
-
-  <!-- Per-file Pipeline -->
-  <div id="pf3-pipeline" class="pf3-pipeline" role="list" aria-label="Cola de imágenes para subir"></div>
-
-  <!-- Global Progress -->
-  <div id="pf3-global-wrap" class="pf3-global-wrap" role="region" aria-label="Progreso total de subida">
-    <div class="pf3-global-header">
-      <span class="pf3-global-label">Total</span>
-      <span id="pf3-global-pct" class="pf3-global-pct">0%</span>
+  
+  <input type="file" id="apple-file-input" accept="image/*" multiple style="display:none;">
+  
+  <div id="apple-photo-container" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+    <!-- Botón minimalista de agregar (iOS style) -->
+    <div id="apple-btn-add" style="width: 72px; height: 72px; border-radius: 12px; border: 2px dashed rgba(255,255,255,0.15); background: rgba(255,255,255,0.02); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; color: var(--mac-text-muted); font-size: 24px;" 
+         onclick="document.getElementById('apple-file-input').click()"
+         onmouseover="this.style.borderColor='rgba(255,255,255,0.3)'; this.style.background='rgba(255,255,255,0.05)';"
+         onmouseout="this.style.borderColor='rgba(255,255,255,0.15)'; this.style.background='rgba(255,255,255,0.02)';">
+      <span>＋</span>
     </div>
-    <div class="pf3-global-bar-wrap">
-      <div id="pf3-global-bar" class="pf3-global-bar-track"
-        role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
-        aria-label="Progreso total"></div>
-    </div>
-    <div id="pf3-global-status" class="pf3-global-status" aria-live="polite"></div>
   </div>
-
-  <!-- Done Zone: appears after all images successfully uploaded -->
-  <div id="pf3-done-zone" class="pf3-done-zone" role="region" aria-label="Acciones post-subida">
-    <button type="button" id="pf3-btn-save" class="pf3-btn-save"
-      aria-label="Guardar fotos + cambios en el expediente ODS">✓ Guardar fotos + cambios</button>
-    <button type="button" id="pf3-btn-undo" class="pf3-btn-undo"
-      aria-label="Deshacer y limpiar las fotos procesadas">Deshacer</button>
+  
+  <div id="apple-upload-progress" style="display: none; margin-top: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+      <span id="apple-progress-status" style="font-size: 10px; font-weight: 700; color: var(--mac-text-muted); text-transform: uppercase;">Subiendo fotos...</span>
+      <span id="apple-progress-pct" style="font-size: 11px; font-weight: 700; color: #fff;">0%</span>
+    </div>
+    <div style="height: 6px; border-radius: 999px; background: rgba(255,255,255,0.07); overflow: hidden;">
+      <div id="apple-progress-bar" style="height: 100%; width: 0%; background: linear-gradient(90deg,#0a84ff 0%,#5ab7ff 100%); transition: width 0.3s ease; border-radius: 999px;"></div>
+    </div>
   </div>
 </div>
 
@@ -3524,9 +3505,9 @@ ${statusOptions}
 
   const text = document.getElementById('inp-new-text').value;
 
-  // Si hay fotos ya subidas esperando guardarse, usar el flujo de PhotoFlow V3
-  if (window.PhotoFlowV3 && window.PhotoFlowV3.state && window.PhotoFlowV3.state.key === 'done' && window.PhotoFlowV3.queue && window.PhotoFlowV3.queue.filter(it => it.uploadedUrl).length > 0) {
-    window.PhotoFlowV3.saveChanges();
+  // Si hay fotos seleccionadas en la cola, usar el flujo unificado de PhotoFlow V3
+  if (window.PhotoFlowV3 && window.PhotoFlowV3.queue && window.PhotoFlowV3.queue.length > 0) {
+    window.PhotoFlowV3.uploadAndSave(o, newStatus, text, btn);
     return;
   }
 
@@ -3561,6 +3542,10 @@ ${statusOptions}
   const idx = allODS.findIndex(x => x.id === o.id);
   if (idx > -1) { allODS[idx].status = newStatus; allODS[idx].notas = newNotasString; }
 
+  // Limpiar campo de texto
+  const textareaEl = document.getElementById('inp-new-text');
+  if (textareaEl) textareaEl.value = '';
+
   renderSidebar(document.getElementById('search-input').value);
   renderDetail(o); // esto llama PhotoFlowV3.init() internamente
 
@@ -3574,292 +3559,85 @@ ${statusOptions}
   };
 }
 
-// ========== PHOTOFLOW V3 — PREMIUM PHOTO PIPELINE ==========
-// Replaces V2. Maintains backward-compat alias: window.PhotoFlow → window.PhotoFlowV3
-
+// ========== PHOTOFLOW V3 — Apple-Style Unified Flow ==========
 window.PhotoFlowV3 = (function () {
   'use strict';
 
-  // ── Constants ──────────────────────────────────────────────────────
-  const MAX_FILE_SIZE  = 50 * 1024 * 1024; // 50 MB
-  const MAX_DIM        = 1600;              // px — enough for sharp technical evidence
-  const JPEG_QUALITY   = 0.82;
-  const MAX_CONCURRENT = 4;
+  const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
+  const MAX_DIM = 1600;
+  const JPEG_QUALITY = 0.82;
 
-  const MODULE_STATES = { IDLE: 'idle', QUEUED: 'queued', PROCESSING: 'processing', DONE: 'done', ERROR: 'error' };
+  let _queue = []; // Array of { id, file, thumbUrl }
 
-  const FILE_STATES = {
-    WAITING:     { key: 'waiting',     label: 'Esperando',              progress:  5 },
-    COMPRESSING: { key: 'compressing', label: 'Comprimiendo',           progress: 25 },
-    CONVERTING:  { key: 'converting',  label: 'Convirtiendo a JPG',     progress: 45 },
-    METADATA:    { key: 'metadata',    label: 'Preparando metadatos',   progress: 60 },
-    UPLOADING:   { key: 'uploading',   label: 'Subiendo a Supabase',    progress: 78 },
-    ASSOCIATING: { key: 'associating', label: 'Asociando al folio ODS', progress: 90 },
-    VERIFYING:   { key: 'verifying',   label: 'Verificando integridad', progress: 97 },
-    DONE:        { key: 'done',        label: 'Finalizado',             progress: 100 },
-    ERROR:       { key: 'error',       label: 'Error',                  progress: 100 },
-  };
-
-  // ── Module state ───────────────────────────────────────────────────
-  let _state       = MODULE_STATES.IDLE;
-  let _queue       = [];   // Array<FileItem>
-  let _uploadedUrls = [];  // Collected after upload phase
-
-  // ── GA4 helper ─────────────────────────────────────────────────────
-  function track(eventName, params) {
-    try {
-      if (window.gtag) window.gtag('event', eventName, {
-        ...params,
-        ods_folio: _getCurrentOds()?.folio,
-        module:    'photoflow_v3',
-      });
-    } catch (e) { /* GA4 not loaded */ }
+  function init() {
+    _queue.forEach(item => {
+      if (item.thumbUrl) URL.revokeObjectURL(item.thumbUrl);
+    });
+    _queue = [];
+    
+    const fileInput = document.getElementById('apple-file-input');
+    if (fileInput) {
+      fileInput.value = '';
+      fileInput.onchange = e => handleSelection(e.target.files);
+    }
+    
+    const progressWrap = document.getElementById('apple-upload-progress');
+    if (progressWrap) progressWrap.style.display = 'none';
+    
+    render();
   }
 
-  // ── DOM helper ─────────────────────────────────────────────────────
-  function $(id) { return document.getElementById(id); }
+  function handleSelection(files) {
+    if (!files || !files.length) return;
 
-  function formatBytes(bytes) {
-    if (!bytes) return '—';
-    if (bytes < 1024)        return bytes + ' B';
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
-  }
-
-  function sanitizeFilename(name) {
-    return name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 60);
-  }
-
-  function _getCurrentOds() {
-    const odsId = window.currentSelectedId || currentSelectedId;
-    const src   = (Array.isArray(window.allODS) && window.allODS.length) ? window.allODS : allODS;
-    return src?.find(o => o.id === odsId) || null;
-  }
-
-  // ── MIME magic-byte validation ─────────────────────────────────────
-  const ALLOWED_MIME = ['image/jpeg','image/png','image/webp','image/heic','image/heif','image/gif','image/bmp','image/tiff'];
-
-  async function validateMIME(file) {
-    if (!ALLOWED_MIME.includes(file.type.toLowerCase())) return false;
-    try {
-      const chunk = await file.slice(0, 12).arrayBuffer();
-      const b = new Uint8Array(chunk);
-      if (b[0]===0xFF && b[1]===0xD8 && b[2]===0xFF) return true;                              // JPEG
-      if (b[0]===0x89 && b[1]===0x50 && b[2]===0x4E && b[3]===0x47) return true;              // PNG
-      if (b[0]===0x52 && b[1]===0x49 && b[2]===0x46 && b[3]===0x46 &&
-          b[8]===0x57 && b[9]===0x45 && b[10]===0x42 && b[11]===0x50) return true;            // WebP
-      if (b[0]===0x47 && b[1]===0x49 && b[2]===0x46) return true;                             // GIF
-      if (b[0]===0x42 && b[1]===0x4D) return true;                                            // BMP
-      if (b[4]===0x66 && b[5]===0x74 && b[6]===0x79 && b[7]===0x70) return true;             // HEIC/HEIF
-      return ALLOWED_MIME.includes(file.type.toLowerCase()); // lenient fallback
-    } catch (e) {
-      return ALLOWED_MIME.includes(file.type.toLowerCase());
-    }
-  }
-
-  // ── Non-blocking inline error ──────────────────────────────────────
-  function showInlineError(msg) {
-    const anchor = $('pf3-pipeline');
-    if (!anchor) { console.error('[PF3]', msg); return; }
-    const el = document.createElement('div');
-    el.style.cssText = 'background:rgba(255,69,58,0.12);border:1px solid rgba(255,69,58,0.35);'
-      + 'border-radius:8px;padding:8px 12px;font-size:11px;color:#ff453a;'
-      + 'white-space:pre-wrap;margin-top:6px;';
-    el.textContent = msg;
-    anchor.parentNode.insertBefore(el, anchor.nextSibling);
-    setTimeout(() => el.remove && el.remove(), 8000);
-  }
-
-  // ── FileItem class ─────────────────────────────────────────────────
-  class FileItem {
-    constructor(file, index) {
-      this.file           = file;
-      this.index          = index;
-      this.id             = 'pf3-' + Date.now() + '-' + index + '-' + Math.random().toString(36).slice(2, 7);
-      this.state          = FILE_STATES.WAITING;
-      this.originalSize   = file.size;
-      this.compressedSize = null;
-      this.compressedBlob = null;
-      this._thumbUrl      = null;   // Object URL — must be revoked on cleanup
-      this.uploadedUrl    = null;
-      this.error          = null;
-    }
-
-    /** Set thumbnail from a Blob. Revokes previous Object URL automatically. */
-    setThumbnail(blob) {
-      if (this._thumbUrl) URL.revokeObjectURL(this._thumbUrl);
-      this._thumbUrl = URL.createObjectURL(blob);
-      this._applyThumbnail();
-    }
-
-    /** Revoke Object URL to free memory. */
-    cleanup() {
-      if (this._thumbUrl) { URL.revokeObjectURL(this._thumbUrl); this._thumbUrl = null; }
-    }
-
-    setState(newState) {
-      this.state = newState;
-      this._updateRow();
-    }
-
-    _applyThumbnail() {
-      const row = document.getElementById(this.id);
-      if (!row || !this._thumbUrl) return;
-      const placeholder = row.querySelector('.pf3-thumb-placeholder');
-      if (!placeholder) return;
-      const img = document.createElement('img');
-      img.className = 'pf3-thumb';
-      img.src       = this._thumbUrl;
-      img.alt       = this.file.name;
-      placeholder.parentNode.replaceChild(img, placeholder);
-    }
-
-    _updateRow() {
-      const row = document.getElementById(this.id);
-      if (!row) return;
-
-      // Row border class
-      row.className = 'pf3-file-row pf3-state-' + this.state.key;
-
-      // State badge
-      const badge = row.querySelector('.pf3-state-badge');
-      if (badge) { badge.textContent = this.state.label; badge.className = 'pf3-state-badge ' + this.state.key; }
-
-      // Progress bar
-      const bar = row.querySelector('.pf3-bar-track');
-      if (bar) {
-        bar.style.width = this.state.progress + '%';
-        bar.className   = 'pf3-bar-track ' + this.state.key;
-        bar.setAttribute('aria-valuenow', this.state.progress);
+    for (const file of Array.from(files)) {
+      if (file.size > MAX_FILE_SIZE) {
+        alert(`El archivo ${file.name} es demasiado grande (máx 50 MB).`);
+        continue;
       }
-
-      // Compressed size (update when available)
-      if (this.compressedSize !== null) {
-        const el = row.querySelector('.pf3-size-compressed');
-        if (el) el.textContent = formatBytes(this.compressedSize);
-      }
+      
+      const id = 'apple-file-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
+      const thumbUrl = URL.createObjectURL(file);
+      
+      _queue.push({ id, file, thumbUrl });
     }
+    
+    render();
+  }
 
-    /** Build the DOM row element. */
-    buildRow() {
-      const name     = this.file.name.length > 32
-                       ? this.file.name.slice(0, 29) + '…'
-                       : this.file.name;
-      const escaped  = MacWaveOps.escapeHtml(this.file.name);
-      const nameEsc  = MacWaveOps.escapeHtml(name);
-      const idEsc    = MacWaveOps.escapeHtml(this.id);
+  function removeItem(id) {
+    const idx = _queue.findIndex(item => item.id === id);
+    if (idx === -1) return;
+    
+    URL.revokeObjectURL(_queue[idx].thumbUrl);
+    _queue.splice(idx, 1);
+    render();
+  }
 
-      const div = document.createElement('div');
-      div.id        = this.id;
-      div.className = 'pf3-file-row';
-      div.setAttribute('role', 'listitem');
-      div.innerHTML = `
-        <div class="pf3-thumb-placeholder" aria-hidden="true">📷</div>
-        <div class="pf3-file-info">
-          <div class="pf3-file-name" title="${escaped}">${nameEsc}</div>
-          <div class="pf3-size-row">
-            <span>${formatBytes(this.originalSize)}</span>
-            <span class="pf3-size-arrow">→</span>
-            <span class="pf3-size-compressed">—</span>
-          </div>
-          <div class="pf3-status-row">
-            <span class="pf3-state-badge waiting">${FILE_STATES.WAITING.label}</span>
-            <button type="button" class="pf3-file-remove"
-              onclick="PhotoFlowV3.removeItem('${idEsc}')"
-              aria-label="Eliminar ${escaped}">×</button>
-          </div>
-          <div class="pf3-bar-wrap" style="margin-top:4px;">
-            <div class="pf3-bar-track waiting"
-              role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"
-              aria-label="Progreso de ${escaped}" style="width:5%;"></div>
-          </div>
-        </div>
+  function render() {
+    const container = document.getElementById('apple-photo-container');
+    if (!container) return;
+    
+    const cards = container.querySelectorAll('.apple-thumb-card');
+    cards.forEach(card => card.remove());
+    
+    const btnAdd = document.getElementById('apple-btn-add');
+    
+    _queue.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'apple-thumb-card';
+      card.style.cssText = 'position: relative; width: 72px; height: 72px; border-radius: 12px; overflow: visible; background: #2c2c2e; border: 1px solid rgba(255,255,255,0.1);';
+      
+      card.innerHTML = `
+        <img src="${item.thumbUrl}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;" alt="${item.file.name}">
+        <div class="apple-thumb-remove" style="position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; background: rgba(255,69,58,0.9); border: 1.5px solid #1c1c1e; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3); transition: transform 0.15s;" 
+             onclick="window.PhotoFlowV3.removeItem('${item.id}')">✕</div>
       `;
-      return div;
-    }
-  }
-
-  // ── Global progress bar ────────────────────────────────────────────
-  function setGlobalProgress(pct, statusText) {
-    const bar        = $('pf3-global-bar');
-    const pctEl      = $('pf3-global-pct');
-    const statusEl   = $('pf3-global-status');
-    const globalWrap = $('pf3-global-wrap');
-
-    if (globalWrap && !globalWrap.classList.contains('visible') && pct > 0) {
-      globalWrap.classList.add('visible');
-    }
-    if (bar) {
-      bar.style.width = pct + '%';
-      bar.setAttribute('aria-valuenow', Math.round(pct));
-      if (pct >= 100) bar.classList.add('complete'); else bar.classList.remove('complete');
-    }
-    if (pctEl)    pctEl.textContent    = Math.round(pct) + '%';
-    if (statusEl && statusText !== undefined) statusEl.textContent = statusText;
-  }
-
-  // ── Stats / UI sync ────────────────────────────────────────────────
-  function updateStats() {
-    const count      = _queue.length;
-    const counter    = $('pf3-counter');
-    const badge      = $('pf3-count-badge');
-    const btnSend    = $('pf3-btn-send');
-    const btnClear   = $('pf3-btn-clear');
-    const btnAddEvt  = $('btn-add-event');
-
-    if (counter)   counter.textContent = count ? `(${count})` : '';
-    if (badge)     badge.textContent   = count;
-    if (btnSend)   btnSend.style.display  = count ? 'inline-flex' : 'none';
-    if (btnClear)  btnClear.style.display = count ? 'inline-block' : 'none';
-
-    // Block the history-update button while processing
-    if (btnAddEvt) btnAddEvt.disabled = (_state === MODULE_STATES.PROCESSING);
-  }
-
-  // ── Render all rows from scratch ────────────────────────────────────
-  function renderAllRows() {
-    const pipeline = $('pf3-pipeline');
-    if (!pipeline) return;
-    pipeline.innerHTML = '';
-    _queue.forEach(item => pipeline.appendChild(item.buildRow()));
-    pipeline.classList.add('visible');
-  }
-
-  // ── Thumbnail generation (batched, non-blocking) ───────────────────
-  async function generateThumbnails(items) {
-    for (let i = 0; i < items.length; i += MAX_CONCURRENT) {
-      await Promise.all(items.slice(i, i + MAX_CONCURRENT).map(buildThumbnail));
-    }
-  }
-
-  function buildThumbnail(item) {
-    return new Promise(resolve => {
-      const reader = new FileReader();
-      reader.onload = e => {
-        const img = new Image();
-        img.onload = () => {
-          const SIZE = 104; // 52 × 2 retina
-          const canvas = document.createElement('canvas');
-          canvas.width = SIZE; canvas.height = SIZE;
-          const ctx = canvas.getContext('2d');
-          const minDim = Math.min(img.width, img.height);
-          const sx = (img.width  - minDim) / 2;
-          const sy = (img.height - minDim) / 2;
-          ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, SIZE, SIZE);
-          canvas.toBlob(blob => {
-            if (blob) item.setThumbnail(blob);
-            resolve();
-          }, 'image/jpeg', 0.72);
-        };
-        img.onerror = resolve;
-        img.src = e.target.result;
-      };
-      reader.onerror = resolve;
-      reader.readAsDataURL(item.file);
+      
+      container.insertBefore(card, btnAdd);
     });
   }
 
-  // ── Image compression → JPEG ───────────────────────────────────────
   function compressToJPEG(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -3875,7 +3653,6 @@ window.PhotoFlowV3 = (function () {
           const canvas = document.createElement('canvas');
           canvas.width = width; canvas.height = height;
           const ctx = canvas.getContext('2d');
-          // White background: handles PNG transparency gracefully on JPEG conversion
           ctx.fillStyle = '#ffffff';
           ctx.fillRect(0, 0, width, height);
           ctx.drawImage(img, 0, 0, width, height);
@@ -3892,358 +3669,104 @@ window.PhotoFlowV3 = (function () {
     });
   }
 
-  // ── Supabase pre-validation ────────────────────────────────────────
-  async function validatePreConditions() {
-    const { data } = await supabaseClient.auth.getSession();
-    if (!data?.session) throw new Error('Sesión expirada. Recarga e inicia sesión nuevamente.');
-    const ods = _getCurrentOds();
-    if (!ods) throw new Error('Folio ODS no encontrado. Recarga la página.');
-    return ods;
-  }
-
-  // ── Public: init ───────────────────────────────────────────────────
-  function init() {
-    _queue.forEach(it => it.cleanup());
-    _queue        = [];
-    _uploadedUrls = [];
-    _state        = MODULE_STATES.IDLE;
-
-    const pipeline   = $('pf3-pipeline');
-    const globalWrap = $('pf3-global-wrap');
-    const doneZone   = $('pf3-done-zone');
-    const fileInput  = $('pf3-file-input');
-
-    if (pipeline)   { pipeline.innerHTML = '';  pipeline.classList.remove('visible'); }
-    if (globalWrap) globalWrap.classList.remove('visible');
-    if (doneZone)   doneZone.classList.remove('visible');
-    if (fileInput)  fileInput.value = '';
-
-    setGlobalProgress(0, '');
-    updateStats();
-
-    // Bind events (safe — elements are freshly created each renderDetail call)
-    const btnSelect = $('pf3-btn-select');
-    const btnSend   = $('pf3-btn-send');
-    const btnClear  = $('pf3-btn-clear');
-    const btnSave   = $('pf3-btn-save');
-    const btnUndo   = $('pf3-btn-undo');
-
-    if (btnSelect) btnSelect.onclick = () => { track('open_upload', {}); fileInput?.click(); };
-    if (fileInput) fileInput.onchange = e => handleSelection(e.target.files);
-    if (btnSend)   btnSend.onclick   = () => startUpload();
-    if (btnClear)  btnClear.onclick  = () => clearQueue();
-    if (btnSave)   btnSave.onclick   = () => saveChanges();
-    if (btnUndo)   btnUndo.onclick   = () => undoChanges();
-  }
-
-  // ── Public: handleSelection ────────────────────────────────────────
-  async function handleSelection(files) {
-    if (!files || !files.length) return;
-
-    const valid    = [];
-    const rejected = [];
-
-    for (const file of Array.from(files)) {
-      if (file.size > MAX_FILE_SIZE) {
-        rejected.push(`${file.name} — demasiado grande (máx 50 MB)`);
-        continue;
-      }
-      const ok = await validateMIME(file);
-      if (!ok) {
-        rejected.push(`${file.name} — formato no permitido`);
-        continue;
-      }
-      valid.push(file);
-    }
-
-    if (rejected.length) showInlineError('Los siguientes archivos fueron rechazados:\n' + rejected.join('\n'));
-    if (!valid.length)    return;
-
-    const startIdx = _queue.length;
-    valid.forEach((file, i) => _queue.push(new FileItem(file, startIdx + i + 1)));
-
-    track('select_images', {
-      count:          valid.length,
-      total_size_kb:  Math.round(valid.reduce((a, f) => a + f.size, 0) / 1024),
-    });
-
-    _state = MODULE_STATES.QUEUED;
-    updateStats();
-    renderAllRows();
-
-    // Generate thumbnails in background (non-blocking)
-    generateThumbnails(_queue.slice(startIdx)).catch(e => console.warn('[PF3] thumbnail:', e));
-  }
-
-  // ── Public: removeItem ─────────────────────────────────────────────
-  function removeItem(id) {
-    if (_state === MODULE_STATES.PROCESSING) return;
-    const idx = _queue.findIndex(it => it.id === id);
-    if (idx === -1) return;
-    _queue[idx].cleanup();
-    _queue.splice(idx, 1);
-    _queue.forEach((it, i) => { it.index = i + 1; });
-    updateStats();
-    if (_queue.length === 0) { clearQueue(true); } else { renderAllRows(); }
-  }
-
-  // ── Public: clearQueue ─────────────────────────────────────────────
-  function clearQueue(silent) {
-    if (!silent && _queue.length > 0) {
-      if (!window.confirm(`¿Limpiar ${_queue.length} foto(s) seleccionada(s)?`)) return;
-    }
-    _queue.forEach(it => it.cleanup());
-    _queue        = [];
-    _uploadedUrls = [];
-    _state        = MODULE_STATES.IDLE;
-
-    const pipeline   = $('pf3-pipeline');
-    const globalWrap = $('pf3-global-wrap');
-    const doneZone   = $('pf3-done-zone');
-    const fileInput  = $('pf3-file-input');
-
-    if (pipeline)   { pipeline.innerHTML = ''; pipeline.classList.remove('visible', 'pf3-collapsing'); }
-    if (globalWrap) globalWrap.classList.remove('visible', 'pf3-collapsing');
-    if (doneZone)   doneZone.classList.remove('visible');
-    if (fileInput)  fileInput.value = '';
-
-    setGlobalProgress(0, '');
-    updateStats();
-  }
-
-  // ── Public: startUpload ────────────────────────────────────────────
-  async function startUpload() {
-    const odsId = window.currentSelectedId || currentSelectedId;
-    if (!odsId)        { showInlineError('Error: No se identificó la orden de servicio.'); return; }
-    if (!_queue.length){ showInlineError('Primero selecciona al menos una foto.'); return; }
-    if (_state === MODULE_STATES.PROCESSING) return;
-
-    // Pre-validate Supabase session + ODS existence
-    let ods;
+  async function uploadAndSave(ods, newStatus, text, btn) {
+    const odsId = ods.id;
+    const initialText = btn.innerHTML;
+    
+    const selectEl = document.getElementById('inp-new-status');
+    const textareaEl = document.getElementById('inp-new-text');
+    const fileInput = document.getElementById('apple-file-input');
+    const btnAdd = document.getElementById('apple-btn-add');
+    const removes = document.querySelectorAll('.apple-thumb-remove');
+    
+    if (selectEl) selectEl.disabled = true;
+    if (textareaEl) textareaEl.disabled = true;
+    if (fileInput) fileInput.disabled = true;
+    if (btnAdd) btnAdd.style.pointerEvents = 'none';
+    removes.forEach(r => r.style.display = 'none');
+    
+    btn.disabled = true;
+    
+    const progressWrap = document.getElementById('apple-upload-progress');
+    const progressStatus = document.getElementById('apple-progress-status');
+    const progressPct = document.getElementById('apple-progress-pct');
+    const progressBar = document.getElementById('apple-progress-bar');
+    
+    if (progressWrap) progressWrap.style.display = 'block';
+    
     try {
-      ods = await validatePreConditions();
-    } catch (e) {
-      showInlineError(e.message);
-      return;
-    }
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
+                      now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+                      
+      let newHistorial = [];
+      try {
+        newHistorial = JSON.parse(ods.notas || '[]');
+        if (!Array.isArray(newHistorial)) throw new Error('Not array');
+      } catch (err) {
+        if (ods.notas) newHistorial = [{ date: ods.fecha || '', status: 'Nota General', text: ods.notas, img: null }];
+      }
 
-    _state = MODULE_STATES.PROCESSING;
-
-    // Lock UI
-    const btnSend   = $('pf3-btn-send');
-    const btnClear  = $('pf3-btn-clear');
-    const btnSelect = $('pf3-btn-select');
-    const btnAddEvt = $('btn-add-event');
-    if (btnSend)   { btnSend.disabled   = true; btnSend.innerHTML = '⏳ Procesando...'; }
-    if (btnClear)  btnClear.disabled  = true;
-    if (btnSelect) btnSelect.disabled = true;
-    if (btnAddEvt) btnAddEvt.disabled = true;
-    document.querySelectorAll('.pf3-file-remove').forEach(b => { b.disabled = true; });
-
-    const total = _queue.length;
-    let completed = 0;
-
-    track('upload_started', { total_files: total });
-    setGlobalProgress(0, `Preparando ${total} imagen${total > 1 ? 'es' : ''}…`);
-
-    // ── Upload loop (chunked concurrency) ─────────────────────────────
-    for (let i = 0; i < _queue.length; i += MAX_CONCURRENT) {
-      const chunk = _queue.slice(i, i + MAX_CONCURRENT);
-
-      await Promise.allSettled(chunk.map(async item => {
-        try {
-          // 1. Compress → JPEG ────────────────────────────────────────
-          item.setState(FILE_STATES.COMPRESSING);
-          track('compression_started', { file_index: item.index, original_size_kb: Math.round(item.originalSize / 1024) });
-
-          const blob = await compressToJPEG(item.file);
-          item.compressedSize = blob.size;
-          item.compressedBlob = blob;
-          track('compression_finished', {
-            file_index:        item.index,
-            compressed_size_kb: Math.round(blob.size / 1024),
-            ratio:             (item.originalSize / blob.size).toFixed(2),
-          });
-
-          // 2. Convert label (visual feedback) ────────────────────────
-          item.setState(FILE_STATES.CONVERTING);
-          await new Promise(r => setTimeout(r, 80)); // let the user see the step
-
-          // 3. Metadata ────────────────────────────────────────────────
-          item.setState(FILE_STATES.METADATA);
-          const ts       = Date.now();
-          const safeName = sanitizeFilename(item.file.name.replace(/\.[^.]+$/, ''));
-          const fileName = `ods_${odsId}/${ts}_${item.index}_${safeName}.jpg`;
-
-          // 4. Upload to Supabase Storage ──────────────────────────────
-          item.setState(FILE_STATES.UPLOADING);
-          track('upload_started', { file_index: item.index });
-
-          const { error: uploadError } = await supabaseClient.storage
-            .from('ods-photos')
-            .upload(fileName, blob, { contentType: 'image/jpeg', upsert: false });
-
-          if (uploadError) throw uploadError;
-
-          // 5. Associate (get public URL) ──────────────────────────────
-          item.setState(FILE_STATES.ASSOCIATING);
-          const { data: publicData } = supabaseClient.storage
-            .from('ods-photos')
-            .getPublicUrl(fileName);
-
-          if (!publicData?.publicUrl) throw new Error('No se obtuvo URL pública del archivo.');
-
-          // 6. Verify integrity ────────────────────────────────────────
-          item.setState(FILE_STATES.VERIFYING);
-          await new Promise(r => setTimeout(r, 200)); // brief visual confirmation
-
-          item.uploadedUrl = publicData.publicUrl;
-          item.setState(FILE_STATES.DONE);
-          track('upload_completed', { file_index: item.index });
-
-        } catch (err) {
-          item.error = err.message;
-          item.setState(FILE_STATES.ERROR);
-          track('upload_failed', { file_index: item.index, error_message: err.message });
-          console.error('[PF3] Upload failed for item', item.index, ':', err.message);
-        }
-
-        completed++;
-        const pct       = (completed / total) * 100;
-        const doneCount = _queue.filter(it => it.state.key === 'done').length;
-        const errCount  = _queue.filter(it => it.state.key === 'error').length;
-        setGlobalProgress(
-          pct,
-          `${doneCount} de ${total} completadas${errCount ? ` · ${errCount} con error` : ''}`
-        );
+      const uploadedUrls = [];
+      const totalFiles = _queue.length;
+      
+      for (let i = 0; i < totalFiles; i++) {
+        const item = _queue[i];
+        
+        if (progressStatus) progressStatus.textContent = `Comprimiendo imagen ${i + 1} de ${totalFiles}...`;
+        const pctBase = (i / totalFiles) * 100;
+        if (progressPct) progressPct.textContent = `${Math.round(pctBase + 10 / totalFiles)}%`;
+        if (progressBar) progressBar.style.width = `${pctBase + 10 / totalFiles}%`;
+        btn.innerHTML = `⏳ Comprimiendo (${i + 1}/${totalFiles})...`;
+        
+        const blob = await compressToJPEG(item.file);
+        
+        if (progressStatus) progressStatus.textContent = `Subiendo imagen ${i + 1} de ${totalFiles}...`;
+        btn.innerHTML = `⏳ Subiendo (${i + 1}/${totalFiles})...`;
+        
+        const ts = Date.now();
+        const safeName = item.file.name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 60).replace(/\.[^.]+$/, '');
+        const fileName = `ods_${odsId}/${ts}_${i+1}_${safeName}.jpg`;
+        
+        const { error: uploadError } = await supabaseClient.storage
+          .from('ods-photos')
+          .upload(fileName, blob, { contentType: 'image/jpeg', upsert: false });
+          
+        if (uploadError) throw uploadError;
+        
+        const { data: publicData } = supabaseClient.storage
+          .from('ods-photos')
+          .getPublicUrl(fileName);
+          
+        if (!publicData?.publicUrl) throw new Error('No se obtuvo URL pública de la foto.');
+        uploadedUrls.push(publicData.publicUrl);
+        
+        const pctDone = ((i + 1) / totalFiles) * 100;
+        if (progressPct) progressPct.textContent = `${Math.round(pctDone)}%`;
+        if (progressBar) progressBar.style.width = `${pctDone}%`;
+      }
+      
+      if (progressStatus) progressStatus.textContent = 'Guardando expediente...';
+      btn.innerHTML = '⏳ Guardando...';
+      
+      const isInternal = text ? /^\[INTERNO\]/i.test(text.trim()) : false;
+      newHistorial.push(MacWaveOps.createTimelineEvent({
+        date: dateStr,
+        status: newStatus,
+        text: text || '',
+        photos: uploadedUrls,
+        internal: isInternal
       }));
-    }
-
-    // ── Collect successful URLs ────────────────────────────────────────
-    _uploadedUrls = _queue.filter(it => it.uploadedUrl).map(it => it.uploadedUrl);
-    const successCount = _uploadedUrls.length;
-    const errCount     = total - successCount;
-
-    if (successCount === 0) {
-      // Total failure — re-enable for retry
-      _state = MODULE_STATES.ERROR;
-      setGlobalProgress(100, '❌ Error: Ninguna imagen pudo subirse.');
-      if (btnSend)   { btnSend.disabled = false; btnSend.innerHTML = '🔄 Reintentar'; }
-      if (btnClear)  btnClear.disabled  = false;
-      if (btnSelect) btnSelect.disabled = false;
-      if (btnAddEvt) btnAddEvt.disabled = false;
-      document.querySelectorAll('.pf3-file-remove').forEach(b => { b.disabled = false; });
-      return;
-    }
-
-    // Partial or full success → transition to DONE
-    _state = MODULE_STATES.DONE;
-    setGlobalProgress(
-      100,
-      successCount === total
-        ? `✓ ${total} imagen${total > 1 ? 'es' : ''} lista${total > 1 ? 's' : ''} — presiona Guardar`
-        : `⚠ ${successCount} de ${total} subidas · ${errCount} con error`
-    );
-
-    // Collapse pipeline + global bar, then reveal done zone
-    setTimeout(() => {
-      const pipeline   = $('pf3-pipeline');
-      const globalWrap = $('pf3-global-wrap');
-      if (pipeline)   pipeline.classList.add('pf3-collapsing');
-      if (globalWrap) globalWrap.classList.add('pf3-collapsing');
-
-      setTimeout(() => {
-        if (pipeline)   { pipeline.classList.remove('visible', 'pf3-collapsing'); }
-        if (globalWrap) { globalWrap.classList.remove('visible', 'pf3-collapsing'); }
-
-        const doneZone = $('pf3-done-zone');
-        if (doneZone)  doneZone.classList.add('visible');
-
-        // Hide send/clear; keep select available for additional batches
-        if (btnSend)  btnSend.style.display  = 'none';
-        if (btnClear) btnClear.style.display = 'none';
-        if (btnSelect) btnSelect.disabled = false;
-        if (btnAddEvt) btnAddEvt.disabled = false;
-      }, 480);
-    }, 1400);
-  }
-
-  // ── Public: saveChanges ────────────────────────────────────────────
-  // También puede ser llamado directamente sin fotos (si se pasan URLs vacías)
-  async function saveChanges(extraUrls) {
-    const urlsToSave = (extraUrls && Array.isArray(extraUrls)) ? extraUrls : _uploadedUrls;
-    if (!urlsToSave.length) { showInlineError('No hay fotos procesadas para guardar. Para guardar solo notas, usa el botón 💾 Guardar Nota / Estatus.'); return; }
-
-    const odsId = window.currentSelectedId || currentSelectedId;
-    if (!odsId) { showInlineError('Error: no se identificó la ODS.'); return; }
-
-    const btnSave   = $('pf3-btn-save');
-    const btnUndo   = $('pf3-btn-undo');
-    const btnAddEvt = $('btn-add-event');
-
-    if (btnSave)   { btnSave.disabled = true; btnSave.innerHTML = '⏳ Guardando…'; }
-    if (btnUndo)   btnUndo.disabled   = true;
-    if (btnAddEvt) btnAddEvt.disabled = true;
-
-    try {
-      const ods = _getCurrentOds();
-      if (!ods) throw new Error('ODS no encontrada en memoria. Recarga la página.');
-
-      let hist = [];
-      try { hist = JSON.parse(ods.notas || '[]'); if (!Array.isArray(hist)) hist = []; } catch (e) { hist = []; }
-
-      const now     = new Date();
-      const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' })
-                    + ' ' + now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
-
-      const noteText  = document.getElementById('inp-new-text')?.value  || '';
-      const newStatus = document.getElementById('inp-new-status')?.value || ods.status;
-      const isInternal = /^\[INTERNO\]/i.test(noteText.trim());
-
-      hist.push(MacWaveOps.createTimelineEvent({
-        date:     dateStr,
-        status:   newStatus,
-        text:     noteText,
-        photos:   urlsToSave,
-        internal: isInternal,
-      }));
-
-      const newNotas = JSON.stringify(hist);
-      const { error } = await mwPersistOrden(
-        odsId,
-        { status: newStatus, notas: newNotas },
-        'photos_uploaded',
-        { count: urlsToSave.length }
-      );
+      
+      const newNotasString = JSON.stringify(newHistorial);
+      
+      const { error } = await mwPersistOrden(odsId, { status: newStatus, notas: newNotasString }, 'photos_uploaded', {
+        count: uploadedUrls.length
+      });
+      
       if (error) throw error;
-
-      // Update in-memory store
+      
       ods.status = newStatus;
-      ods.notas  = newNotas;
-      const idxLocal = allODS.findIndex(x => x.id === odsId);
-      if (idxLocal > -1) { allODS[idxLocal].notas = newNotas; allODS[idxLocal].status = newStatus; }
-      if (Array.isArray(window.allODS)) {
-        const idxW = window.allODS.findIndex(x => x.id === odsId);
-        if (idxW > -1) { window.allODS[idxW].notas = newNotas; window.allODS[idxW].status = newStatus; }
-      }
-
-      track('save_changes', { files_count: _uploadedUrls.length });
-
-      // Clear form inputs
-      const inpText   = document.getElementById('inp-new-text');
-      const inpStatus = document.getElementById('inp-new-status');
-      if (inpText)   inpText.value   = '';
-      if (inpStatus) inpStatus.value = '';
-
-      // Reset module + refresh view
-      clearQueue(true);
-      renderSidebar(document.getElementById('search-input')?.value || '');
-      setTimeout(() => { if (window.renderDetail) window.renderDetail(ods); }, 120);
-
-    } catch (e) {
-      showInlineError('Error al guardar: ' + e.message);
-      if (btnSave)   { btnSave.disabled = false; btnSave.innerHTML = '✓ Guardar cambios'; }
-      if (btnUndo)   btnUndo.disabled   = false;
       if (btnAddEvt) btnAddEvt.disabled = false;
     }
   }

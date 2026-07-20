@@ -3502,10 +3502,8 @@ ${statusOptions}
 
   const newStatus = document.getElementById('inp-new-status').value;
   if (!newStatus) return alert('Selecciona un estatus antes de guardar.');
-
   const text = document.getElementById('inp-new-text').value;
 
-  // Si hay fotos seleccionadas en la cola, usar el flujo unificado de PhotoFlow V3
   if (window.PhotoFlowV3 && window.PhotoFlowV3.queue && window.PhotoFlowV3.queue.length > 0) {
     window.PhotoFlowV3.uploadAndSave(o, newStatus, text, btn);
     return;
@@ -3542,17 +3540,14 @@ ${statusOptions}
   const idx = allODS.findIndex(x => x.id === o.id);
   if (idx > -1) { allODS[idx].status = newStatus; allODS[idx].notas = newNotasString; }
 
-  // Limpiar campo de texto
   const textareaEl = document.getElementById('inp-new-text');
   if (textareaEl) textareaEl.value = '';
 
   renderSidebar(document.getElementById('search-input').value);
-  renderDetail(o); // esto llama PhotoFlowV3.init() internamente
+  renderDetail(o);
 
   } catch (e) {
   alert('Error al guardar: ' + e.message);
-  btn.style.background = 'var(--mac-red)';
-  btn.style.borderColor = 'var(--mac-red)';
   btn.innerHTML = 'Error - Reintentar';
   btn.disabled = false;
   }
@@ -3563,77 +3558,47 @@ ${statusOptions}
 window.PhotoFlowV3 = (function () {
   'use strict';
 
-  const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
+  const MAX_FILE_SIZE = 50 * 1024 * 1024;
   const MAX_DIM = 1600;
   const JPEG_QUALITY = 0.82;
-
-  let _queue = []; // Array of { id, file, thumbUrl }
+  let _queue = [];
 
   function init() {
-    _queue.forEach(item => {
-      if (item.thumbUrl) URL.revokeObjectURL(item.thumbUrl);
-    });
+    _queue.forEach(item => { if (item.thumbUrl) URL.revokeObjectURL(item.thumbUrl); });
     _queue = [];
-    
     const fileInput = document.getElementById('apple-file-input');
-    if (fileInput) {
-      fileInput.value = '';
-      fileInput.onchange = e => handleSelection(e.target.files);
-    }
-    
+    if (fileInput) { fileInput.value = ''; fileInput.onchange = e => handleSelection(e.target.files); }
     const progressWrap = document.getElementById('apple-upload-progress');
     if (progressWrap) progressWrap.style.display = 'none';
-    
     render();
   }
 
   function handleSelection(files) {
     if (!files || !files.length) return;
-
     for (const file of Array.from(files)) {
-      if (file.size > MAX_FILE_SIZE) {
-        alert(`El archivo ${file.name} es demasiado grande (máx 50 MB).`);
-        continue;
-      }
-      
-      const id = 'apple-file-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
-      const thumbUrl = URL.createObjectURL(file);
-      
-      _queue.push({ id, file, thumbUrl });
+      if (file.size > MAX_FILE_SIZE) { alert(`El archivo ${file.name} es demasiado grande.`); continue; }
+      const id = 'apple-file-' + Date.now() + Math.random().toString(36).slice(2, 7);
+      _queue.push({ id, file, thumbUrl: URL.createObjectURL(file) });
     }
-    
     render();
   }
 
   function removeItem(id) {
     const idx = _queue.findIndex(item => item.id === id);
-    if (idx === -1) return;
-    
-    URL.revokeObjectURL(_queue[idx].thumbUrl);
-    _queue.splice(idx, 1);
-    render();
+    if (idx !== -1) { URL.revokeObjectURL(_queue[idx].thumbUrl); _queue.splice(idx, 1); render(); }
   }
 
   function render() {
     const container = document.getElementById('apple-photo-container');
     if (!container) return;
-    
-    const cards = container.querySelectorAll('.apple-thumb-card');
-    cards.forEach(card => card.remove());
-    
+    container.querySelectorAll('.apple-thumb-card').forEach(el => el.remove());
     const btnAdd = document.getElementById('apple-btn-add');
-    
     _queue.forEach(item => {
       const card = document.createElement('div');
       card.className = 'apple-thumb-card';
       card.style.cssText = 'position: relative; width: 72px; height: 72px; border-radius: 12px; overflow: visible; background: #2c2c2e; border: 1px solid rgba(255,255,255,0.1);';
-      
-      card.innerHTML = `
-        <img src="${item.thumbUrl}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;" alt="${item.file.name}">
-        <div class="apple-thumb-remove" style="position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; background: rgba(255,69,58,0.9); border: 1.5px solid #1c1c1e; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3); transition: transform 0.15s;" 
-             onclick="window.PhotoFlowV3.removeItem('${item.id}')">✕</div>
-      `;
-      
+      card.innerHTML = `<img src="${item.thumbUrl}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+        <div class="apple-thumb-remove" style="position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; background: rgba(255,69,58,0.9); border: 1.5px solid #1c1c1e; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3);" onclick="window.PhotoFlowV3.removeItem('${item.id}')">✕</div>`;
       container.insertBefore(card, btnAdd);
     });
   }
@@ -3646,156 +3611,153 @@ window.PhotoFlowV3 = (function () {
         img.onload = () => {
           let { width, height } = img;
           if (width > MAX_DIM || height > MAX_DIM) {
-            const ratio = Math.min(MAX_DIM / width, MAX_DIM / height);
-            width  = Math.floor(width  * ratio);
-            height = Math.floor(height * ratio);
+            const r = Math.min(MAX_DIM / width, MAX_DIM / height);
+            width = Math.floor(width * r); height = Math.floor(height * r);
           }
           const canvas = document.createElement('canvas');
           canvas.width = width; canvas.height = height;
           const ctx = canvas.getContext('2d');
-          ctx.fillStyle = '#ffffff';
-          ctx.fillRect(0, 0, width, height);
+          ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, width, height);
           ctx.drawImage(img, 0, 0, width, height);
-          canvas.toBlob(blob => {
-            if (blob) resolve(blob);
-            else reject(new Error('Compresión JPEG fallida'));
-          }, 'image/jpeg', JPEG_QUALITY);
+          canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Compresión fallida')), 'image/jpeg', JPEG_QUALITY);
         };
-        img.onerror = () => reject(new Error('Imagen inválida o corrupta'));
+        img.onerror = () => reject(new Error('Imagen inválida'));
         img.src = e.target.result;
       };
-      reader.onerror = () => reject(new Error('Error leyendo el archivo'));
+      reader.onerror = () => reject(new Error('Error leyendo archivo'));
       reader.readAsDataURL(file);
     });
+  }
+
+  function _unlockForm(btn, initialText) {
+    const sel = document.getElementById('inp-new-status');
+    const txtEl = document.getElementById('inp-new-text');
+    const fi  = document.getElementById('apple-file-input');
+    const ba  = document.getElementById('apple-btn-add');
+    const mae = document.getElementById('btn-add-event');
+    if (sel)  sel.disabled  = false;
+    if (txtEl) txtEl.disabled = false;
+    if (fi)   fi.disabled   = false;
+    if (ba)   ba.style.pointerEvents = 'auto';
+    if (mae)  mae.disabled  = false;
+    document.querySelectorAll('.apple-thumb-remove').forEach(r => r.style.display = 'flex');
+    const pw = document.getElementById('apple-upload-progress');
+    if (pw) pw.style.display = 'none';
+    if (btn) { btn.disabled = false; btn.innerHTML = initialText; }
   }
 
   async function uploadAndSave(ods, newStatus, text, btn) {
     const odsId = ods.id;
     const initialText = btn.innerHTML;
-    
-    const selectEl = document.getElementById('inp-new-status');
-    const textareaEl = document.getElementById('inp-new-text');
-    const fileInput = document.getElementById('apple-file-input');
-    const btnAdd = document.getElementById('apple-btn-add');
-    const removes = document.querySelectorAll('.apple-thumb-remove');
-    
-    if (selectEl) selectEl.disabled = true;
-    if (textareaEl) textareaEl.disabled = true;
-    if (fileInput) fileInput.disabled = true;
-    if (btnAdd) btnAdd.style.pointerEvents = 'none';
-    removes.forEach(r => r.style.display = 'none');
-    
+
+    const sel  = document.getElementById('inp-new-status');
+    const txtEl = document.getElementById('inp-new-text');
+    const fi   = document.getElementById('apple-file-input');
+    const ba   = document.getElementById('apple-btn-add');
+    if (sel)  sel.disabled  = true;
+    if (txtEl) txtEl.disabled = true;
+    if (fi)   fi.disabled   = true;
+    if (ba)   ba.style.pointerEvents = 'none';
+    document.querySelectorAll('.apple-thumb-remove').forEach(r => r.style.display = 'none');
     btn.disabled = true;
-    
-    const progressWrap = document.getElementById('apple-upload-progress');
-    const progressStatus = document.getElementById('apple-progress-status');
-    const progressPct = document.getElementById('apple-progress-pct');
-    const progressBar = document.getElementById('apple-progress-bar');
-    
-    if (progressWrap) progressWrap.style.display = 'block';
-    
+
+    const pw  = document.getElementById('apple-upload-progress');
+    const ps  = document.getElementById('apple-progress-status');
+    const pct = document.getElementById('apple-progress-pct');
+    const pb  = document.getElementById('apple-progress-bar');
+    if (pw)  pw.style.display = 'block';
+    if (pct) pct.textContent = '0%';
+    if (pb)  pb.style.width  = '0%';
+
     try {
       const now = new Date();
-      const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
-                      now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
-                      
+      const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                    + ' ' + now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
       let newHistorial = [];
       try {
         newHistorial = JSON.parse(ods.notas || '[]');
-        if (!Array.isArray(newHistorial)) throw new Error('Not array');
-      } catch (err) {
-        if (ods.notas) newHistorial = [{ date: ods.fecha || '', status: 'Nota General', text: ods.notas, img: null }];
+        if (!Array.isArray(newHistorial)) throw new Error();
+      } catch (_) {
+        newHistorial = ods.notas ? [{ date: ods.fecha || '', status: 'Nota General', text: ods.notas, img: null }] : [];
       }
 
       const uploadedUrls = [];
       const totalFiles = _queue.length;
-      
+
       for (let i = 0; i < totalFiles; i++) {
         const item = _queue[i];
-        
-        if (progressStatus) progressStatus.textContent = `Comprimiendo imagen ${i + 1} de ${totalFiles}...`;
-        const pctBase = (i / totalFiles) * 100;
-        if (progressPct) progressPct.textContent = `${Math.round(pctBase + 10 / totalFiles)}%`;
-        if (progressBar) progressBar.style.width = `${pctBase + 10 / totalFiles}%`;
+
+        if (ps)  ps.textContent  = `Comprimiendo ${i + 1} de ${totalFiles}...`;
+        if (pct) pct.textContent = `${Math.round((i / totalFiles) * 100)}%`;
+        if (pb)  pb.style.width  = `${(i / totalFiles) * 100}%`;
         btn.innerHTML = `⏳ Comprimiendo (${i + 1}/${totalFiles})...`;
-        
+
         const blob = await compressToJPEG(item.file);
-        
-        if (progressStatus) progressStatus.textContent = `Subiendo imagen ${i + 1} de ${totalFiles}...`;
+
+        if (ps)  ps.textContent = `Subiendo ${i + 1} de ${totalFiles}...`;
         btn.innerHTML = `⏳ Subiendo (${i + 1}/${totalFiles})...`;
-        
-        const ts = Date.now();
-        const safeName = item.file.name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 60).replace(/\.[^.]+$/, '');
-        const fileName = `ods_${odsId}/${ts}_${i+1}_${safeName}.jpg`;
-        
-        const { error: uploadError } = await supabaseClient.storage
+
+        const ts  = Date.now();
+        const sn  = item.file.name.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 60).replace(/\.[^.]+$/, '');
+        const fileName = `ods_${odsId}/${ts}_${i + 1}_${sn}.jpg`;
+
+        const { error: upErr } = await supabaseClient.storage
           .from('ods-photos')
           .upload(fileName, blob, { contentType: 'image/jpeg', upsert: false });
-          
-        if (uploadError) throw uploadError;
-        
-        const { data: publicData } = supabaseClient.storage
-          .from('ods-photos')
-          .getPublicUrl(fileName);
-          
-        if (!publicData?.publicUrl) throw new Error('No se obtuvo URL pública de la foto.');
-        uploadedUrls.push(publicData.publicUrl);
-        
-        const pctDone = ((i + 1) / totalFiles) * 100;
-        if (progressPct) progressPct.textContent = `${Math.round(pctDone)}%`;
-        if (progressBar) progressBar.style.width = `${pctDone}%`;
+        if (upErr) throw upErr;
+
+        const { data: pubData } = supabaseClient.storage.from('ods-photos').getPublicUrl(fileName);
+        if (!pubData?.publicUrl) throw new Error('No se obtuvo URL pública.');
+        uploadedUrls.push(pubData.publicUrl);
+
+        const done = ((i + 1) / totalFiles) * 100;
+        if (pct) pct.textContent = `${Math.round(done)}%`;
+        if (pb)  pb.style.width  = `${done}%`;
       }
-      
-      if (progressStatus) progressStatus.textContent = 'Guardando expediente...';
+
+      if (ps) ps.textContent = 'Guardando expediente...';
       btn.innerHTML = '⏳ Guardando...';
-      
+
       const isInternal = text ? /^\[INTERNO\]/i.test(text.trim()) : false;
       newHistorial.push(MacWaveOps.createTimelineEvent({
-        date: dateStr,
-        status: newStatus,
-        text: text || '',
-        photos: uploadedUrls,
-        internal: isInternal
+        date: dateStr, status: newStatus,
+        text: text || '', photos: uploadedUrls, internal: isInternal
       }));
-      
+
       const newNotasString = JSON.stringify(newHistorial);
-      
-      const { error } = await mwPersistOrden(odsId, { status: newStatus, notas: newNotasString }, 'photos_uploaded', {
-        count: uploadedUrls.length
-      });
-      
+      const { error } = await mwPersistOrden(odsId, { status: newStatus, notas: newNotasString }, 'photos_uploaded', { count: uploadedUrls.length });
       if (error) throw error;
-      
-      ods.status = newStatus;
-      if (btnAddEvt) btnAddEvt.disabled = false;
+
+      // Update memory
+      ods.status = newStatus; ods.notas = newNotasString;
+      const li = allODS.findIndex(x => x.id === odsId);
+      if (li > -1) { allODS[li].status = newStatus; allODS[li].notas = newNotasString; }
+
+      // Clean text field
+      if (txtEl) txtEl.value = '';
+
+      // Re-render
+      renderSidebar(document.getElementById('search-input')?.value || '');
+      renderDetail(ods);
+
+    } catch (e) {
+      alert('Error al subir / guardar: ' + e.message);
+      _unlockForm(btn, initialText);
     }
   }
 
-  // ── Public: undoChanges ────────────────────────────────────────────
-  function undoChanges() {
-    track('undo_changes', {});
-    _uploadedUrls = [];
-    clearQueue(true);
-    const doneZone = $('pf3-done-zone');
-    if (doneZone) doneZone.classList.remove('visible');
-  }
-
-  // ── Public API ─────────────────────────────────────────────────────
+  // ── Public API ──────────────────────────────────────────────────────
   return {
     init,
     handleSelection,
     removeItem,
-    clearQueue,
-    startUpload,
-    saveChanges,
-    undoChanges,
-    get queue()        { return _queue; },
-    get state()        { return _state; },
-    get isProcessing() { return _state === MODULE_STATES.PROCESSING; },
+    uploadAndSave,
+    get queue() { return _queue; },
   };
 })();
 
-/** Backward-compat alias — existing code that references window.PhotoFlow still works. */
+/** Backward-compat alias */
 window.PhotoFlow = window.PhotoFlowV3;
 
 window.PhotoFlowV3.init();

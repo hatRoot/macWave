@@ -179,6 +179,8 @@ function testCriticalFunctions() {
       'STATUS_CONFIG',
       'uploadGalleryPhotos',
       'deleteGalleryPhoto',
+      'toggleEditTimelineNote',
+      'saveTimelineNote',
       'PhotoFlowV3'
     ];
 

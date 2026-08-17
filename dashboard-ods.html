@@ -759,6 +759,121 @@ white-space: nowrap;
  border: 1px solid var(--mac-border);
  }
 
+ .timeline-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .timeline-btn-edit {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--mac-blue, #0a84ff);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    user-select: none;
+  }
+
+  .timeline-btn-edit:hover {
+    background: rgba(10, 132, 255, 0.15);
+    border-color: var(--mac-blue, #0a84ff);
+  }
+
+  .timeline-edit-box {
+    margin-top: 8px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(10, 132, 255, 0.35);
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  .timeline-edit-textarea {
+    width: 100%;
+    min-height: 90px;
+    background: var(--mac-input-bg, rgba(0, 0, 0, 0.4));
+    border: 1px solid var(--mac-border);
+    border-radius: 6px;
+    color: var(--mac-text, #fff);
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.4;
+    padding: 8px;
+    box-sizing: border-box;
+    resize: vertical;
+  }
+
+  .timeline-edit-textarea:focus {
+    outline: none;
+    border-color: var(--mac-blue, #0a84ff);
+    box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.25);
+  }
+
+  .timeline-edit-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .timeline-btn-cancel {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--mac-text-muted, #888);
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .timeline-btn-save {
+    background: var(--mac-green, #30d158);
+    border: 1px solid var(--mac-green, #30d158);
+    color: #000;
+    padding: 5px 14px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .timeline-btn-save:hover {
+    opacity: 0.9;
+  }
+
+  body.light-mode .timeline-btn-edit {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.15);
+    color: #0071e3;
+  }
+
+  body.light-mode .timeline-edit-box {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 113, 227, 0.3);
+  }
+
+  body.light-mode .timeline-edit-textarea {
+    background: #fff;
+    border-color: #d2d2d7;
+    color: #1d1d1f;
+  }
+
+  body.light-mode .timeline-btn-cancel {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.15);
+    color: #666;
+  }
+
  .timeline-img {
  margin-top: 8px;
  max-width: 100%;
@@ -3038,6 +3153,7 @@ filtered.sort((a, b) => {
   ).join('');
 
   const timelineHtml = historial.slice().reverse().map((ev, i, arr) => {
+  const originalIdx = arr.length - 1 - i;
   let evColor;
   const isEntregado = o.status === 'Equipo entregado';
   if (isEntregado) {
@@ -3051,11 +3167,32 @@ filtered.sort((a, b) => {
   evColor = '#30D158';
   }
   }
+  const safeText = (ev.text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   return `
-  <div class="timeline-item" style="--item-color: ${evColor};">
-  <div class="timeline-date">${ev.date}</div>
-  <div class="timeline-status" style="color: ${evColor}">${ev.status}</div>
-  ${ev.text && !ev.text.startsWith('Cambio de estatus vía Tablero') ? `<div class="timeline-note">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
+  <div class="timeline-item" style="--item-color: ${evColor};" id="timeline-item-${originalIdx}">
+    <div class="timeline-header-row">
+      <div>
+        <div class="timeline-date">${ev.date}</div>
+        <div class="timeline-status" style="color: ${evColor}">${ev.status}</div>
+      </div>
+      <button type="button" class="timeline-btn-edit" onclick="window.toggleEditTimelineNote('${o.id}', ${originalIdx})" title="Editar texto de este evento">
+        ✏️ Editar
+      </button>
+    </div>
+
+    <div id="timeline-view-${originalIdx}">
+      ${ev.text && !ev.text.startsWith('Cambio de estatus vía Tablero') ? `<div class="timeline-note">${ev.text.replace(/\\n/g, '<br>')}</div>` : (!ev.text ? `<div class="timeline-note" style="color: var(--mac-text-muted); font-style: italic;">(Sin nota de texto)</div>` : '')}
+    </div>
+
+    <div id="timeline-edit-${originalIdx}" class="timeline-edit-box" style="display: none;">
+      <div style="font-size: 11px; font-weight: 600; color: var(--mac-blue); margin-bottom: 6px;">Editar nota:</div>
+      <textarea id="timeline-textarea-${originalIdx}" class="timeline-edit-textarea" placeholder="Escribe la nota del evento...">${safeText}</textarea>
+      <div class="timeline-edit-actions">
+        <button type="button" class="timeline-btn-cancel" onclick="window.toggleEditTimelineNote('${o.id}', ${originalIdx})">Cancelar</button>
+        <button type="button" id="btn-save-note-${originalIdx}" class="timeline-btn-save" onclick="window.saveTimelineNote('${o.id}', ${originalIdx})">Guardar</button>
+      </div>
+    </div>
+
   ${(() => {
   const evPhotos = [];
   if (ev.img) evPhotos.push(ev.img);
@@ -3766,7 +3903,75 @@ window.PhotoFlow = window.PhotoFlowV3;
 
 window.PhotoFlowV3.init();
 
-// V2 removed — PhotoFlow V3 is active above (window.PhotoFlow alias set).
+window.toggleEditTimelineNote = function(odsId, noteIdx) {
+  const viewEl = document.getElementById('timeline-view-' + noteIdx);
+  const editEl = document.getElementById('timeline-edit-' + noteIdx);
+  if (!viewEl || !editEl) return;
+  const isEditing = editEl.style.display !== 'none';
+  if (isEditing) {
+    editEl.style.display = 'none';
+    viewEl.style.display = 'block';
+  } else {
+    viewEl.style.display = 'none';
+    editEl.style.display = 'block';
+    const ta = document.getElementById('timeline-textarea-' + noteIdx);
+    if (ta) {
+      ta.focus();
+      ta.setSelectionRange(ta.value.length, ta.value.length);
+    }
+  }
+};
+
+window.saveTimelineNote = async function(odsId, noteIdx) {
+  const ta = document.getElementById('timeline-textarea-' + noteIdx);
+  const saveBtn = document.getElementById('btn-save-note-' + noteIdx);
+  if (!ta) return;
+  const newText = ta.value;
+
+  const ods = allODS.find(o => o.id === odsId);
+  if (!ods) return alert('No se encontró la orden en memoria.');
+
+  let hist = [];
+  try {
+    hist = JSON.parse(ods.notas || '[]');
+    if (!Array.isArray(hist)) throw new Error('Not array');
+  } catch (err) {
+    if (ods.notas) hist = [{ date: ods.fecha || '', status: 'Nota General', text: ods.notas, img: null }];
+  }
+
+  if (!hist[noteIdx]) {
+    return alert('No se encontró el evento correspondiente en el historial.');
+  }
+
+  if (saveBtn) {
+    saveBtn.innerText = 'Guardando...';
+    saveBtn.disabled = true;
+  }
+
+  try {
+    hist[noteIdx].text = newText;
+    const newNotasString = JSON.stringify(hist);
+
+    const { error } = await mwPersistOrden(odsId, { notas: newNotasString }, 'timeline_note_updated', {
+      noteIdx,
+      preview: newText.substring(0, 100)
+    });
+    if (error) throw error;
+
+    ods.notas = newNotasString;
+    const idx = allODS.findIndex(x => x.id === odsId);
+    if (idx > -1) allODS[idx].notas = newNotasString;
+
+    renderDetail(ods);
+    renderSidebar(document.getElementById('search-input')?.value || '');
+  } catch (err) {
+    alert('Error al guardar la nota: ' + err.message);
+    if (saveBtn) {
+      saveBtn.innerText = 'Guardar';
+      saveBtn.disabled = false;
+    }
+  }
+};
 
 window.deleteGalleryPhoto = async function(odsId, noteIdx, e, photoIdx = null) {
  if(e) {

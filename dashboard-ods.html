@@ -3032,42 +3032,43 @@ filtered.sort((a, b) => {
  if (o.notas) historial = [{ date: o.fecha || '', status: 'Nota General', text: o.notas, img: null }];
  }
 
- const statusOptions = Object.keys(STATUS_CONFIG).filter(s => s !== 'Nota General').map(s =>
- `<option value="${s}" ${s === o.status ? 'selected' : ''}>${s}</option>`
- ).join('');
 
- const timelineHtml = historial.slice().reverse().map((ev, i, arr) => {
- let evColor;
- const isEntregado = o.status === 'Equipo entregado';
- if (isEntregado) {
- evColor = '#30D158';
- } else {
- if (i === 0) {
- evColor = arr.length === 1 ? '#30D158' : '#FF453A';
- } else if (i === 1) {
- evColor = arr.length === 2 ? '#30D158' : '#FFD60A';
- } else {
- evColor = '#30D158';
- }
- }
- return `
- <div class="timeline-item" style="--item-color: ${evColor};">
- <div class="timeline-date">${ev.date}</div>
- <div class="timeline-status" style="color: ${evColor}">${ev.status}</div>
- ${ev.text && !ev.text.startsWith('Cambio de estatus vía Tablero') ? `<div class="timeline-note">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
- ${(() => {
- const evPhotos = [];
- if (ev.img) evPhotos.push(ev.img);
- if (Array.isArray(ev.photos)) evPhotos.push(...ev.photos.filter(Boolean));
- if (!evPhotos.length) return '';
- return `<div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px,1fr)); gap:8px; margin-top:10px;">
- ${evPhotos.map((img, idx) => `<img src="${img}" class="timeline-img" style="margin:0; width:100%; height:110px; object-fit:cover;" alt="Evidencia de servicio ${idx + 1}">`).join('')}
- </div>`;
- })()}
+  const statusOptions = Object.keys(STATUS_CONFIG).filter(s => s !== 'Nota General').map(s =>
+  `<option value="${s}" ${s === o.status ? 'selected' : ''}>${s}</option>`
+  ).join('');
 
- </div>
- `;
- }).join('') || '<div style="font-size:12px; color:var(--mac-text-muted);">Sin historial registrado.</div>';
+  const timelineHtml = historial.slice().reverse().map((ev, i, arr) => {
+  let evColor;
+  const isEntregado = o.status === 'Equipo entregado';
+  if (isEntregado) {
+  evColor = '#30D158';
+  } else {
+  if (i === 0) {
+  evColor = arr.length === 1 ? '#30D158' : '#FF453A';
+  } else if (i === 1) {
+  evColor = arr.length === 2 ? '#30D158' : '#FFD60A';
+  } else {
+  evColor = '#30D158';
+  }
+  }
+  return `
+  <div class="timeline-item" style="--item-color: ${evColor};">
+  <div class="timeline-date">${ev.date}</div>
+  <div class="timeline-status" style="color: ${evColor}">${ev.status}</div>
+  ${ev.text && !ev.text.startsWith('Cambio de estatus vía Tablero') ? `<div class="timeline-note">${ev.text.replace(/\\n/g, '<br>')}</div>` : ''}
+  ${(() => {
+  const evPhotos = [];
+  if (ev.img) evPhotos.push(ev.img);
+  if (Array.isArray(ev.photos)) evPhotos.push(...ev.photos.filter(Boolean));
+  if (!evPhotos.length) return '';
+  return `<div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px,1fr)); gap:8px; margin-top:10px;">
+  ${evPhotos.map((img, idx) => `<img src="${img}" class="timeline-img" style="margin:0; width:100%; height:110px; object-fit:cover;" alt="Evidencia de servicio ${idx + 1}">`).join('')}
+  </div>`;
+  })()}
+
+  </div>
+  `;
+  }).join('') || '<div style="font-size:12px; color:var(--mac-text-muted);">Sin historial registrado.</div>';
 
 const photos = historial.flatMap((h, noteIdx) => {
  const list = [];

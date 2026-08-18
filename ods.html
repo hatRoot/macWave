@@ -938,13 +938,16 @@
 
  <div class="section-separator" style="background: rgba(255,255,255,0.15);"></div>
 
- <div class="form-group" style="margin-top: 15px;">
- <label>Notas / Observaciones*</label>
- <textarea id="ods-notes"
- placeholder="Escribe aquí cualquier nota, condición especial u observación del equipo..."
- style="width: 100%; height: 100px; padding: 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #fff; font-size: 0.9rem; resize: vertical;"></textarea>
- </div>
-
+  <div class="form-group" style="margin-top: 15px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+      <label style="margin-bottom: 0;">Notas / Observaciones (Tipografía Máquina de Escribir)*</label>
+      <span id="notes-char-count" style="font-size: 0.75rem; color: #888; font-family: 'Courier New', Courier, monospace;">0 / 2000</span>
+    </div>
+    <textarea id="ods-notes"
+      maxlength="2000"
+      placeholder="Escribe aquí cualquier nota, condición especial, términos de garantía u observación del equipo (hasta 2000 caracteres)..."
+      style="width: 100%; height: 120px; padding: 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #fff; font-family: 'Courier New', Courier, monospace; font-size: 0.82rem; line-height: 1.4; resize: vertical;"></textarea>
+  </div>
 
  <div class="section-separator" style="background: rgba(255,255,255,0.15);"></div>
 
@@ -1591,22 +1594,20 @@
  }
  }
 
- previewCanvas.innerHTML = `
- <div class="ps-content">
+ const psContent = document.getElementById('ps-content');
+ psContent.innerHTML = `
  <div class="ps-header">
- <div class="ps-logo-col" style="text-align: center;">
- <img src="./images/logo_dashboard_white.png" class="ps-logo" alt="Logo macWave" style="width: 50px; height: 50px; border-radius: 8px; margin-bottom: 2px;">
-
- <div style="font-size: 9px; font-weight: 700; color: #1d1d1f; line-height: 1;">macWave.com.mx</div>
+ <div class="ps-logo-col" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;">
+ <img src="${RECOVERY_PRO_BADGE.data}" alt="MacWave Pro Recovery Logo" style="max-height: 48px; width: auto; object-fit: contain;">
+ <span style="font-size: 8px; font-weight: 800; color: #000; letter-spacing: -0.2px;">macWave.com.mx</span>
  </div>
- <div class="ps-title-col" style="padding-left: 20px;">
- <h2 style="font-size: 16px;">Laboratorio de reparación de computadoras Apple</h2>
-
- <p>Apple Certified Device Support 2025</p>
+ <div class="ps-header-center">
+ <h2 style="font-size: 15px; margin-bottom: 2px;">Laboratorio de reparación de computadoras Apple</h2>
+ <p style="font-size: 8px;">Apple Certified Device Support 2025</p>
  </div>
  <div class="ps-meta-col">
- <div class="ps-quote-folio">ODS N° ${folio}</div>
- <div class="ps-meta-data">
+ <div class="ps-folio-title" style="color: var(--accent-red); font-size: 13px; font-weight: 900; margin-bottom: 6px;">ODS N° ${folio}</div>
+ <div class="ps-meta-dots-group">
  <div class="ps-dot-row">
  <span class="ps-dot-label">Fecha:</span>
  <span class="ps-dot-dots"></span>
@@ -1670,9 +1671,9 @@
 
 
  ${odsNotes ? `
- <div style="margin-top: 15px; padding: 10px; border: 1px dashed #ccc; border-radius: 8px; font-size: 10px; color: #333; line-height: 1.4; background: #fafafa;">
- <strong style="color: #666; display: block; margin-bottom: 4px; text-transform: uppercase; font-size: 8px;">Notas / Observaciones Iniciales:</strong>
- ${odsNotes.replace(/\n/g, '<br>')}
+ <div style="margin-top: 12px; padding: 8px 10px; border: 1px dashed #ccc; border-radius: 6px; font-size: 7.5px; font-family: 'Courier New', Courier, monospace; color: #222; line-height: 1.35; background: #fafafa; white-space: pre-wrap; word-break: break-word;">
+ <strong style="color: #444; display: block; margin-bottom: 3px; text-transform: uppercase; font-size: 7.5px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">Observaciones / Notas de Laboratorio:</strong>
+ ${odsNotes.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}
  </div>
  ` : ''}
 
@@ -1732,7 +1733,6 @@
  </div>
  <div style="text-align: right; width: 33%;">
  sitio web: https://macwave.com.mx<br>mail: soporte@macwave.com.mx
- </div>
  </div>
  </div>
  `;
@@ -1965,29 +1965,61 @@
 
  let currentY = nextSectionY;
 
- // --- 4. NOTES / OBSERVATIONS (Dynamic Space) ---
+ // --- 4. NOTES / OBSERVATIONS (Typewriter Courier Font, Dynamic Auto-fit up to 2000 chars) ---
+ const showBankInPDF = document.getElementById('toggle-bank').checked;
+
  if (odsNotes && odsNotes.trim()) {
+ doc.setFont("courier", "bold");
  doc.setFontSize(7.5);
- doc.setTextColor(51, 51, 51);
- doc.setFont("helvetica", "bold");
+ doc.setTextColor(20, 20, 20);
  doc.text("OBSERVACIONES / NOTAS DE LABORATORIO:", 15, currentY);
  
- doc.setFont("helvetica", "normal");
- doc.setFontSize(7);
- doc.setTextColor(51, 51, 51);
+ const noteText = odsNotes.trim();
  
- const splitNotes = doc.splitTextToSize(odsNotes.trim(), 180);
- doc.text(splitNotes, 15, currentY + 3.5);
- currentY += 3.5 + (splitNotes.length * 3.2) + 3;
+ // Calculate available space on the single page before bottom fixed sections
+ // Reserved space: Terms (~18mm) + Bank (~20mm if ON, ~12mm if OFF) + Disclaimer (~10mm) + Certs/Footer (~15mm)
+ const reservedBottomSpace = showBankInPDF ? 55 : 38;
+ const maxNotesHeight = Math.max(25, 276 - reservedBottomSpace - currentY);
+ 
+ // Progressive Courier font size selection to guarantee all 2000 chars fit seamlessly
+ let noteFontSize = 6.2;
+ let noteLineHeight = 2.45;
+ 
+ doc.setFont("courier", "normal");
+ doc.setFontSize(noteFontSize);
+ let splitNotes = doc.splitTextToSize(noteText, 180);
+ 
+ if ((splitNotes.length * noteLineHeight) > maxNotesHeight) {
+ noteFontSize = 5.5;
+ noteLineHeight = 2.15;
+ doc.setFontSize(noteFontSize);
+ splitNotes = doc.splitTextToSize(noteText, 180);
+ }
+ if ((splitNotes.length * noteLineHeight) > maxNotesHeight) {
+ noteFontSize = 4.8;
+ noteLineHeight = 1.90;
+ doc.setFontSize(noteFontSize);
+ splitNotes = doc.splitTextToSize(noteText, 180);
+ }
+ if ((splitNotes.length * noteLineHeight) > maxNotesHeight) {
+ noteFontSize = 4.2;
+ noteLineHeight = 1.65;
+ doc.setFontSize(noteFontSize);
+ splitNotes = doc.splitTextToSize(noteText, 180);
+ }
+
+ doc.setTextColor(30, 30, 30);
+ doc.text(splitNotes, 15, currentY + 3.2);
+ currentY += 3.2 + (splitNotes.length * noteLineHeight) + 2.5;
  } else {
  currentY += 2;
  }
 
  // --- 5. TERMS (Dynamic Y flow) ---
+ doc.setFont("helvetica", "bold");
  const termsY = currentY + 1;
  doc.setFontSize(7);
  doc.setTextColor(0, 0, 0); 
- doc.setFont("helvetica", "bold");
  doc.text(`Vigencia de la ODS : 1 día para aceptación de la misma.`, 15, termsY);
  doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.", 15, termsY + 3.8);
  doc.text("Condiciones: El cliente acepta los términos y condiciones en macwave.com.mx/terminos.html", 15, termsY + 7.6);
@@ -2002,7 +2034,6 @@
 
  // --- 6. BANK SECTION / QR (Dynamic Y flow) ---
  const bankY = currentY + 1;
- const showBankInPDF = document.getElementById('toggle-bank').checked;
 
  if (showBankInPDF) {
  doc.setFontSize(9.5);
@@ -2037,9 +2068,9 @@
 
  // --- 7. DISCLAIMER (Dynamic Y flow) ---
  const discY = Math.max(currentY + 2, bankY + 19);
+ doc.setFont("helvetica", "bold");
  doc.setFontSize(6);
  doc.setTextColor(0);
- doc.setFont("helvetica", "bold");
  doc.text("***Precios sujetos a cambios sin previo aviso, en variación al dólar americano", 15, discY);
  doc.setFontSize(5);
  doc.setFont("helvetica", "normal");

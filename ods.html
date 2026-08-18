@@ -1905,7 +1905,6 @@
  });
 
  nextSectionY = doc.lastAutoTable.finalY + 10;
- 
  // Draw Total
  doc.setFontSize(13);
  doc.setTextColor(0);
@@ -1918,124 +1917,131 @@
  nextSectionY = nextSectionY + 10;
  }
 
- // PHOTO GRID AREA (Only show if both Conceptos and Bank are OFF)
+ // PHOTO GRID AREA (Only show if toggle-photos is checked)
  const showPhotos = document.getElementById('toggle-photos').checked;
  if (showPhotos) {
- const rowHeight = 45;
- const numPhotos = window._allPhotos.length;
+ const numPhotos = (window._allPhotos || []).length;
  const rows = numPhotos > 5 ? 2 : 1;
+ const photoW = 32;
+ const photoH = 26;
+ const rowHeight = 36;
  const gridH = rows * rowHeight; 
- const gridY = showConcepts ? nextSectionY : bodyStartY;
+ const gridY = nextSectionY;
  
- doc.setDrawColor(245, 245, 247);
+ doc.setDrawColor(240, 240, 240);
  doc.setLineWidth(0.1);
  doc.roundedRect(15, gridY, 180, gridH, 2, 2, 'D');
  
- const photoW = 34;
- const gap = 2.5;
- const startX = 15;
+ const gap = 4.5;
+ const startX = 16;
  
  for (let i = 0; i < (rows * 5); i++) {
  const rowIdx = Math.floor(i / 5);
  const colIdx = i % 5;
  const p = (window._allPhotos || [])[i];
- const cX = startX + (colIdx * (photoW + gap)) + 1;
- const cY = gridY + 3 + (rowIdx * rowHeight);
+ const cX = startX + (colIdx * (photoW + gap));
+ const cY = gridY + 2.5 + (rowIdx * rowHeight);
  
  if (p) {
  try {
- doc.addImage(p.data, 'JPEG', cX, cY, photoW, photoW, undefined, 'FAST');
- doc.setFontSize(5);
- doc.setTextColor(50);
+ doc.addImage(p.data, 'JPEG', cX, cY, photoW, photoH, undefined, 'FAST');
+ doc.setFontSize(5.5);
+ doc.setTextColor(255, 102, 0);
  doc.setFont("helvetica", "bold");
- doc.text(p.desc.substring(0, 20), cX + (photoW/2), cY + photoW + 3, { align: "center", maxWidth: photoW });
+ doc.text((p.desc || '').substring(0, 22), cX + (photoW/2), cY + photoH + 3.5, { align: "center", maxWidth: photoW });
  } catch(e) { console.error("Error adding image to PDF:", e); }
  } else if (i < 5) { // Only show empty slots for the first row
  doc.setDrawColor(240, 240, 240);
  doc.setLineWidth(0.05);
- doc.rect(cX, cY, photoW, photoW, 'D');
+ doc.rect(cX, cY, photoW, photoH, 'D');
  doc.setFontSize(6);
- doc.setTextColor(230, 230, 230);
- doc.text(`${i + 1}`, cX + (photoW/2), cY + (photoW/2), { align: "center" });
+ doc.setTextColor(220, 220, 220);
+ doc.setFont("helvetica", "bold");
+ doc.text(`${i + 1}`, cX + (photoW/2), cY + (photoH/2), { align: "center" });
  }
  }
- nextSectionY = gridY + gridH + 5;
+ nextSectionY = gridY + gridH + 4;
  }
 
+ let currentY = nextSectionY;
 
- // --- 4. NOTES / OBSERVATIONS (Fixed space or below body) ---
- let notesY = nextSectionY;
- if (odsNotes) {
- doc.setFontSize(7);
+ // --- 4. NOTES / OBSERVATIONS (Dynamic Space) ---
+ if (odsNotes && odsNotes.trim()) {
+ doc.setFontSize(7.5);
  doc.setTextColor(51, 51, 51);
  doc.setFont("helvetica", "bold");
- doc.text("OBSERVACIONES / NOTAS DE LABORATORIO:", 15, notesY);
+ doc.text("OBSERVACIONES / NOTAS DE LABORATORIO:", 15, currentY);
+ 
  doc.setFont("helvetica", "normal");
+ doc.setFontSize(7);
+ doc.setTextColor(51, 51, 51);
  
- // Calcular de forma dinámica el espacio disponible antes de los términos en 210mm
- const spaceLeft = 210 - notesY - 10;
- const maxLines = Math.max(4, Math.floor(spaceLeft / 4));
- const splitNotes = doc.splitTextToSize(odsNotes, 180).slice(0, maxLines);
- 
- doc.text(splitNotes, 15, notesY + 4);
- notesY += 4 + (splitNotes.length * 4); // Salto dinámico basado en las líneas reales escritas
+ const splitNotes = doc.splitTextToSize(odsNotes.trim(), 180);
+ doc.text(splitNotes, 15, currentY + 3.5);
+ currentY += 3.5 + (splitNotes.length * 3.2) + 3;
  } else {
- notesY += 5;
+ currentY += 2;
  }
 
- // --- 5. TERMS (Fixed Y 215mm) ---
- const termsY = 210;
- doc.setFontSize(7.5);
+ // --- 5. TERMS (Dynamic Y flow) ---
+ const termsY = currentY + 1;
+ doc.setFontSize(7);
  doc.setTextColor(0, 0, 0); 
  doc.setFont("helvetica", "bold");
  doc.text(`Vigencia de la ODS : 1 día para aceptación de la misma.`, 15, termsY);
- doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.", 15, termsY + 5);
- doc.text("Condiciones: El cliente acepta los términos y condiciones en macwave.com.mx/terminos.html", 15, termsY + 11);
- doc.setFontSize(9);
+ doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.", 15, termsY + 3.8);
+ doc.text("Condiciones: El cliente acepta los términos y condiciones en macwave.com.mx/terminos.html", 15, termsY + 7.6);
+ doc.setFontSize(8.5);
  doc.setTextColor(255, 102, 0);
- doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, termsY + 17);
- doc.setFontSize(7.5);
+ doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, termsY + 12);
+ doc.setFontSize(7);
  doc.setTextColor(0, 0, 0);
- doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.`, 15, termsY + 23);
+ doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.`, 15, termsY + 16.2);
 
- // --- 6. BANK SECTION / QR (Fixed Y 240mm) ---
- const bankY = 240;
+ currentY = termsY + 20;
+
+ // --- 6. BANK SECTION / QR (Dynamic Y flow) ---
+ const bankY = currentY + 1;
  const showBankInPDF = document.getElementById('toggle-bank').checked;
 
  if (showBankInPDF) {
- doc.setFontSize(10);
+ doc.setFontSize(9.5);
  doc.setTextColor(255, 102, 0);
- doc.text("PAGAR A ESTE BANCO", 15, bankY);
- doc.setFontSize(15);
- doc.text("BBVA", 60, bankY);
- doc.setFontSize(10);
  doc.setFont("helvetica", "bold");
- doc.text(`CUENTA CLABE : ${clabeVal}`, 15, bankY + 7);
- doc.text(`NUMERO DE CUENTA : ${accountVal}`, 15, bankY + 14);
- doc.text(`NUMERO DE TARJETA BBVA : ${cardVal}`, 15, bankY + 21);
+ doc.text("PAGAR A ESTE BANCO", 15, bankY);
+ doc.setFontSize(13);
+ doc.text("BBVA", 60, bankY);
+ doc.setFontSize(8.5);
+ doc.setFont("helvetica", "bold");
+ doc.setTextColor(0, 0, 0);
+ doc.text(`CUENTA CLABE : ${clabeVal}`, 15, bankY + 5);
+ doc.text(`NUMERO DE CUENTA : ${accountVal}`, 15, bankY + 10);
+ doc.text(`NUMERO DE TARJETA BBVA : ${cardVal}`, 15, bankY + 15);
+ currentY = bankY + 18;
  } else {
- doc.setFontSize(22);
+ doc.setFontSize(20);
  doc.setTextColor(235, 235, 235);
  doc.setFont("helvetica", "bold");
- doc.text("macWave.com.mx", 80, bankY + 15, { align: "center", angle: 5 });
+ doc.text("macWave.com.mx", 75, bankY + 10, { align: "center", angle: 5 });
+ currentY = bankY + 18;
  }
 
- // QR CODE (Fixed position)
+ // QR CODE (Adjacent to Bank section)
  try {
  const qrCanvas = document.querySelector('#preview-qr-canvas canvas');
  if (qrCanvas) {
  const qrData = qrCanvas.toDataURL("image/png");
- doc.addImage(qrData, 'PNG', 165, bankY - 5, 30, 30);
+ doc.addImage(qrData, 'PNG', 165, bankY - 3, 24, 24);
  }
  } catch (e) {}
 
- // --- 7. DISCLAIMER (Fixed Y 268mm) ---
- const discY = 268;
- doc.setFontSize(6.5);
+ // --- 7. DISCLAIMER (Dynamic Y flow) ---
+ const discY = Math.max(currentY + 2, bankY + 19);
+ doc.setFontSize(6);
  doc.setTextColor(0);
  doc.setFont("helvetica", "bold");
  doc.text("***Precios sujetos a cambios sin previo aviso, en variación al dólar americano", 15, discY);
- doc.setFontSize(5.5);
+ doc.setFontSize(5);
  doc.setFont("helvetica", "normal");
  const noticeText = "AVISO: EQUIPOS EN ABANDONO POR MÁS DE 30 DÍAS NATURALES A PARTIR DEL DÍA QUE SE DEJÓ EL EQUIPO, SERÁN DESTRUIDOS SIN GENERAR NINGÚN TIPO DE RESPONSABILIDAD A macWave Y SU EQUIPO. USTED ACEPTA YA ESTE ACUERDO, LA REVISIÓN GENERA UN COSTO DE $499 POR DIAGNÓSTICO Y USO DEL LABORATORIO, SERÁN TOMADOS EN CUENTA SI DECIDE REPARAR AQUÍ EL EQUIPO HOY. CONSULTA TÉRMINOS Y CONDICIONES EN EL SITIO WEB. ¡EQUIPOS APAGADOS O MOJADOS NO LLEVAN GARANTÍA! EL SOFTWARE COMO OFFICE SE ENVÍA POR URL Y EL USUARIO DEBE INSTALARLO Y NOTIFICAR PARA ACTIVARLO.";
  const splitN = doc.splitTextToSize(noticeText, 180);

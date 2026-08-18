@@ -940,13 +940,13 @@
 
   <div class="form-group" style="margin-top: 15px;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-      <label style="margin-bottom: 0;">Notas / Observaciones (Tipografía Máquina de Escribir)*</label>
-      <span id="notes-char-count" style="font-size: 0.75rem; color: #888; font-family: 'Courier New', Courier, monospace;">0 / 2000</span>
+      <label style="margin-bottom: 0;">Notas / Observaciones / Términos de Garantía*</label>
+      <span id="notes-char-count" style="font-size: 0.75rem; color: #888;">0 / 4000</span>
     </div>
     <textarea id="ods-notes"
-      maxlength="2000"
-      placeholder="Escribe aquí cualquier nota, condición especial, términos de garantía u observación del equipo (hasta 2000 caracteres)..."
-      style="width: 100%; height: 120px; padding: 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #fff; font-family: 'Courier New', Courier, monospace; font-size: 0.82rem; line-height: 1.4; resize: vertical;"></textarea>
+      maxlength="4000"
+      placeholder="Escribe aquí cualquier nota, condición especial, términos de garantía u observación del equipo (se auto-ajusta dinámicamente en el PDF)..."
+      style="width: 100%; height: 130px; padding: 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: #fff; font-family: inherit; font-size: 0.85rem; line-height: 1.4; resize: vertical;"></textarea>
   </div>
 
  <div class="section-separator" style="background: rgba(255,255,255,0.15);"></div>
@@ -1544,6 +1544,10 @@
  const accountVal = document.getElementById('account-number').value;
  const cardVal = document.getElementById('card-number').value;
  const odsNotes = document.getElementById('ods-notes').value || '';
+ const notesCountEl = document.getElementById('notes-char-count');
+ if (notesCountEl) {
+ notesCountEl.textContent = `${odsNotes.length} / 4000`;
+ }
  const currency = 'MXN';
 
  let total = 0;
@@ -1671,7 +1675,7 @@
 
 
  ${odsNotes ? `
- <div style="margin-top: 12px; padding: 8px 10px; border: 1px dashed #ccc; border-radius: 6px; font-size: 7.5px; font-family: 'Courier New', Courier, monospace; color: #222; line-height: 1.35; background: #fafafa; white-space: pre-wrap; word-break: break-word;">
+ <div style="margin-top: 12px; padding: 8px 10px; border: 1px dashed #ccc; border-radius: 6px; font-size: 7.5px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #222; line-height: 1.35; background: #fafafa; white-space: pre-wrap; word-break: break-word;">
  <strong style="color: #444; display: block; margin-bottom: 3px; text-transform: uppercase; font-size: 7.5px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">Observaciones / Notas de Laboratorio:</strong>
  ${odsNotes.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}
  </div>
@@ -1963,57 +1967,45 @@
  nextSectionY = gridY + gridH + 4;
  }
 
- let currentY = nextSectionY;
+  let currentY = nextSectionY;
 
- // --- 4. NOTES / OBSERVATIONS (Typewriter Courier Font, Dynamic Auto-fit up to 2000 chars) ---
- const showBankInPDF = document.getElementById('toggle-bank').checked;
+  // --- 4. NOTES / OBSERVATIONS (Plain text, Continuous Dynamic Auto-fit for long texts) ---
+  const showBankInPDF = document.getElementById('toggle-bank').checked;
 
- if (odsNotes && odsNotes.trim()) {
- doc.setFont("courier", "bold");
- doc.setFontSize(7.5);
- doc.setTextColor(20, 20, 20);
- doc.text("OBSERVACIONES / NOTAS DE LABORATORIO:", 15, currentY);
- 
- const noteText = odsNotes.trim();
- 
- // Calculate available space on the single page before bottom fixed sections
- // Reserved space: Terms (~18mm) + Bank (~20mm if ON, ~12mm if OFF) + Disclaimer (~10mm) + Certs/Footer (~15mm)
- const reservedBottomSpace = showBankInPDF ? 55 : 38;
- const maxNotesHeight = Math.max(25, 276 - reservedBottomSpace - currentY);
- 
- // Progressive Courier font size selection to guarantee all 2000 chars fit seamlessly
- let noteFontSize = 6.2;
- let noteLineHeight = 2.45;
- 
- doc.setFont("courier", "normal");
- doc.setFontSize(noteFontSize);
- let splitNotes = doc.splitTextToSize(noteText, 180);
- 
- if ((splitNotes.length * noteLineHeight) > maxNotesHeight) {
- noteFontSize = 5.5;
- noteLineHeight = 2.15;
- doc.setFontSize(noteFontSize);
- splitNotes = doc.splitTextToSize(noteText, 180);
- }
- if ((splitNotes.length * noteLineHeight) > maxNotesHeight) {
- noteFontSize = 4.8;
- noteLineHeight = 1.90;
- doc.setFontSize(noteFontSize);
- splitNotes = doc.splitTextToSize(noteText, 180);
- }
- if ((splitNotes.length * noteLineHeight) > maxNotesHeight) {
- noteFontSize = 4.2;
- noteLineHeight = 1.65;
- doc.setFontSize(noteFontSize);
- splitNotes = doc.splitTextToSize(noteText, 180);
- }
+  if (odsNotes && odsNotes.trim()) {
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(7.5);
+    doc.setTextColor(20, 20, 20);
+    doc.text("OBSERVACIONES / NOTAS DE LABORATORIO:", 15, currentY);
+    
+    const noteText = odsNotes.trim();
+    
+    // Bottom sections fixed space budget:
+    // Terms (~18mm) + Bank (~18mm if ON, ~10mm if OFF) + Disclaimer (~11mm) + Bottom Certs margin (~5mm)
+    const reservedBottomSpace = (showBankInPDF ? 18 : 10) + 18 + 11 + 5;
+    const maxNotesHeight = Math.max(15, 278 - reservedBottomSpace - currentY);
+    
+    // Start with default font size and dynamically scale down continuously until text fits completely
+    let noteFontSize = 6.2;
+    let noteLineHeight = noteFontSize * 0.36;
+    
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(noteFontSize);
+    let splitNotes = doc.splitTextToSize(noteText, 180);
+    
+    while (noteFontSize > 2.5 && (splitNotes.length * noteLineHeight) > maxNotesHeight) {
+      noteFontSize = Math.max(2.5, +(noteFontSize - 0.2).toFixed(1));
+      noteLineHeight = +(noteFontSize * 0.36).toFixed(2);
+      doc.setFontSize(noteFontSize);
+      splitNotes = doc.splitTextToSize(noteText, 180);
+    }
 
- doc.setTextColor(30, 30, 30);
- doc.text(splitNotes, 15, currentY + 3.2);
- currentY += 3.2 + (splitNotes.length * noteLineHeight) + 2.5;
- } else {
- currentY += 2;
- }
+    doc.setTextColor(30, 30, 30);
+    doc.text(splitNotes, 15, currentY + 3.0);
+    currentY += 3.0 + (splitNotes.length * noteLineHeight) + 2.0;
+  } else {
+    currentY += 2;
+  }
 
  // --- 5. TERMS (Dynamic Y flow) ---
  doc.setFont("helvetica", "bold");

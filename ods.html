@@ -1000,7 +1000,7 @@
  <!-- PREVIEW (CLONE) -->
  <section class="preview-side">
  <div id="preview-canvas" class="preview-canvas">
- <!-- CONTENT REPLICATED BY JS -->
+ <div id="ps-content" class="ps-content"></div>
  </div>
  </section>
  </div>
@@ -1598,7 +1598,8 @@
  }
  }
 
- const psContent = document.getElementById('ps-content');
+ const psContent = document.getElementById('ps-content') || document.getElementById('preview-canvas');
+ if (!psContent) return;
  psContent.innerHTML = `
  <div class="ps-header">
  <div class="ps-logo-col" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;">

@@ -26,12 +26,19 @@ RewriteRule ^([^.]+)$ $1.html [L]
 RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
 RewriteRule ^ /%1 [R=301,L]
 
-# ---- 5. CABECERAS DE SEGURIDAD ----
+# ---- 5. CABECERAS DE SEGURIDAD Y CACHÉ HTML ----
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+  # Evitar que los navegadores guarden en caché el HTML desactualizado
+  <FilesMatch "\.(html|htm)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires 0
+  </FilesMatch>
 </IfModule>
 
 # ---- 6. CACHÉ DE ACTIVOS ESTÁTICOS ----

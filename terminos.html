@@ -60,11 +60,12 @@
   <style>
   :root {
     --bg: #000000;
-    --card-bg: #1c1c1e;
+    --card-bg: #141416;
     --text-primary: #f5f5f7;
     --text-secondary: #86868b;
-    --accent: #0071e3;
-    --accent-red: #ff453a;
+    --text-legal: #9e9ea7;
+    --accent: #2997ff;
+    --border-subtle: rgba(255, 255, 255, 0.07);
   }
 
   * {
@@ -77,118 +78,118 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--bg);
     color: var(--text-primary);
-    line-height: 1.6;
+    line-height: 1.5;
     padding: 0;
   }
 
   .legal-main {
-    padding: 120px 20px 40px;
+    padding: 100px 15px 40px;
   }
 
   .container {
-    max-width: 900px;
+    max-width: 960px;
     margin: 0 auto;
   }
 
   .header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 25px;
   }
 
   h1 {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: 10px;
-    letter-spacing: -0.022em;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    text-transform: uppercase;
   }
 
   .last-update {
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.75rem;
   }
 
   .content {
     background: var(--card-bg);
-    padding: 50px;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 35px 40px;
+    border-radius: 12px;
+    border: 1px solid var(--border-subtle);
   }
 
   h2 {
-    color: var(--accent);
-    font-size: 1.3rem;
+    color: #d2d2d7;
+    font-size: 0.85rem;
     font-weight: 700;
-    margin-top: 40px;
-    margin-bottom: 20px;
-    letter-spacing: -0.01em;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: 4px;
   }
 
   h3 {
-    color: var(--text-primary);
-    font-size: 1.1rem;
+    color: #e5e5ea;
+    font-size: 0.78rem;
     font-weight: 600;
-    margin-top: 25px;
-    margin-bottom: 15px;
+    margin-top: 14px;
+    margin-bottom: 6px;
   }
 
   p {
-    margin-bottom: 15px;
-    color: var(--text-primary);
-    font-size: 0.95rem;
-    opacity: 0.9;
+    margin-bottom: 10px;
+    color: var(--text-legal);
+    font-size: 0.74rem;
+    line-height: 1.55;
+    text-align: justify;
   }
 
   ul {
     list-style: none;
-    margin-bottom: 20px;
-    padding-left: 20px;
+    margin-bottom: 12px;
+    padding-left: 12px;
   }
 
   ul li {
     position: relative;
-    padding-left: 20px;
-    margin-bottom: 8px;
-    font-size: 0.95rem;
-    color: var(--text-primary);
-    opacity: 0.9;
+    padding-left: 15px;
+    margin-bottom: 5px;
+    font-size: 0.74rem;
+    color: var(--text-legal);
+    line-height: 1.5;
+    text-align: justify;
   }
 
   ul li::before {
-    content: "•";
+    content: "—";
     position: absolute;
     left: 0;
-    color: var(--accent);
-    font-weight: bold;
-  }
-
-  .highlight-box {
-    background: rgba(255, 69, 58, 0.1);
-    border-left: 4px solid var(--accent-red);
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 8px;
-  }
-
-  .highlight-box p {
-    color: #ff9f0a;
-    font-weight: 600;
-    margin-bottom: 0;
+    color: var(--text-secondary);
+    font-weight: normal;
   }
 
   .btn-back {
     display: inline-block;
-    margin-top: 30px;
+    margin-top: 20px;
     color: var(--accent);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 0.75rem;
   }
 
   @media (max-width: 600px) {
     .content {
-      padding: 25px;
+      padding: 20px 18px;
     }
     h1 {
-      font-size: 1.5rem;
+      font-size: 1rem;
+    }
+    h2 {
+      font-size: 0.8rem;
+    }
+    p, ul li {
+      font-size: 0.72rem;
     }
   }
   </style>
@@ -298,69 +299,57 @@
     </div>
 
     <div class="content">
-      <p>El presente documento contiene las <strong>Condiciones Generales y Contrato de Adhesión de Prestación de Servicios Técnicos Especializados</strong> que celebran, por una parte, <strong>macWave México</strong> (en lo sucesivo, el "PRESTADOR") y, por la otra, la persona física o moral que solicita, autoriza o recibe los servicios (en lo sucesivo, el "CLIENTE"). Las partes convienen en sujetar la prestación de servicios, diagnósticos, recolecciones, intervenciones técnicas y custodia a las siguientes estipulaciones:</p>
+      <p>El presente instrumento establece las <strong>Bases Generales, Términos Operativos y Contrato de Adhesión de Prestación de Servicios Técnicos Especializados, Diagnóstico Electrónico y Tratamiento de Información</strong> celebrado entre <strong>macWave México</strong> (en lo sucesivo, el "PRESTADOR"), con domicilio y operaciones técnicas en la Ciudad de México, y por la otra, cualquier persona física o moral que por sí misma o a través de representante solicite información, agende recolecciones domiciliarias, autorice presupuestos, remita equipos o mantenga comunicaciones operativas con el personal técnico (en lo sucesivo, el "CLIENTE"). Ambas partes se reconocen recíprocamente plena capacidad jurídica y mercantil para obligarse de conformidad con las siguientes declaraciones y estipulaciones:</p>
 
-      <h2>1. Del Consentimiento y Validez de las Autorizaciones Digitales</h2>
-      <p>El presente instrumento constituye formalmente un Contrato de Adhesión de conformidad con el Código de Comercio, el Código Civil Federal y las disposiciones aplicables en materia mercantil en los Estados Unidos Mexicanos.</p>
-      <p>La manifestación del consentimiento y perfeccionamiento de las obligaciones contractuales surte efectos plenos mediante cualquiera de los siguientes actos ejecutados por el CLIENTE:</p>
-      <ul>
-        <li>Entrega física del dispositivo en instalaciones, laboratorio o a personal de mensajería asignado</li>
-        <li>Solicitud formal de recolección o visita técnica domiciliaria</li>
-        <li>Autorización expresa o confirmación emitida por medios electrónicos o telemáticos, tales como WhatsApp, correo electrónico, servicios de mensajería corta (SMS) o vía telefónica</li>
-        <li>Abonos, pagos de anticipos o liquidación de importes cotizados</li>
-        <li>Expresiones de conformidad digital tales como "ok", "adelante", "procedan", "autorizo", "continúen", "sí" o equivalentes</li>
-      </ul>
-      <p>Las partes reconocen plenamente la validez, fuerza vinculante y valor probatorio de los mensajes de datos y autorizaciones conferidas por medios electrónicos, renunciando el CLIENTE a desconocer los acuerdos o alegar vicios del consentimiento por carencia de firma autógrafa en soporte material de papel.</p>
+      <h2>1. Naturaleza Jurídica, Marco Normativo y Perfeccionamiento por Medios Telemáticos</h2>
+      <p>El presente documento constituye un Contrato de Adhesión celebrado bajo las disposiciones del Código de Comercio (Libro Segundo, Título Segundo, Capítulo I), el Código Civil Federal, y la Ley Federal de Protección al Consumidor en los Estados Unidos Mexicanos. Atendiendo al principio de equivalencia funcional consagrado en los artículos 89, 89 Bis, 90, 90 Bis y concordantes del Código de Comercio, las partes convienen expresamente en que el consentimiento, aprobación de presupuestos, órdenes de trabajo y adiciones técnicas se perfeccionarán válidamente a través de mensajes de datos, sistemas de mensajería instantánea (incluyendo enunciativa más no limitativamente WhatsApp, Telegram, SMS), correo electrónico, formularios web o confirmaciones verbales grabadas o registradas vía telefónica.</p>
+      <p>Cualquier comunicación emitida desde las líneas telefónicas, cuentas de correo o perfiles vinculados al CLIENTE que contenga vocablos tales como "ok", "adelante", "procedan", "autorizo", "continúen", "sí", "de acuerdo", o que conlleve la entrega material del bien, la solicitud formal de visita o el pago de importes parciales o totales, configurará manifestación expresa y fehaciente de la voluntad, surtiendo efectos vinculantes y probatorios de carácter pleno, renunciando el CLIENTE a desconocer la obligatoriedad de los acuerdos o argumentar la falta de firma autógrafa en papel.</p>
 
-      <h2>2. De los Diagnósticos, Tiempo Técnico y Gastos Devengados</h2>
-      <p>macWave efectúa procedimientos de diagnóstico y análisis a nivel microelectrónico mediante instrumental de precisión, estaciones de retrabajo térmico, cámaras infrarrojas, microscopía óptica y estaciones de medición eléctrica.</p>
-      <p>Los procesos de desmontaje de arquitectura interna, localización de cortocircuitos en placa lógica, pruebas termográficas, descontaminación química, baño por ultrasonido e inspección de circuitos integrados BGA demandan tiempo de ingeniería especializada, empleo de consumibles e infraestructura de laboratorio. Dichos conceptos generan costos operativos devengados que son exigibles independientemente de la viabilidad de reparación definitiva o de la posterior decisión del CLIENTE de no continuar con etapas subsecuentes, revistiendo los importes cubiertos por diagnóstico el carácter de no reembolsables una vez iniciada la intervención.</p>
+      <h2>2. Protocolos de Diagnóstico en Laboratorio, Tiempo de Ingeniería y Gastos Devengados</h2>
+      <p>El PRESTADOR realiza labores de inspección microelectrónica de alta complejidad que demandan infraestructura de laboratorio, estaciones de retrabajo térmico BGA, fuentes conmutadas reguladas, osciloscopios digitales de alta frecuencia, cámaras de termografía infrarroja y microscopía trinocular. Los procedimientos que involucran desmontaje de blindajes térmicos, remoción de resinas epóxicas de fijación, inspección microscópica de pistas internas en placas multicapa, mediciones de caída de tensión en modo diodo en líneas principales de alimentación (tales como PPBUS_G3H, 3V3_G3H, rieles de memoria y líneas de comunicación diferencial PCIe, SPI e I2C), descontaminación química y pruebas de consumo en estado de reposo y encendido, representan horas de trabajo técnico calificado y consumo de materiales de ingeniería.</p>
+      <p>En consecuencia, el CLIENTE reconoce y acepta que toda labor de inspección, diagnóstico avanzado o desmontaje genera costos operativos devengados que son exigibles e independientes de la viabilidad de rescate del bien o de la determinación posterior del CLIENTE de suspender el proceso. Los montos fijados o devengados por concepto de diagnóstico, traslados o tiempo de ingeniería revisten carácter definitivo y estrictamente no reembolsable una vez iniciada la apertura o inspección técnica del equipo.</p>
 
-      <h2>3. De los Dispositivos con Presencia de Humedad, Corrosión o Daño por Líquidos</h2>
-      <p>En consideración a las propiedades físicas y electroquímicas de la corrosión en placas multicapa, los servicios técnicos ejecutados sobre equipos que presenten o hayan presentado vestigios de contacto con líquidos, humedad o sulfatación se encuentran expresamente exceptuados de garantía contractual.</p>
-      <p>El CLIENTE reconoce que la oxidación y sulfato constituyen fenómenos degradativos continuos y progresivos capaces de manifestar fallas microelectrónicas en componentes con soldadura debilitada en etapas posteriores a cualquier proceso técnico. En consecuencia, el CLIENTE exime y libera al PRESTADOR de cualquier responsabilidad por contingencias latentes, intermitencias o el cese definitivo de operatividad en equipos siniestrados por líquidos o agentes químicos.</p>
+      <h2>3. Dispositivos con Daño por Fluidos, Condensación, Contaminación Química o Sulfatación Latente</h2>
+      <p>En estricto apego a las leyes de la física y electroquímica que rigen los circuitos impresos de microdensidad, los servicios técnicos ejecutados sobre dispositivos que presenten o hayan presentado contacto con agua, café, bebidas carbonatadas, alcohol, condensación atmosférica o cualquier agente líquido o gaseoso corrosivo quedan terminantemente excluidos de garantía contractual alguna.</p>
+      <p>El CLIENTE asume y declara conocer que el contacto de fluidos con conductores energizados desencadena procesos de electrólisis, corrosión galvánica y migración iónica destructiva que degradan las pistas microscópicas de cobre y los puntos de soldadura bajo componentes de montaje superficial (SMD) y matrices de esferas (BGA), tales como el procesador central (CPU), procesador gráfico (GPU), memoria unificada y controladores de administración de energía (PMIC). Dichos procesos corrosivos pueden continuar manifestándose microscópicamente con posterioridad a cualquier proceso de descontaminación química o baño ultrasónico. Por consiguiente, el CLIENTE libera al PRESTADOR de cualquier responsabilidad civil, patrimonial o técnica por la interrupción sobreviniente de encendido, muerte súbita de circuitos o fallas latentes en equipos siniestrados por líquidos, asumiendo el CLIENTE la totalidad de los riesgos inherentes a su condición previa.</p>
 
-      <h2>4. De las Garantías y Protocolo de Acondicionamiento Térmico (Mantenimiento Full)</h2>
-      <p>Las garantías comerciales otorgadas por el PRESTADOR se encuentran estrictamente circunscritas a las piezas o componentes específicamente sustituidos o intervenidos, bajo condiciones regulares y adecuadas de operación del equipo.</p>
-      
-      <h3>4.1 Requisito de Acondicionamiento Térmico para Garantía en Módulos de Batería</h3>
-      <p>Para la procedencia y exigibilidad de cualquier garantía sobre módulos de batería nuevos instalados por macWave, es condición indispensable que el CLIENTE adquiera y ejecute en la misma orden el protocolo técnico preventivo denominado <strong>Mantenimiento Full</strong>.</p>
-      <p>El Mantenimiento Full comprende el desarme y desincrustación de partículas electrostáticas en chasis interno y ductos de disipación, remoción de pasta térmica degradada y aplicación de nuevo compuesto térmico de alta conductividad en CPU y GPU, mantenimiento por ultrasonido y lubricación de ventiladores mecánicos, descontaminación de rieles y conectores de potencia, y calibración de controladores de energía (SMC/PMU). Atendiendo a que la acumulación de suciedad y sobrecalentamiento interno provocan degradación prematura, abultamiento de celdas de litio o bloqueo irreversible del microcontrolador de seguridad (BMS), la falta de contratación de dicho servicio complementario determinará la entrega de la batería sin garantía comercial.</p>
+      <h2>4. Régimen de Garantías Comerciales y Condición Suspensiva para Módulos de Batería (Mantenimiento Full)</h2>
+      <p>Las garantías comerciales ofrecidas por el PRESTADOR se limitan con absoluta precisión a los componentes o líneas circuitales que hubieren sido objeto directo de sustitución física o microsoldadura en la orden respectiva, y tendrán validez exclusivamente bajo condiciones de uso ordinario conforme a los parámetros de fábrica del fabricante original.</p>
+      <p><strong>4.1 De la Condición Indispensable de Mantenimiento Full para Baterías Nuevas:</strong> Para hacer procedente y exigible cualquier garantía sobre módulos de batería de litio nuevos suministrados o instalados por el PRESTADOR, el CLIENTE deberá contratar y liquidar indefectiblemente en la misma orden el servicio integral de <strong>Mantenimiento Full</strong>. El protocolo de Mantenimiento Full comprende el desarmado de la unidad térmica, remoción electrostática profunda de pelusas y partículas abrasivas en chasis y conductos de ventilación forzada, retiro de compuestos térmicos secos o degradados, aplicación de pasta térmica de grado industrial con conductividad térmica superior a 11 W/mK en procesadores CPU y GPU, mantenimiento por inmersión y lubricación de ejes mecánicos de ventiladores, descontaminación iónica de contactos del bus SMBus/I2C y terminales MagSafe/USB-C, así como el restablecimiento y reprogramación lógica del controlador de administración del sistema (SMC/PMU).</p>
+      <p><em>Justificación técnica:</em> La omisión de dicho protocolo en equipos con sistemas de ventilación obstruidos o pasta térmica vencida somete a las nuevas celdas de polímero de litio a temperaturas continuas superiores a 80°C, originando degradación química acelerada del electrolito, hinchamiento volumétrico de celdas (*swelling*) y el bloqueo irreversible por sobretemperatura del microcontrolador interno del circuito de protección (BMS). La falta de contratación de dicho servicio conllevará la entrega de la batería sin garantía comercial.</p>
+      <p><strong>4.2 Exclusiones de Cobertura de Garantía:</strong> La garantía comercial quedará ipso facto invalidada si el bien presenta roturas, abolladuras, torsión de chasis, fisuras en conectores, presencia posterior de líquidos o sulfatación, alteraciones en firmware o bios (EFI), violaciones o remoción de sellos de seguridad internos, apertura o intervención por parte de talleres o técnicos ajenos a macWave, o daños derivados de perturbaciones en el suministro eléctrico domiciliario, sobrevoltajes, descargas atmosféricas o el empleo de cables y adaptadores de corriente genéricos no regulados.</p>
 
-      <h3>4.2 Exclusiones Contractuales de Garantía</h3>
-      <p>La garantía contractual quedará sin efecto ante la presencia sobreviniente de humedad o sulfatación, golpes, fisuras, flexión de chasis o daño mecánico visible, apertura o manipulación interna por el CLIENTE o terceros, fluctuaciones eléctricas o uso de adaptadores de corriente no certificados, así como por fallas atribuibles a incompatibilidades de software, alteraciones de firmware o bloqueos de seguridad del sistema.</p>
+      <h2>5. Deber Ineludible de Respaldo Externo a Cargo del Cliente y Deslinde por Pérdida de Información</h2>
+      <p>Es obligación previa, directa e inexcusable del CLIENTE realizar copias de seguridad de respaldo (backups) en discos duros externos, servidores locales o almacenamiento en la nube de la totalidad de archivos, bases de datos, fotografías, proyectos, licencias y perfiles contenidos en el equipo con antelación a su entrega al personal del PRESTADOR.</p>
+      <p>El CLIENTE reconoce y conviene que los procesos de inspección electrónica en banco, inyección controlada de voltaje para localización de fugas, reemplazo de componentes pasivos y desoldado térmico en tarjeta lógica conllevan riesgos mecánicos y térmicos inevitables sobre memorias de estado sólido integradas (NAND flash) y controladoras NVMe preexistentes con degradación física. El PRESTADOR no asume obligación de custodia, guarda ni recuperación de datos lógicos, y queda formal y plenamente liberado de cualquier responsabilidad por la alteración, inaccesibilidad, pérdida total o borrado fortuito de archivos que pudiere suscitarse durante las pruebas técnicas, circunscribiéndose la relación contractual con exclusividad a la reparación del hardware físico.</p>
 
-      <h2>5. De la Información Almacenada y Deber de Respaldo</h2>
-      <p>Constituye responsabilidad exclusiva e indelegable del CLIENTE respaldar de forma previa e íntegra la totalidad de sus archivos, documentos, fotografías, bases de datos y programas en dispositivos externos con anterioridad a la entrega del equipo para cualquier revisión técnica.</p>
-      <p>En virtud de los riesgos físicos inherentes a la manipulación térmica y mediciones en tarjetas lógicas con microcomponentes degradados o memorias de estado sólido integradas, macWave no asume responsabilidad civil, patrimonial o contractual por la pérdida parcial o total, corrupción o inaccesibilidad de la información contenida en el dispositivo, quedando formalmente convenido que el objeto del servicio se circunscribe con exclusividad a la reparación del hardware físico y no a la custodia o salvaguarda de datos lógicos.</p>
+      <h2>6. Condiciones de Logística, Transporte, Recepción y Restitución de Bienes</h2>
+      <p>Los servicios logísticos de recolección y restitución de equipos se coordinan mediante personal operativo propio o empresas de mensajería comercial autorizadas. El CLIENTE acepta los márgenes de tolerancia derivados de congestión vial, contingencias climatológicas, revisiones de seguridad en accesos corporativos o residenciales, así como eventos fortuitos o de fuerza mayor inherentes al transporte urbano.</p>
+      <p>La entrega material del equipo intervenido se realizará únicamente a la persona física que figure como titular registrado en la orden de servicio correspondiente, o bien, a quien ésta faculte de manera formal mediante documento escrito o instrucción electrónica verificable procedente de sus medios de contacto registrados.</p>
 
-      <h2>6. De la Logística, Recolección y Desplazamientos</h2>
-      <p>Los traslados de recolección y entrega se efectúan a través de personal interno o mensajerías asignadas. El CLIENTE acepta las contingencias ordinarias de tránsito vehicular, factores climáticos o demoras en filtros de seguridad en inmuebles.</p>
-      <p>La restitución material del bien se efectuará exclusivamente al titular acreditado de la orden o a la persona formalmente designada por escrito o medio digital fehaciente por parte del CLIENTE.</p>
+      <h2>7. Estructura Arancelaria, Pagos y Exigibilidad en Cancelaciones con Personal en Trayecto</h2>
+      <p><strong>7.1 Obligatoriedad desde la concertación:</strong> La concertación de cualquier cita para visita técnica, recolección o entrega genera una afectación en la agenda operativa y asignación de unidades móviles, originando la exigibilidad del pago de los honorarios correspondientes a partir del momento de su confirmación.</p>
+      <p><strong>7.2 Cancelación extemporánea en curso de traslado:</strong> En aquellos casos en que el CLIENTE decida cancelar, posponer o modificar la cita cuando el personal operativo o de mensajería ya hubiere iniciado el desplazamiento hacia el domicilio señalado ("servicio en curso"), el CLIENTE queda legalmente obligado a cubrir de forma inmediata la totalidad del costo de la visita técnica y viáticos de traslado devengados.</p>
+      <p><strong>7.3 Trabajos de laboratorio:</strong> Toda cotización previa suministrada en forma no presencial reviste carácter meramente orientativo. Los daños ocultos, componentes sulfatados o fallas circuitales accesorias detectadas al microscopio serán documentados e informados al CLIENTE. Los gastos generados por concepto de tiempo de ingeniería diagnóstica, apertura y mediciones técnicas devengan su cobro ineludible aun cuando el CLIENTE resuelva no proceder con la cotización complementaria de reparación.</p>
 
-      <h2>7. De las Condiciones de Pago, Honorarios y Servicios en Tránsito</h2>
-      <p><strong>7.1 Exigibilidad de tarifas:</strong> La concertación de cualquier orden de servicio, visita técnica o recolección genera la obligación pecuniaria correspondiente a favor del PRESTADOR desde el momento de su confirmación y asignación de recursos operativos.</p>
-      <p><strong>7.2 Servicios en curso y cancelaciones extemporáneas:</strong> Cuando el CLIENTE decida cancelar, posponer o modificar la visita técnica habiéndose iniciado el desplazamiento del personal asignado ("servicio en curso"), el CLIENTE queda obligado a cubrir íntegramente el importe correspondiente a la visita y gastos de traslado devengados.</p>
-      <p><strong>7.3 Honorarios por tiempo de laboratorio:</strong> Toda propuesta económica preliminar reviste naturaleza orientativa sujeta a los hallazgos tras la apertura del bien. Los conceptos devengados por inspección en banco, pruebas y tiempo técnico serán exigibles y no devueltos aun ante el eventual desistimiento de la reparación final por parte del CLIENTE.</p>
+      <h2>8. Derecho de Retención Mercantil, Cuota Administrativa de Almacenaje y Abandono Legal</h2>
+      <p><strong>8.1 Ejercicio del derecho de retención:</strong> Con fundamento en las disposiciones aplicables del Código de Comercio y la legislación mercantil federal, el PRESTADOR queda legalmente facultado para retener en su posesión el bien mueble objeto del servicio en garantía prendaria hasta en tanto el CLIENTE no satisfaga en su integridad la totalidad de los adeudos devengados por concepto de mano de obra, insumos, diagnósticos, piezas de repuesto, viáticos o gastos de almacenamiento.</p>
+      <p><strong>8.2 Cuota administrativa de depósito y almacenaje:</strong> A partir de la fecha en que se notifique formalmente al CLIENTE la conclusión de las labores técnicas o la emisión del diagnóstico, el CLIENTE dispondrá de un término de gracia de 30 (treinta) días naturales para proceder a la liquidación y retiro del equipo. Transcurrido dicho plazo sin que el bien sea recogido, se causará de pleno derecho una cuota por concepto de resguardo, depósito y vigilancia administrativa a razón de $50.00 MXN (cincuenta pesos 00/100 M.N.) diarios.</p>
+      <p><strong>8.3 Configuración de abandono a los 90 días:</strong> Si transcurre un periodo ininterrumpido de 90 (noventa) días naturales contados desde el primer requerimiento formal de retiro o liquidación sin que el CLIENTE acuda a recibir el equipo o liquide los saldos devengados, se entenderá configurado el abandono legal del bien mueble. En tal supuesto, el CLIENTE faculta formalmente al PRESTADOR para disponer del equipo, tarjeta lógica o componentes a fin de aplicar su valor al resarcimiento de los pasivos devengados por custodia, almacenaje prolongado, insumos y tiempo de ingeniería, sin reserva de acción legal alguna en contra del PRESTADOR.</p>
 
-      <h2>8. De la Custodia, Retención y Disposición de Bienes</h2>
-      <p><strong>8.1 Derecho de retención:</strong> Conforme a las disposiciones del Código de Comercio y la legislación mercantil aplicable, el PRESTADOR podrá retener materialmente el equipo entregado hasta en tanto no sean cubiertas íntegramente las cantidades adeudadas por concepto de mano de obra, diagnóstico, refacciones, viáticos o gastos de almacenamiento devengados.</p>
-      <p><strong>8.2 Cuota administrativa de depósito y almacenaje:</strong> A partir de la fecha de notificación de conclusión de labores técnicas o emisión del informe de diagnóstico, el CLIENTE dispondrá de un término de 30 (treinta) días naturales para la recolección del bien; transcurrido dicho lapso sin que el equipo sea retirado o cubiertos los saldos pendientes, se generará una cuota por custodia y guarda administrativa a razón de $50.00 MXN diarios.</p>
-      <p><strong>8.3 Disposición por abandono:</strong> Si transcurre un periodo de 90 (noventa) días naturales posteriores a la notificación inicial sin que el CLIENTE haya acudido a retirar el equipo o liquidado los saldos acumulados, se entenderá configurado el abandono legal del bien, facultándose al PRESTADOR para disponer del mismo a fin de resarcir los pasivos generados por depósito, insumos y mano de obra devengada.</p>
+      <h2>9. Delimitación de Responsabilidad Patrimonial y Renuncia a Indemnizaciones Indirectas</h2>
+      <p>El PRESTADOR no será responsable bajo ninguna circunstancia frente al CLIENTE o terceros por concepto de lucro cesante, pérdidas comerciales, interrupción de actividades productivas, daños punitivos, contingencias incidentales o afectaciones morales alegadas con motivo del tiempo de reparación o funcionamiento posterior del equipo.</p>
+      <p>Las partes convienen de forma libre y voluntaria que el límite máximo cuantitativo de responsabilidad pecuniaria a cargo del PRESTADOR frente a cualquier controversia judicial o arbitral quedará estrictamente limitado, bajo cualquier supuesto, al monto efectivamente pagado por el CLIENTE por concepto de mano de obra del servicio específico que hubiere dado origen a la controversia.</p>
 
-      <h2>9. Del Límite de Responsabilidad Patrimonial</h2>
-      <p>macWave no responderá bajo ninguna circunstancia por daños indirectos, incidentales, punitivos, lucro cesante, interrupción de actividades comerciales o daños morales reclamados por el CLIENTE.</p>
-      <p>La responsabilidad contractual máxima y acumulada del PRESTADOR ante cualquier supuesto legal o siniestro derivado del servicio técnico se encontrará estrictamente topada, en todo caso, al importe efectivamente liquidado por el CLIENTE por concepto de mano de obra en la orden respectiva.</p>
+      <h2>10. Seguridad de la Información, Alineación al Estándar ISO/IEC 27001 y Extinción de Custodia</h2>
+      <p>El PRESTADOR administra sus instalaciones técnicas conforme a los principios rectores de la norma internacional <strong>ISO/IEC 27001</strong> (Sistemas de Gestión de Seguridad de la Información), implementando salvaguardas organizacionales para preservar la confidencialidad, integridad y disponibilidad durante la fase de intervención técnica. A tal efecto, el laboratorio opera con esquemas de seguridad perimetral mediante firewall activo con prevención de intrusiones, así como infraestructura inalámbrica administrada con puntos de acceso corporativos configurados bajo políticas de segmentación por VLAN y aislamiento de clientes (*Client Isolation*), imposibilitando cualquier tráfico transversal entre dispositivos en prueba.</p>
+      <p>Durante la custodia física del bien en banco de servicio, los archivos, documentos, fotografías, correspondencia y bases de datos del CLIENTE no serán objeto de clonación, extracción, lectura, visualización ni transferencia indebida. Las actividades de diagnóstico se restringen con estrictez al comportamiento físico y circuital del hardware. Una vez restituido o entregado el dispositivo al CLIENTE, se extingue y concluye formalmente toda obligación de resguardo o acceso temporal a los datos, no conservándose copias de seguridad de ninguna índole en los sistemas informáticos del PRESTADOR, cesando de pleno derecho cualquier responsabilidad sobre la información con posterioridad a la entrega.</p>
 
-      <h2>10. De la Seguridad de la Información, Estándar ISO/IEC 27001 y Conclusión de Custodia</h2>
-      <p>El PRESTADOR desarrolla sus operaciones de laboratorio bajo las directrices y controles del estándar internacional <strong>ISO/IEC 27001</strong> (Sistemas de Gestión de Seguridad de la Información), observando los principios de confidencialidad, integridad y disponibilidad técnica. Para tal efecto, la infraestructura dispone de barreras de seguridad perimetral mediante firewall y puntos de acceso inalámbrico administrados con segmentación por VLAN y políticas de aislamiento de clientes (*Client Isolation*) que impiden cualquier tráfico transversal o intrusión externa.</p>
-      <p>Durante la custodia técnica del equipo, la información, carpetas y archivos personales del CLIENTE no serán objeto de clonación, extracción, lectura, visualización ni transferencia indebida, realizándose las pruebas exclusivamente a nivel de hardware, líneas de alimentación y señales circuitales. En el momento en que el equipo es devuelto o entregado al CLIENTE, concluye y se extingue formalmente toda obligación de resguardo o acceso a los datos, no conservándose respaldos ni imágenes de almacenamiento en los servidores del PRESTADOR, cesando de pleno derecho cualquier responsabilidad sobre la información con posterioridad a la entrega.</p>
+      <h2>11. Jurisdicción Territorial, Legislación Aplicable y Renuncia de Fuero</h2>
+      <p>Para todo lo relativo a la interpretación, cumplimiento, exigibilidad y resolución de controversias emanadas del presente Contrato de Adhesión, las partes acuerdan privilegiar la composición amigable y directa. En caso de requerirse instancia jurisdiccional o administrativa, las partes se someten de manera expresa e irrevocable a la aplicación de las leyes mercantiles de los Estados Unidos Mexicanos y a la jurisdicción exclusiva de los <strong>Tribunales Competentes con residencia en la Ciudad de México</strong>, renunciando de forma voluntaria a cualquier otro fuero o fuero de domicilio presente o futuro que pudiera corresponderles.</p>
 
-      <h2>11. De la Jurisdicción y Legislación Aplicable</h2>
-      <p>Para la interpretación, validez y cumplimiento de este Contrato de Adhesión, las partes acuerdan privilegiar la conciliación de buena fe. En caso de diferendo judicial o administrativo, las partes se someten expresa e irrevocablemente a las leyes mercantiles y a los tribunales competentes de la Ciudad de México, México, renunciando a cualquier otro fuero que pudiera corresponderles por razón de sus domicilios presentes o futuros.</p>
-
-      <h2>12. De la Aceptación Contractual</h2>
-      <p>Al entregar el equipo, agendar visitas, aceptar cotizaciones por medios telemáticos o realizar pagos, el CLIENTE declara bajo protesta de decir verdad haber impuesto de su conocimiento el contenido del presente Contrato de Adhesión, manifestando su total conformidad con las condiciones técnicas, económicas, límites de responsabilidad y términos de custodia aquí consignados.</p>
+      <h2>12. Indivisibilidad y Ratificación Integral del Contrato de Adhesión</h2>
+      <p>Al entregar el equipo, solicitar servicios, autorizar presupuestos por medios telemáticos o efectuar liquidaciones parciales o totales, el CLIENTE ratifica bajo protesta de decir verdad haber impuesto de su pleno conocimiento la totalidad de las cláusulas, exclusiones técnicas, límites de responsabilidad y términos de custodia aquí consignados, aceptando en su integridad el presente Contrato de Adhesión sin reserva de ninguna clase.</p>
 
       <a href="/" class="btn-back">← Volver al inicio</a>
     </div>

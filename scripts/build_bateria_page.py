@@ -56,7 +56,7 @@ acsp_block = """
                 <div class="acsp-text">
                     <h3>18 Años de Experiencia Comprobables en CDMX</h3>
                     <p>"El talento de un ingeniero de laboratorio de microelectrónica, con la certificación oficial de la marca que fabricó tu equipo."</p>
-                    <p class="acsp-sub">A diferencia de grandes tiendas que cambian piezas a precios absurdos o talleres amateurs de celular que experimentan en hardware pesado, nosotros combinamos reparación nivel componente con credenciales oficiales de Apple ACSP. No confíes tu herramienta de trabajo de $40,000 MXN en alguien más.</p>
+                    <p class="acsp-sub">A diferencia de grandes tiendas que cambian piezas a precios absurdos o talleres amateurs de celular que experimentan en hardware pesado, nosotros combinamos reparación nivel componente con credenciales oficiales de Apple ACSP. ¿Por qué comprar una Mac nueva de $39,000 MXN cuando una reparación especializada desde $4,999 te ahorra más del 85% y deja tu equipo al 100%?</p>
                 </div>
             </div>
         </section>

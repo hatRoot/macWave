@@ -1334,8 +1334,9 @@ h3 {
         order: 2 !important;
     }
 
-    /* Hide WhatsApp CTA on Mobile ONLY */
-    .header-actions {
+    /* Hide CTA on Mobile ONLY to keep top bar clean and let sticky bottom bar convert */
+    .header-actions,
+    .cloned-header-cta {
         display: none !important;
     }
 

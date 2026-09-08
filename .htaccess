@@ -26,9 +26,13 @@ RewriteRule ^([^.]+)$ $1.html [L]
 RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
 RewriteRule ^ /%1 [R=301,L]
 
-# ---- 4.1 REDIRECCIONES DE URLs OBSOLETAS (Evitar 404 en Search Console) ----
+# ---- 4.1 REDIRECCIONES DE URLs OBSOLETAS Y CANÍBALES (Consolidación SEO) ----
 Redirect 301 /aviso-de-privacidad https://macwave.com.mx/terminos
 Redirect 301 /aviso-de-privacidad.html https://macwave.com.mx/terminos
+Redirect 301 /cambio-bateria-macbook-pro-air https://macwave.com.mx/bateria-macbook-cdmx
+Redirect 301 /cambio-bateria-macbook-pro-air.html https://macwave.com.mx/bateria-macbook-cdmx
+Redirect 301 /mac-mojada-urgencia https://macwave.com.mx/mac-mojada-cdmx
+Redirect 301 /mac-mojada-urgencia.html https://macwave.com.mx/mac-mojada-cdmx
 
 
 # ---- 5. CABECERAS DE SEGURIDAD Y CACHÉ HTML ----

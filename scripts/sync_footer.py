@@ -42,7 +42,6 @@ NEW_FOOTER_GRID = '''  <div class="container footer-grid" style="margin-top: 20p
   <li><a href="mac-mojada-cdmx">Reparación Mac Mojada</a></li>
   <li><a href="mantenimiento-macbook-cdmx">Mantenimiento Térmico</a></li>
   <li><a href="reparacion-imac-cdmx">Reparación iMac CDMX</a></li>
-  <li><a href="cambio-bateria-macbook-pro-air">Baterías MacBook Pro y Air</a></li>
   <li><a href="bateria-pantalla-iphone-express">Batería y Pantalla iPhone</a></li>
   </ul>
   </div>
@@ -104,6 +103,8 @@ def main():
         if any(ignored in root for ignored in ['.git', 'node_modules', 'legacy', 'scratch']):
             continue
         for file in files:
+            if file == 'index.html':
+                continue
             if file.endswith('.html'):
                 full_path = os.path.join(root, file)
                 if update_file_footer(full_path):

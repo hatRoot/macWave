@@ -103,8 +103,6 @@ def main():
         if any(ignored in root for ignored in ['.git', 'node_modules', 'legacy', 'scratch']):
             continue
         for file in files:
-            if file == 'index.html':
-                continue
             if file.endswith('.html'):
                 full_path = os.path.join(root, file)
                 if update_file_footer(full_path):

@@ -32,128 +32,60 @@
     <!-- Structured Data (Sincronizado con Index) -->
     <!-- Structured Data (JSON-LD) for SEO -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "LocalBusiness",
-          "@id": "https://macwave.com.mx/#localbusiness",
-          "name": "macWave México - Reparación Mac Nivel Componente",
-          "image": "https://macwave.com.mx/images/logo_dashboard_white.png",
-          "description": "Especialistas en reparación Mac a nivel componente en CDMX. Más de 18 años de éxito rescatando equipos que otros dan por perdidos. Baterías con 2 años de garantía.",
-          "url": "https://macwave.com.mx/",
-          "telephone": "+525535757364",
-          "priceRange": "$$",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Servicio en Sitio y Recolección en CDMX",
-            "addressLocality": "Ciudad de México",
-            "addressRegion": "CDMX",
-            "postalCode": "11560",
-            "addressCountry": "MX"
-          },
-          "areaServed": ["Polanco", "Interlomas", "Santa Fe", "Bosques de las Lomas", "Lomas de Chapultepec", "CDMX"]
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://macwave.com.mx/#localbusiness",
+        "name": "macWave México - Reparación Mac Nivel Componente",
+        "image": "https://macwave.com.mx/images/logo_dashboard_white.png",
+        "description": "Especialistas en reparación Mac a nivel componente en CDMX. Más de 18 años de éxito rescatando equipos que otros dan por perdidos. Baterías con 2 años de garantía.",
+        "url": "https://macwave.com.mx/",
+        "telephone": "+525535757364",
+        "priceRange": "$$",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Servicio en Sitio y Recolección en CDMX",
+          "addressLocality": "Ciudad de México",
+          "addressRegion": "CDMX",
+          "postalCode": "11560",
+          "addressCountry": "MX"
         },
-        {
-          "@type": "BreadcrumbList",
-          "@id": "https://macwave.com.mx/reparaciones#breadcrumb",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "item": {
-                "@id": "https://macwave.com.mx/",
-                "name": "Inicio"
-              }
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "item": {
-                "@id": "https://macwave.com.mx/reparaciones",
-                "name": "Reparaciones"
-              }
-            }
-          ]
-        },
-        {
-
-          "@type": "Product",
-          "@id": "https://macwave.com.mx/reparaciones#mac-repair-v4",
-          "mainEntityOfPage": { "@id": "https://macwave.com.mx/reparaciones#webpage" },
-          "name": "Reparación Especializada Mac CDMX",
-          "image": "https://macwave.com.mx/images/logo_dashboard_white.png",
-          "description": "Reparación técnica de tarjetas lógicas, pantallas, teclados y baterías para MacBook Pro, Air e iMac con 2 años de garantía.",
-          "sku": "MW-REP-002",
-          "brand": {
-            "@type": "Brand",
-            "name": "Apple"
-          },
-          "offers": {
-            "@type": "AggregateOffer",
-            "priceCurrency": "MXN",
-            "lowPrice": "1499",
-            "highPrice": "12999",
-            "offerCount": "20",
-            "availability": "https://schema.org/InStock",
-            "priceValidUntil": "2026-12-31",
-            "hasMerchantReturnPolicy": {
-              "@type": "MerchantReturnPolicy",
-              "applicableCountry": "MX",
-              "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnPeriod",
-              "merchantReturnDays": "30",
-              "returnMethod": "https://schema.org/ReturnInStore",
-              "returnFees": "https://schema.org/FreeReturn"
-            },
-            "shippingDetails": {
-              "@type": "OfferShippingDetails",
-              "shippingRate": {
-                "@type": "MonetaryAmount",
-                "value": "0",
-                "currency": "MXN"
-              },
-              "shippingDestination": {
-                "@type": "DefinedRegion",
-                "addressCountry": "MX"
-              },
-              "deliveryTime": {
-                "@type": "ShippingDeliveryTime",
-                "handlingTime": {
-                  "@type": "QuantitativeValue",
-                  "minValue": "0",
-                  "maxValue": "1",
-                  "unitCode": "DAY"
-                },
-                "transitTime": {
-                  "@type": "ShippingDeliveryTime",
-                  "minValue": "1",
-                  "maxValue": "3",
-                  "unitCode": "DAY"
-                }
-              }
+        "areaServed": [
+          "Polanco",
+          "Interlomas",
+          "Santa Fe",
+          "Bosques de las Lomas",
+          "Lomas de Chapultepec",
+          "CDMX"
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://macwave.com.mx/reparaciones#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@id": "https://macwave.com.mx/",
+              "name": "Inicio"
             }
           },
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "5",
-            "reviewCount": "150"
-          },
-          "review": {
-            "@type": "Review",
-            "reviewRating": {
-              "@type": "Rating",
-              "ratingValue": "5"
-            },
-            "author": {
-              "@type": "Person",
-              "name": "Cliente Satisfecho"
-            },
-            "reviewBody": "Excelente servicio de reparación para mi MacBook. Todo quedó como nuevo."
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "item": {
+              "@id": "https://macwave.com.mx/reparaciones",
+              "name": "Reparaciones"
+            }
           }
-        }
-      ]
-    }
-    </script>
+        ]
+      }
+    ]
+  }
+  </script>
 
     <link rel="icon" type="image/png" href="https://macwave.com.mx/images/favicon1.png">
     <meta name="theme-color" content="#000000">

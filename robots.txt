@@ -10,10 +10,15 @@ Disallow: /bin/
 Disallow: /cotizaciones/
 Disallow: /clientes/
 Disallow: /html_sidebar/
+Disallow: /dashboard-ods
 Disallow: /dashboard-ods.html
+Disallow: /status-ods
 Disallow: /status-ods.html
+Disallow: /ods
 Disallow: /ods.html
+Disallow: /tecnicos
 Disallow: /tecnicos.html
+Disallow: /ticket-badge
 Disallow: /ticket-badge.html
 
 # Reglas específicas y directas para el robot principal de búsqueda y posicionamiento
@@ -26,10 +31,15 @@ Disallow: /bin/
 Disallow: /cotizaciones/
 Disallow: /clientes/
 Disallow: /html_sidebar/
+Disallow: /dashboard-ods
 Disallow: /dashboard-ods.html
+Disallow: /status-ods
 Disallow: /status-ods.html
+Disallow: /ods
 Disallow: /ods.html
+Disallow: /tecnicos
 Disallow: /tecnicos.html
+Disallow: /ticket-badge
 Disallow: /ticket-badge.html
 
 # Mapa del sitio optimizado para Reparación Mac (Priorizado)

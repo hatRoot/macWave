@@ -30,7 +30,18 @@ RewriteRule ^(.*)index(\.html)?$ https://macwave.com.mx/ [R=301,L]
 RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
 RewriteRule ^ /%1 [R=301,L]
 
-# ---- 4.1 REDIRECCIONES DE URLs OBSOLETAS Y ERRORES SEARCH CONSOLE ----
+# ---- 4.1 REDIRECCIONES DE CONSOLIDACIÓN SEO (Cero Canibalización) ----
+# Consolidar Baterías MacBook en la URL reina
+Redirect 301 /cambio-bateria-macbook-pro-air https://macwave.com.mx/bateria-macbook-cdmx
+Redirect 301 /cambio-bateria-macbook-pro-air.html https://macwave.com.mx/bateria-macbook-cdmx
+Redirect 301 /bateria-pantalla-iphone-express https://macwave.com.mx/bateria-macbook-cdmx
+Redirect 301 /bateria-pantalla-iphone-express.html https://macwave.com.mx/bateria-macbook-cdmx
+
+# Consolidar Mac Mojada en la URL reina
+Redirect 301 /mac-mojada-urgencia https://macwave.com.mx/mac-mojada-cdmx
+Redirect 301 /mac-mojada-urgencia.html https://macwave.com.mx/mac-mojada-cdmx
+
+# Redirecciones de URLs obsoletas y errores Search Console
 RedirectMatch 301 ^/empresas\.html>.* https://macwave.com.mx/empresas
 Redirect 301 /aviso-de-privacidad https://macwave.com.mx/terminos
 Redirect 301 /aviso-de-privacidad.html https://macwave.com.mx/terminos

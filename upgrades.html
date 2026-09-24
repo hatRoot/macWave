@@ -33,104 +33,47 @@
   <!-- Structured Data (Sincronizado con Index) -->
   <script type="application/ld+json">
   {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "LocalBusiness",
-        "@id": "https://macwave.com.mx/#localbusiness",
-        "name": "macWave México - Upgrades Mac",
-        "url": "https://macwave.com.mx/",
-        "telephone": "+525535757364",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Servicio en Sitio y Recolección en CDMX",
-          "addressLocality": "Ciudad de México",
-          "addressRegion": "CDMX",
-          "postalCode": "11560",
-          "addressCountry": "MX"
-        }
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://macwave.com.mx/upgrades#breadcrumb",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "item": {
-              "@id": "https://macwave.com.mx/",
-              "name": "Inicio"
-            }
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "item": {
-              "@id": "https://macwave.com.mx/upgrades",
-              "name": "Actualizaciones"
-            }
-          }
-        ]
-      },
-      {
-        "@type": "Product",
-        "@id": "https://macwave.com.mx/upgrades#mac-repair-v4",
-        "mainEntityOfPage": { "@id": "https://macwave.com.mx/upgrades#webpage" },
-        "name": "Actualización de Hardware y macOS",
-        "image": "https://macwave.com.mx/images/logo_dashboard_white.png",
-        "description": "Revive tu Mac antigua con instalación de macOS Sonoma/Sequoia vía OpenCore Legacy Patcher and aumentos de SSD y RAM en CDMX.",
-        "sku": "MW-UPG-001",
-        "brand": {
-          "@type": "Brand",
-          "name": "Apple"
-        },
-        "offers": {
-          "@type": "AggregateOffer",
-          "priceCurrency": "MXN",
-          "lowPrice": "1499",
-          "highPrice": "9999",
-          "offerCount": "15",
-          "availability": "https://schema.org/InStock",
-          "priceValidUntil": "2026-12-31",
-          "hasMerchantReturnPolicy": {
-            "@type": "MerchantReturnPolicy",
-            "applicableCountry": "MX",
-            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnPeriod",
-            "merchantReturnDays": "30",
-            "returnMethod": "https://schema.org/ReturnInStore",
-            "returnFees": "https://schema.org/FreeReturn"
-          },
-          "shippingDetails": {
-            "@type": "OfferShippingDetails",
-            "shippingRate": {
-              "@type": "MonetaryAmount",
-              "value": "0",
-              "currency": "MXN"
-            },
-            "shippingDestination": {
-              "@type": "DefinedRegion",
-              "addressCountry": "MX"
-            },
-            "deliveryTime": {
-              "@type": "ShippingDeliveryTime",
-              "handlingTime": {
-                "@type": "QuantitativeValue",
-                "minValue": "0",
-                "maxValue": "1",
-                "unitCode": "DAY"
-              },
-              "transitTime": {
-                "@type": "ShippingDeliveryTime",
-                "minValue": "1",
-                "maxValue": "3",
-                "unitCode": "DAY"
-              }
-            }
-          }
-        }
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://macwave.com.mx/#localbusiness",
+      "name": "macWave México - Upgrades Mac",
+      "url": "https://macwave.com.mx/",
+      "telephone": "+525535757364",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Servicio en Sitio y Recolección en CDMX",
+        "addressLocality": "Ciudad de México",
+        "addressRegion": "CDMX",
+        "postalCode": "11560",
+        "addressCountry": "MX"
       }
-    ]
-  }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://macwave.com.mx/upgrades#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@id": "https://macwave.com.mx/",
+            "name": "Inicio"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@id": "https://macwave.com.mx/upgrades",
+            "name": "Actualizaciones"
+          }
+        }
+      ]
+    }
+  ]
+}
   </script>
 
   <!-- Favicon -->

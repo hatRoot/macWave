@@ -29,113 +29,58 @@
   <!-- Structured Data (JSON-LD) for SEO -->
   <script type="application/ld+json">
   {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "LocalBusiness",
-        "@id": "https://macwave.com.mx/#localbusiness",
-        "name": "macWave México - Especialistas en Mac Mojada",
-        "url": "https://macwave.com.mx/",
-        "telephone": "+525535757364",
-        "image": "https://macwave.com.mx/images/logo_dashboard_white.png",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Servicio en Sitio y Recolección en CDMX",
-          "addressLocality": "Ciudad de México",
-          "addressRegion": "CDMX",
-          "postalCode": "11560",
-          "addressCountry": "MX"
-        }
-      },
-      {
-        "@type": "WebPage",
-        "@id": "https://macwave.com.mx/mac-mojada-cdmx#webpage",
-        "url": "https://macwave.com.mx/mac-mojada-cdmx",
-        "name": "Reparación de Mac Mojada CDMX | macWave México",
-        "description": "¿Mac mojada o con líquido? No la enciendas. Especialistas en rescate de tarjetas lógicas MacBook en CDMX.",
-        "isPartOf": { "@id": "https://macwave.com.mx/#website" }
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://macwave.com.mx/mac-mojada-cdmx#breadcrumb",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "item": {
-              "@id": "https://macwave.com.mx/",
-              "name": "Inicio"
-            }
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "item": {
-              "@id": "https://macwave.com.mx/mac-mojada-cdmx",
-              "name": "Mac Mojada"
-            }
-          }
-        ]
-      },
-      {
-        "@type": "Product",
-        "@id": "https://macwave.com.mx/mac-mojada-cdmx#mac-repair-v4",
-        "mainEntityOfPage": { "@id": "https://macwave.com.mx/mac-mojada-cdmx#webpage" },
-        "name": "Reparación de Mac Mojada",
-        "image": "https://macwave.com.mx/images/mac_mojada_solucion.jpg",
-        "description": "Limpieza ultrasónica y micro-soldadura avanzada para rescatar MacBook Pro, Air e iMac con daño por líquido en CDMX.",
-        "sku": "MW-MOJ-001",
-        "brand": {
-          "@type": "Brand",
-          "name": "Apple"
-        },
-        "offers": {
-          "@type": "AggregateOffer",
-          "priceCurrency": "MXN",
-          "lowPrice": "1499",
-          "highPrice": "12999",
-          "offerCount": "20",
-          "availability": "https://schema.org/InStock",
-          "priceValidUntil": "2026-12-31",
-          "hasMerchantReturnPolicy": {
-            "@type": "MerchantReturnPolicy",
-            "applicableCountry": "MX",
-            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnPeriod",
-            "merchantReturnDays": "30",
-            "returnMethod": "https://schema.org/ReturnInStore",
-            "returnFees": "https://schema.org/FreeReturn"
-          },
-          "shippingDetails": {
-            "@type": "OfferShippingDetails",
-            "shippingRate": {
-              "@type": "MonetaryAmount",
-              "value": "0",
-              "currency": "MXN"
-            },
-            "shippingDestination": {
-              "@type": "DefinedRegion",
-              "addressCountry": "MX"
-            },
-            "deliveryTime": {
-              "@type": "ShippingDeliveryTime",
-              "handlingTime": {
-                "@type": "QuantitativeValue",
-                "minValue": "0",
-                "maxValue": "1",
-                "unitCode": "DAY"
-              },
-              "transitTime": {
-                "@type": "ShippingDeliveryTime",
-                "minValue": "1",
-                "maxValue": "3",
-                "unitCode": "DAY"
-              }
-            }
-          }
-        }
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://macwave.com.mx/#localbusiness",
+      "name": "macWave México - Especialistas en Mac Mojada",
+      "url": "https://macwave.com.mx/",
+      "telephone": "+525535757364",
+      "image": "https://macwave.com.mx/images/logo_dashboard_white.png",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Servicio en Sitio y Recolección en CDMX",
+        "addressLocality": "Ciudad de México",
+        "addressRegion": "CDMX",
+        "postalCode": "11560",
+        "addressCountry": "MX"
       }
-    ]
-  }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://macwave.com.mx/mac-mojada-cdmx#webpage",
+      "url": "https://macwave.com.mx/mac-mojada-cdmx",
+      "name": "Reparación de Mac Mojada CDMX | macWave México",
+      "description": "¿Mac mojada o con líquido? No la enciendas. Especialistas en rescate de tarjetas lógicas MacBook en CDMX.",
+      "isPartOf": {
+        "@id": "https://macwave.com.mx/#website"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://macwave.com.mx/mac-mojada-cdmx#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@id": "https://macwave.com.mx/",
+            "name": "Inicio"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@id": "https://macwave.com.mx/mac-mojada-cdmx",
+            "name": "Mac Mojada"
+          }
+        }
+      ]
+    }
+  ]
+}
   </script>
 
  <!-- Favicon & GA -->

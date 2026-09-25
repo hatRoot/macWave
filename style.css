@@ -1056,14 +1056,16 @@ h3 {
 /* Footer */
 .main-footer {
     background-color: #000000;
-    color: var(--text-secondary);
+    color: #8e8e93;
     padding-top: 0;
-    border-top: 1px solid #1a1a1a;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 'Inter', sans-serif;
 }
 
 .footer-sitemap-banner {
     padding: 24px 0 20px;
-    border-bottom: 1px solid #1f1f23;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     margin-bottom: 35px;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(0, 0, 0, 0) 100%);
 }
@@ -1080,24 +1082,27 @@ h3 {
     display: flex;
     align-items: center;
     gap: 12px;
+    flex-wrap: wrap;
 }
 
 .footer-sitemap-pill {
-    display: inline-block;
-    padding: 3px 10px;
-    background: rgba(0, 156, 223, 0.15);
-    border: 1px solid rgba(0, 156, 223, 0.4);
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    background: rgba(0, 156, 223, 0.12);
+    border: 1px solid rgba(0, 156, 223, 0.35);
     color: #009CDF;
     border-radius: 980px;
-    font-size: 0.72em;
+    font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
 }
 
 .footer-sitemap-heading {
     margin: 0;
-    font-size: 1.15em;
+    font-size: 1.15rem;
     font-weight: 800;
     color: #ffffff;
     letter-spacing: -0.01em;
@@ -1105,8 +1110,9 @@ h3 {
 
 .footer-sitemap-sub {
     margin: 0;
-    font-size: 0.82em;
+    font-size: 0.82rem;
     color: #8e8e93;
+    font-weight: 500;
 }
 
 /* Acceso OPS — solo index footer, doble clic */
@@ -1114,57 +1120,64 @@ h3 {
     display: inline-block;
     width: 10px;
     height: 10px;
-    margin: 0 8px;
+    margin: 0 10px;
     padding: 0;
     background: #ff6600;
     border: none;
     border-radius: 50%;
     cursor: pointer;
     box-sizing: border-box;
-    opacity: 0.5;
-    transition: opacity 0.2s;
+    opacity: 0.65;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    vertical-align: middle;
+    flex-shrink: 0;
 }
 
 .footer-ops-dot:hover {
     opacity: 1;
+    transform: scale(1.25);
 }
 
 .footer-grid {
     display: grid;
-    grid-template-columns: 1.3fr 1fr 1fr 1fr;
-    gap: 30px;
-    padding-bottom: 35px;
+    grid-template-columns: 1.35fr 1fr 1fr 1fr;
+    gap: 32px;
+    padding-bottom: 40px;
     text-align: left;
 }
 
 .footer-col h3.footer-brand-title {
-    font-size: 1.4em;
-    color: var(--text-primary);
-    margin-bottom: 8px;
+    font-size: 1.35rem;
+    color: #ffffff;
+    margin-bottom: 6px;
     margin-top: 0;
+    font-weight: 800;
+    letter-spacing: -0.02em;
 }
 
 .footer-col h3.footer-brand-title span {
     font-weight: 300;
+    opacity: 0.9;
 }
 
 .footer-brand-tagline {
     color: var(--accent-orange, #ff6600);
     font-weight: 700;
-    margin-bottom: 10px;
-    font-size: 0.85em;
+    margin-bottom: 8px;
+    font-size: 0.84rem;
     line-height: 1.4;
 }
 
 .footer-brand-desc {
-    font-size: 0.8em;
-    color: #888888;
-    margin-bottom: 14px;
-    line-height: 1.5;
+    font-size: 0.82rem;
+    color: #8e8e93;
+    margin-bottom: 16px;
+    line-height: 1.55;
+    max-width: 320px;
 }
 
 .footer-contact-info {
-    margin: 12px 0;
+    margin: 14px 0;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -1175,31 +1188,51 @@ h3 {
     text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.85em;
+    gap: 10px;
+    font-size: 0.86rem;
     font-weight: 600;
-    transition: color 0.2s ease;
+    padding: 7px 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 980px;
+    transition: all 0.2s ease;
+    width: fit-content;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .footer-contact-link:hover {
-    color: var(--accent-orange, #ff6600);
+    color: #009CDF;
+    background: rgba(0, 156, 223, 0.12);
+    border-color: rgba(0, 156, 223, 0.4);
+    transform: translateX(2px);
 }
 
 .footer-social-wrap {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 10px;
     margin-top: 14px;
 }
 
 .footer-social-wrap a {
-    color: #ffffff;
-    transition: transform 0.2s ease, color 0.2s ease;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #d1d1d6;
+    text-decoration: none;
+    transition: all 0.2s ease;
 }
 
 .footer-social-wrap a:hover {
-    color: var(--accent-orange, #ff6600);
+    color: #ffffff;
+    background: rgba(0, 156, 223, 0.18);
+    border-color: #009CDF;
     transform: translateY(-2px);
 }
 
@@ -1208,8 +1241,8 @@ h3 {
     margin-bottom: 16px;
     margin-top: 0;
     font-weight: 700;
-    font-size: 0.9em;
-    letter-spacing: 0.04em;
+    font-size: 0.88rem;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
     display: flex;
     align-items: center;
@@ -1219,8 +1252,8 @@ h3 {
 .footer-col h4::before {
     content: "";
     display: inline-block;
-    width: 4px;
-    height: 14px;
+    width: 3px;
+    height: 13px;
     background: var(--accent-orange, #ff6600);
     border-radius: 2px;
 }
@@ -1229,33 +1262,48 @@ h3 {
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
 }
 
 .footer-col li {
-    margin-bottom: 8px;
+    margin: 0;
 }
 
 .footer-col li a {
-    color: #d1d1d6;
+    color: #8e8e93;
     text-decoration: none;
-    font-size: 0.88em;
+    font-size: 0.86rem;
     transition: all 0.2s ease;
     display: inline-block;
-    padding: 3px 0;
     line-height: 1.45;
 }
 
 .footer-col li a:hover {
     color: #ffffff;
     transform: translateX(3px);
-    text-decoration: none;
 }
 
-.footer-bottom {
+.footer-bottom-mini {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 18px 0;
+    background: #000000;
     text-align: center;
-    padding: 20px 0;
-    font-size: 0.85em;
-    color: var(--text-muted);
+}
+
+.footer-bottom-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    color: #888888;
+    font-size: 0.8rem;
+}
+
+.footer-bottom-inner p {
+    margin: 0;
 }
 
 /* Media Queries para Responsiveness */

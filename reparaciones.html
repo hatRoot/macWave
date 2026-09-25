@@ -16,6 +16,9 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="author" content="macWave México">
     <meta name="geo.region" content="MX-CMX">
+    <meta name="geo.placename" content="Ciudad de México">
+    <meta name="geo.position" content="19.432608;-99.133209">
+    <meta name="ICBM" content="19.432608, -99.133209">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
@@ -34,9 +37,19 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "LocalBusiness",
+      "@type": [
+        "LocalBusiness",
+        "ComputerRepairService"
+      ],
       "@id": "https://macwave.com.mx/#localbusiness",
       "name": "macWave México - Reparación Mac Nivel Componente",
+      "alternateName": [
+        "macWave",
+        "macWave México",
+        "Reparación de MacBook Cerca de Mí",
+        "Reparación Mac CDMX",
+        "Servicio Técnico Mac Cerca de Mí"
+      ],
       "image": "https://macwave.com.mx/images/logo_dashboard_white.png",
       "description": "Especialistas en reparación Mac a nivel componente en CDMX. Más de 18 años de éxito rescatando equipos que otros dan por perdidos. Baterías con 2 años de garantía.",
       "url": "https://macwave.com.mx/",
@@ -50,13 +63,29 @@
         "postalCode": "11560",
         "addressCountry": "MX"
       },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 19.432608,
+        "longitude": -99.133209
+      },
       "areaServed": [
         "Polanco",
         "Interlomas",
         "Santa Fe",
         "Bosques de las Lomas",
         "Lomas de Chapultepec",
-        "CDMX"
+        "Tecamachalco",
+        "Pedregal",
+        "Satélite",
+        "Roma",
+        "Condesa",
+        "Coyoacán",
+        "Del Valle",
+        "Narvarte",
+        "Naucalpan",
+        "Huixquilucan",
+        "CDMX",
+        "Estado de México"
       ]
     },
     {

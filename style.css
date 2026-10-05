@@ -2589,7 +2589,7 @@ h3 {
 
 /* Contact Parallax Section */
 .contact-parallax-section {
-    background-image: url('./images/computadoras.png');
+    background-image: url('./images/computadoras.webp');
     background-attachment: fixed;
     /* Efecto Parallax */
     background-position: center;

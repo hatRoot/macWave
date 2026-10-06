@@ -160,6 +160,155 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ============================================================
+    // MODAL VIP: Filtro de Servicio Exclusivo a Domicilio y WhatsApp
+    // ============================================================
+    let waFilterModal = document.getElementById('wa-filter-modal');
+    if (!waFilterModal) {
+        waFilterModal = document.createElement('div');
+        waFilterModal.className = 'modal-overlay';
+        waFilterModal.id = 'wa-filter-modal';
+        waFilterModal.setAttribute('role', 'dialog');
+        waFilterModal.setAttribute('aria-modal', 'true');
+        waFilterModal.setAttribute('aria-label', 'Modalidad de Servicio Exclusivo macWave');
+        waFilterModal.innerHTML = `
+    <div class="wa-filter-modal-card" role="document">
+      <button class="close-wa-filter-btn" id="close-wa-filter-modal" type="button" aria-label="Cerrar ventana">×</button>
+      
+      <span class="wa-filter-badge">
+        <span>🚚</span> Servicio en Sitio y Laboratorio CDMX
+      </span>
+      
+      <h3>¿Cómo funciona nuestro servicio técnico?</h3>
+      
+      <p class="wa-filter-intro">
+        Para tu comodidad y máxima seguridad, <strong>no necesitas salir al tráfico ni hacer filas en locales comerciales</strong>:
+      </p>
+      
+      <div class="wa-filter-points">
+        <div class="wa-filter-item">
+          <span class="point-check">✔</span>
+          <div><strong>Servicio 100% a Domicilio u Oficina:</strong> Para baterías, diagnósticos y mantenimiento, el especialista acude directo a tu puerta con orden de servicio foliada.</div>
+        </div>
+        <div class="wa-filter-item">
+          <span class="point-check">✔</span>
+          <div><strong>Laboratorio Especializado:</strong> Para cortos en tarjeta lógica o Mac mojadas, realizamos recolección segura con traslado asegurado a laboratorio.</div>
+        </div>
+        <div class="wa-filter-item">
+          <span class="point-check">✔</span>
+          <div><strong>Cero Locales Públicos:</strong> Tu equipo nunca se expone en plazas de computación ni en manos de intermediarios.</div>
+        </div>
+      </div>
+      
+      <div class="wa-filter-prompt">
+        📍 <strong>Para coordinar visita o recolección con especialista:</strong><br>
+        Indícanos qué modelo de Mac tienes y tu colonia o alcaldía en CDMX / Área Metropolitana.
+      </div>
+
+      <div class="wa-filter-inputs">
+        <div class="wa-input-group">
+          <label for="wa-input-model">Modelo de tu Mac (opcional):</label>
+          <input type="text" id="wa-input-model" placeholder="Ej. MacBook Pro 2020, MacBook Air M1, iMac..." autocomplete="off">
+        </div>
+        <div class="wa-input-group">
+          <label for="wa-input-colonia">Colonia o Alcaldía (opcional):</label>
+          <input type="text" id="wa-input-colonia" placeholder="Ej. Polanco, Del Valle, Coyoacán, Satélite..." autocomplete="off">
+        </div>
+      </div>
+      
+      <div class="wa-filter-actions">
+        <a id="btn-wa-modal-confirm" href="https://wa.me/525535757364?text=Hola%20macWave%2C%20solicito%20servicio%20a%20domicilio%20o%20recolecci%C3%B3n%20en%20CDMX.%20Mi%20modelo%20es%3A%20...%20y%20estoy%20en%20la%20colonia%3A%20..." class="btn-wa-modal-confirm" target="_blank" rel="noopener noreferrer">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+          </svg>
+          Continuar a WhatsApp Oficial
+        </a>
+        <button type="button" class="btn-wa-modal-cancel" id="cancel-wa-filter-modal">Regresar al sitio</button>
+      </div>
+    </div>`;
+        document.body.appendChild(waFilterModal);
+    }
+
+    const closeWaFilterBtn = document.getElementById('close-wa-filter-modal');
+    const cancelWaFilterBtn = document.getElementById('cancel-wa-filter-modal');
+    const btnWaModalConfirm = document.getElementById('btn-wa-modal-confirm');
+    const inputModel = document.getElementById('wa-input-model');
+    const inputColonia = document.getElementById('wa-input-colonia');
+
+    let currentBaseMessage = "Hola macWave, solicito servicio a domicilio o recolección técnica en CDMX.";
+
+    function updateConfirmLink() {
+        if (!btnWaModalConfirm) return;
+        const model = inputModel ? inputModel.value.trim() : '';
+        const colonia = inputColonia ? inputColonia.value.trim() : '';
+        
+        let text = currentBaseMessage;
+        if (model || colonia) {
+            text += ` [Modelo: ${model || 'Por confirmar'} | Colonia: ${colonia || 'Por confirmar'}]`;
+        } else {
+            text += ` [Modelo: ... | Colonia: ...]`;
+        }
+        btnWaModalConfirm.setAttribute('href', `https://wa.me/525535757364?text=${encodeURIComponent(text)}`);
+    }
+
+    if (inputModel) inputModel.addEventListener('input', updateConfirmLink);
+    if (inputColonia) inputColonia.addEventListener('input', updateConfirmLink);
+
+    function openWaFilterModal(e) {
+        if (e) {
+            e.preventDefault();
+            const sourceLink = e.currentTarget || e.target.closest('a');
+            if (sourceLink) {
+                const originalHref = sourceLink.getAttribute('href');
+                if (originalHref && originalHref.includes('wa.me')) {
+                    if (originalHref.includes('text=')) {
+                        currentBaseMessage = decodeURIComponent(originalHref.split('text=')[1]);
+                    } else {
+                        currentBaseMessage = "Hola macWave, solicito servicio a domicilio o recolección técnica en CDMX.";
+                    }
+                }
+            }
+        }
+        updateConfirmLink();
+        if (!waFilterModal) return;
+        waFilterModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeWaFilterModal() {
+        if (!waFilterModal) return;
+        waFilterModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // Interceptar todos los enlaces a WhatsApp excepto el botón del modal
+    document.addEventListener('click', (e) => {
+        const waAnchor = e.target.closest('a[href*="wa.me/525535757364"]');
+        if (waAnchor && !waAnchor.closest('#wa-filter-modal')) {
+            openWaFilterModal(e);
+        }
+    });
+
+    if (closeWaFilterBtn) closeWaFilterBtn.addEventListener('click', closeWaFilterModal);
+    if (cancelWaFilterBtn) cancelWaFilterBtn.addEventListener('click', closeWaFilterModal);
+    if (btnWaModalConfirm) {
+        btnWaModalConfirm.addEventListener('click', () => {
+            setTimeout(closeWaFilterModal, 300);
+        });
+    }
+
+    if (waFilterModal) {
+        waFilterModal.addEventListener('click', (e) => {
+            if (e.target === waFilterModal) closeWaFilterModal();
+        });
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && waFilterModal && waFilterModal.classList.contains('active')) {
+            closeWaFilterModal();
+        }
+    });
+
     // Helper to open modal
     function openModal(e) {
         e.preventDefault();

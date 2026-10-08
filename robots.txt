@@ -8,7 +8,6 @@ Disallow: /includes/
 Disallow: /tmp/
 Disallow: /bin/
 Disallow: /cotizaciones/
-Disallow: /clientes/
 Disallow: /html_sidebar/
 Disallow: /dashboard-ods
 Disallow: /dashboard-ods.html
@@ -29,7 +28,6 @@ Disallow: /includes/
 Disallow: /tmp/
 Disallow: /bin/
 Disallow: /cotizaciones/
-Disallow: /clientes/
 Disallow: /html_sidebar/
 Disallow: /dashboard-ods
 Disallow: /dashboard-ods.html

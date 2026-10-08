@@ -2789,14 +2789,8 @@ h3 {
 
 /* Contact Parallax Section */
 .contact-parallax-section {
-    background-image: url('./images/computadoras.webp');
-    background-attachment: fixed;
-    /* Efecto Parallax */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background: #000000;
     height: 400px;
-    /* Altura suficiente para el efecto */
     position: relative;
     display: flex;
     justify-content: center;

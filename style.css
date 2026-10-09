@@ -1294,8 +1294,11 @@ h3 {
     margin: 0;
 }
 
-.footer-col li a {
-    color: #4daafd;
+.footer-col li a,
+.footer-col a,
+.footer-directory a,
+.footer-grid .footer-col ul li a {
+    color: #4daafd !important;
     text-decoration: none;
     font-size: 0.88rem;
     font-weight: 500;
@@ -1304,8 +1307,11 @@ h3 {
     line-height: 1.45;
 }
 
-.footer-col li a:hover {
-    color: #ffffff;
+.footer-col li a:hover,
+.footer-col a:hover,
+.footer-directory a:hover,
+.footer-grid .footer-col ul li a:hover {
+    color: #ffffff !important;
     transform: translateX(3px);
 }
 

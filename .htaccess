@@ -41,6 +41,28 @@ Redirect 301 /bateria-pantalla-iphone-express.html https://macwave.com.mx/bateri
 Redirect 301 /mac-mojada-urgencia https://macwave.com.mx/mac-mojada-cdmx
 Redirect 301 /mac-mojada-urgencia.html https://macwave.com.mx/mac-mojada-cdmx
 
+# Fusión y consolidación de Upgrades (iMac y macOS hacia /upgrades)
+Redirect 301 /reparacion-imac-cdmx https://macwave.com.mx/upgrades
+Redirect 301 /reparacion-imac-cdmx.html https://macwave.com.mx/upgrades
+Redirect 301 /actualizar-mac-os-vieja https://macwave.com.mx/upgrades
+Redirect 301 /actualizar-mac-os-vieja.html https://macwave.com.mx/upgrades
+
+# Fusión y consolidación de Tarjeta Lógica (GPU/video hacia /reparacion-corto-logica-mac)
+Redirect 301 /reflow-gpu-mac https://macwave.com.mx/reparacion-corto-logica-mac
+Redirect 301 /reflow-gpu-mac.html https://macwave.com.mx/reparacion-corto-logica-mac
+
+# Fusión y consolidación de Pantalla/Flexgate hacia /cambio-teclado-macbook-cdmx
+Redirect 301 /reparacion-flexgate-macbook https://macwave.com.mx/cambio-teclado-macbook-cdmx
+Redirect 301 /reparacion-flexgate-macbook.html https://macwave.com.mx/cambio-teclado-macbook-cdmx
+
+# Fusión y consolidación de Soporte Corporativo hacia /empresas
+Redirect 301 /software https://macwave.com.mx/empresas
+Redirect 301 /software.html https://macwave.com.mx/empresas
+Redirect 301 /casos-reales https://macwave.com.mx/empresas
+Redirect 301 /casos-reales.html https://macwave.com.mx/empresas
+Redirect 301 /reparacion-laptops-gamer-cdmx https://macwave.com.mx/reparaciones
+Redirect 301 /reparacion-laptops-gamer-cdmx.html https://macwave.com.mx/reparaciones
+
 # Redirecciones de URLs obsoletas y errores Search Console
 RedirectMatch 301 ^/empresas\.html>.* https://macwave.com.mx/empresas
 Redirect 301 /aviso-de-privacidad https://macwave.com.mx/terminos

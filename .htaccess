@@ -41,9 +41,7 @@ Redirect 301 /bateria-pantalla-iphone-express.html https://macwave.com.mx/bateri
 Redirect 301 /mac-mojada-urgencia https://macwave.com.mx/mac-mojada-cdmx
 Redirect 301 /mac-mojada-urgencia.html https://macwave.com.mx/mac-mojada-cdmx
 
-# Fusión y consolidación de Upgrades (iMac y macOS hacia /upgrades)
-Redirect 301 /reparacion-imac-cdmx https://macwave.com.mx/upgrades
-Redirect 301 /reparacion-imac-cdmx.html https://macwave.com.mx/upgrades
+# Fusión y consolidación de Upgrades (macOS antigua hacia /upgrades)
 Redirect 301 /actualizar-mac-os-vieja https://macwave.com.mx/upgrades
 Redirect 301 /actualizar-mac-os-vieja.html https://macwave.com.mx/upgrades
 

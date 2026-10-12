@@ -369,6 +369,116 @@ function auditSitemapAndRobots() {
 }
 
 /**
+ * 6. Auditoría de Blindaje SEO (Títulos y H1 Ganadores Protegidos)
+ */
+function auditSeoGuardrails() {
+  logHeader('6. AUDITORÍA DE BLINDAJE SEO (TÍTULOS, H1 Y SERVIDOR)');
+  let issuesFound = 0;
+
+  // Páginas pilares estrictamente blindadas contra alteraciones no autorizadas
+  const PILLARS = [
+    {
+      file: 'index.html',
+      name: 'Home / Portada',
+      requiredTitleKeywords: ['reparación', 'mac', 'cdmx'],
+      maxTitleLength: 65,
+      requiredH1Keywords: ['reparación', 'mac'],
+    },
+    {
+      file: 'bateria-macbook-cdmx.html',
+      name: 'Pilar Batería',
+      requiredTitleKeywords: ['batería', 'macbook', 'cdmx'],
+      requiredH1Keywords: ['batería', 'macbook'],
+    },
+    {
+      file: 'mac-mojada-cdmx.html',
+      name: 'Pilar Mac Mojada',
+      requiredTitleKeywords: ['mac mojada', 'cdmx'],
+      requiredH1Keywords: ['mac mojada'],
+    },
+    {
+      file: 'reparacion-imac-cdmx.html',
+      name: 'Pilar iMac Lenta / SSD',
+      requiredTitleKeywords: ['imac', 'cdmx'],
+      requiredH1Keywords: ['imac'],
+    },
+    {
+      file: 'reparacion-corto-logica-mac.html',
+      name: 'Pilar Tarjeta Lógica',
+      requiredTitleKeywords: ['tarjeta lógica'],
+      requiredH1Keywords: ['tarjeta lógica'],
+    },
+  ];
+
+  for (const pillar of PILLARS) {
+    const fullPath = path.join(ROOT_DIR, pillar.file);
+    if (!fs.existsSync(fullPath)) {
+      logError(`Página pilar obligatoria no encontrada: ${pillar.file}`);
+      issuesFound++;
+      continue;
+    }
+
+    const content = fs.readFileSync(fullPath, 'utf8');
+
+    // 1. Validar <title>
+    const titleMatch = /<title[^>]*>([\s\S]*?)<\/title>/i.exec(content);
+    if (!titleMatch) {
+      logError(`[${pillar.file}] Falta la etiqueta <title>.`);
+      issuesFound++;
+    } else {
+      const titleText = titleMatch[1].trim();
+      if (pillar.maxTitleLength && titleText.length > pillar.maxTitleLength) {
+        logError(`[${pillar.file}] <title> excede ${pillar.maxTitleLength} caracteres (${titleText.length} car): "${titleText}". Riesgo de corte con "..." en Google.`);
+        issuesFound++;
+      }
+      for (const kw of pillar.requiredTitleKeywords) {
+        if (!titleText.toLowerCase().includes(kw.toLowerCase())) {
+          logError(`[${pillar.file}] <title> alterado indebidamente: falta la palabra clave ganadora "${kw}".`);
+          issuesFound++;
+        }
+      }
+    }
+
+    // 2. Validar <h1>
+    const h1Match = /<h1[^>]*>([\s\S]*?)<\/h1>/i.exec(content);
+    if (!h1Match) {
+      logError(`[${pillar.file}] Falta el encabezado estructural <h1>.`);
+      issuesFound++;
+    } else {
+      const h1Clean = h1Match[1].replace(/<[^>]+>/g, '').trim();
+      for (const kw of pillar.requiredH1Keywords) {
+        if (!h1Clean.toLowerCase().includes(kw.toLowerCase())) {
+          logError(`[${pillar.file}] <h1> alterado indebidamente: falta el término clave sagrado "${kw}".`);
+          issuesFound++;
+        }
+      }
+    }
+  }
+
+  // 3. Blindaje de .htaccess contra redirecciones destructivas que maten páginas pilares
+  const htaccessPath = path.join(ROOT_DIR, '.htaccess');
+  if (fs.existsSync(htaccessPath)) {
+    const htContent = fs.readFileSync(htaccessPath, 'utf8');
+    const dangerousRedirects = [
+      /Redirect\s+301\s+\/bateria-macbook-cdmx(?:\.html)?\s/i,
+      /Redirect\s+301\s+\/mac-mojada-cdmx(?:\.html)?\s/i,
+      /Redirect\s+301\s+\/reparacion-imac-cdmx(?:\.html)?\s/i,
+      /Redirect\s+301\s+\/reparacion-corto-logica-mac(?:\.html)?\s/i,
+    ];
+    for (const dRegex of dangerousRedirects) {
+      if (dRegex.test(htContent)) {
+        logError(`[.htaccess] Se detectó una redirección 301 destructiva que canibaliza o mata una página pilar activa.`);
+        issuesFound++;
+      }
+    }
+  }
+
+  if (issuesFound === 0) {
+    logPass('Blindaje SEO verificado: Títulos ganadores, encabezados H1 y servidor 100% protegidos contra modificaciones no autorizadas.');
+  }
+}
+
+/**
  * Función principal de ejecución
  */
 function runHarness() {
@@ -386,6 +496,7 @@ function runHarness() {
   auditContactChannels(htmlFiles);
   auditMobileUiCollisions(htmlFiles);
   auditSitemapAndRobots();
+  auditSeoGuardrails();
 
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
   logHeader('RESUMEN DE AUDITORÍA');

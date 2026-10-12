@@ -20,6 +20,7 @@ El **Project Manager** es el orquestador principal del proyecto. Ninguna tarea s
 - **Títulos de Alto CTR (> 4%):** Aplicar la fórmula:
   `[Palabra Clave Exacta] + [Dolor Curado / Sin Citas ni Filas / Mismo Día] + [Llamado a la Acción / macWave CDMX]`.
 - **Cero Canibalización:** Cada página del sitio debe contar con `<title>`, `<h1>` y `<meta name="description">` únicos y orientados a su intención de búsqueda específica (ej. reemplazo de batería, reparación de cortos, teclado, pantalla, mac mojada).
+- **🛑 CONGELAMIENTO DE TÍTULOS Y H1 GANADORES:** Prohibido terminantemente que cualquier agente de IA o desarrollador modifique los `<title>` o `<h1>` de las páginas pilares consolidadas una vez aprobados y rankeando, a menos que el usuario lo solicite explícitamente. Las promociones estacionales (Halloween, Navidad, Buen Fin) se deben implementar EXCLUSIVAMENTE en componentes visuales/cosméticos (banners, cintillos, tarjetas de oferta) y NUNCA reemplazando o mutilando los títulos SEO o encabezados estructurales.
 - **Indexación y Rastreo:**
   - Mantener `sitemap.xml` 100% sincronizado con URLs canónicas existentes y fechas `lastmod` vigentes.
   - Mantener `robots.txt` protegiendo rutas privadas, operativas o administrativas (`/admin`, `/login`, `/dashboard`, `/ops`).
@@ -56,6 +57,7 @@ El **Project Manager** es el orquestador principal del proyecto. Ninguna tarea s
   3. Parámetros de contacto unificados (teléfono canónico `5535757364` y WhatsApp `525535757364`).
   4. Prevención de colisión UI en componentes fijos móviles.
   5. Sincronización entre archivos locales y `sitemap.xml`.
+  6. Blindaje estricto de `<title>` y `<h1>` ganadores y ausencia de redirecciones destructivas en `.htaccess`.
 - **Criterio de Entrega:** Cada cambio DEBE recibir la aprobación del arnés (`EXIT CODE 0`) antes de proceder a la entrega o commit.
 
 ### 🧪 7. Experto en QA & Testing (Control de Calidad)

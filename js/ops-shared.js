@@ -95,9 +95,10 @@
     const photos = [];
     if (ev.img) photos.push(ev.img);
     if (Array.isArray(ev.photos)) photos.push(...ev.photos.filter(Boolean));
+    const msg = (ev.text !== undefined && ev.text !== null) ? ev.text : (ev.message || '');
     return {
       type: ev.type || ev.status || 'update',
-      message: ev.message || ev.text || '',
+      message: msg,
       timestamp: ev.timestamp || ev.date || '',
       clientVisible: true,
       status: ev.status || ev.type || 'update',
@@ -114,7 +115,7 @@
     return clientTimeline.map((ev) => ({
       date: ev.timestamp || fechaFallback || '',
       status: ev.status || ev.type || 'Actualización',
-      text: ev.message || '',
+      text: (ev.text !== undefined && ev.text !== null) ? ev.text : (ev.message || ''),
       img: Array.isArray(ev.photos) && ev.photos.length ? ev.photos[0] : null,
       photos: ev.photos || [],
       clientVisible: true,
@@ -174,7 +175,7 @@
   }
 
   async function fetchPublicTracking(client, { token, folio }) {
-    if (!checkLocalRateLimit('tracking', 20, 60000)) {
+    if (!checkLocalRateLimit('tracking', 60, 60000)) {
       return { error: { message: 'Demasiados intentos. Espera un momento.' }, data: null };
     }
     const { data, error } = await client.rpc('get_public_ods_tracking', {

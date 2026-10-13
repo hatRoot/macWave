@@ -16,7 +16,7 @@
 
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
  <script src="js/supabase-config.js"></script>
- <script src="js/ops-shared.js?v=hotfix-2b"></script>
+ <script src="js/ops-shared.js?v=20261012b"></script>
  <script>
   (async function requireSupabaseSession() {
     const client = MacWaveOps.createSupabaseClient();
@@ -1821,8 +1821,16 @@ word-break: break-word;
  async function mwPersistOrden(id, patch, auditAction, auditDetails) {
  const o = allODS.find((x) => x.id === id);
  MacWaveOps.enrichOrdenPatch(patch, o?.fecha || patch.fecha);
- const { error, count } = await supabaseClient.from('ordenes_servicio').update(patch).eq('id', id);
- if (!error && auditAction) {
+ const { error, count } = await supabaseClient.from('ordenes_servicio').update(patch, { count: 'exact' }).eq('id', id);
+ if (error) {
+   console.error("Error al actualizar orden en Supabase:", error);
+   return { error, count };
+ }
+ if (count === 0) {
+   console.warn("Update afectó 0 registros en ordenes_servicio para ID:", id);
+   return { error: new Error('La base de datos no actualizó la orden (0 registros afectados). Verifique sesión o permisos.'), count: 0 };
+ }
+ if (auditAction) {
  await MacWaveOps.logAudit(supabaseClient, {
  ods_id: id,
  folio: o?.folio || patch.folio,
@@ -1833,7 +1841,7 @@ word-break: break-word;
  MacWaveAuditLog.refresh();
  }
  }
- return { error, count };
+ return { error: null, count };
  }
 
  const STATUS_CONFIG = {
@@ -3590,7 +3598,11 @@ ${statusOptions}
 
  try {
  const monto = parseFloat(document.getElementById('inp-monto').value) || 0;
- const meta = {
+ const newStatus = document.getElementById('inp-new-status')?.value;
+ const newNoteText = document.getElementById('inp-new-text')?.value?.trim() || '';
+ const statusChanged = Boolean(newStatus && newStatus !== o.status);
+
+ const patch = {
  cliente: document.getElementById('inp-cliente').value,
  proyecto: document.getElementById('inp-proyecto').value,
  tecnico: document.getElementById('inp-tecnico').value,
@@ -3599,20 +3611,56 @@ ${statusOptions}
  monto: monto
  };
 
- // Finance columns (cost_pieces, cost_supplies, venta_hw) removed as they don't exist in Supabase schema
+ if (statusChanged || newNoteText) {
+   let hist = [];
+   try {
+     hist = JSON.parse(o.notas || '[]');
+     if (!Array.isArray(hist)) throw new Error('Not array');
+   } catch (_) {
+     if (o.notas) hist = [{ date: o.fecha || '', status: 'Nota General', text: o.notas, img: null }];
+   }
 
- const { error } = await mwPersistOrden(o.id, meta, 'meta_update', { fields: Object.keys(meta) });
+   const now = new Date();
+   const dateStr = now.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' ' +
+     now.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+
+   const targetStatus = newStatus || o.status || 'Recibido';
+   const targetText = newNoteText || `Actualización de estatus: ${targetStatus}`;
+
+   hist.push(MacWaveOps.createTimelineEvent({
+     date: dateStr,
+     status: targetStatus,
+     text: targetText,
+     img: null,
+     internal: /^\[INTERNO\]/i.test(targetText.trim())
+   }));
+
+   patch.notas = JSON.stringify(hist);
+   patch.status = targetStatus;
+ }
+
+ const { error } = await mwPersistOrden(o.id, patch, 'meta_update', { fields: Object.keys(patch) });
  if (error) throw error;
 
- Object.assign(o, meta);
+ Object.assign(o, patch);
  const idx = allODS.findIndex(x => x.id === o.id);
- if (idx > -1) allODS[idx] = o;
+ if (idx > -1) {
+   allODS[idx] = o;
+   if (patch.notas) {
+     allODS[idx].client_timeline = MacWaveOps.buildClientTimeline(JSON.parse(patch.notas));
+   }
+ }
+
+ if (newNoteText) {
+   const txtEl = document.getElementById('inp-new-text');
+   if (txtEl) txtEl.value = '';
+ }
 
  renderSidebar(document.getElementById('search-input').value);
- alert('Información guardada correctamente.');
+ alert('Información guardada correctamente en la base de datos.');
  renderDetail(o); // Re-render detail to update projected utility if Joel
  } catch (e) {
- alert('Error: ' + e.message);
+ alert('Error al guardar: ' + e.message);
  } finally {
  btn.innerText = 'Guardar Cambios';
  btn.disabled = false;
@@ -3678,8 +3726,13 @@ ${statusOptions}
 
   o.status = newStatus;
   o.notas = newNotasString;
+  o.client_timeline = MacWaveOps.buildClientTimeline(newHistorial);
   const idx = allODS.findIndex(x => x.id === o.id);
-  if (idx > -1) { allODS[idx].status = newStatus; allODS[idx].notas = newNotasString; }
+  if (idx > -1) {
+    allODS[idx].status = newStatus;
+    allODS[idx].notas = newNotasString;
+    allODS[idx].client_timeline = o.client_timeline;
+  }
 
   const textareaEl = document.getElementById('inp-new-text');
   if (textareaEl) textareaEl.value = '';
@@ -3872,8 +3925,13 @@ window.PhotoFlowV3 = (function () {
 
       // Update memory
       ods.status = newStatus; ods.notas = newNotasString;
+      ods.client_timeline = MacWaveOps.buildClientTimeline(newHistorial);
       const li = allODS.findIndex(x => x.id === odsId);
-      if (li > -1) { allODS[li].status = newStatus; allODS[li].notas = newNotasString; }
+      if (li > -1) {
+        allODS[li].status = newStatus;
+        allODS[li].notas = newNotasString;
+        allODS[li].client_timeline = ods.client_timeline;
+      }
 
       // Clean text field
       if (txtEl) txtEl.value = '';
@@ -3950,6 +4008,7 @@ window.saveTimelineNote = async function(odsId, noteIdx) {
 
   try {
     hist[noteIdx].text = newText;
+    hist[noteIdx].message = newText;
     const newNotasString = JSON.stringify(hist);
 
     const { error } = await mwPersistOrden(odsId, { notas: newNotasString }, 'timeline_note_updated', {
@@ -3959,8 +4018,12 @@ window.saveTimelineNote = async function(odsId, noteIdx) {
     if (error) throw error;
 
     ods.notas = newNotasString;
+    ods.client_timeline = MacWaveOps.buildClientTimeline(hist);
     const idx = allODS.findIndex(x => x.id === odsId);
-    if (idx > -1) allODS[idx].notas = newNotasString;
+    if (idx > -1) {
+      allODS[idx].notas = newNotasString;
+      allODS[idx].client_timeline = ods.client_timeline;
+    }
 
     renderDetail(ods);
     renderSidebar(document.getElementById('search-input')?.value || '');

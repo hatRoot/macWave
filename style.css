@@ -6203,21 +6203,25 @@ html, body {
 }
 
 /* ==========================================================================
-   ESTILOS DE PIE DE PÁGINA (FOOTER) - FORZAR COLOR BLANCO
+   ESTILOS DE PIE DE PÁGINA (FOOTER) - FORZAR COLOR BLANCO Y MAYOR TAMAÑO
    ========================================================================== */
 .footer-bottom-mini .container,
 .footer-bottom-mini .container p {
     color: #ffffff !important;
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
 }
 
 .footer-bottom-mini .container a {
     color: #ffffff !important;
     text-decoration: underline !important;
+    font-weight: 700 !important;
 }
 
 .footer-bottom-mini .container a:hover {
-    color: #e5e5e7 !important;
+    color: #4daafd !important;
 }
+
 
 
 

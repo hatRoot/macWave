@@ -745,7 +745,7 @@ h3 {
 
 @media (max-width: 768px) {
     .google-review-pill {
-        margin: 25px auto 10px;
+        margin: 18px auto 4px !important;
         padding: 6px 16px;
     }
 }
@@ -3979,7 +3979,7 @@ details.modern-accordion[open] {
 
     /* 2. Hero Section Adjustments */
     .hero-section-authority {
-        padding: 40px 0 !important;
+        padding: 30px 0 14px !important;
     }
 
     .hero-split-content {
@@ -4054,49 +4054,73 @@ details.modern-accordion[open] {
         /* Apple pill shape */
     }
 
-    /* 5. Trust Section (Carousel) */
+    /* 5. Trust Section (Carousel) - Compactar aire y espacios vacíos en móvil */
+    .client-trust-section {
+        padding: 24px 0 10px !important;
+    }
+
+    .trust-header {
+        margin-bottom: 14px !important;
+        padding: 0 12px !important;
+    }
+
     .trust-title {
-        font-size: 1.7rem !important;
-        padding: 0 10px !important;
-        line-height: 1.2 !important;
-        margin-bottom: 20px !important;
+        font-size: 1.6rem !important;
+        padding: 0 8px !important;
+        line-height: 1.18 !important;
+        margin-bottom: 12px !important;
     }
 
     .trust-subtitle {
-        font-size: 1rem !important;
-        line-height: 1.5 !important;
-        padding: 0 10px !important;
+        font-size: 0.95rem !important;
+        line-height: 1.48 !important;
+        padding: 0 8px !important;
+        margin-bottom: 0 !important;
     }
 
     .trust-cta-hook {
-        font-size: 1.1rem !important;
-        padding: 0 15px !important;
+        margin-top: 14px !important;
+        margin-bottom: 0 !important;
+        font-size: 1.05rem !important;
+        padding: 0 12px !important;
+        line-height: 1.4 !important;
+    }
+
+    .new-marquee-container {
+        margin-top: 14px !important;
+        padding: 8px 0 4px 0 !important;
     }
 
     .client-logo-card img {
-        height: 35px !important;
-        max-width: 100px !important;
+        height: 32px !important;
+        max-width: 95px !important;
+        margin-bottom: 3px !important;
     }
 
     .client-logo-card {
-        width: 110px !important;
-        margin: 0 10px !important;
+        width: 105px !important;
+        margin: 0 8px !important;
+    }
+
+    .client-name-label {
+        font-size: 0.65rem !important;
+        margin-top: 2px !important;
     }
 
     /* 6. Solutions Grid (Servicios) - Compactar aire y espacios vacíos en móvil */
     .section-padded.solution-grid-section {
-        padding-top: 18px !important;
+        padding-top: 8px !important;
         padding-bottom: 8px !important;
     }
 
     .soluciones-authority-banner {
-        padding: 14px 10px 4px !important;
+        padding: 6px 10px 4px !important;
         margin-bottom: 0 !important;
     }
 
     .soluciones-authority-title {
         font-size: clamp(1.65rem, 5.8vw, 2.2rem) !important;
-        margin-bottom: 12px !important;
+        margin-bottom: 10px !important;
         line-height: 1.15 !important;
         padding: 0 4px !important;
     }
@@ -6356,6 +6380,16 @@ html, body {
     }
     .cloned-services-row {
         grid-template-columns: 1fr;
+    }
+
+    /* Compactar Sección de Confianza y Marquee en pantallas <= 768px */
+    .client-trust-section {
+        padding: 24px 0 10px !important;
+    }
+
+    .new-marquee-container {
+        margin-top: 14px !important;
+        padding: 8px 0 4px 0 !important;
     }
 }
 

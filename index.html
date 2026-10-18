@@ -1029,13 +1029,13 @@
           
           <div class="apple-cert-badges-grid">
             <div class="apple-cert-badge-card">
-              <img src="./images/apple_cert_support_professional.png" alt="Apple Certified Support Professional" width="110" height="110" loading="lazy" decoding="async">
+              <img src="./images/apple_cert_support_professional.png?v=2" alt="Apple Certified Support Professional" width="110" height="135" loading="lazy" decoding="async">
             </div>
             <div class="apple-cert-badge-card">
-              <img src="./images/apple_cert_repair_technician.png" alt="Apple Certified Repair Technician" width="110" height="110" loading="lazy" decoding="async">
+              <img src="./images/apple_cert_repair_technician.png?v=2" alt="Apple Certified Repair Technician" width="110" height="135" loading="lazy" decoding="async">
             </div>
             <div class="apple-cert-badge-card">
-              <img src="./images/apple_cert_support_technician.png" alt="Apple Certified Support Technician" width="110" height="110" loading="lazy" decoding="async">
+              <img src="./images/apple_cert_support_technician.png?v=2" alt="Apple Certified Support Technician" width="110" height="135" loading="lazy" decoding="async">
             </div>
           </div>
         </div>
@@ -1943,7 +1943,7 @@
   <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/sw.js?v=1.5.6-ops').then(function(registration) {
+      navigator.serviceWorker.register('/sw.js?v=1.5.7-ops').then(function(registration) {
         registration.update();
         if (registration.waiting) {
           registration.waiting.postMessage({ type: 'SKIP_WAITING' });

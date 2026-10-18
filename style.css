@@ -531,6 +531,78 @@ h3 {
     color: var(--primary-bg);
 }
 
+/* WhatsApp Outline Button: Letras verdes y contorno verde #25D366 */
+.cta-button.cta-whatsapp,
+.cta-button.secondary[href*="wa.me"] {
+    background-color: transparent !important;
+    border: 2px solid #25D366 !important;
+    color: #25D366 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.cta-button.cta-whatsapp:hover,
+.cta-button.secondary[href*="wa.me"]:hover {
+    background-color: #25D366 !important;
+    border-color: #25D366 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
+}
+
+/* ==========================================================================
+   EFECTO SHIMMER / LIGHT SWEEP (BARRIDO DE LUZ AL PASAR EL CURSOR / HOVER)
+   ========================================================================== */
+.cloned-free-cta,
+.cloned-header-cta,
+.cta-button.primary,
+.cta-button.secondary,
+.cta-button.cta-whatsapp,
+.btn-wa-modal-confirm {
+    position: relative;
+    overflow: hidden;
+}
+
+.cloned-free-cta::after,
+.cloned-header-cta::after,
+.cta-button.primary::after,
+.cta-button.secondary::after,
+.cta-button.cta-whatsapp::after,
+.btn-wa-modal-confirm::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -140%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.45) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: skewX(-25deg);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.cloned-free-cta:hover::after,
+.cloned-free-cta:active::after,
+.cloned-header-cta:hover::after,
+.cloned-header-cta:active::after,
+.cta-button.primary:hover::after,
+.cta-button.primary:active::after,
+.cta-button.secondary:hover::after,
+.cta-button.secondary:active::after,
+.cta-button.cta-whatsapp:hover::after,
+.cta-button.cta-whatsapp:active::after,
+.btn-wa-modal-confirm:hover::after,
+.btn-wa-modal-confirm:active::after {
+    left: 170%;
+    transition: left 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
 .header-cta {
     margin-left: 20px;
     border-radius: 30px;
@@ -940,6 +1012,30 @@ h3 {
 /* Solution Grid Section */
 .solution-grid-section {
     background-color: var(--secondary-bg);
+}
+
+.section-padded.solution-grid-section {
+    background-color: #ffffff;
+    padding-top: 60px;
+    padding-bottom: 80px;
+}
+
+.soluciones-authority-banner {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 50px 20px;
+    background: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.soluciones-authority-title {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    color: #1d1d1f;
+    margin-bottom: 24px;
+    text-transform: none;
 }
 
 .grid-3-cols {
@@ -3987,10 +4083,22 @@ details.modern-accordion[open] {
         margin: 0 10px !important;
     }
 
-    /* 6. Solutions Grid (Servicios) */
+    /* 6. Solutions Grid (Servicios) - Compactar aire y espacios vacíos en móvil */
     .section-padded.solution-grid-section {
-        padding-top: 40px !important;
-        padding-bottom: 40px !important;
+        padding-top: 18px !important;
+        padding-bottom: 8px !important;
+    }
+
+    .soluciones-authority-banner {
+        padding: 14px 10px 4px !important;
+        margin-bottom: 0 !important;
+    }
+
+    .soluciones-authority-title {
+        font-size: clamp(1.65rem, 5.8vw, 2.2rem) !important;
+        margin-bottom: 12px !important;
+        line-height: 1.15 !important;
+        padding: 0 4px !important;
     }
 
     .solution-grid-section h2 {
@@ -4737,6 +4845,7 @@ html, body {
     .brush-typography {
         align-items: center !important;
         text-align: center !important;
+        margin-bottom: 12px !important;
     }
 }
 
@@ -5460,6 +5569,39 @@ html, body {
     padding: 20px 0 40px;
 }
 
+/* Cloned Steps Header Block (Title with CTA above steps) */
+.cloned-steps-header-block {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.cloned-steps-tag {
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #FF6600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    display: inline-block;
+    margin-bottom: 6px;
+}
+
+.cloned-steps-headline {
+    font-size: clamp(1.4rem, 2.8vw, 2.2rem);
+    font-weight: 800;
+    color: #1d1d1f;
+    letter-spacing: -0.6px;
+    margin-bottom: 8px;
+    line-height: 1.25;
+}
+
+.cloned-steps-sub {
+    font-size: 0.95rem;
+    color: #555558;
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.45;
+}
+
 .cloned-steps-container {
     background-color: #FFFFFF;
     border: 1px solid #e5e5ea;
@@ -5558,9 +5700,11 @@ html, body {
 }
 
 .cloned-free-cta-sub {
-    font-size: 0.65rem;
-    opacity: 0.85;
-    font-weight: 500;
+    font-size: 0.68rem;
+    opacity: 0.95;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0px;
 }
 
 /* Cloned Apple Cert Badge */
@@ -5590,6 +5734,11 @@ html, body {
 .cloned-apple-cert-text strong {
     color: #1d1d1f;
     font-weight: 800;
+}
+
+/* Cloned Apple Cert Hero: Mobile authority badge (hidden on desktop for strict viewport isolation) */
+.cloned-apple-cert-hero {
+    display: none;
 }
 
 /* Cloned Services Section */
@@ -5724,21 +5873,404 @@ html, body {
 }
 
 @media (max-width: 768px) {
-    .cloned-topbar-right {
-        justify-content: center;
-        width: 100%;
+    /* ── Cintillo Superior Compacto: 1 Sola Línea Impecable ── */
+    .cloned-topbar {
+        padding: 5px 0 !important;
+        font-size: 0.74rem !important;
+        line-height: 1.2 !important;
+        background-color: #000000 !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     }
+
+    .cloned-topbar .container {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 8px !important;
+        padding: 0 14px !important;
+    }
+
     .cloned-topbar-left {
-        justify-content: center;
-        width: 100%;
+        width: auto !important;
+        justify-content: flex-start !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
     }
+
+    .cloned-topbar-left svg {
+        flex-shrink: 0 !important;
+        width: 12px !important;
+        height: 12px !important;
+        color: #FF6600 !important;
+    }
+
+    .cloned-topbar-left span {
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        font-weight: 600 !important;
+        color: #e2e8f0 !important;
+        font-size: 0.74rem !important;
+    }
+
+    .cloned-topbar-right {
+        width: auto !important;
+        justify-content: flex-end !important;
+        align-items: center !important;
+        gap: 8px !important;
+        flex-wrap: nowrap !important;
+        flex: 0 0 auto !important;
+    }
+
+    /* Ocultar horario extenso en móvil para evitar rupturas y saltos de línea */
+    .cloned-topbar-right .cloned-topbar-item:first-child {
+        display: none !important;
+    }
+
+    .cloned-topbar-item {
+        font-size: 0.74rem !important;
+        font-weight: 600 !important;
+        white-space: nowrap !important;
+        color: #ffffff !important;
+        gap: 4px !important;
+    }
+
+    .cloned-topbar-item.whatsapp-link span {
+        display: none !important;
+    }
+
+    .cloned-topbar-item.whatsapp-link svg {
+        width: 13px !important;
+        height: 13px !important;
+        color: #30D158 !important;
+    }
+
+    /* ── Cabecera Móvil Estilo Apple (≤ 54px Altura) ── */
+    .cloned-header {
+        padding: 8px 0 !important;
+    }
+
+    .cloned-header .container {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-wrap: nowrap !important;
+        gap: 10px !important;
+        padding: 0 14px !important;
+    }
+
+    /* Botón Hamburguesa nítido en fondo blanco */
+    .cloned-header .mobile-menu-toggle {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        background: rgba(0, 0, 0, 0.04) !important;
+        border: 1px solid rgba(0, 0, 0, 0.08) !important;
+        border-radius: 10px !important;
+        cursor: pointer !important;
+        order: 1 !important;
+        flex-shrink: 0 !important;
+        padding: 0 !important;
+        gap: 4px !important;
+    }
+
+    .cloned-header .mobile-menu-toggle span {
+        display: block !important;
+        width: 18px !important;
+        height: 2px !important;
+        background: #1d1d1f !important;
+        border-radius: 2px !important;
+        transition: all 0.3s ease !important;
+    }
+
+    /* Logo ajustado y ergonómico sin colisión con botón CTA */
+    .cloned-header .cloned-logo-container {
+        order: 2 !important;
+        margin: 0 !important;
+        flex: 0 1 auto !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        min-width: 0 !important;
+    }
+
+    .cloned-header .logo a.logo-link {
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        min-width: 0 !important;
+        text-decoration: none !important;
+    }
+
+    .cloned-header .logo-img {
+        height: 28px !important;
+        width: auto !important;
+        flex-shrink: 0 !important;
+    }
+
+    .cloned-header .logo-text-container {
+        display: flex !important;
+        flex-direction: column !important;
+        min-width: 0 !important;
+        line-height: 1 !important;
+    }
+
+    .cloned-header .logo-brand {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: baseline !important;
+        gap: 4px !important;
+        font-size: 1.05rem !important;
+        font-weight: 800 !important;
+        color: #1d1d1f !important;
+        line-height: 1.1 !important;
+        white-space: nowrap !important;
+        letter-spacing: -0.4px !important;
+    }
+
+    .cloned-header .logo-brand span {
+        font-weight: 400 !important;
+        color: #86868b !important;
+        font-size: 0.72rem !important;
+        letter-spacing: 0px !important;
+    }
+
+    .cloned-header .logo-subtext {
+        display: none !important;
+    }
+
+    /* Botón Naranja en Móvil: Píldora Apple Estética Touch 34px y Click Directo */
+    .cloned-header-cta {
+        order: 3 !important;
+        flex-shrink: 0 !important;
+        margin-left: auto !important;
+        position: relative !important;
+        z-index: 99 !important;
+        pointer-events: auto !important;
+        cursor: pointer !important;
+        white-space: nowrap !important;
+        background: linear-gradient(135deg, #FF6600 0%, #ff5500 100%) !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 0.74rem !important;
+        letter-spacing: 0.1px !important;
+        padding: 0 12px !important;
+        height: 34px !important;
+        line-height: 34px !important;
+        border-radius: 980px !important;
+        border: none !important;
+        box-shadow: 0 3px 10px rgba(255, 102, 0, 0.28) !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-decoration: none !important;
+        transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+
+    .cloned-header-cta:hover,
+    .cloned-header-cta:active {
+        background: linear-gradient(135deg, #ff771a 0%, #ff4d00 100%) !important;
+        transform: scale(0.97) !important;
+        color: #ffffff !important;
+    }
+
     .cloned-nav {
-        display: none; /* We will use standard mobile navigation, or hidden for simplicity */
+        display: none !important;
     }
+    .cloned-slider-section {
+        padding: 20px 0 16px !important;
+    }
+
+    .cloned-slider-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 14px !important;
+    }
+
+    .cloned-slider-left {
+        display: contents !important;
+    }
+
+    .cloned-slider-heading {
+        order: 1 !important;
+        font-size: 1.65rem !important;
+        line-height: 1.15 !important;
+        letter-spacing: -0.5px !important;
+        margin-bottom: 4px !important;
+    }
+
+    .cloned-slider-desc {
+        order: 2 !important;
+        font-size: 0.92rem !important;
+        line-height: 1.4 !important;
+        margin-bottom: 8px !important;
+        color: #4a4a4e !important;
+    }
+
+    /* En móvil, el carrusel de imágenes se muestra de inmediato en el primer pantallazo */
+    .cloned-slider-right {
+        order: 3 !important;
+        width: 100% !important;
+        border-radius: 14px !important;
+        margin-bottom: 6px !important;
+    }
+
     .cloned-checklist {
-        flex-direction: column;
-        gap: 15px;
+        order: 4 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        margin-top: 8px !important;
     }
+
+    /* Distintivo Estático de Autoridad Apple en Primer Pantallazo Móvil (Order: 5) */
+    .cloned-apple-cert-hero {
+        order: 5 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 12px !important;
+        background: #F5F5F7 !important;
+        border: 1px solid rgba(0, 0, 0, 0.08) !important;
+        border-radius: 12px !important;
+        padding: 9px 14px !important;
+        margin-top: 10px !important;
+        margin-bottom: 4px !important;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04) !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .cloned-apple-cert-hero-icon {
+        font-size: 1.9rem !important;
+        line-height: 1 !important;
+        color: #1d1d1f !important;
+        flex-shrink: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .cloned-apple-cert-hero-text {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        text-align: left !important;
+    }
+
+    .cloned-apple-cert-hero-text .cert-hero-title {
+        font-size: 0.72rem !important;
+        font-weight: 500 !important;
+        color: #6e6e73 !important;
+        letter-spacing: -0.2px !important;
+        line-height: 1.25 !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif !important;
+    }
+
+    .cloned-apple-cert-hero-text .cert-hero-sub {
+        font-size: 0.76rem !important;
+        font-weight: 500 !important;
+        color: #1d1d1f !important;
+        letter-spacing: -0.2px !important;
+        line-height: 1.25 !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif !important;
+    }
+
+    .cloned-apple-cert-hero-text .cert-hero-sub strong {
+        font-weight: 800 !important;
+        color: #1d1d1f !important;
+    }
+
+    /* Ocultar el segundo sello de Apple en la tarjeta de pasos para evitar duplicidad */
+    .cloned-steps-section .cloned-apple-cert {
+        display: none !important;
+    }
+
+    /* Adaptación móvil del bloque de título de pasos */
+    .cloned-steps-header-block {
+        margin-bottom: 16px !important;
+        text-align: center !important;
+    }
+
+    .cloned-steps-tag {
+        font-size: 0.75rem !important;
+        margin-bottom: 4px !important;
+    }
+
+    .cloned-steps-headline {
+        font-size: 1.32rem !important;
+        line-height: 1.25 !important;
+        letter-spacing: -0.4px !important;
+        margin-bottom: 6px !important;
+    }
+
+    .cloned-steps-sub {
+        font-size: 0.86rem !important;
+        line-height: 1.4 !important;
+    }
+
+    /* Botón de Servicio a Domicilio y Otros Estados */
+    .cloned-free-cta {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 14px 18px !important;
+        gap: 12px !important;
+        border-radius: 14px !important;
+        white-space: normal !important;
+        text-align: left !important;
+        cursor: pointer !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+
+    .cloned-free-cta svg {
+        flex-shrink: 0 !important;
+        width: 24px !important;
+        height: 24px !important;
+        color: #ffffff !important;
+        fill: #ffffff !important;
+    }
+
+    .cloned-free-cta-text {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        line-height: 1.15 !important;
+    }
+
+    .cloned-free-cta-text span {
+        font-size: 0.88rem !important;
+        font-weight: 800 !important;
+        color: #ffffff !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.3px !important;
+    }
+
+    .cloned-free-cta-sub {
+        font-size: 0.72rem !important;
+        font-weight: 600 !important;
+        color: rgba(255, 255, 255, 0.95) !important;
+        text-transform: none !important;
+        letter-spacing: 0px !important;
+        margin-top: 2px !important;
+    }
+
     .cloned-steps-wrapper-inline {
         flex-direction: column;
         align-items: flex-start;
@@ -5749,9 +6281,6 @@ html, body {
     }
     .cloned-services-row {
         grid-template-columns: 1fr;
-    }
-    .cloned-slider-heading {
-        font-size: 2.2rem;
     }
 }
 
@@ -6090,12 +6619,12 @@ html, body {
 /* Móvil grande */
 @media (max-width: 640px) {
     .mw-repair-section {
-        padding: 56px 0 70px;
+        padding: 16px 0 50px;
     }
 
     .mw-repair-header {
-        margin-bottom: 32px;
-        padding: 0 20px;
+        margin-bottom: 20px;
+        padding: 0 16px;
     }
 
     .mw-repair-grid {

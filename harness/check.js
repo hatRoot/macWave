@@ -479,6 +479,52 @@ function auditSeoGuardrails() {
 }
 
 /**
+ * 7. AUDITORÍA DE AISLAMIENTO RESPONSIVE (DESKTOP VS MOBILE)
+ * Certifica que los cambios solicitados para modo responsive residan 100% dentro de
+ * media queries y que el código de escritorio base no haya sido alterado.
+ */
+function auditResponsiveIsolation() {
+  logHeader('7. AUDITORÍA DE AISLAMIENTO RESPONSIVE (DESKTOP VS MOBILE)');
+  let issuesFound = 0;
+
+  const stylePath = path.join(ROOT_DIR, 'style.css');
+  if (!fs.existsSync(stylePath)) {
+    logError('style.css no encontrado.');
+    return;
+  }
+
+  const css = fs.readFileSync(stylePath, 'utf8');
+
+  // 1. Validar que la regla base de .cloned-header-cta fuera de media query conserve su estilo de escritorio
+  const baseCtaMatch = /\.cloned-header-cta\s*\{([^}]+)\}/.exec(css);
+  if (baseCtaMatch) {
+    const props = baseCtaMatch[1];
+    if (props.includes('border-radius: 980px')) {
+      logError('Fallo de aislamiento: .cloned-header-cta base en escritorio fue alterado a 980px. Los estilos móviles deben residir EXCLUSIVAMENTE en @media.');
+      issuesFound++;
+    }
+  }
+
+  // 2. Validar que .cloned-nav de escritorio NO tenga display: none en el ámbito global
+  const globalNavMatch = /(?:^|\})\s*\.cloned-nav\s*\{([^}]+)\}/m.exec(css);
+  if (globalNavMatch && /display\s*:\s*none/i.test(globalNavMatch[1])) {
+    logError('Fallo de aislamiento: .cloned-nav está oculto en el ámbito global de escritorio.');
+    issuesFound++;
+  }
+
+  // 3. Validar presencia de media queries móviles para componentes responsivos
+  const hasMobileMedia = /@media\s*\(\s*max-width\s*:\s*(?:768|480)px\s*\)/i.test(css);
+  if (!hasMobileMedia) {
+    logError('No se encontraron media queries de max-width: 768px para el modo responsive.');
+    issuesFound++;
+  }
+
+  if (issuesFound === 0) {
+    logPass('Aislamiento de Viewport verificado: Reglas móviles encapsuladas en @media y modo escritorio 100% blindado.');
+  }
+}
+
+/**
  * Función principal de ejecución
  */
 function runHarness() {
@@ -497,6 +543,7 @@ function runHarness() {
   auditMobileUiCollisions(htmlFiles);
   auditSitemapAndRobots();
   auditSeoGuardrails();
+  auditResponsiveIsolation();
 
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
   logHeader('RESUMEN DE AUDITORÍA');

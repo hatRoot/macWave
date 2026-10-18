@@ -5,6 +5,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
+  <!-- Forzar inicio en el tope absoluto al cargar o recargar la página -->
+  <script>
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  if (window.location.hash) {
+    history.replaceState(null, document.title, window.location.pathname + window.location.search);
+  }
+  window.scrollTo(0, 0);
+  window.addEventListener('beforeunload', function () {
+    window.scrollTo(0, 0);
+  });
+  window.addEventListener('pageshow', function () {
+    window.scrollTo(0, 0);
+  });
+  </script>
+
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-JENWM4W22D"></script>
   <script>
@@ -421,7 +438,7 @@
         </div>
       </nav>
 
-      <a href="https://wa.me/525535757364?text=Hola%2C%20%C2%BFme%20ayudas%20a%20reparar%20mi%20Mac%20con%20servicio%20t%C3%A9cnico%3F" target="_blank" rel="noopener noreferrer" class="cloned-header-cta">
+      <a href="https://wa.me/525535757364?text=Hola%2C%20%C2%BFme%20ayudas%20a%20reparar%20mi%20Mac%20con%20servicio%20t%C3%A9cnico%3F" class="cloned-header-cta" onclick="window.location.href=this.href; return false;">
         Solicitar servicio
       </a>
     </div>
@@ -479,6 +496,15 @@
                   <span class="cloned-checklist-title">Seguro</span>
                   <span class="cloned-checklist-text">Transporte seguro y asegurado.</span>
                 </div>
+              </div>
+            </div>
+
+            <!-- Apple Certification Authority Badge Mobile Hero -->
+            <div class="cloned-apple-cert-hero">
+              <span class="cloned-apple-cert-hero-icon"></span>
+              <div class="cloned-apple-cert-hero-text">
+                <span class="cert-hero-title">Apple Consulting System Engineer</span>
+                <span class="cert-hero-sub"><strong>ACSP</strong> Apple Certified Support Professional</span>
               </div>
             </div>
 
@@ -547,6 +573,11 @@
     <!-- Cloned Steps Bar Section -->
     <section class="cloned-steps-section">
       <div class="container">
+        <div class="cloned-steps-header-block">
+          <div class="cloned-steps-tag">PASO A PASO</div>
+          <h2 class="cloned-steps-headline">¿Cómo reparamos tu Mac sin que salgas de casa?</h2>
+          <p class="cloned-steps-sub">Recolección, diagnóstico profesional y entrega garantizada en 4 sencillos pasos:</p>
+        </div>
         <div class="cloned-steps-container">
           <div class="cloned-steps-wrapper-inline">
             <!-- Step 1 -->
@@ -622,13 +653,13 @@
           </div>
           
           <!-- Orange Button CTA -->
-          <a href="https://wa.me/525535757364?text=Hola%2C%20%C2%BFme%20ayudas%20con%20servicio%20t%C3%A9cnico%20a%20domicilio%20para%20reparar%20mi%20Mac%3F" target="_blank" class="cloned-free-cta">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M8 1.25A.75.75 0 0 1 .75.5h14.5a.75.75 0 0 1 .75.75v13.5a.75.75 0 0 1-.75.75H.75a.75.75 0 0 1-.75-.75V1.25zM1.5 13.5h13V4.5h-13v9zm0-10.5h13V2h-13v1z"/>
+          <a href="https://wa.me/525535757364?text=Hola%2C%20%C2%BFme%20ayudas%20con%20servicio%20a%20domicilio%20o%20env%C3%ADo%20desde%20otro%20estado%20para%20reparar%20mi%20Mac%3F" class="cloned-free-cta" onclick="window.location.href=this.href; return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#ffffff" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l6.229 2.492A1.5 1.5 0 0 1 16 4.07v8.86a1.5 1.5 0 0 1-.943 1.396l-6.5 2.6a1.5 1.5 0 0 1-1.114 0l-6.5-2.6A1.5 1.5 0 0 1 0 12.93V4.07a1.5 1.5 0 0 1 .943-1.396L7.443.184z"/>
             </svg>
             <div class="cloned-free-cta-text">
-              <span>Servicio a domicilio</span>
-              <strong class="cloned-free-cta-sub">en CDMX</strong>
+              <span>Servicio a Domicilio</span>
+              <strong class="cloned-free-cta-sub">y otros estados de la república</strong>
             </div>
           </a>
           
@@ -653,7 +684,7 @@
         
         <div class="cloned-services-row">
           <!-- Card 1: Diagnóstico -->
-          <div class="cloned-service-card" onclick="window.location.href='#soluciones'">
+          <div class="cloned-service-card" onclick="const s=document.getElementById('soluciones');if(s){const h=document.querySelector('.cloned-header')?.offsetHeight||70;window.scrollTo({top:s.offsetTop-h-10,behavior:'smooth'});}">
             <div class="cloned-service-icon-box">
               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                 <circle cx="11" cy="11" r="8"></circle>
@@ -665,7 +696,7 @@
             <span class="cloned-service-text">Revisamos tu equipo para encontrar la mejor solución.</span>
           </div>
           <!-- Card 2: Reparación de hardware -->
-          <div class="cloned-service-card" onclick="window.location.href='#soluciones'">
+          <div class="cloned-service-card" onclick="const s=document.getElementById('soluciones');if(s){const h=document.querySelector('.cloned-header')?.offsetHeight||70;window.scrollTo({top:s.offsetTop-h-10,behavior:'smooth'});}">
             <div class="cloned-service-icon-box">
               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                 <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
@@ -675,7 +706,7 @@
             <span class="cloned-service-text">Reparamos componentes con piezas de calidad Apple.</span>
           </div>
           <!-- Card 3: Reparación de software -->
-          <div class="cloned-service-card" onclick="window.location.href='#soluciones'">
+          <div class="cloned-service-card" onclick="const s=document.getElementById('soluciones');if(s){const h=document.querySelector('.cloned-header')?.offsetHeight||70;window.scrollTo({top:s.offsetTop-h-10,behavior:'smooth'});}">
             <div class="cloned-service-icon-box">
               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
@@ -685,7 +716,7 @@
             <span class="cloned-service-text">Solucionamos fallas del sistema y recuperación de datos.</span>
           </div>
           <!-- Card 4: Instalación y actualización -->
-          <div class="cloned-service-card" onclick="window.location.href='#soluciones'">
+          <div class="cloned-service-card" onclick="const s=document.getElementById('soluciones');if(s){const h=document.querySelector('.cloned-header')?.offsetHeight||70;window.scrollTo({top:s.offsetTop-h-10,behavior:'smooth'});}">
             <div class="cloned-service-icon-box">
               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
@@ -739,7 +770,12 @@
   <p style="margin-bottom: 60px;">Sabemos lo mucho que valoras tu Mac. Si te dijeron que <strong>"ya no tiene arreglo"</strong>, ¡le devolvemos la vida! Somos expertos en rescatar equipos <strong>mojados o que no encienden</strong> en nuestro laboratorio técnico. <strong>Servicio 100% a domicilio y recolección en toda la CDMX:</strong> no pierdas horas en el tráfico ni arriesgues tu equipo en locales públicos, nosotros vamos directo a tu puerta con orden de servicio foliada.</p>
   <div class="hero-actions">
   <a href="#soluciones" class="cta-button primary">Ver Soluciones</a>
-  <a href="https://wa.me/525535757364?text=Hola%2C%20%C2%BFme%20ayudas%20a%20reparar%20mi%20Mac%20con%20servicio%20t%C3%A9cnico%3F" class="cta-button secondary">Escribir por WhatsApp</a>
+  <a href="https://wa.me/525535757364?text=Hola%2C%20%C2%BFme%20ayudas%20a%20reparar%20mi%20Mac%20con%20servicio%20t%C3%A9cnico%3F" class="cta-button secondary cta-whatsapp" onclick="window.location.href=this.href; return false;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+    </svg>
+    Escribir por WhatsApp
+  </a>
   </div>
   
   <!-- Google Review Pill - Interactive Link to Google Business Profile -->
@@ -827,13 +863,10 @@
   </div>
   </section>
 
-  <section id="soluciones" class="section-padded solution-grid-section"
-  style="background-color: #ffffff; padding-top: 60px; padding-bottom: 80px;">
+  <section id="soluciones" class="section-padded solution-grid-section">
   <div class="container">
-  <div
-  style="text-align: center; margin-bottom: 30px; padding: 50px 20px; background: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-  <h2
-  style="font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; color: #1d1d1f; margin-bottom: 24px; text-transform: none;">
+  <div class="soluciones-authority-banner">
+  <h2 class="soluciones-authority-title">
   18 Años Reparando Macs.<br>Técnico Certificado Apple.
   </h2>
   <div class="brush-typography light-mode" style="align-items: center; text-align: center; font-size: clamp(1.5rem, 4vw, 2.2rem); max-width: 1000px; margin: 0 auto; gap: 10px; position: relative;">

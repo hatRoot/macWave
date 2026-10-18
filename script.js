@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Forzar que cualquier recarga inicie siempre desde arriba (scroll 0, 0)
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+
     // Clean Navigation Handler (Prevents URL preview on hover)
     document.querySelectorAll('[data-link]').forEach(el => {
         el.style.cursor = 'pointer';

@@ -36,6 +36,7 @@ El **Project Manager** es el orquestador principal del proyecto. Ninguna tarea s
   - Más de 18 años de experiencia comprobable en CDMX.
 
 ### 📱 3. Experto en UI / UX Móvil (Mobile-First estilo Apple)
+- **🛑 AISLAMIENTO ESTRICTO DE VIEWPORT (DESKTOP VS RESPONSIVE):** Prohibido terminantemente que cualquier cambio solicitado para modo responsive o móvil altere un solo píxel de la versión escritorio (> 768px). Toda regla responsiva DEBE residir dentro de media queries (`@media (max-width: ...)`). Y viceversa: cambios en escritorio no deben alterar el comportamiento móvil sin validación cruzada.
 - **Estética Apple Pill:** Botones táctiles redondeados (`border-radius: 980px` o `100px`), altura mínima touch-target de 44px a 48px, padding ergonómico y texto en una sola línea (`white-space: nowrap`) para evitar rupturas de línea en pantallas estrechas.
 - **Cero Colisiones:** Prohibido encimar barras fijas inferiores (`#mobileCallBar` o `.sticky-mobile-cta`) con botones flotantes circulares (`#floatingWA` o `.floating-wa-btn`). En páginas con barra fija inferior, el botón flotante debe ocultarse o reposicionarse por encima de la barra mediante media queries.
 - **Header Móvil Compacto:** El encabezado en viewport smartphone (≤ 480px) no debe superar 54px–60px de altura para mantener el título principal y el primer CTA en el primer pantallazo (*above the fold*).
@@ -58,6 +59,7 @@ El **Project Manager** es el orquestador principal del proyecto. Ninguna tarea s
   4. Prevención de colisión UI en componentes fijos móviles.
   5. Sincronización entre archivos locales y `sitemap.xml`.
   6. Blindaje estricto de `<title>` y `<h1>` ganadores y ausencia de redirecciones destructivas en `.htaccess`.
+  7. Aislamiento estricto de viewport (Desktop vs Mobile) en CSS para certificar que cambios responsive no alteren estilos globales de escritorio.
 - **Criterio de Entrega:** Cada cambio DEBE recibir la aprobación del arnés (`EXIT CODE 0`) antes de proceder a la entrega o commit.
 
 ### 🧪 7. Experto en QA & Testing (Control de Calidad)

@@ -6648,24 +6648,10 @@ html, body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-decoration: none;
     color: #ffffff;
-    transition: color 0.25s ease, transform 0.25s ease;
-}
-
-.mw-repair-sub-link-item:hover {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.mw-repair-sub-link-item:hover .mw-repair-sub-squircle {
-    transform: translateY(-5px);
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3), 0 10px 20px rgba(0, 0, 0, 0.4);
-}
-
-.mw-repair-sub-link-item:focus-visible {
-    outline: 2px solid rgba(255, 255, 255, 0.8);
-    outline-offset: 6px;
-    border-radius: 12px;
+    cursor: default;
+    user-select: none;
+    pointer-events: none;
 }
 
 .mw-repair-sub-label {
@@ -6833,10 +6819,6 @@ html, body {
         font-weight: 500;
         margin-top: 0;
         text-align: left;
-    }
-
-    .mw-repair-sub-link-item:hover .mw-repair-sub-squircle {
-        transform: scale(1.06);
     }
 }
 

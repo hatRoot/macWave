@@ -338,7 +338,7 @@
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
   as="style">
 
-  <link rel="stylesheet" href="style.css?v=27.6.0">
+  <link rel="stylesheet" href="style.css?v=27.6.1">
 
   <script>
   // Definición global e inmediata para evitar fallos en iPhone
@@ -967,8 +967,8 @@
           <h3 class="mw-repair-title">Reparaciones MacBook Apple</h3>
           <p class="mw-repair-text">Servicios especializados con técnicos certificados por Apple para garantizar que tu equipo reciba la mejor atención y cuidado.</p>
           
-          <div class="mw-repair-sub-links" role="navigation" aria-label="Enlaces rápidos de reparación, mantenimiento y diagnóstico">
-            <a href="/reparacion-corto-logica-mac" class="mw-repair-sub-link-item" aria-label="Ir a la sección de Reparación MacBook">
+          <div class="mw-repair-sub-links" aria-label="Especialidades: Reparación MacBook, Mantenimiento y Diagnóstico">
+            <div class="mw-repair-sub-link-item">
               <div class="mw-repair-sub-squircle mw-repair-squircle-blue">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <rect x="3" y="4" width="18" height="11" rx="2" />
@@ -976,8 +976,8 @@
                 </svg>
               </div>
               <span class="mw-repair-sub-label">Reparación MacBook</span>
-            </a>
-            <a href="/mantenimiento-macbook-cdmx" class="mw-repair-sub-link-item" aria-label="Ir a la sección de Mantenimiento preventivo y limpieza">
+            </div>
+            <div class="mw-repair-sub-link-item">
               <div class="mw-repair-sub-squircle mw-repair-squircle-gray">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <circle cx="12" cy="12" r="3" />
@@ -985,8 +985,8 @@
                 </svg>
               </div>
               <span class="mw-repair-sub-label">Mantenimiento</span>
-            </a>
-            <a href="/reparaciones" class="mw-repair-sub-link-item" aria-label="Ir a la sección de Diagnóstico o evaluación de equipo">
+            </div>
+            <div class="mw-repair-sub-link-item">
               <div class="mw-repair-sub-squircle mw-repair-squircle-green">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M4.8 3v5.2a7.2 7.2 0 0 0 14.4 0V3M12 10.2v6.8" />
@@ -994,7 +994,7 @@
                 </svg>
               </div>
               <span class="mw-repair-sub-label">Diagnóstico</span>
-            </a>
+            </div>
           </div>
         </div>
       </article>
@@ -1943,7 +1943,7 @@
   <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/sw.js?v=1.5.7-ops').then(function(registration) {
+      navigator.serviceWorker.register('/sw.js?v=1.5.8-ops').then(function(registration) {
         registration.update();
         if (registration.waiting) {
           registration.waiting.postMessage({ type: 'SKIP_WAITING' });

@@ -338,7 +338,7 @@
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
   as="style">
 
-  <link rel="stylesheet" href="style.css?v=27.5.0">
+  <link rel="stylesheet" href="style.css?v=27.6.0">
 
   <script>
   // Definición global e inmediata para evitar fallos en iPhone
@@ -1022,119 +1022,162 @@
   </li>
   </ul>
   </div>
-  <div class="comparative-badge">
-  <div class="badge-inner">
-  <span class="badge-icon">
-    <svg width="28" height="28" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 0a.5.5 0 0 1 .5.5v4A1.5 1.5 0 0 1 4.5 6h-2A1.5 1.5 0 0 1 1 4.5v-4a.5.5 0 0 1 1 0v4a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5zm5 0a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 1 0v4A1.5 1.5 0 0 1 13.5 6h-2A1.5 1.5 0 0 1 10 4.5v-4a.5.5 0 0 1 .5-.5z"/><path d="M8 7a.5.5 0 0 1 .5.5V9H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V10H6a.5.5 0 0 1 0-1h1.5V7.5A.5.5 0 0 1 8 7z"/><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/></svg>
-  </span>
-  <h4>Única Certificación</h4>
-  <p>Contamos con la certificación ACSP oficial de Apple, avalada internacionalmente. Somos el único centro de Reparaciones MacBook con este nivel de ingeniería real para rescatar tu hardware.</p>
-  </div>
-  </div>
-  </div>
+      <div class="comparative-badge">
+        <div class="badge-inner">
+          <h4>Certificaciones Oficiales Apple</h4>
+          <p>Técnicos avalados directamente por Apple para diagnóstico, reparación y soporte de hardware y software a nivel ingeniería.</p>
+          
+          <div class="apple-cert-badges-grid">
+            <div class="apple-cert-badge-card">
+              <img src="./images/apple_cert_support_professional.png" alt="Apple Certified Support Professional" width="110" height="110" loading="lazy" decoding="async">
+            </div>
+            <div class="apple-cert-badge-card">
+              <img src="./images/apple_cert_repair_technician.png" alt="Apple Certified Repair Technician" width="110" height="110" loading="lazy" decoding="async">
+            </div>
+            <div class="apple-cert-badge-card">
+              <img src="./images/apple_cert_support_technician.png" alt="Apple Certified Support Technician" width="110" height="110" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <style>
   .comparative-container {
-  background: #111;
-  border: 1px solid #333;
-  border-radius: 16px;
-  padding: 40px;
-  margin: 50px auto;
-  text-align: left;
-  max-width: 900px;
-  width: 90%;
+    background: #ffffff;
+    border: 1px solid #e5e5ea;
+    border-radius: 20px;
+    padding: 35px 30px;
+    margin: 35px auto;
+    text-align: left;
+    max-width: 960px;
+    width: 90%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
   }
   .comparative-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 40px;
-  align-items: center;
+    display: grid;
+    grid-template-columns: 1.15fr 0.95fr;
+    gap: 32px;
+    align-items: center;
   }
   .comparative-content h3 {
-  color: #ff6b00;
-  font-size: clamp(1.4rem, 4vw, 1.8rem);
-  margin-bottom: 20px;
-  line-height: 1.3;
+    color: #ff6600;
+    font-size: clamp(1.35rem, 3.5vw, 1.7rem);
+    font-weight: 800;
+    margin-bottom: 16px;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
   }
   .comparative-content p {
-  color: #ccc;
-  font-size: clamp(0.95rem, 2.5vw, 1.05rem);
-  line-height: 1.6;
+    color: #48484a;
+    font-size: clamp(0.92rem, 2vw, 1rem);
+    line-height: 1.6;
+  }
+  .comparative-content strong {
+    color: #1d1d1f;
   }
   .comparative-content ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 25px;
-  color: #fff;
+    list-style: none;
+    padding: 0;
+    margin-top: 22px;
+    color: #1d1d1f;
   }
   .comparative-content li {
-  margin-bottom: 12px;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: clamp(0.9rem, 2vw, 1rem);
-  line-height: 1.4;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: clamp(0.9rem, 1.8vw, 0.96rem);
+    line-height: 1.4;
+    color: #2c2c2e;
   }
   .check-icon {
-  color: #30D158;
-  flex-shrink: 0;
-  font-weight: bold;
-  margin-top: 2px;
+    color: #34C759;
+    flex-shrink: 0;
+    font-weight: 800;
+    margin-top: 1px;
   }
   .comparative-badge {
-  text-align: center;
+    text-align: center;
   }
   .badge-inner {
-  background: rgba(255,255,255,0.03);
-  padding: 35px 25px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.08);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  }
-  .badge-icon {
-  font-size: 3.5rem;
-  display: block;
-  margin-bottom: 15px;
+    background: #fbfbfd;
+    padding: 24px 18px;
+    border-radius: 18px;
+    border: 1px solid #e5e5ea;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
   }
   .badge-inner h4 {
-  color: #fff;
-  font-size: 1.2rem;
-  margin-bottom: 12px;
+    color: #1d1d1f;
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
   }
   .badge-inner p {
-  font-size: 0.95rem;
-  color: #888;
-  line-height: 1.5;
+    font-size: 0.88rem;
+    color: #636366;
+    line-height: 1.45;
+    margin-bottom: 18px;
+  }
+  .apple-cert-badges-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+  .apple-cert-badge-card {
+    background: #ffffff;
+    border: 1px solid #ebebed;
+    border-radius: 14px;
+    padding: 8px 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .apple-cert-badge-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  }
+  .apple-cert-badge-card img {
+    width: 100%;
+    max-width: 95px;
+    height: auto;
+    object-fit: contain;
+    display: block;
   }
 
   @media (max-width: 768px) {
-  .comparative-container {
-  padding: 24px 20px;
-  margin: 30px auto;
-  width: 92%;
+    .comparative-container {
+      padding: 22px 16px;
+      margin: 20px auto;
+      width: 92%;
+      border-radius: 16px;
+    }
+    .comparative-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      text-align: left;
+    }
+    .badge-inner {
+      padding: 18px 12px;
+    }
+    .apple-cert-badges-grid {
+      gap: 8px;
+    }
+    .apple-cert-badge-card {
+      padding: 6px 3px;
+      border-radius: 12px;
+    }
+    .apple-cert-badge-card img {
+      max-width: 80px;
+    }
   }
-  .comparative-grid {
-  grid-template-columns: 1fr;
-  gap: 24px;
-  text-align: center;
-  }
-  .comparative-content {
-  text-align: left;
-  }
-  .comparative-content ul {
-  margin-top: 20px;
-  }
-  .badge-inner {
-  padding: 24px 20px;
-  }
-  .badge-icon {
-  font-size: 3rem;
-  margin-bottom: 10px;
-  }
-  }
-
   </style>
 
   <!-- Nueva Sección: Proceso cubierto desde todos los ángulos -->
@@ -1900,7 +1943,7 @@
   <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/sw.js?v=1.5.5-ops').then(function(registration) {
+      navigator.serviceWorker.register('/sw.js?v=1.5.6-ops').then(function(registration) {
         registration.update();
         if (registration.waiting) {
           registration.waiting.postMessage({ type: 'SKIP_WAITING' });

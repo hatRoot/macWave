@@ -1,8 +1,8 @@
 // Service Worker for macWave Mexico - Performance & Caching
 // v1.4.0: no cachear HTML (evita footer/login viejos tras hotfix OPS)
-const CACHE_NAME = 'macwave-v1.5.2-ops';
+const CACHE_NAME = 'macwave-v1.5.4-ops';
 const urlsToCache = [
-  '/style.css?v=27.2.0',
+  '/style.css?v=27.4.0',
   '/script.js?v=26.5.3',
   '/images/favicon1.png',
   '/images/dispositivos.jpg',
@@ -49,14 +49,29 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
-  // HTML siempre red primero (login + footer OPS actualizados)
-  if (isDocumentRequest(event.request)) {
+  const url = new URL(event.request.url);
+
+  // 1. HTML, CSS y JS siempre RED PRIMERO (Network-First)
+  // Garantiza que cualquier cambio visual, de estilo o de lógica se descargue inmediatamente en celulares y navegadores
+  const isHtml = isDocumentRequest(event.request);
+  const isCodeAsset = url.pathname.endsWith('.css') || url.pathname.endsWith('.js');
+
+  if (isHtml || isCodeAsset) {
     event.respondWith(
-      fetch(event.request).catch(() => caches.match(event.request))
+      fetch(event.request)
+        .then((response) => {
+          if (response && response.status === 200) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request))
     );
     return;
   }
 
+  // 2. Activos binarios estáticos (imágenes, fuentes): Cache-First con fallback y actualización
   event.respondWith(
     caches.match(event.request).then((cached) => {
       const network = fetch(event.request)

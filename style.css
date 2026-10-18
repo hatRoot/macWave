@@ -5779,58 +5779,133 @@ html, body {
 
 .cloned-services-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 18px;
 }
 
+/* ── Apple Color Cards Palette (Ecosistema Apple) ── */
 .cloned-service-card {
     background-color: #FFFFFF;
     border: 1px solid #e5e5ea;
-    border-radius: 16px;
-    padding: 35px 25px;
+    border-radius: 20px;
+    padding: 30px 22px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.01);
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    gap: 14px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
 .cloned-service-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
-    border-color: rgba(255, 102, 0, 0.35);
+    transform: translateY(-6px);
 }
 
 .cloned-service-icon-box {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    border: 2px solid #FF6600;
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    border: none;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #FF6600;
-    margin-bottom: 4px;
-    transition: all 0.3s;
+    margin-bottom: 2px;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
 }
 
 .cloned-service-card:hover .cloned-service-icon-box {
-    background-color: #FF6600;
+    transform: scale(1.08);
+}
+
+/* 1. Amarillo Mango Apple */
+.cloned-service-card.apple-card-mango {
+    background: linear-gradient(165deg, #FFFDF2 0%, #FFF8D6 100%);
+    border-color: rgba(245, 158, 11, 0.30);
+}
+.cloned-service-card.apple-card-mango:hover {
+    border-color: rgba(245, 158, 11, 0.65);
+    box-shadow: 0 16px 32px rgba(245, 158, 11, 0.22);
+}
+.cloned-service-card.apple-card-mango .cloned-service-icon-box {
+    background: linear-gradient(135deg, #FFD02F 0%, #F59E0B 100%);
+    box-shadow: 0 6px 14px rgba(245, 158, 11, 0.35);
+    color: #FFFFFF;
+}
+
+/* 2. Azul Apple */
+.cloned-service-card.apple-card-blue {
+    background: linear-gradient(165deg, #F5F9FF 0%, #E6F1FE 100%);
+    border-color: rgba(0, 113, 227, 0.24);
+}
+.cloned-service-card.apple-card-blue:hover {
+    border-color: rgba(0, 113, 227, 0.60);
+    box-shadow: 0 16px 32px rgba(0, 113, 227, 0.22);
+}
+.cloned-service-card.apple-card-blue .cloned-service-icon-box {
+    background: linear-gradient(135deg, #2EA5FF 0%, #0071E3 100%);
+    box-shadow: 0 6px 14px rgba(0, 113, 227, 0.35);
+    color: #FFFFFF;
+}
+
+/* 3. Verde Apple */
+.cloned-service-card.apple-card-green {
+    background: linear-gradient(165deg, #F3FCF6 0%, #E2F8E9 100%);
+    border-color: rgba(52, 199, 89, 0.28);
+}
+.cloned-service-card.apple-card-green:hover {
+    border-color: rgba(52, 199, 89, 0.65);
+    box-shadow: 0 16px 32px rgba(52, 199, 89, 0.22);
+}
+.cloned-service-card.apple-card-green .cloned-service-icon-box {
+    background: linear-gradient(135deg, #38D863 0%, #22A04B 100%);
+    box-shadow: 0 6px 14px rgba(52, 199, 89, 0.35);
+    color: #FFFFFF;
+}
+
+/* 4. Rosa Apple */
+.cloned-service-card.apple-card-pink {
+    background: linear-gradient(165deg, #FFF3F7 0%, #FDE2EE 100%);
+    border-color: rgba(255, 45, 85, 0.24);
+}
+.cloned-service-card.apple-card-pink:hover {
+    border-color: rgba(255, 45, 85, 0.60);
+    box-shadow: 0 16px 32px rgba(255, 45, 85, 0.22);
+}
+.cloned-service-card.apple-card-pink .cloned-service-icon-box {
+    background: linear-gradient(135deg, #FF456E 0%, #D80D41 100%);
+    box-shadow: 0 6px 14px rgba(255, 45, 85, 0.35);
+    color: #FFFFFF;
+}
+
+/* 5. Naranja Apple */
+.cloned-service-card.apple-card-orange {
+    background: linear-gradient(165deg, #FFF6F0 0%, #FEE5D4 100%);
+    border-color: rgba(255, 102, 0, 0.28);
+}
+.cloned-service-card.apple-card-orange:hover {
+    border-color: rgba(255, 102, 0, 0.65);
+    box-shadow: 0 16px 32px rgba(255, 102, 0, 0.22);
+}
+.cloned-service-card.apple-card-orange .cloned-service-icon-box {
+    background: linear-gradient(135deg, #FF8A33 0%, #FF6600 100%);
+    box-shadow: 0 6px 14px rgba(255, 102, 0, 0.35);
     color: #FFFFFF;
 }
 
 .cloned-service-title {
     font-size: 1.15rem;
-    font-weight: 800;
+    font-weight: 700;
     color: #1d1d1f;
     line-height: 1.25;
+    letter-spacing: -0.015em;
 }
 
 .cloned-service-text {
-    font-size: 0.9rem;
-    color: #555558;
-    line-height: 1.5;
+    font-size: 0.92rem;
+    color: #48484a;
+    line-height: 1.45;
 }
 
 /* Responsive Styles for Mockup */

@@ -525,6 +525,63 @@ function auditResponsiveIsolation() {
 }
 
 /**
+ * 8. Auditoría de Cache-Busting y Service Worker (Actualización Automática Móvil)
+ */
+function auditCacheBustingAndServiceWorker() {
+  logHeader('8. AUDITORÍA DE CACHE-BUSTING Y SERVICE WORKER');
+  let issuesFound = 0;
+
+  const swPath = path.join(ROOT_DIR, 'sw.js');
+  const indexPath = path.join(ROOT_DIR, 'index.html');
+
+  if (!fs.existsSync(swPath)) {
+    logError('El archivo sw.js no existe en la raíz.');
+    return;
+  }
+
+  const swContent = fs.readFileSync(swPath, 'utf8');
+  const indexContent = fs.readFileSync(indexPath, 'utf8');
+
+  // 1. Validar estrategia Network-First para .css y .js en sw.js
+  const hasNetworkFirstForCode = /url\.pathname\.endsWith\('\.css'\)\s*\|\|\s*url\.pathname\.endsWith\('\.js'\)/i.test(swContent);
+  if (!hasNetworkFirstForCode) {
+    logError('sw.js no implementa Network-First para archivos .css y .js. Riesgo de caché persistente en dispositivos móviles.');
+    issuesFound++;
+  }
+
+  // 2. Extraer versión de style.css en index.html
+  const indexStyleMatch = indexContent.match(/href=["']style\.css\?v=([^"']+)["']/i);
+  if (!indexStyleMatch) {
+    logError('index.html no incluye query string de versión (?v=...) en style.css.');
+    issuesFound++;
+  }
+
+  // 3. Extraer versión de style.css en sw.js
+  const swStyleMatch = swContent.match(/'\/style\.css\?v=([^']+)'/i);
+  if (!swStyleMatch) {
+    logError('sw.js no incluye versión de style.css sincronizada en urlsToCache.');
+    issuesFound++;
+  }
+
+  // 4. Corroborar sincronización estricta entre index.html y sw.js
+  if (indexStyleMatch && swStyleMatch && indexStyleMatch[1] !== swStyleMatch[1]) {
+    logError(`Desincronización de versiones de style.css: index.html tiene "${indexStyleMatch[1]}" pero sw.js tiene "${swStyleMatch[1]}".`);
+    issuesFound++;
+  }
+
+  // 5. Corroborar registro versionado de Service Worker en index.html
+  const swRegisterMatch = indexContent.match(/navigator\.serviceWorker\.register\(['"]\/sw\.js\?v=([^'"]+)['"]\)/i);
+  if (!swRegisterMatch) {
+    logError('index.html no utiliza registro versionado (/sw.js?v=...) para forzar la actualización inmediata del Service Worker.');
+    issuesFound++;
+  }
+
+  if (issuesFound === 0) {
+    logPass('Cache-Busting certificado: Service Worker en Network-First para CSS/JS y versiones 100% sincronizadas.');
+  }
+}
+
+/**
  * Función principal de ejecución
  */
 function runHarness() {
@@ -544,6 +601,7 @@ function runHarness() {
   auditSitemapAndRobots();
   auditSeoGuardrails();
   auditResponsiveIsolation();
+  auditCacheBustingAndServiceWorker();
 
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
   logHeader('RESUMEN DE AUDITORÍA');

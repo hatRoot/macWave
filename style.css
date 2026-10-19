@@ -1165,9 +1165,22 @@ h3 {
     border-top: 1px solid var(--tertiary-bg);
 }
 
-/* Footer */
+/* Specialized Services & Final CTA */
+.specialized-services-section {
+    padding: 48px 20px 42px;
+}
+
+.specialized-services-desc {
+    margin-bottom: 28px;
+}
+
 .cta-final-hub {
     margin-bottom: 0 !important;
+    padding: 48px 20px 40px;
+}
+
+.cta-box {
+    padding: 40px 28px;
 }
 
 .main-footer {
@@ -4160,8 +4173,38 @@ details.modern-accordion[open] {
 
     /* 7. Image inside service rows */
     .service-row {
-        padding: 30px 0 !important;
-        margin-bottom: 15px !important;
+        padding: 16px 0 !important;
+        margin-bottom: 10px !important;
+    }
+
+    .service-row:first-child {
+        padding-top: 6px !important;
+    }
+
+    .service-row:last-child {
+        padding-bottom: 6px !important;
+    }
+
+    .specialized-services-section {
+        padding: 24px 16px 20px !important;
+    }
+
+    .specialized-services-desc {
+        margin-bottom: 16px !important;
+    }
+
+    .cta-final-hub {
+        padding: 24px 16px 20px !important;
+    }
+
+    .cta-box {
+        padding: 24px 16px !important;
+        border-radius: 18px !important;
+    }
+
+    .footer-sitemap-banner {
+        padding: 14px 0 12px !important;
+        margin-bottom: 16px !important;
     }
 
     .service-content h3 {

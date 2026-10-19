@@ -49,11 +49,6 @@ Redirect 301 /actualizar-mac-os-vieja.html https://macwave.com.mx/upgrades
 Redirect 301 /reflow-gpu-mac https://macwave.com.mx/reparacion-corto-logica-mac
 Redirect 301 /reflow-gpu-mac.html https://macwave.com.mx/reparacion-corto-logica-mac
 
-# Fusión y consolidación de Soporte Corporativo hacia /empresas
-Redirect 301 /software https://macwave.com.mx/empresas
-Redirect 301 /software.html https://macwave.com.mx/empresas
-Redirect 301 /casos-reales https://macwave.com.mx/empresas
-Redirect 301 /casos-reales.html https://macwave.com.mx/empresas
 Redirect 301 /reparacion-laptops-gamer-cdmx https://macwave.com.mx/reparaciones
 Redirect 301 /reparacion-laptops-gamer-cdmx.html https://macwave.com.mx/reparaciones
 

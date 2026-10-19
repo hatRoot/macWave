@@ -464,10 +464,12 @@ function auditSeoGuardrails() {
       /Redirect\s+301\s+\/mac-mojada-cdmx(?:\.html)?\s/i,
       /Redirect\s+301\s+\/reparacion-imac-cdmx(?:\.html)?\s/i,
       /Redirect\s+301\s+\/reparacion-corto-logica-mac(?:\.html)?\s/i,
+      /Redirect\s+301\s+\/casos-reales(?:\.html)?\s/i,
+      /Redirect\s+301\s+\/software(?:\.html)?\s/i,
     ];
     for (const dRegex of dangerousRedirects) {
       if (dRegex.test(htContent)) {
-        logError(`[.htaccess] Se detectó una redirección 301 destructiva que canibaliza o mata una página pilar activa.`);
+        logError(`[.htaccess] Se detectó una redirección 301 destructiva que canibaliza o mata una página activa (${dRegex}).`);
         issuesFound++;
       }
     }

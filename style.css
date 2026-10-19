@@ -1252,22 +1252,26 @@ h3 {
     display: inline-block;
     width: 10px;
     height: 10px;
-    margin: 0 10px;
+    margin: 0;
     padding: 0;
     background: #ff6600;
     border: none;
     border-radius: 50%;
     cursor: pointer;
     box-sizing: border-box;
-    opacity: 0.65;
+    opacity: 0.55;
     transition: opacity 0.2s ease, transform 0.2s ease;
     vertical-align: middle;
     flex-shrink: 0;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .footer-ops-dot:hover {
     opacity: 1;
-    transform: scale(1.25);
+    transform: translateY(-50%) scale(1.3);
 }
 
 .footer-grid {
@@ -1432,17 +1436,21 @@ h3 {
 }
 
 .footer-bottom-inner {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    text-align: center;
     gap: 12px;
     color: #888888;
     font-size: 0.8rem;
 }
 
 .footer-bottom-inner p {
-    margin: 0;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 25px;
 }
 
 /* Media Queries para Responsiveness */
@@ -3366,6 +3374,225 @@ h3 {
     }
 }
 
+/* --- Sección: ¿Por qué elegir macWave? (Desktop & Shared) --- */
+.why-macwave-section {
+    background-color: #ffffff;
+    padding: 85px 20px 80px;
+    color: #1d1d1f;
+    text-align: center;
+}
+
+.why-macwave-section h2 {
+    color: #1d1d1f;
+    font-size: clamp(2rem, 4vw, 2.85rem);
+    margin-bottom: 55px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.trust-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.trust-item {
+    padding: 0 16px;
+    text-align: center;
+}
+
+.trust-icon-wrapper {
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #86868b;
+}
+
+.trust-item h3 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: #1d1d1f;
+    letter-spacing: -0.01em;
+}
+
+.trust-item p {
+    color: #424245;
+    font-size: 0.98rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* --- Sección CTA Contacto (Listo para Elevar tu Soporte Técnico?) --- */
+.cta-contact-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.58), rgba(0, 0, 0, 0.58)), url('./images/computadoras.jpg') center/cover no-repeat;
+    color: #ffffff;
+    padding: 105px 20px;
+    text-align: center;
+}
+
+@media (min-width: 769px) {
+    .cta-contact-section {
+        background-attachment: fixed;
+    }
+}
+
+.cta-contact-section h2 {
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+}
+
+.cta-contact-section .section-description {
+    color: #f5f5f7;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    max-width: 720px;
+    margin: 0 auto 35px;
+}
+
+.btn-laboratorio-orange {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #ff6600;
+    color: #ffffff !important;
+    border-radius: 980px;
+    padding: 13px 30px;
+    font-weight: 700;
+    font-size: 0.98rem;
+    line-height: 1.2;
+    text-decoration: none;
+    border: none;
+    box-shadow: 0 4px 16px rgba(255, 102, 0, 0.4);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    cursor: pointer;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.btn-laboratorio-orange:hover {
+    background: #e65c00;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 102, 0, 0.55);
+    color: #ffffff !important;
+}
+
+.btn-laboratorio-orange:active {
+    transform: translateY(1px);
+}
+
+/* --- Barra de Consulta Rapida y Telefono (Alto Contraste) --- */
+.cta-inquiry-wrap {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.cta-inquiry-title {
+    font-size: clamp(1.08rem, 2.2vw, 1.3rem);
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.cta-inquiry-badges {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.inquiry-badge-wa {
+    background: linear-gradient(135deg, #25D366 0%, #20BD5A 100%);
+    color: #ffffff !important;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.02rem;
+    border-radius: 980px;
+    padding: 12px 26px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inquiry-badge-wa:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(37, 211, 102, 0.6);
+    color: #ffffff !important;
+}
+
+.inquiry-badge-phone {
+    background: #ffffff;
+    color: #1d1d1f !important;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1.02rem;
+    border-radius: 980px;
+    padding: 12px 26px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.9);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inquiry-badge-phone:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 26px rgba(255, 255, 255, 0.45);
+    color: #000000 !important;
+}
+
+.inquiry-badge-phone svg {
+    color: #009CDF;
+    flex-shrink: 0;
+}
+
+/* --- Banner Google Reseñas --- */
+.footer-google-reviews {
+    background: #ffffff;
+    text-align: center;
+    padding: 38px 20px 32px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    border-bottom: 1px solid #e5e5ea;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.footer-google-reviews .google-icon-wrap {
+    margin-bottom: 8px;
+}
+
+.footer-google-reviews .stars-rating {
+    color: #F4B400;
+    font-size: 32px;
+    line-height: 1;
+    margin-bottom: 12px;
+    letter-spacing: 3px;
+}
+
+.footer-google-reviews p {
+    color: #1d1d1f;
+    font-size: 1.15rem;
+    font-weight: 500;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.4;
+}
+
 /* Responsive for Stacked Services */
 @media (max-width: 900px) {
     .service-row {
@@ -4699,15 +4926,95 @@ html, body {
     }
 
     /* Why macWave (Trust) Section */
-    .trust-grid {
-        grid-template-columns: 1fr !important;
-        gap: 40px !important;
-        padding: 0 16px;
+    .why-macwave-section {
+        padding: 50px 16px 45px !important;
     }
 
     .why-macwave-section h2 {
         font-size: 1.6rem !important;
         padding: 0 16px;
+        margin-bottom: 30px !important;
+    }
+
+    .trust-grid {
+        grid-template-columns: 1fr !important;
+        gap: 32px !important;
+        padding: 0 16px;
+    }
+
+    .cta-contact-section {
+        padding: 60px 16px !important;
+    }
+
+    .cta-contact-section h2 {
+        font-size: 1.8rem !important;
+        line-height: 1.25 !important;
+    }
+
+    .cta-contact-section .section-description {
+        font-size: 1rem !important;
+        margin-bottom: 25px !important;
+    }
+
+    .btn-laboratorio-orange {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: auto !important;
+        max-width: calc(100% - 24px) !important;
+        min-height: 44px !important;
+        height: auto !important;
+        padding: 11px 24px !important;
+        font-size: clamp(0.82rem, 3.8vw, 0.94rem) !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+        white-space: nowrap !important;
+        border-radius: 980px !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+        box-shadow: 0 4px 14px rgba(255, 102, 0, 0.35) !important;
+    }
+
+    .cta-inquiry-wrap {
+        margin-top: 24px !important;
+        width: 100% !important;
+    }
+
+    .cta-inquiry-title {
+        font-size: 1.05rem !important;
+        padding: 0 10px !important;
+        line-height: 1.4 !important;
+    }
+
+    .cta-inquiry-badges {
+        width: 100% !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        align-items: center !important;
+    }
+
+    .inquiry-badge-wa,
+    .inquiry-badge-phone {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: auto !important;
+        min-width: 230px !important;
+        max-width: calc(100% - 24px) !important;
+        min-height: 44px !important;
+        box-sizing: border-box !important;
+        padding: 11px 22px !important;
+        font-size: 0.92rem !important;
+        white-space: nowrap !important;
+        border-radius: 980px !important;
+    }
+
+    .footer-google-reviews {
+        padding: 26px 16px 22px !important;
+    }
+
+    .footer-google-reviews p {
+        font-size: 1.02rem !important;
     }
 
     /* Comparative Section */
@@ -5228,70 +5535,50 @@ html, body {
 }
 
 /* ============================================================
-   ESTILOS PREMIUM DE CABECERA SCROLLED (Efecto Vidrio Flotante)
+   ESTILOS PREMIUM DE CABECERA SCROLLED EN ESCRITORIO (> 768px)
    ============================================================ */
-.cloned-header.header-scrolled {
-    top: 15px !important;
-    padding: 10px 0 !important;
-    background-color: transparent !important;
-}
-
-.cloned-header.header-scrolled::before {
-    width: calc(100% - 40px);
-    max-width: 1200px;
-    background-color: rgba(255, 255, 255, 0.72);
-    backdrop-filter: blur(20px) saturate(190%);
-    -webkit-backdrop-filter: blur(20px) saturate(190%);
-    border: 1px solid rgba(0, 0, 0, 0.06);
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 1px rgba(0, 0, 0, 0.02);
-}
-
-/* Micro-interacciones de Escala en Scroll */
-.cloned-header.header-scrolled .cloned-header-cta {
-    padding: 10px 22px !important;
-    font-size: 0.85rem !important;
-    box-shadow: 0 4px 10px rgba(255, 102, 0, 0.15) !important;
-}
-
-.cloned-header.header-scrolled .cloned-logo-brand {
-    font-size: 1.65rem !important;
-}
-
-.cloned-header.header-scrolled .cloned-logo-divider {
-    height: 1.5px !important;
-    margin: 2px 0 !important;
-}
-
-.cloned-header.header-scrolled .cloned-logo-sub {
-    font-size: 0.75rem !important;
-    letter-spacing: 1.5px !important;
-}
-
-.cloned-header.header-scrolled .cloned-logo-link svg {
-    width: 48px !important;
-    height: 26px !important;
-}
-
-/* Adaptación Responsiva de la Isla Flotante */
-@media (max-width: 768px) {
+@media (min-width: 769px) {
     .cloned-header.header-scrolled {
-        top: 10px !important;
-        padding: 8px 0 !important;
+        top: 15px !important;
+        padding: 10px 0 !important;
+        background-color: transparent !important;
     }
-    
+
     .cloned-header.header-scrolled::before {
-        width: calc(100% - 24px);
-        border-radius: 16px;
+        width: calc(100% - 40px);
+        max-width: 1200px;
+        background-color: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(20px) saturate(190%);
+        -webkit-backdrop-filter: blur(20px) saturate(190%);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 1px 1px rgba(0, 0, 0, 0.02);
     }
-    
+
+    /* Micro-interacciones de Escala en Scroll (Solo Escritorio) */
+    .cloned-header.header-scrolled .cloned-header-cta {
+        padding: 10px 22px !important;
+        font-size: 0.85rem !important;
+        box-shadow: 0 4px 10px rgba(255, 102, 0, 0.15) !important;
+    }
+
     .cloned-header.header-scrolled .cloned-logo-brand {
-        font-size: 1.45rem !important;
+        font-size: 1.65rem !important;
     }
-    
+
+    .cloned-header.header-scrolled .cloned-logo-divider {
+        height: 1.5px !important;
+        margin: 2px 0 !important;
+    }
+
+    .cloned-header.header-scrolled .cloned-logo-sub {
+        font-size: 0.75rem !important;
+        letter-spacing: 1.5px !important;
+    }
+
     .cloned-header.header-scrolled .cloned-logo-link svg {
-        width: 42px !important;
-        height: 22px !important;
+        width: 48px !important;
+        height: 26px !important;
     }
 }
 
@@ -6198,19 +6485,60 @@ html, body {
         color: #30D158 !important;
     }
 
-    /* ── Cabecera Móvil Estilo Apple (≤ 54px Altura) ── */
-    .cloned-header {
+    /* ── Cabecera Móvil Estilo Apple (≤ 54px Altura, Fija y Estable) ── */
+    .cloned-header,
+    .cloned-header.header-scrolled {
+        position: sticky !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
         padding: 8px 0 !important;
+        margin: 0 !important;
+        background-color: transparent !important;
     }
 
-    .cloned-header .container {
+    .cloned-header::before,
+    .cloned-header.header-scrolled::before {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 100% !important;
+        border-radius: 0 !important;
+        border-left: none !important;
+        border-right: none !important;
+        border-top: none !important;
+        transition: background-color 0.25s ease, box-shadow 0.25s ease !important;
+    }
+
+    .cloned-header::before {
+        background-color: #FFFFFF !important;
+        border-bottom: 1px solid #e5e5ea !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    }
+
+    .cloned-header.header-scrolled::before {
+        background-color: rgba(255, 255, 255, 0.94) !important;
+        backdrop-filter: blur(20px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
+    }
+
+    .cloned-header .container,
+    .cloned-header.header-scrolled .container {
         display: flex !important;
         flex-direction: row !important;
         align-items: center !important;
         justify-content: space-between !important;
         flex-wrap: nowrap !important;
-        gap: 10px !important;
-        padding: 0 14px !important;
+        gap: 8px !important;
+        padding: 0 12px !important;
+        width: 100% !important;
+        max-width: 100% !important;
     }
 
     /* Botón Hamburguesa nítido en fondo blanco */
@@ -6241,27 +6569,31 @@ html, body {
         transition: all 0.3s ease !important;
     }
 
-    /* Logo ajustado y ergonómico sin colisión con botón CTA */
-    .cloned-header .cloned-logo-container {
+    /* Logo macWave México 100% Visible y Blindado (Nunca se oculta México) */
+    .cloned-header .cloned-logo-container,
+    .cloned-header.header-scrolled .cloned-logo-container {
         order: 2 !important;
         margin: 0 !important;
-        flex: 0 1 auto !important;
+        flex: 1 1 auto !important;
         display: flex !important;
         align-items: center !important;
         justify-content: flex-start !important;
         min-width: 0 !important;
+        overflow: visible !important;
     }
 
-    .cloned-header .logo a.logo-link {
-        display: flex !important;
+    .cloned-header .logo a.logo-link,
+    .cloned-header.header-scrolled .logo a.logo-link {
+        display: inline-flex !important;
         align-items: center !important;
         gap: 6px !important;
         min-width: 0 !important;
         text-decoration: none !important;
+        white-space: nowrap !important;
     }
 
     .cloned-header .logo-img {
-        height: 28px !important;
+        height: 26px !important;
         width: auto !important;
         flex-shrink: 0 !important;
     }
@@ -6271,34 +6603,50 @@ html, body {
         flex-direction: column !important;
         min-width: 0 !important;
         line-height: 1 !important;
+        flex-shrink: 0 !important;
     }
 
-    .cloned-header .logo-brand {
-        display: flex !important;
+    .cloned-header .logo-brand,
+    .cloned-header.header-scrolled .logo-brand {
+        display: inline-flex !important;
         flex-direction: row !important;
         align-items: baseline !important;
         gap: 4px !important;
-        font-size: 1.05rem !important;
+        font-size: 1.02rem !important;
         font-weight: 800 !important;
         color: #1d1d1f !important;
         line-height: 1.1 !important;
         white-space: nowrap !important;
         letter-spacing: -0.4px !important;
+        flex-shrink: 0 !important;
     }
 
-    .cloned-header .logo-brand span {
+    .cloned-header .logo-brand strong,
+    .cloned-header.header-scrolled .logo-brand strong {
+        font-weight: 800 !important;
+        white-space: nowrap !important;
+    }
+
+    .cloned-header .logo-brand span,
+    .cloned-header.header-scrolled .logo-brand span {
         font-weight: 400 !important;
         color: #86868b !important;
         font-size: 0.72rem !important;
         letter-spacing: 0px !important;
+        white-space: nowrap !important;
+        display: inline !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        flex-shrink: 0 !important;
     }
 
     .cloned-header .logo-subtext {
         display: none !important;
     }
 
-    /* Botón Naranja en Móvil: Píldora Apple Estética Touch 34px y Click Directo */
-    .cloned-header-cta {
+    /* Botón Naranja en Móvil: FIJO, sin crecer en scroll (Dimensiones Inmutables) */
+    .cloned-header .cloned-header-cta,
+    .cloned-header.header-scrolled .cloned-header-cta {
         order: 3 !important;
         flex-shrink: 0 !important;
         margin-left: auto !important;
@@ -6312,8 +6660,10 @@ html, body {
         font-weight: 700 !important;
         font-size: 0.74rem !important;
         letter-spacing: 0.1px !important;
-        padding: 0 12px !important;
+        padding: 0 11px !important;
         height: 34px !important;
+        min-height: 34px !important;
+        max-height: 34px !important;
         line-height: 34px !important;
         border-radius: 980px !important;
         border: none !important;
@@ -6326,8 +6676,10 @@ html, body {
         -webkit-tap-highlight-color: transparent !important;
     }
 
-    .cloned-header-cta:hover,
-    .cloned-header-cta:active {
+    .cloned-header .cloned-header-cta:hover,
+    .cloned-header .cloned-header-cta:active,
+    .cloned-header.header-scrolled .cloned-header-cta:hover,
+    .cloned-header.header-scrolled .cloned-header-cta:active {
         background: linear-gradient(135deg, #ff771a 0%, #ff4d00 100%) !important;
         transform: scale(0.97) !important;
         color: #ffffff !important;
@@ -6984,10 +7336,516 @@ html, body {
     font-weight: 700 !important;
 }
 
-.footer-bottom-mini .container a:hover {
-    color: #4daafd !important;
+/* ==========================================================================
+   PÁGINA CASOS REALES & HISTORIAS DE ÉXITO (macWave CDMX)
+   ========================================================================== */
+.cr-hero {
+    background: radial-gradient(circle at 50% 10%, rgba(0, 156, 223, 0.12) 0%, rgba(10, 10, 14, 0.98) 75%), #0a0a0e;
+    padding: 110px 20px 60px;
+    text-align: center;
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.cr-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 102, 0, 0.1);
+    border: 1px solid rgba(255, 102, 0, 0.35);
+    color: #ff6600;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 9px 24px;
+    border-radius: 980px;
+    margin-bottom: 22px;
+}
 
+.cr-hero h1 {
+    font-size: clamp(2rem, 4.2vw, 3.2rem);
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.03em;
+    line-height: 1.18;
+    max-width: 880px;
+    margin: 0 auto 18px;
+}
 
+.cr-hero h1 span.gradient-text {
+    background: linear-gradient(135deg, #009CDF 0%, #4daafd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.cr-hero p.cr-hero-desc {
+    font-size: clamp(1.05rem, 2vw, 1.22rem);
+    color: #a1a1a6;
+    line-height: 1.6;
+    max-width: 740px;
+    margin: 0 auto 30px;
+}
+
+.cr-hero-stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.cr-stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 10px 22px;
+    border-radius: 980px;
+    color: #f5f5f7;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.cr-stat-pill:hover {
+    transform: translateY(-2px);
+    border-color: rgba(0, 156, 223, 0.5);
+    background: rgba(0, 156, 223, 0.1);
+    color: #ffffff;
+}
+
+.cr-stat-pill .google-stars {
+    color: #F4B400;
+    letter-spacing: 2px;
+    font-size: 1.05rem;
+}
+
+/* Filtros por Categoría */
+.cr-filters-section {
+    background: #0d0d12;
+    padding: 24px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    position: sticky;
+    top: 60px;
+    z-index: 90;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.cr-filters-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.cr-filter-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #a1a1a6;
+    padding: 9px 20px;
+    border-radius: 980px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.cr-filter-btn:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.cr-filter-btn.active {
+    background: #009CDF;
+    border-color: #009CDF;
+    color: #ffffff;
+    box-shadow: 0 2px 14px rgba(0, 156, 223, 0.4);
+}
+
+/* Grid de Casos Reales */
+.cr-cases-section {
+    background: #07070a;
+    padding: 70px 20px 90px;
+}
+
+.cr-cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.cr-card {
+    background: #111116;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.cr-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 156, 223, 0.35);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 24px rgba(0, 156, 223, 0.08);
+}
+
+.cr-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.cr-tag {
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 5px 12px;
+    border-radius: 980px;
+}
+
+.cr-tag-liquidos { background: rgba(0, 156, 223, 0.15); color: #009CDF; border: 1px solid rgba(0, 156, 223, 0.3); }
+.cr-tag-logica { background: rgba(255, 102, 0, 0.15); color: #ff6600; border: 1px solid rgba(255, 102, 0, 0.3); }
+.cr-tag-pantalla { background: rgba(155, 89, 182, 0.15); color: #c39bd3; border: 1px solid rgba(155, 89, 182, 0.3); }
+.cr-tag-upgrades { background: rgba(46, 204, 113, 0.15); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); }
+
+.cr-case-id {
+    color: #6e6e73;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.cr-card-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.35;
+    margin-bottom: 12px;
+    letter-spacing: -0.015em;
+}
+
+.cr-card-client {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #a1a1a6;
+    font-size: 0.88rem;
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.cr-card-client svg {
+    color: #009CDF;
+    flex-shrink: 0;
+}
+
+/* Fases de Resolución */
+.cr-phases {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.cr-phase-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 14px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.cr-phase-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 5px;
+}
+
+.cr-label-pain { color: #ff5252; }
+.cr-label-tech { color: #009CDF; }
+.cr-label-win { color: #2ecc71; }
+
+.cr-phase-text {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: #d1d1d6;
+    margin: 0;
+}
+
+/* Caja de Reseña de Google Maps */
+.cr-review-box {
+    background: linear-gradient(135deg, rgba(66, 133, 244, 0.06) 0%, rgba(52, 168, 83, 0.06) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 0;
+    position: relative;
+}
+
+.cr-review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.cr-review-stars {
+    color: #F4B400;
+    font-size: 1rem;
+    letter-spacing: 2px;
+}
+
+.cr-review-badge-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #a1a1a6;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cr-review-quote {
+    font-size: 0.94rem;
+    line-height: 1.55;
+    color: #f5f5f7;
+    font-style: italic;
+    margin: 0 0 10px;
+}
+
+.cr-review-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #4daafd;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.cr-review-link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* Botón de Acción Directo por Caso */
+.cr-card-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    background: linear-gradient(135deg, #25D366 0%, #20BD5A 100%);
+    color: #ffffff !important;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.96rem;
+    padding: 13px 20px;
+    border-radius: 980px;
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.cr-card-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(37, 211, 102, 0.55);
+    color: #ffffff !important;
+}
+
+/* CTA Único Homologado Sección Casos Reales */
+.cr-cases-cta-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    width: 100%;
+}
+
+/* Banner de Google Reviews Destacado en Casos Reales */
+.cr-google-hub {
+    background: #0f0f15;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.cr-google-hub-inner {
+    max-width: 820px;
+    margin: 0 auto;
+}
+
+.cr-google-hub h2 {
+    font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 14px;
+    letter-spacing: -0.02em;
+}
+
+.cr-google-hub p {
+    font-size: 1.1rem;
+    color: #a1a1a6;
+    line-height: 1.6;
+    margin-bottom: 28px;
+}
+
+.cr-google-hub-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.cr-btn-maps {
+    background: #ffffff;
+    color: #1d1d1f !important;
+    padding: 14px 28px;
+    border-radius: 980px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cr-btn-maps:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 22px rgba(255, 255, 255, 0.35);
+    color: #000000 !important;
+}
+
+/* Foto del Caso en Laboratorio Real */
+.cr-card-media {
+    position: relative;
+    width: 100%;
+    height: 195px;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #08080c;
+}
+
+.cr-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.cr-card:hover .cr-card-media img {
+    transform: scale(1.05);
+}
+
+.cr-media-badge {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #f5f5f7;
+    font-size: 0.74rem;
+    font-weight: 600;
+    padding: 5px 11px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 2;
+}
+
+/* Aislamiento Móvil para Casos Reales (<= 768px) */
+@media (max-width: 768px) {
+    .cr-hero {
+        padding: 90px 16px 45px !important;
+    }
+    .cr-hero-badge {
+        font-size: 0.92rem !important;
+        padding: 7px 20px !important;
+    }
+    .cr-hero h1 {
+        font-size: 1.75rem !important;
+        line-height: 1.22 !important;
+    }
+    .cr-hero p.cr-hero-desc {
+        font-size: 0.98rem !important;
+        margin-bottom: 24px !important;
+    }
+    .cr-filters-section {
+        top: 50px !important;
+        padding: 14px 12px !important;
+    }
+    .cr-filter-btn {
+        padding: 7px 14px !important;
+        font-size: 0.8rem !important;
+    }
+    .cr-cases-section {
+        padding: 45px 14px 60px !important;
+    }
+    .cr-cases-grid {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+    }
+    .cr-card {
+        padding: 22px 18px !important;
+    }
+    .cr-card-media {
+        height: 170px !important;
+        margin-bottom: 16px !important;
+    }
+    .cr-card-title {
+        font-size: 1.2rem !important;
+    }
+    .cr-phase-item {
+        padding: 12px 14px !important;
+    }
+    .cr-review-box {
+        padding: 14px !important;
+    }
+    .cr-card-cta {
+        padding: 12px 16px !important;
+        font-size: 0.92rem !important;
+    }
+    .cr-google-hub {
+        padding: 45px 16px !important;
+    }
+    .cr-btn-maps {
+        width: 100% !important;
+        max-width: 320px !important;
+        justify-content: center !important;
+    }
+    .cr-cases-cta-wrap {
+        margin-top: 32px !important;
+    }
+}
 

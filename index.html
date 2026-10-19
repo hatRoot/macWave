@@ -1164,6 +1164,17 @@
       gap: 20px;
       text-align: left;
     }
+    .comparative-content h3 {
+      text-align: center;
+    }
+    .comparative-content p {
+      text-align: center;
+    }
+    .comparative-content ul {
+      max-width: 380px;
+      margin-left: auto;
+      margin-right: auto;
+    }
     .badge-inner {
       padding: 18px 12px;
     }
@@ -1943,7 +1954,7 @@
   <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/sw.js?v=1.5.8-ops').then(function(registration) {
+      navigator.serviceWorker.register('/sw.js?v=1.5.9-ops').then(function(registration) {
         registration.update();
         if (registration.waiting) {
           registration.waiting.postMessage({ type: 'SKIP_WAITING' });

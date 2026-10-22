@@ -90,6 +90,13 @@ El **Project Manager** es el orquestador principal del proyecto. Ninguna tarea s
 | **Correo Oficial** | `contacto@macwave.com.mx` |
 | **Dominio Canónico** | `https://macwave.com.mx` |
 
+### 🎯 LAS 3 PRIORIDADES MÁXIMAS DE NEGOCIO (FOCO ABSOLUTO SEO & CRO)
+1. 🔋 **BATERÍA MACBOOK:** Landing reina `https://macwave.com.mx/bateria-macbook-cdmx`
+2. ☕ **MACBOOK MOJADA:** Landing reina `https://macwave.com.mx/mac-mojada-cdmx`
+3. 🚀 **IMAC LENTA:** Landing reina `https://macwave.com.mx/reparacion-imac-cdmx`
+
+*Todo el esfuerzo de enlazado interno, optimización semántica de palabras clave y conversión de leads está estrictamente concentrado en estas 3 líneas de negocio por encima de cualquier servicio secundario.*
+
 ---
 
 ## 4. PROTOCOLO DE TRABAJO EN 5 PASOS (CADENA DE CUSTODIA)

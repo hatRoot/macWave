@@ -11,17 +11,19 @@
     <priority>1.0</priority>
   </url>
 
-  <!-- SERVICIOS PILARES CONSOLIDADOS (Alta Conversión & Cero Canibalización) -->
-  <url><loc>https://macwave.com.mx/bateria-macbook-cdmx</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.99</priority></url>
-  <url><loc>https://macwave.com.mx/mac-mojada-cdmx</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.99</priority></url>
-  <url><loc>https://macwave.com.mx/reparacion-corto-logica-mac</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.99</priority></url>
-  <url><loc>https://macwave.com.mx/cambio-teclado-macbook-cdmx</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.99</priority></url>
-  <url><loc>https://macwave.com.mx/reparacion-imac-cdmx</loc><lastmod>2026-10-11T09:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.98</priority></url>
-  <url><loc>https://macwave.com.mx/reparacion-flexgate-macbook</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://macwave.com.mx/upgrades</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://macwave.com.mx/mantenimiento-macbook-cdmx</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://macwave.com.mx/reparaciones</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
-  <url><loc>https://macwave.com.mx/empresas</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://macwave.com.mx/casos-reales</loc><lastmod>2026-10-19T13:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
+  <!-- TRES PRIORIDADES MÁXIMAS DE NEGOCIO (Batería MacBook, Mac Mojada, iMac Lenta) -->
+  <url><loc>https://macwave.com.mx/bateria-macbook-cdmx</loc><lastmod>2026-10-21T22:00:00+00:00</lastmod><changefreq>daily</changefreq><priority>0.99</priority></url>
+  <url><loc>https://macwave.com.mx/mac-mojada-cdmx</loc><lastmod>2026-10-21T22:00:00+00:00</lastmod><changefreq>daily</changefreq><priority>0.99</priority></url>
+  <url><loc>https://macwave.com.mx/reparacion-imac-cdmx</loc><lastmod>2026-10-21T22:00:00+00:00</lastmod><changefreq>daily</changefreq><priority>0.99</priority></url>
+
+  <!-- SERVICIOS COMPLEMENTARIOS -->
+  <url><loc>https://macwave.com.mx/reparacion-corto-logica-mac</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.92</priority></url>
+  <url><loc>https://macwave.com.mx/cambio-teclado-macbook-cdmx</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.90</priority></url>
+  <url><loc>https://macwave.com.mx/reparacion-flexgate-macbook</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://macwave.com.mx/upgrades</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://macwave.com.mx/mantenimiento-macbook-cdmx</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://macwave.com.mx/reparaciones</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://macwave.com.mx/empresas</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.80</priority></url>
+  <url><loc>https://macwave.com.mx/casos-reales</loc><lastmod>2026-10-21T22:00:00+00:00</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
   <url><loc>https://macwave.com.mx/terminos</loc><lastmod>2026-10-08T21:00:00+00:00</lastmod><changefreq>monthly</changefreq><priority>0.40</priority></url>
 </urlset>

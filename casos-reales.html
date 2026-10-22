@@ -10,7 +10,7 @@
   <link rel="canonical" href="https://macwave.com.mx/casos-reales">
   <link rel="icon" type="image/png" href="https://macwave.com.mx/images/favicon1.png">
   <meta name="theme-color" content="#000000">
-  <link rel="stylesheet" href="style.css?v=27.6.8">
+  <link rel="stylesheet" href="style.css?v=27.7.0">
 
   <script>
     function toggleMobileMenu(e) {
@@ -129,7 +129,8 @@
 
     <!-- GRID DE CASOS DE ÉXITO -->
     <section class="cr-cases-section">
-         <!-- CASO 1: Mac Mojada Líquidos -->
+      <div class="cr-cases-grid">
+        <!-- CASO 1: Mac Mojada Líquidos -->
         <article class="cr-card" data-category="liquidos">
           <div class="cr-card-top">
             <span class="cr-tag cr-tag-liquidos">Daño por Líquidos</span>
@@ -1070,26 +1071,27 @@
         '</article>';
       }
 
-      function bindFiltering() {
+      // Delegación de eventos a nivel documento: garantiza respuesta instantánea a cualquier clic en filtros
+      document.addEventListener('click', function(e) {
+        var btn = e.target.closest('.cr-filter-btn');
+        if (!btn) return;
+        e.preventDefault();
+
         var filterBtns = document.querySelectorAll('.cr-filter-btn');
-        filterBtns.forEach(function(btn) {
-          btn.onclick = function() {
-            filterBtns.forEach(function(b) { b.classList.remove('active'); });
-            this.classList.add('active');
+        filterBtns.forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
 
-            var selected = this.getAttribute('data-filter');
-            var cards = document.querySelectorAll('.cr-card');
+        var selected = btn.getAttribute('data-filter');
+        var cards = document.querySelectorAll('.cr-card');
 
-            cards.forEach(function(card) {
-              if (selected === 'all' || card.getAttribute('data-category') === selected) {
-                card.style.display = 'flex';
-              } else {
-                card.style.display = 'none';
-              }
-            });
-          };
+        cards.forEach(function(card) {
+          if (selected === 'all' || card.getAttribute('data-category') === selected) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
         });
-      }
+      });
 
       function initDailyCases() {
         var grid = document.querySelector('.cr-cases-grid');
@@ -1114,6 +1116,17 @@
           grid.innerHTML = activeCases.map(renderCardHtml).join('');
         }
 
+        // Si hay un filtro previamente activo distinto de 'all', conservarlo
+        var activeBtn = document.querySelector('.cr-filter-btn.active');
+        if (activeBtn) {
+          var sel = activeBtn.getAttribute('data-filter');
+          if (sel && sel !== 'all') {
+            document.querySelectorAll('.cr-card').forEach(function(card) {
+              card.style.display = (card.getAttribute('data-category') === sel) ? 'flex' : 'none';
+            });
+          }
+        }
+
         // Utilidad expuesta para previsualizar cualquier día futuro en consola o pruebas
         window.rotateMacWaveCases = function(customDayOffset) {
           var targetDiff = typeof customDayOffset === 'number' ? customDayOffset : dayDiff;
@@ -1123,11 +1136,15 @@
             customCases.push(MASTER_CASES[(sIndex + j) % MASTER_CASES.length]);
           }
           grid.innerHTML = customCases.map(renderCardHtml).join('');
-          bindFiltering();
+          var curBtn = document.querySelector('.cr-filter-btn.active');
+          var filterVal = curBtn ? curBtn.getAttribute('data-filter') : 'all';
+          if (filterVal !== 'all') {
+            document.querySelectorAll('.cr-card').forEach(function(card) {
+              card.style.display = (card.getAttribute('data-category') === filterVal) ? 'flex' : 'none';
+            });
+          }
           return 'Mostrando ventana de 8 casos del día +' + targetDiff + ' (de ' + customCases[0].ods + ' a ' + customCases[7].ods + ')';
         };
-
-        bindFiltering();
       }
 
       if (document.readyState === 'loading') {
@@ -1145,7 +1162,29 @@
     </svg>
   </a>
 
-  <script src="script.js?v=26.5.3"></script>
+  <script src="script.js?v=26.5.4"></script>
+
+  <!-- Service Worker para Cache & Rendimiento PWA -->
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js?v=1.6.7-casos-fix').then(function(registration) {
+        registration.update();
+        if (registration.waiting) {
+          registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+        }
+      }).catch(function(registrationError) {
+        console.warn('SW registration failed:', registrationError);
+      });
+      navigator.serviceWorker.addEventListener('controllerchange', function() {
+        if (!window.__mwSwReloaded) {
+          window.__mwSwReloaded = true;
+          window.location.reload();
+        }
+      });
+    });
+  }
+  </script>
 </body>
 
 </html>

@@ -7447,60 +7447,76 @@ html, body {
 
 .cr-filter-btn {
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     color: #a1a1a6;
-    padding: 9px 20px;
+    padding: 10px 22px;
     border-radius: 980px;
     font-size: 0.88rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
 }
 
 .cr-filter-btn:hover {
     color: #ffffff;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.12);
     border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+.cr-filter-btn:active {
+    transform: translateY(0);
 }
 
 .cr-filter-btn.active {
-    background: #009CDF;
+    background: linear-gradient(135deg, #009CDF 0%, #007bb5 100%);
     border-color: #009CDF;
     color: #ffffff;
-    box-shadow: 0 2px 14px rgba(0, 156, 223, 0.4);
+    box-shadow: 0 4px 18px rgba(0, 156, 223, 0.45);
+}
+
+.cr-filter-btn:focus-visible {
+    outline: 2px solid #009CDF;
+    outline-offset: 3px;
 }
 
 /* Grid de Casos Reales */
 .cr-cases-section {
     background: #07070a;
-    padding: 70px 20px 90px;
+    padding: 60px 20px 90px;
 }
 
 .cr-cases-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-    gap: 32px;
-    max-width: 1200px;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 375px));
+    justify-content: center;
+    gap: 28px;
+    max-width: 1240px;
     margin: 0 auto;
+    width: 100%;
 }
 
 .cr-card {
-    background: #111116;
+    background: linear-gradient(180deg, #15151c 0%, #0d0d12 100%);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
-    padding: 30px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 .cr-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(0, 156, 223, 0.35);
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5), 0 0 24px rgba(0, 156, 223, 0.08);
+    transform: translateY(-5px);
+    border-color: rgba(0, 156, 223, 0.4);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 0 20px rgba(0, 156, 223, 0.12);
 }
 
 .cr-card-top {
@@ -7803,31 +7819,52 @@ html, body {
     }
     .cr-filters-section {
         top: 50px !important;
-        padding: 14px 12px !important;
+        padding: 10px 14px !important;
+        overflow: hidden !important;
+    }
+    .cr-filters-wrap {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+        padding: 4px 12px !important;
+        gap: 8px !important;
+        justify-content: flex-start !important;
+        margin: 0 -12px !important;
+    }
+    .cr-filters-wrap::-webkit-scrollbar {
+        display: none !important;
     }
     .cr-filter-btn {
-        padding: 7px 14px !important;
-        font-size: 0.8rem !important;
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
+        padding: 8px 16px !important;
+        font-size: 0.82rem !important;
     }
     .cr-cases-section {
-        padding: 45px 14px 60px !important;
+        padding: 35px 14px 60px !important;
     }
     .cr-cases-grid {
         grid-template-columns: 1fr !important;
-        gap: 24px !important;
+        gap: 20px !important;
+        max-width: 480px !important;
+        margin: 0 auto !important;
+        width: 100% !important;
     }
     .cr-card {
-        padding: 22px 18px !important;
+        padding: 20px 16px !important;
     }
     .cr-card-media {
         height: 170px !important;
         margin-bottom: 16px !important;
     }
     .cr-card-title {
-        font-size: 1.2rem !important;
+        font-size: 1.15rem !important;
+        min-height: auto !important;
     }
     .cr-phase-item {
-        padding: 12px 14px !important;
+        padding: 11px 13px !important;
     }
     .cr-review-box {
         padding: 14px !important;

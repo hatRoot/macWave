@@ -799,11 +799,21 @@
  </svg>
  Reparaciones (ODS)
  </button>
- <button class="nav-item active" onclick="window.location.href="ods"">
+ <button class="nav-item active" onclick="window.location.href='ods.html'">
  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
  <path d="M12 5v14M5 12h14" />
  </svg>
  Nueva ODS (PDF)
+ </button>
+ <button class="nav-item" onclick="window.location.href='cotizacion.html'">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+ <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+ <polyline points="14 2 14 8 20 8" />
+ <line x1="16" y1="13" x2="8" y2="13" />
+ <line x1="16" y1="17" x2="8" y2="17" />
+ <line x1="10" y1="9" x2="8" y2="9" />
+ </svg>
+ Cotizaciones
  </button>
  <button class="nav-item" onclick="window.location.href='dashboard-ods.html?view=kanban'">
  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -963,16 +973,16 @@
  <div class="form-grid">
  <div class="form-group">
  <label>CLABE</label>
- <input type="text" id="clabe" placeholder="Ej. 012 180..." value="012 180015766935846">
+ <input type="text" id="clabe" placeholder="Ej. 012 180..." value="012 180 01576693584 6">
  </div>
  <div class="form-group">
  <label>CUENTA</label>
- <input type="text" id="account-number" placeholder="Ej. 1576..." value="1576693584">
+ <input type="text" id="account-number" placeholder="Ej. 1576..." value="157 669 3584">
  </div>
  <div class="form-group">
  <label>TARJETA</label>
  <input type="text" id="card-number" placeholder="Ej. 4152..."
- value="4152 3144 2988 0571">
+ value="4152 3146 6918 3751">
  </div>
  </div>
  </div>
@@ -1382,135 +1392,144 @@
  const pdfInputs = document.querySelectorAll('.pdf-file-input');
  const pdfSpinner = document.getElementById('pdf-loading-spinner-side');
 
- const handlePDFUpload = async (e) => {
- const file = e.target.files[0];
- if (!file) return;
+    const handlePDFUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
- if (pdfSpinner) pdfSpinner.style.display = 'inline-block';
+    if (pdfSpinner) pdfSpinner.style.display = 'inline-block';
 
- try {
- const arrayBuffer = await file.arrayBuffer();
- const pdfData = new Uint8Array(arrayBuffer);
+    try {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdfData = new Uint8Array(arrayBuffer);
 
- // Initialize PDF.js
- const pdfjsLib = window.pdfjsLib || window['pdfjs-dist/build/pdf'];
- if (!pdfjsLib) {
- throw new Error("SDK de PDF no cargado correctamente.");
- }
- // Setup worker
- pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+      // Initialize PDF.js
+      const pdfjsLib = window.pdfjsLib || window['pdfjs-dist/build/pdf'];
+      if (!pdfjsLib) {
+        throw new Error("SDK de PDF no cargado correctamente.");
+      }
+      // Setup worker
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
- const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
- const page = await pdf.getPage(1);
- const textContent = await page.getTextContent();
+      const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
+      const page = await pdf.getPage(1);
+      const textContent = await page.getTextContent();
 
- // Combine all text items into a single string for easier regex/searching
- // We join with spaces to keep words separate
- const rawText = textContent.items.map(item => item.str).join(' ');
+      // Combine all text items into a single string for easier regex/searching
+      const rawText = textContent.items.map(item => item.str).join(' ');
+      console.log("Extracted PDF Text:", rawText);
 
- console.log("Extracted PDF Text:", rawText);
+      // Detect document type: Cotización vs ODS
+      const isCotizacion = /COTIZACI[OÓ]N/i.test(rawText) || /\bCOT\d+/i.test(rawText);
+      const cotMatch = rawText.match(/COTIZACI[OÓ]N\s*(?:N°)?\s*([A-Z0-9-]+)/i) || rawText.match(/\b(COT\d+-[A-Z0-9]+)\b/i);
+      const cotFolio = cotMatch ? cotMatch[1].trim() : null;
 
- // Helper function to extract text between two strings or using regex
- const extractAfter = (text, label) => {
- const idx = text.indexOf(label);
- if (idx === -1) return '';
- const start = idx + label.length;
- // Find a reasonable end (like the next known label or a long enough gap, but since it's flattened, we might just grab the next few words)
- // It's safer to use regex for specific patterns if the structure is known
- return text.substring(start).trim();
- };
+      const odsMatch = rawText.match(/(?:ODS|ORDEN\s*DE\s*SERVICIO)\s*N°\s*([A-Z0-9-]+)/i) || rawText.match(/\b(MW-\d+-\d+|T2-\d+-\d+|RPC-\d+)\b/i);
+      const odsFolioExtracted = odsMatch ? odsMatch[1].trim() : null;
 
- // Extract values using Regex based on the known PDF structure
+      // 1. Folio Handling:
+      // If importing a Cotización, KEEP or GENERATE the active ODS folio so it converts to an ODS!
+      // If importing an existing ODS, restore that ODS folio.
+      let activeODSFolio = document.getElementById('quote-number').value;
+      if (isCotizacion) {
+        if (!activeODSFolio || activeODSFolio.startsWith('COT') || activeODSFolio.includes('RPC')) {
+          activeODSFolio = typeof getNextFolio === 'function' ? getNextFolio() : `MW-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-9481`;
+          document.getElementById('quote-number').value = activeODSFolio;
+        }
+      } else if (odsFolioExtracted) {
+        document.getElementById('quote-number').value = odsFolioExtracted;
+        activeODSFolio = odsFolioExtracted;
+      }
 
- // 1. Folio: "ODS N° RPC-1234"
- const folioMatch = rawText.match(/ODS N°\s*([A-Z0-9-]+)/i);
- if (folioMatch) document.getElementById('quote-number').value = folioMatch[1].trim();
+      // 2. Client: "Estimado(a) Sr: Juan Perez" -> looks for text after "Sr:" until "Oportunidad"
+      const clientMatch = rawText.match(/Estimado\(a\)\s*Sr:?\s*(.*?)\s*Oportunidad\s*\/\s*Proyecto:/i);
+      if (clientMatch) document.getElementById('client-name').value = clientMatch[1].trim();
 
- // 2. Client: "Estimado(a) Sr: Juan Perez" -> looks for text after "Sr:" until "Oportunidad"
- const clientMatch = rawText.match(/Estimado\(a\) Sr:\s*(.*?)\s*Oportunidad \/ Proyecto:/i);
- if (clientMatch) document.getElementById('client-name').value = clientMatch[1].trim();
+      // 3. Project: "Oportunidad / Proyecto: Reparacion..."
+      const projectMatch = rawText.match(/Oportunidad\s*\/\s*Proyecto:\s*(.*?)\s*N[uú]mero\s*de\s*Serie/i);
+      if (projectMatch) document.getElementById('project-name').value = projectMatch[1].trim();
 
- // 3. Project: "Oportunidad / Proyecto: Reparacion..."
- const projectMatch = rawText.match(/Oportunidad \/ Proyecto:\s*(.*?)\s*Número de Serie/i);
- if (projectMatch) document.getElementById('project-name').value = projectMatch[1].trim();
+      // 4. Serial Number
+      const serialMatch = rawText.match(/N[uú]mero\s*de\s*Serie\s*(?:del\s*equipo\s*)?:\s*(.*?)\s*(?:DESCRIPCI[OÓ]N|SUB\s*TOTAL|OBSERVACIONES|Vigencia|$)/i);
+      if (serialMatch) document.getElementById('serial-number').value = serialMatch[1].trim();
 
- // 4. Serial Number
- const serialMatch = rawText.match(/Número de Serie del equipo :\s*(.*?)\s*DESCRIPCIÓN/i);
- if (serialMatch) document.getElementById('serial-number').value = serialMatch[1].trim();
+      // 5. Date:
+      const dateMatch = rawText.match(/Fecha:\s*(?:\.+)?\s*(\d{1,2}\/\d{1,2}\/\d{4})/i);
+      if (dateMatch && !isCotizacion) {
+        document.getElementById('quote-date').value = dateMatch[1].trim();
+      }
 
- // 5. Date: "Fecha: ............ 24/02/2026"
- // The dots might be present or stripped, pdfjs often reads them as individual characters or spaces
- const dateMatch = rawText.match(/Fecha:\s*(?:\.+)?\s*(\d{1,2}\/\d{1,2}\/\d{4})/i);
- if (dateMatch) document.getElementById('quote-date').value = dateMatch[1].trim();
+      // 6. Technician
+      const techMatch = rawText.match(/T[eé]cnico:\s*(?:\.+)?\s*([A-Za-z\s]+?)\s*Moneda:/i);
+      if (techMatch) document.getElementById('tech-name').value = techMatch[1].trim();
 
- // 6. Technician
- const techMatch = rawText.match(/Técnico:\s*(?:\.+)?\s*([A-Za-z\s]+)\s*Moneda:/i);
- if (techMatch) document.getElementById('tech-name').value = techMatch[1].trim();
+      // 7. Delivery Time
+      const deliveryMatch = rawText.match(/Tiempo\s*de\s*entrega:\s*(.*?)\s*ENTREGA\s*TENTATIVA/i);
+      if (deliveryMatch) document.getElementById('delivery-time').value = deliveryMatch[1].trim();
 
- // 7. Delivery Time
- const deliveryMatch = rawText.match(/Tiempo de entrega:\s*(.*?)\s*ENTREGA TENTATIVA/i);
- if (deliveryMatch) document.getElementById('delivery-time').value = deliveryMatch[1].trim();
+      // 8. Notes / Observaciones
+      const notesMatch = rawText.match(/OBSERVACIONES(?:\s*\/\s*NOTAS\s*DE\s*LABORATORIO)?:\s*(.*?)\s*(?:Vigencia\s*de\s*la\s*Cotizaci[oó]n|Garant[ií]a:|Condiciones:|PAGO\s*ANTICIPADO|Tiempo\s*de\s*entrega|PAGAR\s*A\s*ESTE\s*BANCO|\*\*\*Precios)/i);
+      let parsedNotes = notesMatch ? notesMatch[1].trim() : '';
 
- // Note finding (Observaciones)
- const notesMatch = rawText.match(/OBSERVACIONES:\s*(.*?)\s*\*\*\*Precios sujetos/i);
- if (notesMatch) {
- document.getElementById('ods-notes').value = notesMatch[1].trim();
- } else {
- document.getElementById('ods-notes').value = '';
- }
+      if (isCotizacion && cotFolio) {
+        const originTag = `[Origen: Cotización ${cotFolio}]`;
+        if (!parsedNotes.includes(cotFolio)) {
+          parsedNotes = parsedNotes ? `${parsedNotes}\n${originTag}` : originTag;
+        }
+      }
+      document.getElementById('ods-notes').value = parsedNotes;
 
- // Extracting Items (This is the most complex part as it's a table)
- // We look for everything between "SUB TOTAL" and either "OBSERVACIONES:" or "TOTAL"
- let tableSectionMatch = rawText.match(/SUB TOTAL\s+(.*?)\s+(?:OBSERVACIONES:|TOTAL\s+\$)/i);
- if (tableSectionMatch) {
- let tableText = tableSectionMatch[1].trim();
- // Try to find price patterns like "$ 1,500.00 1 $ 1,500.00"
- // Since pdf.js flattens text, a row usually looks like: "Descripción $ 100.00 1 $ 100.00"
- // This regex looks for: 
- // 1. Description (any text)
- // 2. Unit Price ($ XX.XX)
- // 3. Qty (Number)
- // 4. Subtotal ($ XX.XX)
- const rowRegex = /(.*?)\s+\$\s*([\d,]+\.\d{2})\s+(\d+)\s+\$\s*([\d,]+\.\d{2})/g;
- const items = [];
- let match;
+      // 9. Extracting Items (Table)
+      let tableSectionMatch = rawText.match(/SUB\s*TOTAL\s+(.*?)\s+(?:TOTAL|OBSERVACIONES)/i);
+      const tableText = tableSectionMatch ? tableSectionMatch[1].trim() : rawText;
 
- while ((match = rowRegex.exec(tableText)) !== null) {
- items.push({
- d: match[1].trim(),
- p: parseFloat(match[2].replace(/,/g, '')),
- q: parseInt(match[3], 10)
- });
- }
+      const rowRegex = /(.*?)\s+\$\s*([\d,]+\.\d{2})\s+(\d+)\s+\$\s*([\d,]+\.\d{2})/g;
+      const items = [];
+      let match;
 
- // Populate items
- if (items.length > 0) {
- itemsContainer.innerHTML = '';
- items.forEach(item => {
- // Ignore empty padding rows
- if (item.d !== "" && item.p > 0) {
- createRow(item);
- }
- });
- // Fill remaining with empty if less than 5
- while (document.querySelectorAll('.item-row').length < 5) {
- createRow({ d: '', p: 0, q: 0 });
- }
- }
- }
+      while ((match = rowRegex.exec(tableText)) !== null) {
+        const desc = match[1].trim();
+        const price = parseFloat(match[2].replace(/,/g, ''));
+        const qty = parseInt(match[3], 10);
+        if (desc && !desc.includes('DESCRIPCIÓN DEL SERVICIO') && price > 0) {
+          items.push({ d: desc, p: price, q: qty });
+        }
+      }
 
- // Force update UI
- update();
- alert("✅ PDF importado con éxito. Por favor revisa que todos los campos se hayan extraído correctamente.");
+      // Populate items
+      if (items.length > 0) {
+        itemsContainer.innerHTML = '';
+        items.forEach(item => {
+          createRow(item);
+        });
+        // Fill remaining with empty if less than 5
+        while (document.querySelectorAll('.item-row').length < 5) {
+          createRow({ d: '', p: 0, q: 0 });
+        }
+      }
 
- } catch (error) {
- console.error("Error parsing PDF:", error);
- alert("❌ Ocurrió un error al intentar leer el PDF. Asegúrate de que sea un PDF generado por este sistema.\nDetalles: " + error.message);
- } finally {
- if (pdfSpinner) pdfSpinner.style.display = 'none';
- update();
- }
- };
+      // Force update UI & Preview Sheet
+      update();
+
+      if (isCotizacion) {
+        alert(`🎉 ¡Cotización convertida a Orden de Servicio (ODS) con éxito!\n\n` +
+              `• Cotización origen: ${cotFolio || 'Detectada'}\n` +
+              `• Folio ODS asignado: ${document.getElementById('quote-number').value}\n` +
+              `• Cliente: ${document.getElementById('client-name').value || 'Sin nombre'}\n` +
+              `• Conceptos cargados: ${items.length}\n\n` +
+              `Todos los datos han sido convertidos a ODS. La vista previa está lista para generar el PDF.`);
+      } else {
+        alert("✅ PDF de ODS importado con éxito. Por favor revisa que todos los campos se hayan extraído correctamente.");
+      }
+
+    } catch (error) {
+      console.error("Error parsing PDF:", error);
+      alert("❌ Ocurrió un error al intentar leer el PDF. Asegúrate de que sea un PDF generado por este sistema.\nDetalles: " + error.message);
+    } finally {
+      if (pdfSpinner) pdfSpinner.style.display = 'none';
+      if (e.target) e.target.value = '';
+      update();
+    }
+  };
 
  pdfInputs.forEach(input => input.addEventListener('change', handlePDFUpload));
 
@@ -2035,13 +2054,14 @@
  doc.text("PAGAR A ESTE BANCO", 15, bankY);
  doc.setFontSize(13);
  doc.text("BBVA", 60, bankY);
- doc.setFontSize(8.5);
+ doc.setFontSize(8);
  doc.setFont("helvetica", "bold");
  doc.setTextColor(0, 0, 0);
- doc.text(`CUENTA CLABE : ${clabeVal}`, 15, bankY + 5);
- doc.text(`NUMERO DE CUENTA : ${accountVal}`, 15, bankY + 10);
- doc.text(`NUMERO DE TARJETA BBVA : ${cardVal}`, 15, bankY + 15);
- currentY = bankY + 18;
+ doc.text(`TITULAR : Joel Emmanuel Duran Mendoza`, 15, bankY + 4.5);
+ doc.text(`CUENTA CLABE : ${clabeVal}`, 15, bankY + 9);
+ doc.text(`NUMERO DE CUENTA : ${accountVal}`, 15, bankY + 13.5);
+ doc.text(`NUMERO DE TARJETA BBVA : ${cardVal}`, 15, bankY + 18);
+ currentY = bankY + 21;
  } else {
  doc.setFontSize(20);
  doc.setTextColor(235, 235, 235);

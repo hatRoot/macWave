@@ -15,6 +15,16 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 RewriteCond %{HTTP_HOST} ^www\.macwave\.com\.mx [NC]
 RewriteRule ^(.*)$ https://macwave.com.mx/$1 [L,R=301]
 
+# ---- 2.1 REDIRECCIONES DE CONSOLIDACIÓN SEO 301 (Cero Canibalización) ----
+# Ejecutadas ANTES de URLs limpias para garantizar respuesta inmediata HTTP 301
+RewriteRule ^cambio-bateria-macbook-pro-air(\.html)?$ https://macwave.com.mx/bateria-macbook-cdmx [R=301,L]
+RewriteRule ^bateria-pantalla-iphone-express(\.html)?$ https://macwave.com.mx/bateria-macbook-cdmx [R=301,L]
+RewriteRule ^mac-mojada-urgencia(\.html)?$ https://macwave.com.mx/mac-mojada-cdmx [R=301,L]
+RewriteRule ^actualizar-mac-os-vieja(\.html)?$ https://macwave.com.mx/upgrades [R=301,L]
+RewriteRule ^reflow-gpu-mac(\.html)?$ https://macwave.com.mx/reparacion-corto-logica-mac [R=301,L]
+RewriteRule ^reparacion-laptops-gamer-cdmx(\.html)?$ https://macwave.com.mx/reparaciones [R=301,L]
+RewriteRule ^aviso-de-privacidad(\.html)?$ https://macwave.com.mx/terminos [R=301,L]
+
 # ---- 3. URLs LIMPIAS — ocultar extensión .html ----
 # Permite que /reparaciones funcione igual que /reparaciones.html
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -30,32 +40,8 @@ RewriteRule ^(.*)index(\.html)?$ https://macwave.com.mx/ [R=301,L]
 RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
 RewriteRule ^ /%1 [R=301,L]
 
-# ---- 4.1 REDIRECCIONES DE CONSOLIDACIÓN SEO (Cero Canibalización) ----
-# Consolidar Baterías MacBook en la URL reina
-Redirect 301 /cambio-bateria-macbook-pro-air https://macwave.com.mx/bateria-macbook-cdmx
-Redirect 301 /cambio-bateria-macbook-pro-air.html https://macwave.com.mx/bateria-macbook-cdmx
-Redirect 301 /bateria-pantalla-iphone-express https://macwave.com.mx/bateria-macbook-cdmx
-Redirect 301 /bateria-pantalla-iphone-express.html https://macwave.com.mx/bateria-macbook-cdmx
-
-# Consolidar Mac Mojada en la URL reina
-Redirect 301 /mac-mojada-urgencia https://macwave.com.mx/mac-mojada-cdmx
-Redirect 301 /mac-mojada-urgencia.html https://macwave.com.mx/mac-mojada-cdmx
-
-# Fusión y consolidación de Upgrades (macOS antigua hacia /upgrades)
-Redirect 301 /actualizar-mac-os-vieja https://macwave.com.mx/upgrades
-Redirect 301 /actualizar-mac-os-vieja.html https://macwave.com.mx/upgrades
-
-# Fusión y consolidación de Tarjeta Lógica (GPU/video hacia /reparacion-corto-logica-mac)
-Redirect 301 /reflow-gpu-mac https://macwave.com.mx/reparacion-corto-logica-mac
-Redirect 301 /reflow-gpu-mac.html https://macwave.com.mx/reparacion-corto-logica-mac
-
-Redirect 301 /reparacion-laptops-gamer-cdmx https://macwave.com.mx/reparaciones
-Redirect 301 /reparacion-laptops-gamer-cdmx.html https://macwave.com.mx/reparaciones
-
-# Redirecciones de URLs obsoletas y errores Search Console
+# ---- 4.1 REDIRECCIONES DE URLs OBSOLETAS ----
 RedirectMatch 301 ^/empresas\.html>.* https://macwave.com.mx/empresas
-Redirect 301 /aviso-de-privacidad https://macwave.com.mx/terminos
-Redirect 301 /aviso-de-privacidad.html https://macwave.com.mx/terminos
 
 # ---- 5. CABECERAS DE SEGURIDAD Y PRIVACIDAD ROBOTS ----
 <IfModule mod_headers.c>

@@ -218,27 +218,108 @@
     min-width: 0 !important;
     height: 100% !important;
     min-height: 0 !important;
-    overflow: hidden !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
     display: flex !important;
-    align-items: flex-start;
-    justify-content: center;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
     position: relative;
     background: radial-gradient(circle at center, rgba(30, 30, 34, 0.7) 0%, rgba(12, 12, 14, 0.95) 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
-    padding: 6px;
+    padding: 10px 12px;
     box-sizing: border-box;
+  }
+  .preview-side::-webkit-scrollbar {
+    width: 6px;
+  }
+  .preview-side::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+  }
+  .preview-side::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 4px;
+  }
+  .preview-side::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+  }
+
+  .preview-toolbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+  .preview-badge {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .preview-pulse {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #00df8f;
+    box-shadow: 0 0 8px #00df8f;
+    animation: pulseGlow 2s infinite;
+  }
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
+  }
+  .preview-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .pv-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #e0e0e0;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 9px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .pv-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border-color: var(--primary);
+  }
+  .pv-btn.active {
+    background: var(--primary);
+    color: #000;
+    font-weight: 800;
+    border-color: var(--primary);
   }
 
   .preview-viewport {
     width: 100%;
-    height: 100%;
+    min-height: 0;
+    flex: 1;
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    overflow: hidden;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: visible;
     position: relative;
-    padding: 6px 0;
+    padding: 4px 0 24px 0;
     box-sizing: border-box;
   }
 
@@ -417,16 +498,16 @@
  .preview-canvas {
     background: #ffffff;
     width: 612px !important;
-    height: 792px !important;
     min-height: 792px !important;
-    max-height: 792px !important;
+    height: auto !important;
+    max-height: none !important;
     border-radius: 4px;
     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(0,0,0,0.15);
     position: relative;
     color: #000;
-    padding: 24px 30px 18px 30px;
+    padding: 22px 28px 18px 28px;
     font-family: 'Helvetica', Arial, sans-serif;
-    overflow: hidden !important;
+    overflow: visible !important;
     box-sizing: border-box;
     transform-origin: top center !important;
     flex-shrink: 0;
@@ -434,7 +515,7 @@
 
  .ps-content {
  width: 100%;
- height: 100%;
+ min-height: 100%;
  display: flex;
  flex-direction: column;
  }
@@ -443,7 +524,7 @@
  display: flex;
  justify-content: space-between;
  align-items: flex-start;
- margin-bottom: 25px;
+ margin-bottom: 16px;
  }
 
  .ps-logo-col {
@@ -597,16 +678,36 @@
  }
 
  .ps-terms {
- color: var(--terms-teal);
- font-size: 8px;
- font-weight: 800;
- line-height: 1.6;
- margin-top: 20px;
+ color: #1a4a54;
+ font-size: 7.2px;
+ font-weight: 700;
+ line-height: 1.4;
+ margin-top: 8px;
  text-align: left;
+ border-top: 1px dashed #dcdcdc;
+ padding-top: 6px;
  }
 
  .ps-terms p {
  margin-bottom: 2px;
+ }
+
+ .ps-term-line {
+ margin-bottom: 2.5px;
+ line-height: 1.35;
+ }
+
+ .ps-term-highlight {
+ font-size: 8.2px;
+ font-weight: 900;
+ color: #ff6600;
+ margin: 3px 0;
+ letter-spacing: 0.3px;
+ }
+
+ .ps-term-alert {
+ color: #d32f2f;
+ font-weight: 900;
  }
 
  .ps-bank-area {
@@ -684,14 +785,45 @@
  }
 
  .ps-disclaimer {
- margin-top: 10px;
- font-size: 6.5px;
- color: #000;
- line-height: 1.2;
+ margin-top: 6px;
+ font-size: 5.6px;
+ color: #222;
+ line-height: 1.25;
  text-align: left;
- border-top: 1px solid #eee;
- padding-top: 10px;
- font-weight: bold;
+ border-top: 1px solid #e0e0e0;
+ padding-top: 6px;
+ }
+
+ .ps-disc-title {
+ font-size: 6.8px;
+ font-weight: 900;
+ color: #111;
+ letter-spacing: 0.4px;
+ text-transform: uppercase;
+ margin-bottom: 3.5px;
+ }
+
+ .ps-disc-grid {
+ display: flex;
+ flex-direction: column;
+ gap: 2.5px;
+ }
+
+ .ps-disc-item {
+ font-size: 5.6px;
+ line-height: 1.25;
+ color: #333;
+ display: flex;
+ align-items: flex-start;
+ gap: 3.5px;
+ }
+
+ .ps-disc-bullet {
+ color: #ff6600;
+ font-size: 6px;
+ line-height: 1;
+ flex-shrink: 0;
+ margin-top: 1px;
  }
 
  .ps-cert-row {
@@ -1090,6 +1222,18 @@
 
  <!-- PREVIEW (CLONE) -->
  <section class="preview-side">
+ <div class="preview-toolbar">
+   <div class="preview-badge">
+     <span class="preview-pulse"></span>
+     <span>VISTA PREVIA CARTA</span>
+   </div>
+   <div class="preview-actions">
+     <button type="button" class="pv-btn active" data-mode="fit-width" onclick="setPreviewZoom('fit-width')" title="Ajustar al ancho de pantalla">↔ Ancho</button>
+     <button type="button" class="pv-btn" data-mode="fit-page" onclick="setPreviewZoom('fit-page')" title="Ver hoja completa sin scroll">↕ Hoja Completa</button>
+     <button type="button" class="pv-btn" data-mode="0.85" onclick="setPreviewZoom(0.85)" title="Escala 85%">85%</button>
+     <button type="button" class="pv-btn" data-mode="1.0" onclick="setPreviewZoom(1.0)" title="Tamaño real 100%">100%</button>
+   </div>
+ </div>
  <div id="preview-viewport" class="preview-viewport">
  <div id="preview-canvas" class="preview-canvas">
  <div id="ps-content" class="ps-content"></div>
@@ -1619,23 +1763,62 @@
  };
 
  	// --- AUTO-FIT PREVIEW SHEET TO VIEWPORT ---
+  window._previewMode = window._previewMode || 'fit-width';
+  window._previewCustomZoom = window._previewCustomZoom || null;
+
+  window.setPreviewZoom = function(mode) {
+    if (typeof mode === 'number') {
+      window._previewMode = 'custom';
+      window._previewCustomZoom = mode;
+    } else {
+      window._previewMode = mode;
+      window._previewCustomZoom = null;
+    }
+    fitPreviewSheet();
+  };
+
 	function fitPreviewSheet() {
 		const viewport = document.getElementById('preview-viewport');
 		const canvas = document.getElementById('preview-canvas');
 		if (!viewport || !canvas) return;
-		const vW = viewport.clientWidth;
-		const vH = viewport.clientHeight;
-		if (!vW || !vH) return;
+    const parentSide = viewport.closest('.preview-side') || viewport.parentElement;
+		const vW = (parentSide.clientWidth || viewport.clientWidth || 500) - 28;
+		const vH = (parentSide.clientHeight || 700) - 75;
 		const cW = 612; // US Letter width
-		const cH = 792; // US Letter height
-		const padW = 8;
-		const padH = 8;
-		const scale = Math.min((vW - padW) / cW, (vH - padH) / cH, 1);
-		const finalScale = Math.max(scale, 0.25);
+		const rawH = canvas.scrollHeight || canvas.offsetHeight || 792;
+    const cH = Math.max(792, rawH);
+
+    let scale = 1.0;
+    if (window._previewMode === 'fit-page') {
+      scale = Math.min(vW / cW, vH / cH, 1.0);
+    } else if (window._previewMode === 'custom' && window._previewCustomZoom) {
+      scale = window._previewCustomZoom;
+    } else {
+      // 'fit-width' default: adapts to available width so text is sharp, legible and user can scroll down
+      scale = Math.min(vW / cW, 1.05);
+    }
+		const finalScale = Math.max(scale, 0.35);
+
 		canvas.style.transform = `scale(${finalScale.toFixed(4)})`;
+    canvas.style.transformOrigin = 'top center';
 		canvas.style.marginBottom = `-${(cH * (1 - finalScale)).toFixed(0)}px`;
+    viewport.style.minHeight = `${Math.ceil((cH * finalScale) + 25)}px`;
+
+    document.querySelectorAll('.pv-btn').forEach(btn => {
+      const mode = btn.getAttribute('data-mode');
+      if (mode === window._previewMode || (mode === String(window._previewCustomZoom))) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
 	}
 	window.addEventListener('resize', fitPreviewSheet);
+  if (window.ResizeObserver) {
+    const ro = new ResizeObserver(() => fitPreviewSheet());
+    const sideEl = document.querySelector('.preview-side');
+    if (sideEl) ro.observe(sideEl);
+  }
 
 	function update() {
  const client = document.getElementById('client-name').value;
@@ -1801,11 +1984,11 @@
  ` : ''}
 
  <div class="ps-terms">
- <p>Vigencia de la Cotización : 15 días a partir de su emisión.</p>
- <p>Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.</p>
- <p>Condiciones: El cliente acepta los <a href="/terminos" target="_blank" style="color: inherit; font-weight: bold;">Términos y Condiciones</a> publicados en macwave.com.mx/terminos.html.</p>
- <p style="font-size: 9px; font-weight: 900;">PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.</p>
- <p>Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.</p>
+ <div class="ps-term-line"><strong>Vigencia de la Cotización:</strong> 1 día hábil a partir de su emisión.</div>
+ <div class="ps-term-line"><strong>Garantía:</strong> 31 días en el servicio técnico (pregunta por tu garantía extendida a 100 días por costo adicional). <span class="ps-term-alert">¡Equipos apagados o mojados no llevan garantía!</span></div>
+ <div class="ps-term-line"><strong>Condiciones:</strong> El cliente acepta los <a href="/terminos" target="_blank" style="color: inherit; text-decoration: underline; font-weight: bold;">Términos y Condiciones</a> publicados en <strong>macwave.com.mx/terminos.html</strong>.</div>
+ <div class="ps-term-highlight">PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.</div>
+ <div class="ps-term-line"><strong>Tiempo de entrega:</strong> ${deliveryTime} (Entrega tentativa según disponibilidad).</div>
  </div>
 
  <div class="ps-bank-area">
@@ -1834,9 +2017,25 @@
   </div>
 
  <div class="ps-disclaimer">
- <p>***Precios sujetos a cambios sin previo aviso, en variación al dólar americano o disponibilidad en el mercado de Asia</p>
- <p style="margin-top: 5px; font-weight: normal; font-size: 6px;">*El servicio incluye mantenimiento, resolución de problemas en el sistema, instalación de hardware y sistema operativo, migración o instalación de software con licencia adquirida.</p>
- <p style="margin-top: 8px; font-weight: normal; font-size: 5.5px; line-height: 1.1;">AVISO: EQUIPOS EN ABANDONO POR MÁS DE 30 DÍAS NATURALES A PARTIR DEL DÍA QUE SE DEJÓ EL EQUIPO, SERÁN DESTRUIDOS SIN GENERAR NINGÚN TIPO DE RESPONSABILIDAD A macWave Y SU EQUIPO. USTED ACEPTA YA ESTE ACUERDO, LA REVISIÓN GENERA UN COSTO DE $499 POR DIAGNÓSTICO Y USO DEL LABORATORIO, SERÁN TOMADOS EN CUENTA SI DECIDE REPARAR AQUÍ EL EQUIPO HOY. CONSULTA TÉRMINOS Y CONDICIONES EN EL SITIO WEB. ¡EQUIPOS APAGADOS O MOJADOS NO LLEVAN GARANTÍA! EL SOFTWARE COMO OFFICE SE ENVÍA POR URL Y EL USUARIO DEBE INSTALARLO Y NOTIFICAR PARA ACTIVARLO.</p>
+   <div class="ps-disc-title">Políticas de Laboratorio y Avisos Importantes</div>
+   <div class="ps-disc-grid">
+     <div class="ps-disc-item">
+       <span class="ps-disc-bullet">▪</span>
+       <span><strong>DIAGNÓSTICO:</strong> La revisión genera un costo de $499 por diagnóstico y uso del laboratorio; serán tomados en cuenta si decide reparar aquí el equipo hoy.</span>
+     </div>
+     <div class="ps-disc-item">
+       <span class="ps-disc-bullet">▪</span>
+       <span><strong>AVISO DE ABANDONO:</strong> Equipos en abandono por más de 30 días naturales a partir del día que se dejó el equipo, serán destruidos sin generar ningún tipo de responsabilidad a macWave y su equipo. Usted acepta ya este acuerdo.</span>
+     </div>
+     <div class="ps-disc-item">
+       <span class="ps-disc-bullet">▪</span>
+       <span><strong>SOFTWARE:</strong> El software como Office se envía por URL y el usuario debe instalarlo y notificar para activarlo.</span>
+     </div>
+     <div class="ps-disc-item">
+       <span class="ps-disc-bullet">▪</span>
+       <span><strong>TÉRMINOS Y PRECIOS:</strong> Precios sujetos a cambios sin previo aviso (variación al dólar americano o disponibilidad en mercado de Asia). Consulta términos y condiciones en <strong>macwave.com.mx/terminos.html</strong>.</span>
+     </div>
+   </div>
  </div>
 
 
@@ -1849,7 +2048,7 @@
  `).join('')}
  </div>
 
- <div class="ps-footer" style="margin-top: 25px; border-top: 2px solid #000; padding-top: 10px; display: flex; justify-content: space-between; align-items: flex-start; font-size: 7px; color: #000;">
+ <div class="ps-footer" style="margin-top: 14px; border-top: 2px solid #000; padding-top: 8px; display: flex; justify-content: space-between; align-items: flex-start; font-size: 7px; color: #000;">
  <div style="font-weight: bold; width: 33%; text-align: left;">
  ESPECIALISTAS EN TECNOLOGIA ROLDU SAS. DE C.V
  </div>
@@ -1862,8 +2061,9 @@
  </div>
  `;
  
- // Regenerate QR stably
+ // Regenerate QR stably and refit scroll
  generatePreviewQR();
+ fitPreviewSheet();
  }
 
  const executeGeneration = async () => {
@@ -2102,9 +2302,9 @@
     const noteText = odsNotes.trim();
     
     // Bottom sections fixed space budget:
-    // Terms (~18mm) + Bank (~18mm if ON, ~10mm if OFF) + Disclaimer (~11mm) + Bottom Certs margin (~5mm)
-    const reservedBottomSpace = (showBankInPDF ? 18 : 10) + 18 + 11 + 5;
-    const maxNotesHeight = Math.max(15, 278 - reservedBottomSpace - currentY);
+    // Terms (~22mm) + Bank (~21mm if ON, ~12mm if OFF) + Disclaimer (~17mm) + Bottom Certs margin (~5mm)
+    const reservedBottomSpace = (showBankInPDF ? 21 : 12) + 22 + 17 + 5;
+    const maxNotesHeight = Math.max(15, 276 - reservedBottomSpace - currentY);
     
     // Start with default font size and dynamically scale down continuously until text fits completely
     let noteFontSize = 6.2;
@@ -2131,19 +2331,22 @@
  // --- 5. TERMS (Dynamic Y flow) ---
  doc.setFont("helvetica", "bold");
  const termsY = currentY + 1;
- doc.setFontSize(7);
+ doc.setFontSize(6.8);
  doc.setTextColor(0, 0, 0); 
- doc.text(`Vigencia de la Cotización : 15 días a partir de su emisión.`, 15, termsY);
- doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.", 15, termsY + 3.8);
- doc.text("Condiciones: El cliente acepta los términos y condiciones en macwave.com.mx/terminos.html", 15, termsY + 7.6);
- doc.setFontSize(8.5);
- doc.setTextColor(255, 102, 0);
- doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, termsY + 12);
- doc.setFontSize(7);
+ doc.text(`Vigencia de la Cotización : 1 día hábil a partir de su emisión.`, 15, termsY);
+ doc.text("Garantía: 31 días en el servicio técnico, pregunta por tu garantía extendida a 100 días POR UN COSTO ADICIONAL.", 15, termsY + 3.6);
+ doc.setTextColor(211, 47, 47);
+ doc.text("¡Equipos apagados o mojados no llevan garantía!", 15, termsY + 7.2);
  doc.setTextColor(0, 0, 0);
- doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.`, 15, termsY + 16.2);
+ doc.text("Condiciones: El cliente acepta los términos y condiciones, puedes revisarlas en macwave.com.mx/terminos.html", 15, termsY + 10.8);
+ doc.setFontSize(8.2);
+ doc.setTextColor(255, 102, 0);
+ doc.text("PAGO ANTICIPADO DEL 100% PARA EL SERVICIO.", 15, termsY + 15.0);
+ doc.setFontSize(6.8);
+ doc.setTextColor(0, 0, 0);
+ doc.text(`Tiempo de entrega: ${deliveryTime} ENTREGA TENTATIVA SEGÚN DISPONIBILIDAD.`, 15, termsY + 19.0);
 
- currentY = termsY + 20;
+ currentY = termsY + 22;
 
  // --- 6. BANK SECTION / QR (Dynamic Y flow) ---
  const bankY = currentY + 1;
@@ -2180,17 +2383,30 @@
  }
  } catch (e) {}
 
- // --- 7. DISCLAIMER (Dynamic Y flow) ---
+ // --- 7. DISCLAIMER & POLICIES (Dynamic Y flow - Structured & Clean) ---
  const discY = Math.max(currentY + 2, bankY + 19);
  doc.setFont("helvetica", "bold");
- doc.setFontSize(6);
- doc.setTextColor(0);
- doc.text("***Precios sujetos a cambios sin previo aviso, en variación al dólar americano", 15, discY);
- doc.setFontSize(5);
+ doc.setFontSize(5.8);
+ doc.setTextColor(0, 0, 0);
+ doc.text("POLÍTICAS DE LABORATORIO Y AVISOS macWave", 15, discY);
+
+ doc.setFontSize(4.7);
  doc.setFont("helvetica", "normal");
- const noticeText = "AVISO: EQUIPOS EN ABANDONO POR MÁS DE 30 DÍAS NATURALES A PARTIR DEL DÍA QUE SE DEJÓ EL EQUIPO, SERÁN DESTRUIDOS SIN GENERAR NINGÚN TIPO DE RESPONSABILIDAD A macWave Y SU EQUIPO. USTED ACEPTA YA ESTE ACUERDO, LA REVISIÓN GENERA UN COSTO DE $499 POR DIAGNÓSTICO Y USO DEL LABORATORIO, SERÁN TOMADOS EN CUENTA SI DECIDE REPARAR AQUÍ EL EQUIPO HOY. CONSULTA TÉRMINOS Y CONDICIONES EN EL SITIO WEB. ¡EQUIPOS APAGADOS O MOJADOS NO LLEVAN GARANTÍA! EL SOFTWARE COMO OFFICE SE ENVÍA POR URL Y EL USUARIO DEBE INSTALARLO Y NOTIFICAR PARA ACTIVARLO.";
- const splitN = doc.splitTextToSize(noticeText, 180);
- doc.text(splitN, 15, discY + 4);
+ doc.setTextColor(40, 40, 40);
+
+ const discItems = [
+   "• DIAGNÓSTICO: La revisión genera un costo de $499 por diagnóstico y uso del laboratorio; serán tomados en cuenta si decide reparar aquí el equipo hoy.",
+   "• AVISO DE ABANDONO: Equipos en abandono por más de 30 días naturales a partir del día que se dejó el equipo, serán destruidos sin generar ningún tipo de responsabilidad a macWave y su equipo. Usted acepta ya este acuerdo.",
+   "• SOFTWARE: El software como Office se envía por URL y el usuario debe instalarlo y notificar para activarlo.",
+   "• CONDICIONES & PRECIOS: Consulta términos y condiciones en el sitio web https://macwave.com.mx/terminos.html. Precios sujetos a cambios sin previo aviso por variación al dólar americano o disponibilidad en el mercado de Asia."
+ ];
+
+ let dY = discY + 3.0;
+ discItems.forEach(item => {
+   const split = doc.splitTextToSize(item, 180);
+   doc.text(split, 15, dY);
+   dY += (split.length * 2.1) + 0.6;
+ });
 
  // --- 8. FOOTER / CERT LOGOS (Fixed Bottom) ---
  const certY = 258;

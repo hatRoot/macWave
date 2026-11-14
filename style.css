@@ -5836,12 +5836,17 @@ html, body {
     justify-content: center;
     color: #000000;
     flex-shrink: 0;
-    padding-right: 12px;
+    padding-right: 14px;
     border-right: 1px solid #D2D2D7;
 }
 
-.cloned-apple-cert-top .cloned-apple-cert-icon-wrap svg {
-    display: block;
+.cloned-apple-cert-top .cloned-apple-cert-icon {
+    font-size: 1.85rem;
+    line-height: 1;
+    color: #000000;
+    display: inline-block;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
 .cloned-apple-cert-top .cloned-apple-cert-text {

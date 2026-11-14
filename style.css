@@ -5800,6 +5800,54 @@ html, body {
     line-height: 1.4;
 }
 
+/* Slider Right Column & Top Authority Badge */
+.cloned-slider-right-col {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.cloned-apple-cert-top {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 7px 18px;
+    background: #FFFFFF;
+    border: 1px solid #E5E5EA;
+    border-radius: 980px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    margin-bottom: 14px;
+    align-self: flex-start;
+    transition: all 0.25s ease;
+}
+
+.cloned-apple-cert-top:hover {
+    border-color: #d1d1d6;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+    transform: translateY(-1px);
+}
+
+.cloned-apple-cert-top .cloned-apple-cert-icon {
+    font-size: 1.65rem;
+    line-height: 1;
+    color: #1d1d1f;
+    flex-shrink: 0;
+}
+
+.cloned-apple-cert-top .cloned-apple-cert-text {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #555558;
+    line-height: 1.25;
+    text-align: left;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.cloned-apple-cert-top .cloned-apple-cert-text strong {
+    color: #1d1d1f;
+    font-weight: 800;
+}
+
 /* Slider Right Container */
 .cloned-slider-right {
     position: relative;
@@ -6741,6 +6789,14 @@ html, body {
         display: flex !important;
         flex-direction: column !important;
         gap: 14px !important;
+    }
+
+    .cloned-slider-right-col {
+        display: contents !important;
+    }
+
+    .cloned-apple-cert-top {
+        display: none !important;
     }
 
     .cloned-slider-left {

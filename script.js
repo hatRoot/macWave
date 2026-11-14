@@ -538,6 +538,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (prevBtn) {
             prevBtn.addEventListener('click', (e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 prevSlide();
                 startAutoplay(); // Reset autoplay timer on interaction
             });
@@ -546,6 +547,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (nextBtn) {
             nextBtn.addEventListener('click', (e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 nextSlide();
                 startAutoplay(); // Reset autoplay timer on interaction
             });
@@ -555,6 +557,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dots.forEach((dot, idx) => {
             dot.addEventListener('click', (e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 showSlide(idx);
                 startAutoplay(); // Reset autoplay timer on interaction
             });

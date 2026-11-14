@@ -2,7 +2,7 @@
 // v1.4.0: no cachear HTML (evita footer/login viejos tras hotfix OPS)
 const CACHE_NAME = 'macwave-v1.6.8-casos-responsive';
 const urlsToCache = [
-  '/style.css?v=27.7.1',
+  '/style.css?v=27.7.2',
   '/script.js?v=26.5.4',
   '/images/favicon1.png',
   '/images/dispositivos.jpg',

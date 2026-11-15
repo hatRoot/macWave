@@ -6212,30 +6212,28 @@ html, body {
     justify-content: center;
     flex-shrink: 0;
     transition: all 0.25s ease;
+    background: #F5F5F7;
+    color: #1d1d1f;
+    border: 1.5px solid #3a3a3c;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-.badge-green {
-    background: rgba(37, 211, 102, 0.12);
-    color: #25D366;
-    border: 1px solid rgba(37, 211, 102, 0.25);
-}
-
-.badge-blue {
-    background: rgba(0, 156, 223, 0.10);
-    color: #009CDF;
-    border: 1px solid rgba(0, 156, 223, 0.22);
-}
-
-.badge-orange {
-    background: rgba(255, 102, 0, 0.10);
-    color: #FF6600;
-    border: 1px solid rgba(255, 102, 0, 0.22);
-}
-
+.badge-dark,
+.badge-gray,
+.badge-green,
+.badge-blue,
+.badge-orange,
 .badge-teal {
-    background: rgba(48, 209, 88, 0.12);
-    color: #30D158;
-    border: 1px solid rgba(48, 209, 88, 0.25);
+    background: #F5F5F7;
+    color: #1d1d1f;
+    border: 1.5px solid #3a3a3c;
+}
+
+.cloned-step-item:hover .cloned-step-icon-badge {
+    background: #EBEBED;
+    border-color: #1d1d1f;
+    transform: scale(1.04);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .cloned-step-text-wrap {
@@ -6256,12 +6254,21 @@ html, body {
     display: inline-block;
     width: fit-content;
     line-height: 1.2;
+    background: rgba(29, 29, 31, 0.08);
+    color: #1d1d1f;
+    border: 1px solid rgba(29, 29, 31, 0.14);
 }
 
-.tag-green { background: rgba(37, 211, 102, 0.14); color: #1E9E4B; }
-.tag-blue  { background: rgba(0, 156, 223, 0.12); color: #007BB0; }
-.tag-orange{ background: rgba(255, 102, 0, 0.12); color: #D65500; }
-.tag-teal  { background: rgba(48, 209, 88, 0.14); color: #1E9E4B; }
+.tag-dark,
+.tag-gray,
+.tag-green,
+.tag-blue,
+.tag-orange,
+.tag-teal {
+    background: rgba(29, 29, 31, 0.08);
+    color: #1d1d1f;
+    border: 1px solid rgba(29, 29, 31, 0.14);
+}
 
 .cloned-step-title {
     font-size: 0.94rem;

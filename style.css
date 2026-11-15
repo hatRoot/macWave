@@ -7022,9 +7022,9 @@ html, body {
 
     .cloned-apple-cert-hero-text .cert-hero-title {
         font-size: 0.72rem !important;
-        font-weight: 500 !important;
-        color: #6e6e73 !important;
-        letter-spacing: -0.2px !important;
+        font-weight: 700 !important;
+        color: #D70015 !important;
+        letter-spacing: -0.1px !important;
         line-height: 1.25 !important;
         font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif !important;
     }

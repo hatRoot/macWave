@@ -1168,19 +1168,8 @@
   <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/sw.js?v=1.6.8-casos-responsive').then(function(registration) {
-        registration.update();
-        if (registration.waiting) {
-          registration.waiting.postMessage({ type: 'SKIP_WAITING' });
-        }
-      }).catch(function(registrationError) {
+      navigator.serviceWorker.register('/sw.js?v=1.7.7-steps-dark-gray').catch(function(registrationError) {
         console.warn('SW registration failed:', registrationError);
-      });
-      navigator.serviceWorker.addEventListener('controllerchange', function() {
-        if (!window.__mwSwReloaded) {
-          window.__mwSwReloaded = true;
-          window.location.reload();
-        }
       });
     });
   }

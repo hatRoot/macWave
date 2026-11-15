@@ -6173,99 +6173,174 @@ html, body {
 
 .cloned-steps-container {
     background-color: #FFFFFF;
-    border: 1px solid #e5e5ea;
-    border-radius: 16px;
+    border: 1.5px solid #e5e5ea;
+    border-radius: 20px;
     padding: 22px 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    gap: 24px;
+    box-shadow: 0 10px 36px rgba(0, 0, 0, 0.04);
 }
 
 .cloned-steps-wrapper-inline {
     display: flex;
     align-items: center;
-    gap: 12px;
-    flex-grow: 1;
     justify-content: space-between;
-    max-width: 58%;
+    gap: 16px;
+    flex: 1 1 auto;
+    max-width: none;
 }
 
 .cloned-step-item {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
+    transition: transform 0.25s ease;
 }
 
-.cloned-step-icon-wrap {
-    color: #1d1d1f;
+.cloned-step-item:hover {
+    transform: translateY(-2px);
+}
+
+.cloned-step-icon-badge {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
+    transition: all 0.25s ease;
 }
 
-.cloned-step-item.whatsapp-step .cloned-step-icon-wrap {
+.badge-green {
+    background: rgba(37, 211, 102, 0.12);
+    color: #25D366;
+    border: 1px solid rgba(37, 211, 102, 0.25);
+}
+
+.badge-blue {
+    background: rgba(0, 156, 223, 0.10);
+    color: #009CDF;
+    border: 1px solid rgba(0, 156, 223, 0.22);
+}
+
+.badge-orange {
+    background: rgba(255, 102, 0, 0.10);
+    color: #FF6600;
+    border: 1px solid rgba(255, 102, 0, 0.22);
+}
+
+.badge-teal {
+    background: rgba(48, 209, 88, 0.12);
     color: #30D158;
+    border: 1px solid rgba(48, 209, 88, 0.25);
 }
 
 .cloned-step-text-wrap {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    text-align: left;
 }
 
-.cloned-step-title {
-    font-size: 0.95rem;
-    font-weight: 900;
-    color: #FF6600;
+.cloned-step-tag-pill {
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.8px;
     text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 6px;
+    margin-bottom: 3px;
+    display: inline-block;
+    width: fit-content;
     line-height: 1.2;
+}
+
+.tag-green { background: rgba(37, 211, 102, 0.14); color: #1E9E4B; }
+.tag-blue  { background: rgba(0, 156, 223, 0.12); color: #007BB0; }
+.tag-orange{ background: rgba(255, 102, 0, 0.12); color: #D65500; }
+.tag-teal  { background: rgba(48, 209, 88, 0.14); color: #1E9E4B; }
+
+.cloned-step-title {
+    font-size: 0.94rem;
+    font-weight: 800;
+    color: #1d1d1f;
+    letter-spacing: -0.3px;
+    line-height: 1.25;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
 }
 
 .cloned-step-desc {
-    font-size: 0.8rem;
+    font-size: 0.76rem;
     font-weight: 500;
-    color: #555558;
-    line-height: 1.2;
+    color: #6e6e73;
+    line-height: 1.3;
+    margin-top: 2px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
 }
 
 .cloned-step-arrow {
-    color: #FF6600;
-    font-weight: bold;
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 0 2px;
 }
 
-/* Free Service CTA Button */
+.cloned-steps-divider {
+    width: 1px;
+    height: 52px;
+    background-color: #e5e5ea;
+    flex-shrink: 0;
+    margin: 0 4px;
+}
+
+/* Call to Action Button */
 .cloned-free-cta {
-    background-color: #FF6600;
+    background: linear-gradient(135deg, #FF6600 0%, #FF8533 100%);
     color: #ffffff !important;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: 12px;
-    padding: 12px 24px;
-    border-radius: 14px;
+    gap: 14px;
+    padding: 14px 28px;
+    border-radius: 16px;
     font-weight: 800;
-    font-size: 0.82rem;
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: all 0.3s;
+    text-decoration: none !important;
+    letter-spacing: 0.4px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     border: none;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(255, 102, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(255, 102, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.25);
     white-space: nowrap;
     flex-shrink: 0;
 }
 
 .cloned-free-cta:hover {
-    background-color: #ff7b33;
+    background: linear-gradient(135deg, #FF7519 0%, #FF9447 100%);
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 102, 0, 0.35);
+    box-shadow: 0 12px 30px rgba(255, 102, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-.cloned-free-cta svg {
+.cloned-free-cta:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 14px rgba(255, 102, 0, 0.3);
+}
+
+.cloned-free-cta-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
+}
+
+.cloned-free-cta-icon-wrap svg {
+    width: 24px;
+    height: 24px;
+    color: #ffffff;
 }
 
 .cloned-free-cta-text {
@@ -6274,27 +6349,25 @@ html, body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    line-height: 1.25;
+    line-height: 1.2;
 }
 
 .cloned-free-cta-text span {
-    font-size: 0.84rem;
-    font-weight: 800;
+    font-size: 0.88rem;
+    font-weight: 900;
     color: #ffffff;
-    letter-spacing: 0.4px;
-    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     display: block;
 }
 
 .cloned-free-cta-sub {
-    font-size: 0.72rem;
-    opacity: 0.95;
+    font-size: 0.74rem;
     font-weight: 600;
     text-transform: none;
     letter-spacing: 0px;
-    line-height: 1.2;
     display: block;
-    margin-top: 2px;
+    margin-top: 3px;
     color: rgba(255, 255, 255, 0.95);
 }
 
@@ -6504,13 +6577,17 @@ html, body {
     .cloned-steps-container {
         flex-direction: column;
         align-items: stretch;
-        gap: 20px;
+        gap: 22px;
+        padding: 24px 20px;
     }
     .cloned-steps-wrapper-inline {
         max-width: 100%;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 20px 30px;
+        gap: 20px 28px;
+    }
+    .cloned-steps-divider {
+        display: none;
     }
     .cloned-apple-cert {
         border-left: none;
@@ -6521,6 +6598,9 @@ html, body {
     }
     .cloned-free-cta {
         justify-content: center;
+        width: 100%;
+        max-width: 440px;
+        margin: 0 auto;
     }
 }
 
@@ -7034,14 +7114,37 @@ html, body {
         margin-top: 2px !important;
     }
 
+    .cloned-steps-container {
+        padding: 18px 16px !important;
+        border-radius: 16px !important;
+        gap: 16px !important;
+    }
+
     .cloned-steps-wrapper-inline {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+        width: 100% !important;
     }
+
+    .cloned-step-item {
+        width: 100% !important;
+        background: #F9F9FA !important;
+        border: 1px solid #EDEDF0 !important;
+        border-radius: 14px !important;
+        padding: 12px 14px !important;
+        gap: 14px !important;
+        box-sizing: border-box !important;
+    }
+
     .cloned-step-arrow {
-        display: none;
+        display: none !important;
     }
+
+    .cloned-steps-divider {
+        display: none !important;
+    }
+
     .cloned-services-row {
         grid-template-columns: 1fr;
     }

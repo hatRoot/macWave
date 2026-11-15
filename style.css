@@ -6974,17 +6974,9 @@ html, body {
         height: 14px !important;
     }
 
-    .cloned-checklist {
-        order: 4 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 12px !important;
-        margin-top: 8px !important;
-    }
-
-    /* Distintivo Estático de Autoridad Apple en Primer Pantallazo Móvil (Order: 5) */
+    /* Distintivo Estático de Autoridad Apple en Primer Pantallazo Móvil (Order: 4 - Arriba de Confiable) */
     .cloned-apple-cert-hero {
-        order: 5 !important;
+        order: 4 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -7001,6 +6993,14 @@ html, body {
         text-decoration: none !important;
         color: inherit !important;
         cursor: pointer !important;
+    }
+
+    .cloned-checklist {
+        order: 5 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        margin-top: 12px !important;
     }
 
     .cloned-apple-cert-hero-icon {

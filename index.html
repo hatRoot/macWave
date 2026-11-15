@@ -338,7 +338,7 @@
   <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
   as="style">
 
-  <link rel="stylesheet" href="style.css?v=27.8.2">
+  <link rel="stylesheet" href="style.css?v=27.8.3">
 
   <script>
   // Definición global e inmediata para evitar fallos en iPhone
@@ -459,6 +459,15 @@
               Reparamos tu Mac con la misma calidad y te la entregamos en la puerta de tu <span class="orange-highlight">casa u oficina.</span>
             </p>
             
+            <!-- Apple Certification Authority Badge Mobile Hero (Arriba de Confiable) -->
+            <a href="https://www.credly.com/badges/f931f052-2ff5-423a-bed3-49004ca58bb5" target="_blank" rel="noopener noreferrer" class="cloned-apple-cert-hero" aria-label="Ver certificación oficial Apple ACSP en Credly (abre en nueva pestaña)">
+              <span class="cloned-apple-cert-hero-icon"></span>
+              <div class="cloned-apple-cert-hero-text">
+                <span class="cert-hero-title">Apple Consulting System Engineer</span>
+                <span class="cert-hero-sub"><strong>ACSP</strong> Apple Certified Support Professional</span>
+              </div>
+            </a>
+
             <div class="cloned-checklist">
               <!-- Item 1 -->
               <div class="cloned-checklist-item">
@@ -498,15 +507,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- Apple Certification Authority Badge Mobile Hero -->
-            <a href="https://www.credly.com/badges/f931f052-2ff5-423a-bed3-49004ca58bb5" target="_blank" rel="noopener noreferrer" class="cloned-apple-cert-hero" aria-label="Ver certificación oficial Apple ACSP en Credly (abre en nueva pestaña)">
-              <span class="cloned-apple-cert-hero-icon"></span>
-              <div class="cloned-apple-cert-hero-text">
-                <span class="cert-hero-title">Apple Consulting System Engineer</span>
-                <span class="cert-hero-sub"><strong>ACSP</strong> Apple Certified Support Professional</span>
-              </div>
-            </a>
 
           </div>
           
@@ -2083,7 +2083,7 @@
   <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/sw.js?v=1.7.7-steps-dark-gray').catch(function(registrationError) {
+      navigator.serviceWorker.register('/sw.js?v=1.7.8-cert-above-checklist').catch(function(registrationError) {
         console.warn('SW registration failed:', registrationError);
       });
     });

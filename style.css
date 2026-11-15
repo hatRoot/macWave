@@ -5889,20 +5889,6 @@ html, body {
     font-weight: 800;
 }
 
-.cloned-apple-cert-top .cloned-apple-cert-arrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #86868b;
-    margin-left: 2px;
-    transition: transform 0.25s ease, color 0.25s ease;
-}
-
-.cloned-apple-cert-top:hover .cloned-apple-cert-arrow {
-    color: #000000;
-    transform: translate(2px, -2px);
-}
-
 /* Slider Right Container */
 .cloned-slider-right {
     position: relative;

@@ -1,0 +1,15 @@
+#!/bin/sh
+# macWave Anti-Regression Git Pre-Commit Hook (Landy — Rol 6)
+# Bloquea cualquier commit si alguna compuerta de harness/check.js falla.
+
+echo "[Landy — Pre-Commit] Ejecutando arnés anti-regresiones (node harness/check.js)..."
+node harness/check.js
+STATUS=$?
+
+if [ $STATUS -ne 0 ]; then
+  echo ""
+  echo "❌ COMMIT BLOQUEADO POR LANDY: Corrige los errores reportados arriba antes de hacer commit."
+  exit 1
+fi
+
+exit 0

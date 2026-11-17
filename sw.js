@@ -3,7 +3,7 @@
 const CACHE_NAME = 'macwave-v1.9.0';
 const urlsToCache = [
   '/style.css?v=27.8.5',
-  '/script.js?v=26.5.4',
+  '/script.js?v=26.5.5',
   '/images/favicon1.png',
   '/images/dispositivos.jpg',
   '/images/apple_cert_support_professional.png',

@@ -10,7 +10,7 @@ El **Project Manager** es el orquestador principal del proyecto. Ninguna tarea s
 ### Responsabilidades del Manager:
 1. **Desglose Técnico:** Descomponer cada requerimiento del usuario asignándolo a los especialistas técnicos correspondientes.
 2. **Coordinación y Cadena de Custodia:** Supervisar la intervención ordenada y no destructiva de cada especialista.
-3. **Compuerta de Calidad Obligatoria:** Ningún cambio se da por concluido ni se entrega al usuario sin que el **Experto en Arnés** (`node harness/check.js`) y el **Experto en QA** hayan verificado y aprobado el resultado con cero errores.
+3. **Compuerta de Calidad Obligatoria:** Ningún cambio se da por concluido ni se entrega al usuario sin que **Landy (Experta en Arnés & Guardrails, `node harness/check.js`)** y **Laura (Experta en QA & Testing)** hayan verificado y aprobado el resultado con cero errores y cero tolerancia a fallos.
 
 ---
 
@@ -51,7 +51,8 @@ El **Project Manager** es el orquestador principal del proyecto. Ninguna tarea s
 - **Protección de Rutas Privadas:** Páginas internas, cotizadores privados o paneles (`dashboard-ods.html`, `status-ods.html`, `/ops/`) siempre protegidos con `<meta name="robots" content="noindex, nofollow">`.
 - **Seguridad de Datos:** Manejo seguro de formularios, claves de Supabase y endpoints de API, previniendo fuga de datos de clientes.
 
-### 🛡️ 6. Experto en Arnés & Guardrails (`harness/check.js`)
+### 🛡️ 6. Landy — Experta en Arnés & Guardrails (`harness/check.js`)
+- **Perfil de Tolerancia Cero:** Implacable con los errores; bloquea cualquier entrega o commit si falla una sola compuerta del arnés.
 - **Script Automatizado de Verificación:** Mantener y ejecutar `node harness/check.js` para auditar:
   1. Integridad de enlaces internos (cero 404s en tags `<a>`, `<img>`, `<link>`, `<script>`).
   2. Validez de sintaxis HTML y ausencia de etiquetas o estilos duplicados.
@@ -60,10 +61,14 @@ El **Project Manager** es el orquestador principal del proyecto. Ninguna tarea s
   5. Sincronización entre archivos locales y `sitemap.xml`.
   6. Blindaje estricto de `<title>` y `<h1>` ganadores y ausencia de redirecciones destructivas en `.htaccess`.
   7. Aislamiento estricto de viewport (Desktop vs Mobile) en CSS para certificar que cambios responsive no alteren estilos globales de escritorio.
-- **Criterio de Entrega:** Cada cambio DEBE recibir la aprobación del arnés (`EXIT CODE 0`) antes de proceder a la entrega o commit.
+  8. Cache-Busting y sincronización de Service Worker (`sw.js`) con versiones de activos.
+  9. Integridad y aislamiento estricto de folios ODS (`MW-YYYYMMDD-NNNN`) vs Cotizaciones (`COTNNNN-YYYYMMDD`).
+- **Criterio de Entrega:** Cada cambio DEBE recibir la aprobación de **Landy** (`EXIT CODE 0`) antes de proceder a la entrega o commit.
 
-### 🧪 7. Experto en QA & Testing (Control de Calidad)
+### 🧪 7. Laura — Experta en QA & Testing (Control de Calidad)
+- **Perfil de Tolerancia Cero:** Revisa de forma estricta y crítica cada cambio antes de llegar a producción; no aprueba nada sin prueba real.
 - **Auditoría de Enlaces de Contacto:** Probar que todos los botones `tel:` llamen exactamente al `5535757364` y que los botones `wa.me:` abran el chat correcto con el mensaje prellenado correspondiente.
+- **Auditoría Funcional de Flujos Críticos:** Verificar flujos operativos sensibles (creación de ODS, consecutivos de folios, cotizaciones, dashboard y Supabase) para garantizar cero regresiones.
 - **Certificación Visual:** Validar que la interfaz se despliegue de manera impecable en escritorio y móviles (iOS Safari, Android Chrome) sin textos desbordados ni espacios en blanco fantasma.
 
 ### 🩺 8. Experto Debugger (Bisturí)
@@ -104,13 +109,13 @@ El **Project Manager** es el orquestador principal del proyecto. Ninguna tarea s
 ```mermaid
 graph TD
     A["Paso 1: Planificación (Manager)"] --> B["Paso 2: Ejecución Quirúrgica (Especialistas)"]
-    B --> C["Paso 3: Verificación con Arnés (node harness/check.js)"]
-    C --> D["Paso 4: Auditoría QA (Tel, WA, Mobile UI)"]
+    B --> C["Paso 3: Verificación con Arnés — Landy (node harness/check.js)"]
+    C --> D["Paso 4: Auditoría QA — Laura (Tel, WA, ODS, Mobile UI)"]
     D --> E["Paso 5: Reporte y Entrega (Manager)"]
 ```
 
 1. **Paso 1 (Plan):** El Manager recibe la instrucción, define el alcance técnico y asigna tareas a los especialistas requeridos.
 2. **Paso 2 (Ejecución):** Los expertos técnicos implementan los cambios con precisión de bisturí sin tocar código ajeno.
-3. **Paso 3 (Arnés):** Se corre de forma obligatoria `node harness/check.js` para certificar cero regresiones técnicas y de enlaces.
-4. **Paso 4 (QA):** Se verifican manualmente enlaces de contacto, mensajes prellenados y legibilidad mobile.
-5. **Paso 5 (Entrega):** El Manager documenta el informe con el desglose por especialista y confirma la aprobación de calidad.
+3. **Paso 3 (Arnés — Landy):** **Landy** ejecuta de forma obligatoria `node harness/check.js` para certificar cero regresiones técnicas, de enlaces y de folios (`EXIT CODE 0`).
+4. **Paso 4 (QA — Laura):** **Laura** verifica manualmente enlaces de contacto, flujos operativos (ODS/Cotizaciones), mensajes prellenados y legibilidad mobile.
+5. **Paso 5 (Entrega):** El Manager documenta el informe con el desglose por especialista y confirma la aprobación de **Landy** y **Laura**.

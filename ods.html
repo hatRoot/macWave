@@ -1206,8 +1206,25 @@
 
 
  // Folio Auto-Increment Format: MW-YYYYMMDD-NNNN
+ const ODS_FOLIO_BASELINE = 9640; // Último folio ODS válido conocido; el siguiente consecutivo mínimo es 9641
+ const extractValidOdsNumber = (folioStr) => {
+ if (!folioStr || typeof folioStr !== 'string') return null;
+ // Solo acepta formato estricto MW-YYYYMMDD-NNNN (4 a 5 dígitos) o legacy MW-NNNN.
+ // Rechaza explícitamente cotizaciones (COTxxxx-YYYYMMDD) y fechas corruptas de 8 dígitos (ej. 20261112).
+ const match = folioStr.trim().match(/^MW-(?:\d{8}-)?(\d{4,5})$/i);
+ if (!match) return null;
+ const num = parseInt(match[1], 10);
+ if (isNaN(num) || num < 1000 || num >= 100000) return null;
+ return num;
+ };
+
  const getNextFolio = (inc = false) => {
- let num = parseInt(localStorage.getItem('quote_folio_counter') || '9481');
+ let num = parseInt(localStorage.getItem('quote_folio_counter') || String(ODS_FOLIO_BASELINE + 1), 10);
+ // Autoreparación inmediata si localStorage fue contaminado con una fecha (ej. 20261112) o valor inválido
+ if (isNaN(num) || num <= ODS_FOLIO_BASELINE || num >= 100000) {
+ num = ODS_FOLIO_BASELINE + 1;
+ localStorage.setItem('quote_folio_counter', num);
+ }
  if (inc) {
  num++;
  localStorage.setItem('quote_folio_counter', num);
@@ -1224,41 +1241,33 @@
  const { data, error } = await window._sbClient
  .from('ordenes_servicio')
  .select('folio')
+ .ilike('folio', 'MW-%')
  .order('created_at', { ascending: false })
- .limit(20); // Check recent ones in case of deletions or manual edits
+ .limit(100); // Solo consulta folios MW- para nunca mezclar cotizaciones COTxxxx-YYYYMMDD
 
+ let maxNum = ODS_FOLIO_BASELINE;
  if (data && data.length > 0) {
- let maxNum = 9480; // Baseline: user last manual folio was 9480
  data.forEach(item => {
- if (item.folio && item.folio.includes('-')) {
- const parts = item.folio.split('-');
- const numPart = parseInt(parts[parts.length - 1]);
- if (!isNaN(numPart) && numPart > maxNum) {
+ const numPart = extractValidOdsNumber(item.folio);
+ if (numPart !== null && numPart > maxNum) {
  maxNum = numPart;
  }
- }
  });
+ }
 
- // Increment to the NEXT available number
+ // Increment to the NEXT available valid ODS number
  const nextNum = maxNum + 1;
  localStorage.setItem('quote_folio_counter', nextNum);
 
- // Force update the input ONLY if the currently displayed number is lower than or equal to maxNum
+ // Autoreparar input si tiene un folio corrupto (ej. 20261112, COT, RPC) o menor/igual al último guardado
  const quoteInput = document.getElementById('quote-number');
  if (quoteInput) {
  const currentVal = quoteInput.value;
- if (currentVal.includes('-')) {
- const currentParts = currentVal.split('-');
- const currentNum = parseInt(currentParts[currentParts.length - 1]);
- if (!isNaN(currentNum) && currentNum <= maxNum) {
+ const currentNum = extractValidOdsNumber(currentVal);
+ if (currentNum === null || currentNum <= maxNum) {
  quoteInput.value = getNextFolio();
- update();
- }
- } else if (!currentVal || currentVal.includes('RPC')) {
- // Reset old RPC style
- quoteInput.value = getNextFolio();
- update();
- }
+ if (typeof update === 'function') update();
+ if (typeof saveFormData === 'function') saveFormData();
  }
  }
  } catch (e) {
@@ -1295,6 +1304,8 @@
  const loadFormData = () => {
  const raw = localStorage.getItem('ods_temp_draft');
  if (!raw) {
+ const quoteEl = document.getElementById('quote-number');
+ if (quoteEl) quoteEl.value = getNextFolio();
  if (itemsContainer) {
  itemsContainer.innerHTML = '';
  for (let i = 0; i < 5; i++) createRow({ d: '', p: 0, q: 0 });
@@ -1308,7 +1319,8 @@
  document.getElementById('serial-number').value = data.serial || '';
  document.getElementById('tech-name').value = data.tech || '';
  document.getElementById('quote-date').value = data.date || '';
- document.getElementById('quote-number').value = data.folio || getNextFolio();
+ const validDraftNum = extractValidOdsNumber(data.folio);
+ document.getElementById('quote-number').value = validDraftNum !== null ? data.folio : getNextFolio();
  document.getElementById('delivery-time').value = data.delivery || '';
  document.getElementById('clabe').value = data.clabe || '';
  document.getElementById('account-number').value = data.account || '';
@@ -1431,8 +1443,8 @@
       // If importing an existing ODS, restore that ODS folio.
       let activeODSFolio = document.getElementById('quote-number').value;
       if (isCotizacion) {
-        if (!activeODSFolio || activeODSFolio.startsWith('COT') || activeODSFolio.includes('RPC')) {
-          activeODSFolio = typeof getNextFolio === 'function' ? getNextFolio() : `MW-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-9481`;
+        if (!activeODSFolio || activeODSFolio.startsWith('COT') || activeODSFolio.includes('RPC') || extractValidOdsNumber(activeODSFolio) === null) {
+          activeODSFolio = typeof getNextFolio === 'function' ? getNextFolio() : `MW-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-9641`;
           document.getElementById('quote-number').value = activeODSFolio;
         }
       } else if (odsFolioExtracted) {

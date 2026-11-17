@@ -2950,10 +2950,23 @@ const statuses = [...configuredStatuses, ...dynamicStatuses];
  function openQuickCreate(status = 'Recibido') {
  targetInitialStatus = status;
  document.getElementById('quick-create-modal').classList.add('active');
- // Suggest a folio
- const lastFolio = allODS.length > 0 ? allODS[0].folio : 'MW-1000';
- const num = parseInt(lastFolio.replace(/\D/g, '')) || 1000;
- document.getElementById('new-ods-folio').value = `MW-${num + 1}`;
+ // Suggest next valid MW-YYYYMMDD-NNNN folio (ignoring COTxxxx-YYYYMMDD and corrupted 8-digit suffixes)
+ let maxNum = 9640;
+ if (Array.isArray(allODS)) {
+ allODS.forEach(item => {
+ if (!item || !item.folio) return;
+ const m = String(item.folio).trim().match(/^MW-(?:\d{8}-)?(\d{4,5})$/i);
+ if (m) {
+ const n = parseInt(m[1], 10);
+ if (!isNaN(n) && n >= 1000 && n < 100000 && n > maxNum) maxNum = n;
+ }
+ });
+ }
+ const now = new Date();
+ const yyyy = now.getFullYear();
+ const mm = String(now.getMonth() + 1).padStart(2, '0');
+ const dd = String(now.getDate()).padStart(2, '0');
+ document.getElementById('new-ods-folio').value = `MW-${yyyy}${mm}${dd}-${maxNum + 1}`;
  }
 
  function closeQuickCreate() {

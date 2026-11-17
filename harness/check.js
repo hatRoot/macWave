@@ -584,6 +584,48 @@ function auditCacheBustingAndServiceWorker() {
 }
 
 /**
+ * 9. Auditoría de Integridad de Folios ODS y Cotizaciones
+ * Previene contaminación cruzada entre folios MW-YYYYMMDD-NNNN y COTNNNN-YYYYMMDD en ordenes_servicio.
+ */
+function auditOdsFolioIntegrity() {
+  logHeader('9. AUDITORÍA DE INTEGRIDAD DE FOLIOS ODS Y COTIZACIONES');
+  let issuesFound = 0;
+
+  const odsPath = path.join(ROOT_DIR, 'ods.html');
+  if (fs.existsSync(odsPath)) {
+    const odsContent = fs.readFileSync(odsPath, 'utf8');
+
+    // 1. Verificar que syncFolioFromSupabase filtre estrictamente por MW-%
+    if (!/\.ilike\(\s*['"]folio['"]\s*,\s*['"]MW-%['"]\s*\)/i.test(odsContent)) {
+      logError('[ods.html] syncFolioFromSupabase no filtra por .ilike("folio", "MW-%"). Riesgo crítico de leer cotizaciones COTxxxx-YYYYMMDD como folio ODS.');
+      issuesFound++;
+    }
+
+    // 2. Verificar validación estricta de sufijo numérico (4-5 dígitos, < 100000) para rechazar fechas YYYYMMDD
+    if (!/extractValidOdsNumber/.test(odsContent) || !/num\s*>=\s*100000/.test(odsContent)) {
+      logError('[ods.html] Falta validación estricta anti-corrupción de folios ODS (límite < 100000 para bloquear fechas YYYYMMDD).');
+      issuesFound++;
+    }
+  } else {
+    logError('El archivo ods.html no existe en la raíz.');
+    issuesFound++;
+  }
+
+  const cotPath = path.join(ROOT_DIR, 'cotizacion.html');
+  if (fs.existsSync(cotPath)) {
+    const cotContent = fs.readFileSync(cotPath, 'utf8');
+    if (!/\.ilike\(\s*['"]folio['"]\s*,\s*['"]COT%['"]\s*\)/i.test(cotContent)) {
+      logError('[cotizacion.html] syncFolioFromSupabase no filtra por .ilike("folio", "COT%").');
+      issuesFound++;
+    }
+  }
+
+  if (issuesFound === 0) {
+    logPass('Integridad de folios ODS y Cotizaciones blindada: aislamiento estricto MW-% vs COT% y filtro anti-fechas activo.');
+  }
+}
+
+/**
  * Función principal de ejecución
  */
 function runHarness() {
@@ -604,6 +646,7 @@ function runHarness() {
   auditSeoGuardrails();
   auditResponsiveIsolation();
   auditCacheBustingAndServiceWorker();
+  auditOdsFolioIntegrity();
 
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
   logHeader('RESUMEN DE AUDITORÍA');

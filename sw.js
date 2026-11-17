@@ -1,6 +1,6 @@
 // Service Worker for macWave Mexico - Performance & Caching
 // v1.4.0: no cachear HTML (evita footer/login viejos tras hotfix OPS)
-const CACHE_NAME = 'macwave-v1.8.0-cert-red-text';
+const CACHE_NAME = 'macwave-v1.9.0';
 const urlsToCache = [
   '/style.css?v=27.8.5',
   '/script.js?v=26.5.4',

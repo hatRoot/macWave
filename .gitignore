@@ -1,0 +1,52 @@
+# ==============================================================================
+# macWave - Blindaje Anti-Fugas & DevSecOps (.gitignore)
+# Oficial de Ciberseguridad & DevSecOps
+# ==============================================================================
+
+# Sistema Operativo / macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Credenciales, Secretos y Variables de Entorno
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.cert
+*.crt
+id_rsa*
+secrets.*
+
+# Dependencias y Paquetes
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Respaldos, Dumps y Temporales
+*.bak
+*.backup
+*.swp
+*.swo
+*~
+*.old
+*.sql
+*.tar
+*.tar.gz
+*.zip
+
+# Editores y Entornos de Desarrollo
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Scratch y Archivos de Trabajo Interno
+scratch/

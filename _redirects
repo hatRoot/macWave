@@ -1,0 +1,21 @@
+# ==============================================================================
+# macWave - Redirecciones Cloudflare Pages (_redirects)
+# ==============================================================================
+
+# Consolidación SEO 301 (Cero Canibalización)
+/cambio-bateria-macbook-pro-air /bateria-macbook-cdmx 301
+/cambio-bateria-macbook-pro-air.html /bateria-macbook-cdmx 301
+/bateria-pantalla-iphone-express /bateria-macbook-cdmx 301
+/bateria-pantalla-iphone-express.html /bateria-macbook-cdmx 301
+/mac-mojada-urgencia /mac-mojada-cdmx 301
+/mac-mojada-urgencia.html /mac-mojada-cdmx 301
+/actualizar-mac-os-vieja /upgrades 301
+/actualizar-mac-os-vieja.html /upgrades 301
+/reflow-gpu-mac /reparacion-corto-logica-mac 301
+/reflow-gpu-mac.html /reparacion-corto-logica-mac 301
+/reparacion-laptops-gamer-cdmx /reparaciones 301
+/reparacion-laptops-gamer-cdmx.html /reparaciones 301
+/aviso-de-privacidad /terminos 301
+/aviso-de-privacidad.html /terminos 301
+/empresas.html /empresas 301
+/index.html / 301

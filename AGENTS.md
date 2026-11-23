@@ -79,6 +79,49 @@ El **Project Manager** es el orquestador principal del proyecto. Ninguna tarea s
 - **Commits Atómicos:** Mensajes de commit claros y estructurados por especialidad y componente modificado.
 - **Protección del Historial:** Prohibido terminantemente ejecutar `git reset --hard` no autorizados, descartes destructivos o mezclar código ajeno o huérfano.
 
+### 📍 10. Experto en Local SEO & Google Business Profile (Google Maps & Reputación)
+- **Consistencia NAP Canónica:** Garantizar que Nombre (macWave), Dirección física y Teléfono (`5535757364`) coincidan de forma idéntica en web, Google Maps y directorios locales.
+- **Marcado Estructurado Schema.org:** Implementar y auditar esquemas `LocalBusiness` y `RepairService` con coordenadas precisas, área de servicio (CDMX, alcaldías y colonias clave), horarios y catálogo de servicios.
+- **Reputación y Reseñas:** Mantener llamados estratégicos para recopilación de reseñas reales de 5 estrellas en Google Maps para consolidar autoridad frente a Apple Store y terceros.
+
+### 🎯 11. Experto en Google Ads & SEM (PPC de Alta Intención)
+- **Alineación con las 3 Landings Reina:** Diseñar y optimizar copys para anuncios de búsqueda centrados en las prioridades máximas (Batería MacBook, Mac Mojada, iMac Lenta).
+- **Quality Score & Relevancia:** Coherencia total entre la intención de búsqueda de pago, el texto del anuncio y el H1 / contenido de la landing page para abaratar costo por clic (CPC).
+- **Filtro Anti-Desperdicio:** Auditoría constante de palabras clave negativas (ej. "gratis", "manual", "cursos", "empleo") y extensiones de llamada directa a `5535757364` y WhatsApp.
+
+### 🏎️ 12. Experto en Web Performance & Core Web Vitals (WPO & Velocidad Móvil)
+- **Métricas Core Web Vitals:** Mantener LCP < 2.0s, CLS < 0.1 e INP < 200ms en condiciones reales de red móvil 4G/5G en CDMX.
+- **Optimización de Activos:** Conversión y entrega de imágenes en formatos modernos (WebP/AVIF), dimensiones explícitas para evitar saltos de layout y carga diferida (`loading="lazy"`).
+- **Eficiencia de Carga:** Control de tamaño de paquetes CSS/JS, eliminación de recursos bloqueantes del render y sincronización de caché con el Service Worker (`sw.js`).
+
+### 📊 13. Experto en Analítica Digital & Tracking de Conversiones (GA4 & GTM)
+- **Medición de Micro y Macro Conversiones:** Monitoreo y eventos obligatorios al pulsar enlaces `tel:5535757364` y `https://wa.me/525535757364`.
+- **Embudos Operativos:** Medición de envíos en cotizadores interactivos y consultas de folios ODS.
+- **Atribución Limpia:** Preservación de parámetros UTM y consistencia en los orígenes de tráfico para identificar qué página genera los leads más rentables.
+
+### 💬 14. Experto en Automatización Post-Venta & CRM (WhatsApp & ODS)
+- **Comunicaciones Transaccionales:** Notificaciones contextuales para cada etapa de la ODS (*Recibido*, *En Diagnóstico*, *Esperando Aprobación*, *Listo para Entrega*).
+- **Ciclo de Fidelización:** Recordatorios amigables de garantía por escrito y solicitud automatizada de reseña tras la entrega exitosa del equipo.
+- **Plantillas Prellenadas:** Respuestas rápidas y enlaces dinámicos de WhatsApp para resolver objeciones frecuentes en menos de 2 minutos.
+
+### 🔒 15. Oficial de Ciberseguridad & DevSecOps (Blindaje Total Anti-Hackeo & Privacidad)
+- **Escudo Anti-Fugas en GitHub & Control de Código:**
+  - Mantener `.gitignore` blindado para bloquear de forma estricta: `.env`, certificados SSL, credenciales de servidor/cPanel/FTP, llaves SSH, logs, respaldos `.bak`/`.sql` y archivos de sistema `.DS_Store`.
+  - Cero filtración de secretos: Prohibido terminantemente comitear la clave `service_role` de Supabase, tokens o datos sensibles de clientes (PII) al repositorio.
+  - Asegurar la visibilidad 100% privada del repositorio en GitHub y control estricto de accesos.
+- **Blindaje de Servidor Web & Hardening (.htaccess):**
+  - Prohibición total de listado de directorios (`Options -Indexes`).
+  - Bloqueo proactivo de escaneos de bots maliciosos (bloquear peticiones a `.git`, `.env`, wp-login, xmlrpc, phpmyadmin, scripts huérfanos).
+  - Cabeceras de protección militar: HSTS forzado, CSP (Content Security Policy) restrictivo, `X-Frame-Options: SAMEORIGIN` (anti-clickjacking), `X-Content-Type-Options: nosniff` y `Referrer-Policy: strict-origin-when-cross-origin`.
+- **Blindaje de Base de Datos & Supabase (Defensa en Profundidad):**
+  - Enforce obligatorio de Row Level Security (RLS) en el 100% de tablas (órdenes ODS, clientes, cotizaciones).
+  - Principio de mínimo privilegio: el frontend solo consume `anon_key` con permisos de inserción controlada o lectura autenticada; la `service_role_key` jamás toca el cliente.
+  - Sanitización contra SQL Injection y XSS (Cross-Site Scripting) en todos los formularios y payloads.
+- **Blindaje del Ecosistema ODS & Paneles Administrativos:**
+  - Protección contra enumeración y ataques de fuerza bruta sobre folios ODS (`MW-YYYYMMDD-NNNN`).
+  - Directivas `noindex, nofollow` permanentes en paneles internos (`dashboard-ods.html`, `status-ods.html`, `/ops/`) para evitar indexación o descubrimiento por buscadores y bots.
+  - Restricción de acceso y control de sesiones en dashboards operativos.
+
 ---
 
 ## 3. PARÁMETROS CANÓNICOS DEL NEGOCIO (macWave)

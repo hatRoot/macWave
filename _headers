@@ -1,0 +1,33 @@
+# ==============================================================================
+# macWave - Cabeceras de Seguridad y Control Cloudflare Pages (_headers)
+# ==============================================================================
+
+# Cabeceras globales de seguridad para todas las rutas
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+# Protección noindex para paneles operativos y herramientas internas
+/dashboard-ods*
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/status-ods*
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/ods*
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/tecnicos*
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/ticket-badge*
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+# Optimización de caché para activos estáticos
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/css/*
+  Cache-Control: public, max-age=2592000

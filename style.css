@@ -1987,7 +1987,8 @@ h3 {
     letter-spacing: 0.03em;
 }
 
-.wa-input-group input {
+.wa-input-group input,
+.wa-input-group select {
     background: #1c1c20;
     border: 1px solid #33333d;
     border-radius: 12px;
@@ -2000,7 +2001,8 @@ h3 {
     width: 100%;
 }
 
-.wa-input-group input:focus {
+.wa-input-group input:focus,
+.wa-input-group select:focus {
     border-color: #009CDF;
     box-shadow: 0 0 0 3px rgba(0, 156, 223, 0.25);
 }

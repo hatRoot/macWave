@@ -206,11 +206,21 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
       
       <div class="wa-filter-prompt">
-        📍 <strong>Para coordinar visita o recolección con especialista:</strong><br>
-        Indícanos qué modelo de Mac tienes y tu colonia o alcaldía en CDMX / Área Metropolitana.
+        📍 <strong>Para cotizar o agendar visita con especialista Apple:</strong><br>
+        Selecciona el servicio que necesitas, el modelo de tu Mac y tu colonia en CDMX.
       </div>
 
       <div class="wa-filter-inputs">
+        <div class="wa-input-group">
+          <label for="wa-input-service">Servicio prioritario:</label>
+          <select id="wa-input-service">
+            <option value="Cambio de Batería MacBook (2 Años Garantía)">🔋 Cambio de Batería MacBook (2 Años Garantía)</option>
+            <option value="Rescate Urgente MacBook Mojada">☕ MacBook Mojada / Líquidos (Urgente)</option>
+            <option value="Actualizar iMac Lenta (SSD 10x + macOS)">🚀 iMac Lenta / Upgrade SSD 10x y macOS</option>
+            <option value="Reparación Tarjeta Lógica / No Enciende">⚡ Tarjeta Lógica / No Enciende</option>
+            <option value="Otro servicio especializado Apple">🍎 Otro servicio Apple Mac</option>
+          </select>
+        </div>
         <div class="wa-input-group">
           <label for="wa-input-model">Modelo de tu Mac (opcional):</label>
           <input type="text" id="wa-input-model" placeholder="Ej. MacBook Pro 2020, MacBook Air M1, iMac..." autocomplete="off">
@@ -237,25 +247,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeWaFilterBtn = document.getElementById('close-wa-filter-modal');
     const cancelWaFilterBtn = document.getElementById('cancel-wa-filter-modal');
     const btnWaModalConfirm = document.getElementById('btn-wa-modal-confirm');
+    const inputService = document.getElementById('wa-input-service');
     const inputModel = document.getElementById('wa-input-model');
     const inputColonia = document.getElementById('wa-input-colonia');
 
     let currentBaseMessage = "Hola, necesito ayuda para reparar mi Mac.";
 
+    function detectDefaultService(baseText) {
+        const path = window.location.pathname.toLowerCase();
+        const msg = (baseText || '').toLowerCase();
+        if (path.includes('bateria') || msg.includes('bater')) {
+            return 'Cambio de Batería MacBook (2 Años Garantía)';
+        }
+        if (path.includes('mojada') || msg.includes('mojad') || msg.includes('líquido') || msg.includes('liquido')) {
+            return 'Rescate Urgente MacBook Mojada';
+        }
+        if (path.includes('imac') || msg.includes('imac')) {
+            return 'Actualizar iMac Lenta (SSD 10x + macOS)';
+        }
+        if (path.includes('logica') || msg.includes('lógica') || msg.includes('logica') || msg.includes('corto')) {
+            return 'Reparación Tarjeta Lógica / No Enciende';
+        }
+        return 'Cambio de Batería MacBook (2 Años Garantía)';
+    }
+
     function updateConfirmLink() {
         if (!btnWaModalConfirm) return;
+        const service = inputService ? inputService.value.trim() : '';
         const model = inputModel ? inputModel.value.trim() : '';
         const colonia = inputColonia ? inputColonia.value.trim() : '';
         
         let text = currentBaseMessage;
-        if (model || colonia) {
-            text += ` [Modelo: ${model || 'Por confirmar'} | Colonia: ${colonia || 'Por confirmar'}]`;
-        } else {
-            text += ` [Modelo: ... | Colonia: ...]`;
+        const details = [];
+        if (service) details.push(`Servicio: ${service}`);
+        if (model) details.push(`Modelo: ${model}`);
+        if (colonia) details.push(`Colonia: ${colonia}`);
+        if (details.length > 0) {
+            text += ` [${details.join(' | ')}]`;
         }
         btnWaModalConfirm.setAttribute('href', `https://wa.me/525535757364?text=${encodeURIComponent(text)}`);
     }
 
+    if (inputService) inputService.addEventListener('change', updateConfirmLink);
     if (inputModel) inputModel.addEventListener('input', updateConfirmLink);
     if (inputColonia) inputColonia.addEventListener('input', updateConfirmLink);
 
@@ -273,6 +306,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
+        }
+        if (inputService) {
+            inputService.value = detectDefaultService(currentBaseMessage);
         }
         updateConfirmLink();
         if (!waFilterModal) return;
@@ -332,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Attach event listeners to specific buttons
-    const contactButtons = document.querySelectorAll('.cta-button.secondary, .large-cta');
+    const contactButtons = document.querySelectorAll('.cta-button.secondary:not(.cta-whatsapp), .large-cta');
     contactButtons.forEach(btn => {
         btn.addEventListener('click', openModal);
     });

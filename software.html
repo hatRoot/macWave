@@ -102,7 +102,7 @@
   <meta name="twitter:description" content="Instalación y configuración de software profesional para macOS en CDMX. Paqueterías de diseño, arquitectura, ofimática y respaldo de datos seguro.">
   <meta name="twitter:image" content="https://macwave.com.mx/images/logo_dashboard_white.png">
 
-  <link rel="stylesheet" href="style.css?v=27.2.0">
+  <link rel="stylesheet" href="style.css?v=27.8.7">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -160,7 +160,7 @@
     </div>
   </div>
 
-  <!-- Cloned Main White Header -->
+    <!-- Cloned Main White Header -->
   <header class="cloned-header">
     <div class="container">
       <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menú" onclick="toggleMobileMenu(event)">
@@ -179,9 +179,9 @@
 
       <!-- Desktop Nav -->
       <nav class="cloned-nav">
-        <a href="/reparaciones" class="cloned-nav-link">Reparaciones</a>
-        <a href="/empresas" class="cloned-nav-link">Empresas</a>
-        <a href="/software" class="cloned-nav-link active">Software</a>
+        <a href="/bateria-macbook-cdmx" class="cloned-nav-link">Batería MacBook</a>
+        <a href="/mac-mojada-cdmx" class="cloned-nav-link">Mac Mojada</a>
+        <a href="/reparacion-imac-cdmx" class="cloned-nav-link">iMac Lenta</a>
         <a href="/casos-reales" class="cloned-nav-link">Casos Reales</a>
       </nav>
 
@@ -190,15 +190,15 @@
         <button class="mobile-nav-close" onclick="toggleMobileMenu(event)" aria-label="Cerrar menú">✕</button>
         <div class="mobile-menu-content">
           <div class="mobile-nav-links">
-            <a href="/reparaciones" class="nav-link" style="--i:1">Reparaciones</a>
-            <a href="/empresas" class="nav-link" style="--i:2">Empresas</a>
-            <a href="/software" class="nav-link active" style="--i:3">Software</a>
+            <a href="/bateria-macbook-cdmx" class="nav-link" style="--i:1">Batería MacBook</a>
+            <a href="/mac-mojada-cdmx" class="nav-link" style="--i:2">Mac Mojada</a>
+            <a href="/reparacion-imac-cdmx" class="nav-link" style="--i:3">iMac Lenta</a>
             <a href="/casos-reales" class="nav-link" style="--i:4">Casos Reales</a>
           </div>
         </div>
       </nav>
 
-      <a href="https://wa.me/525535757364?text=Hola%2C%20necesito%20apoyo%20con%20licencias%2C%20paqueter%C3%ADa%20e%20instalaci%C3%B3n%20de%20software%20para%20Mac." target="_blank" rel="noopener noreferrer" class="cloned-header-cta">
+      <a href="https://wa.me/525535757364?text=Hola%2C%20necesito%20apoyo%20con%20licencias%2C%20paqueter%C3%ADa%20e%20instalaci%C3%B3n%20de%20software%20para%20Mac." class="cloned-header-cta">
         Solicitar servicio
       </a>
     </div>
@@ -360,7 +360,18 @@
   </svg>
   </a>
 
-  <script src="script.js?v=26.0.0"></script>
+  <script src="script.js?v=26.5.7" defer></script>
+
+  <!-- Service Worker for Caching (Progressive Web App) -->
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js?v=1.9.2').catch(function(registrationError) {
+        console.warn('SW registration failed:', registrationError);
+      });
+    });
+  }
+  </script>
 </body>
 
 </html>

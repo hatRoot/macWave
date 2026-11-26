@@ -10,7 +10,7 @@
   <link rel="canonical" href="https://macwave.com.mx/casos-reales">
   <link rel="icon" type="image/png" href="https://macwave.com.mx/images/favicon1.png">
   <meta name="theme-color" content="#000000">
-  <link rel="stylesheet" href="style.css?v=27.8.6">
+  <link rel="stylesheet" href="style.css?v=27.8.7">
 
   <script>
     function toggleMobileMenu(e) {
@@ -26,15 +26,26 @@
 <body>
 
   <!-- Barra Superior de Contacto Rápido -->
+  <!-- Cloned Top Bar -->
   <div class="cloned-topbar">
     <div class="container">
       <div class="cloned-topbar-left">
-        <span>Servicio a domicilio sin costo en CDMX y Área Metropolitana</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 0a.5.5 0 0 1 .5.5v11.793l3.147-3.146a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 12.293V.5A.5.5 0 0 1 8 0zM0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7z"/>
+        </svg>
+        <span>Servicio a domicilio en CDMX GRATIS!</span>
       </div>
       <div class="cloned-topbar-right">
+        <div class="cloned-topbar-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z"/>
+            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z"/>
+          </svg>
+          <span>Lun - Vie: 9:00 - 18:00</span>
+        </div>
         <a href="tel:5535757364" class="cloned-topbar-item">
           <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328z"/>
+            <path d="M3.654 1.328a.678.678 0 0 0-.57-.383 1.834 1.834 0 0 0-1.424.59 2.76 2.76 0 0 0-.746 1.984c.159 1.488.948 3.013 2.119 4.185 1.171 1.171 2.697 1.96 4.185 2.119.8.086 1.583-.242 1.984-.746.39-.48.59-1.116.59-1.424a.678.678 0 0 0-.383-.57l-2.634-1.202a.678.678 0 0 0-.71.128l-.71.71a2.182 2.182 0 0 1-1.045-.51 2.182 2.182 0 0 1-.51-1.045l.71-.71a.678.678 0 0 0 .128-.71L3.654 1.328z"/>
           </svg>
           <span>55-3575-7364</span>
         </a>
@@ -49,6 +60,7 @@
   </div>
 
   <!-- Encabezado Principal Homologado -->
+    <!-- Cloned Main White Header -->
   <header class="cloned-header">
     <div class="container">
       <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menú" onclick="toggleMobileMenu(event)">
@@ -57,7 +69,7 @@
 
       <div class="cloned-logo-container logo">
         <a href="/" class="logo-link">
-          <img src="./images/negro.webp" alt="Logo macWave México" class="logo-img" decoding="async" loading="lazy">
+          <img src="./images/negro.webp" alt="Logo Mac Wave T2" class="logo-img" decoding="async" loading="lazy">
           <div class="logo-text-container">
             <span class="logo-brand"><strong>macWave</strong> <span style="font-weight: 300;">México</span></span>
             <span class="logo-subtext">Para tu dispositivo Apple fuera de garantía</span>
@@ -65,7 +77,7 @@
         </a>
       </div>
 
-      <!-- Navegación de Escritorio -->
+      <!-- Desktop Nav -->
       <nav class="cloned-nav">
         <a href="/bateria-macbook-cdmx" class="cloned-nav-link">Batería MacBook</a>
         <a href="/mac-mojada-cdmx" class="cloned-nav-link">Mac Mojada</a>
@@ -73,7 +85,7 @@
         <a href="/casos-reales" class="cloned-nav-link active">Casos Reales</a>
       </nav>
 
-      <!-- Navegación Móvil -->
+      <!-- Reusing main-nav overlay structure for Mobile Slide Menu -->
       <nav class="main-nav">
         <button class="mobile-nav-close" onclick="toggleMobileMenu(event)" aria-label="Cerrar menú">✕</button>
         <div class="mobile-menu-content">
@@ -1163,13 +1175,13 @@
     </svg>
   </a>
 
-  <script src="script.js?v=26.5.6"></script>
+  <script src="script.js?v=26.5.7" defer></script>
 
   <!-- Service Worker para Cache & Rendimiento PWA -->
   <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/sw.js?v=1.9.1').catch(function(registrationError) {
+      navigator.serviceWorker.register('/sw.js?v=1.9.2').catch(function(registrationError) {
         console.warn('SW registration failed:', registrationError);
       });
     });

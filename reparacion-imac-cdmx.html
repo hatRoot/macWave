@@ -99,7 +99,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=27.8.6">
+    <link rel="stylesheet" href="style.css?v=27.8.7">
 
     <script>
         function toggleMobileMenu(e) {
@@ -125,17 +125,11 @@
             --text-muted: #a0a0a0;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-dark);
             color: var(--text-primary);
-            overflow-x: hidden;
+            overflow-x: clip;
         }
 
         /* ── PAIN HERO SECTION ── */
@@ -565,7 +559,7 @@
     </div>
   </div>
 
-  <!-- Cloned Main White Header -->
+    <!-- Cloned Main White Header -->
   <header class="cloned-header">
     <div class="container">
       <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menú" onclick="toggleMobileMenu(event)">
@@ -603,7 +597,7 @@
         </div>
       </nav>
 
-      <a href="https://wa.me/525535757364?text=Hola%2C%20necesito%20servicio%20t%C3%A9cnico%20y%20reparaci%C3%B3n%20para%20mi%20iMac%20en%20CDMX." target="_blank" rel="noopener noreferrer" class="cloned-header-cta">
+      <a href="https://wa.me/525535757364?text=Hola%2C%20necesito%20servicio%20t%C3%A9cnico%20y%20reparaci%C3%B3n%20para%20mi%20iMac%20en%20CDMX." class="cloned-header-cta">
         Solicitar servicio
       </a>
     </div>
@@ -892,7 +886,18 @@
         </svg>
     </a>
 
-    <script src="script.js?v=26.5.6"></script>
+    <script src="script.js?v=26.5.7" defer></script>
+
+  <!-- Service Worker for Caching (Progressive Web App) -->
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js?v=1.9.2').catch(function(registrationError) {
+        console.warn('SW registration failed:', registrationError);
+      });
+    });
+  }
+  </script>
 </body>
 
 </html>

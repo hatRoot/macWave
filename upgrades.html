@@ -114,7 +114,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=27.2.0">
+  <link rel="stylesheet" href="style.css?v=27.8.7">
 
   <script>
     function toggleMobileMenu(e) {
@@ -171,7 +171,7 @@
     </div>
   </div>
 
-  <!-- Cloned Main White Header -->
+    <!-- Cloned Main White Header -->
   <header class="cloned-header">
     <div class="container">
       <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menú" onclick="toggleMobileMenu(event)">
@@ -209,7 +209,7 @@
         </div>
       </nav>
 
-      <a href="https://wa.me/525535757364?text=Hola%2C%20quiero%20repotenciar%20mi%20Mac%20con%20upgrade%20de%20SSD%20y%20memoria%20RAM.%20%C2%BFMe%20dan%20precios%20y%20opciones%3F" target="_blank" rel="noopener noreferrer" class="cloned-header-cta">
+      <a href="https://wa.me/525535757364?text=Hola%2C%20quiero%20repotenciar%20mi%20Mac%20con%20upgrade%20de%20SSD%20y%20memoria%20RAM.%20%C2%BFMe%20dan%20precios%20y%20opciones%3F" class="cloned-header-cta">
         Solicitar servicio
       </a>
     </div>
@@ -364,6 +364,17 @@
     </svg>
   </a>
 
-  <script src="script.js?v=26.0.0" defer></script>
+  <script src="script.js?v=26.5.7" defer></script>
+
+  <!-- Service Worker for Caching (Progressive Web App) -->
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js?v=1.9.2').catch(function(registrationError) {
+        console.warn('SW registration failed:', registrationError);
+      });
+    });
+  }
+  </script>
 </body>
 </html>

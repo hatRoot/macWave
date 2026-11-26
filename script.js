@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="wa-input-group">
           <label for="wa-input-service">Servicio prioritario:</label>
           <select id="wa-input-service">
-            <option value="Cambio de Batería MacBook (2 Años Garantía)">🔋 Cambio de Batería MacBook (2 Años Garantía)</option>
+            <option value="Cambio de Batería MacBook (Clase A 100d / Original 2 Años)">🔋 Cambio de Batería MacBook (Clase A 100d / Original 2 Años)</option>
             <option value="Rescate Urgente MacBook Mojada">☕ MacBook Mojada / Líquidos (Urgente)</option>
             <option value="Actualizar iMac Lenta (SSD 10x + macOS)">🚀 iMac Lenta / Upgrade SSD 10x y macOS</option>
             <option value="Reparación Tarjeta Lógica / No Enciende">⚡ Tarjeta Lógica / No Enciende</option>
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const path = window.location.pathname.toLowerCase();
         const msg = (baseText || '').toLowerCase();
         if (path.includes('bateria') || msg.includes('bater')) {
-            return 'Cambio de Batería MacBook (2 Años Garantía)';
+            return 'Cambio de Batería MacBook (Clase A 100d / Original 2 Años)';
         }
         if (path.includes('mojada') || msg.includes('mojad') || msg.includes('líquido') || msg.includes('liquido')) {
             return 'Rescate Urgente MacBook Mojada';
@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (path.includes('logica') || msg.includes('lógica') || msg.includes('logica') || msg.includes('corto')) {
             return 'Reparación Tarjeta Lógica / No Enciende';
         }
-        return 'Cambio de Batería MacBook (2 Años Garantía)';
+        return 'Cambio de Batería MacBook (Clase A 100d / Original 2 Años)';
     }
 
     function updateConfirmLink() {
@@ -292,15 +292,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (inputModel) inputModel.addEventListener('input', updateConfirmLink);
     if (inputColonia) inputColonia.addEventListener('input', updateConfirmLink);
 
-    function openWaFilterModal(e) {
+    function openWaFilterModal(e, explicitAnchor) {
         if (e) {
             e.preventDefault();
-            const sourceLink = e.currentTarget || e.target.closest('a');
-            if (sourceLink) {
+            const sourceLink = explicitAnchor || (e.target && e.target.closest ? e.target.closest('a') : null);
+            if (sourceLink && sourceLink.getAttribute) {
                 const originalHref = sourceLink.getAttribute('href');
                 if (originalHref && originalHref.includes('wa.me')) {
                     if (originalHref.includes('text=')) {
-                        currentBaseMessage = decodeURIComponent(originalHref.split('text=')[1]);
+                        try {
+                            currentBaseMessage = decodeURIComponent(originalHref.split('text=')[1]);
+                        } catch (_) {
+                            currentBaseMessage = "Hola, necesito ayuda para reparar mi Mac.";
+                        }
                     } else {
                         currentBaseMessage = "Hola, necesito ayuda para reparar mi Mac.";
                     }
@@ -324,11 +328,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Interceptar todos los enlaces a WhatsApp excepto el botón del modal
     document.addEventListener('click', (e) => {
-        const waAnchor = e.target.closest('a[href*="wa.me/525535757364"]');
+        const waAnchor = e.target && e.target.closest ? e.target.closest('a[href*="wa.me/525535757364"]') : null;
         if (waAnchor && !waAnchor.closest('#wa-filter-modal')) {
-            openWaFilterModal(e);
+            openWaFilterModal(e, waAnchor);
         }
     });
+
+    // Acceso técnico unificado desde footer dot en todas las páginas
+    const footerOpsDot = document.getElementById('footer-ops-dot');
+    if (footerOpsDot && !footerOpsDot.dataset.opsBound) {
+        footerOpsDot.dataset.opsBound = '1';
+        footerOpsDot.addEventListener('dblclick', () => {
+            window.location.href = '/tecnicos.html';
+        });
+    }
 
     if (closeWaFilterBtn) closeWaFilterBtn.addEventListener('click', closeWaFilterModal);
     if (cancelWaFilterBtn) cancelWaFilterBtn.addEventListener('click', closeWaFilterModal);

@@ -100,7 +100,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=27.2.0">
+    <link rel="stylesheet" href="style.css?v=27.8.7">
 
     <script>
         function toggleMobileMenu(e) {
@@ -126,17 +126,11 @@
             --text-muted: #a0a0a0;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-dark);
             color: var(--text-primary);
-            overflow-x: hidden;
+            overflow-x: clip;
         }
 
         /* ── PAIN HERO SECTION ── */
@@ -540,7 +534,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
           <path d="M8 0a.5.5 0 0 1 .5.5v11.793l3.147-3.146a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 12.293V.5A.5.5 0 0 1 8 0zM0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7z"/>
         </svg>
-        <span>Servicio express a domicilio en CDMX | 2 Años de Garantía</span>
+        <span>Servicio a domicilio en CDMX GRATIS!</span>
       </div>
       <div class="cloned-topbar-right">
         <div class="cloned-topbar-item">
@@ -566,7 +560,7 @@
     </div>
   </div>
 
-  <!-- Cloned Main White Header -->
+    <!-- Cloned Main White Header -->
   <header class="cloned-header">
     <div class="container">
       <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Abrir menú" onclick="toggleMobileMenu(event)">
@@ -585,9 +579,9 @@
 
       <!-- Desktop Nav -->
       <nav class="cloned-nav">
-        <a href="/reparaciones" class="cloned-nav-link active">Reparaciones</a>
-        <a href="/empresas" class="cloned-nav-link">Empresas</a>
-        <a href="/software" class="cloned-nav-link">Software</a>
+        <a href="/bateria-macbook-cdmx" class="cloned-nav-link active">Batería MacBook</a>
+        <a href="/mac-mojada-cdmx" class="cloned-nav-link">Mac Mojada</a>
+        <a href="/reparacion-imac-cdmx" class="cloned-nav-link">iMac Lenta</a>
         <a href="/casos-reales" class="cloned-nav-link">Casos Reales</a>
       </nav>
 
@@ -596,15 +590,15 @@
         <button class="mobile-nav-close" onclick="toggleMobileMenu(event)" aria-label="Cerrar menú">✕</button>
         <div class="mobile-menu-content">
           <div class="mobile-nav-links">
-            <a href="/reparaciones" class="nav-link active" style="--i:1">Reparaciones</a>
-            <a href="/empresas" class="nav-link" style="--i:2">Empresas</a>
-            <a href="/software" class="nav-link" style="--i:3">Software</a>
+            <a href="/bateria-macbook-cdmx" class="nav-link active" style="--i:1">Batería MacBook</a>
+            <a href="/mac-mojada-cdmx" class="nav-link" style="--i:2">Mac Mojada</a>
+            <a href="/reparacion-imac-cdmx" class="nav-link" style="--i:3">iMac Lenta</a>
             <a href="/casos-reales" class="nav-link" style="--i:4">Casos Reales</a>
           </div>
         </div>
       </nav>
 
-      <a href="https://wa.me/525535757364?text=Hola%2C%20necesito%20cambiar%20la%20bater%C3%ADa%20de%20mi%20MacBook%20hoy%20mismo.%20%C2%BFMe%20podr%C3%ADan%20dar%20precio%20y%20disponibilidad%3F" target="_blank" rel="noopener noreferrer" class="cloned-header-cta">
+      <a href="https://wa.me/525535757364?text=Hola%2C%20necesito%20cambiar%20la%20bater%C3%ADa%20de%20mi%20MacBook%20hoy%20mismo.%20%C2%BFMe%20podr%C3%ADan%20dar%20precio%20y%20disponibilidad%3F" class="cloned-header-cta">
         Solicitar servicio
       </a>
     </div>
@@ -894,7 +888,18 @@
         </svg>
     </a>
 
-    <script src="script.js?v=26.0.0"></script>
+    <script src="script.js?v=26.5.7" defer></script>
+
+  <!-- Service Worker for Caching (Progressive Web App) -->
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js?v=1.9.2').catch(function(registrationError) {
+        console.warn('SW registration failed:', registrationError);
+      });
+    });
+  }
+  </script>
 </body>
 
 </html>

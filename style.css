@@ -29,9 +29,9 @@ img {
     image-rendering: crisp-edges;
 }
 
-/* Reduce repaints for scroll */
+/* Reduce repaints for scroll (clip keeps position:sticky working) */
 body {
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 /* Loading optimization */
@@ -1476,7 +1476,7 @@ h3 {
         -webkit-backdrop-filter: blur(25px) saturate(180%) !important;
         display: flex !important;
         flex-direction: column !important;
-        z-index: 10000 !important;
+        z-index: 15000 !important;
         transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
         visibility: hidden !important;
         opacity: 0 !important;
@@ -1812,7 +1812,9 @@ h3 {
     /* Hidden by default */
     justify-content: center;
     align-items: center;
-    z-index: 2000;
+    padding: 20px 16px;
+    overflow-y: auto;
+    z-index: 20000;
     opacity: 0;
     transition: opacity 0.3s ease;
 }

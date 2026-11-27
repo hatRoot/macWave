@@ -339,36 +339,38 @@
         }
 
         .feature-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(0, 156, 223, 0.22);
             border-radius: 20px;
             padding: 35px 25px;
             text-align: center;
-            transition: transform 0.2s, border-color 0.2s;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
         }
 
         .feature-card:hover {
             transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.15);
+            border-color: rgba(0, 156, 223, 0.5);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
         }
 
         .feature-icon {
             font-size: 2.2rem;
             margin-bottom: 18px;
             display: block;
+            color: #009CDF;
         }
 
         .feature-card h3 {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: #fff;
             margin-bottom: 10px;
         }
 
         .feature-card p {
-            font-size: 0.9rem;
-            color: #777;
-            line-height: 1.5;
+            font-size: 0.94rem;
+            color: #b0b5bf;
+            line-height: 1.6;
         }
 
         /* Hub CTA Buttons */
@@ -470,46 +472,136 @@
         }
         .trust-card:hover::after { transform: scaleX(1); }
 
-        /* Final HUB CTA Box */
-        .cta-box {
-            background: linear-gradient(135deg, #001a2e 0%, #001018 100%);
-            border: 1px solid rgba(0, 156, 223, 0.3);
-            border-radius: 32px;
-            padding: 70px 40px;
-            max-width: 800px;
-            margin: 60px auto;
+        /* Final HUB CTA Section */
+        .cta-final-hub {
+            padding: 80px 20px;
+            background: #000;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #003520 0%, #001a0d 100%);
+            border: 2px solid rgba(39, 174, 96, 0.5);
+            border-radius: 24px;
+            padding: 80px 60px;
+            max-width: 700px;
+            margin: 0 auto;
             text-align: center;
         }
 
-        .cta-box h2 {
-            font-size: clamp(2rem, 5vw, 3.2rem);
-            margin-bottom: 20px;
+        .cta-urgency-pill {
+            background: rgba(46, 204, 113, 0.12);
+            border: 1px solid rgba(46, 204, 113, 0.35);
+            border-radius: 12px;
+            padding: 14px 20px;
+            margin-bottom: 28px;
+            display: inline-block;
+            font-size: 0.9rem;
+            color: #4ade80;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
             font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+            margin-bottom: 22px;
+            line-height: 1.12;
         }
 
-        .cta-box p {
-            color: #888;
+        .cta-section .cta-desc {
+            color: #b8c2cc;
             font-size: 1.1rem;
-            margin-bottom: 40px;
+            margin: 0 auto 32px;
+            max-width: 560px;
+            line-height: 1.75;
         }
 
-        .cta-wa-hub {
-            background: #25D366;
-            color: #fff;
-            padding: 14px 32px;
-            border-radius: 100px;
-            font-size: 1.1rem;
+        .cta-section .cta-desc strong {
+            color: #ffffff;
             font-weight: 700;
-            text-decoration: none;
+        }
+
+        .cta-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 34px;
+        }
+
+        .cta-wa-button {
             display: inline-flex;
             align-items: center;
-            gap: 15px;
-            box-shadow: 0 10px 40px rgba(37, 211, 102, 0.4);
-            transition: transform 0.2s;
+            justify-content: center;
+            gap: 10px;
+            background: #25D366;
+            color: #fff;
+            font-size: 1.15rem;
+            font-weight: 700;
+            padding: 18px 36px;
+            border-radius: 100px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
         }
 
-        .cta-wa-hub:hover {
-            transform: scale(1.05);
+        .cta-wa-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 40px rgba(37, 211, 102, 0.5);
+        }
+
+        .cta-phone-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #009CDF;
+            color: #fff;
+            font-size: 1.15rem;
+            font-weight: 700;
+            padding: 18px 36px;
+            border-radius: 100px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 156, 223, 0.3);
+        }
+
+        .cta-phone-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 40px rgba(0, 156, 223, 0.45);
+        }
+
+        .cta-wa-button svg,
+        .cta-phone-button svg {
+            flex-shrink: 0;
+        }
+
+        .cta-note {
+            margin-top: 28px;
+            font-size: 1rem;
+            color: #aaa;
+            line-height: 1.65;
+        }
+
+        .cta-guarantee-line {
+            color: #2ecc71;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 2px;
+        }
+
+        .cta-cross-links {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #a1a1a6;
+        }
+
+        .cta-cross-links a {
+            color: #009CDF;
+            text-decoration: underline;
         }
 
         @media (max-width: 900px) {
@@ -519,6 +611,17 @@
                 grid-template-columns: 1fr;
                 gap: 30px;
             }
+        }
+
+        @media (max-width: 768px) {
+            .pain-hero { padding: 64px 18px 54px; }
+            .hub-section { padding: 64px 18px; }
+            .cta-final-hub { padding: 48px 16px; }
+            .cta-section { padding: 38px 20px; border-radius: 18px; }
+            .cta-urgency-pill { padding: 12px 16px; margin-bottom: 22px; font-size: 0.85rem; }
+            .cta-section .cta-desc { font-size: 1rem; margin-bottom: 26px; }
+            .cta-wa-button, .cta-phone-button { width: 100%; padding: 15px 22px; font-size: 1.02rem; white-space: nowrap; }
+            .cta-note { margin-top: 22px; font-size: 0.92rem; }
         }
     </style>
 
@@ -606,78 +709,92 @@
 <main>
         <!-- PAIN HERO -->
         <section class="pain-hero" style="background: linear-gradient(135deg, #001f3f 0%, #0d0d0d 50%, #001f3f 100%)">
-            <div class="pain-badge">️ Las bestias de Apple en buenas manos</div>
-            <h1 class="pain-title">Acelerar iMac Lenta en CDMX: <span>Disco SSD 10x Más Rápida y macOS Actual</span></h1>
-            <p class="pain-subtitle">¿Tu iMac Retina tarda una eternidad en encender o abrir programas? No gastes $35,000 en una nueva. Reemplazamos el disco lento por SSD NVMe de alta velocidad, ampliamos RAM y dejamos tu macOS optimizado.</p>
+            <div class="pain-badge">Tu iMac en buenas manos · CDMX</div>
+            <h1 class="pain-title">Acelerar iMac Lenta en CDMX <span>Fluidez Total con Disco SSD y macOS Actual</span></h1>
+            <p class="pain-subtitle">¿Tu iMac tarda demasiado en encender, se congela o ya no te deja actualizar tus programas? No necesitas cambiar de computadora. Renovamos su disco por almacenamiento SSD ágil, ampliamos su memoria y dejamos tu macOS optimizado el mismo día.</p>
 
             <div class="warning-symptoms">
-                
-            <span class="symptom-tag">iMac lenta / disco al 100%</span>
-            <span class="symptom-tag">No descarga apps (sistema no compatible)</span>
-            <span class="symptom-tag">Tarda 15 minutos en encender</span>
-            <span class="symptom-tag">Cambio de disco HDD a SSD ultra rápido</span>
-        
+                <span class="symptom-tag">Enciende y abre programas lento</span>
+                <span class="symptom-tag">La bolita de colores gira sin parar</span>
+                <span class="symptom-tag">Ya no deja actualizar apps ni macOS</span>
+                <span class="symptom-tag">Respaldamos tus archivos intactos</span>
             </div>
         </section>
 
-        
         <!-- ACSP AUTHORITY BLOCK -->
         <section class="acsp-authority-block">
             <div class="acsp-container">
                 <div class="acsp-badge">
-                    <span style="font-size: 3rem; display: block; margin-bottom:10px;"> ACSP</span>
+                    <span style="font-size: 2.6rem; display: inline-flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 10px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 170" fill="currentColor" aria-hidden="true" style="width: 0.9em; height: 0.9em; display: inline-block; vertical-align: -0.08em;"><path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.13-1.9-14.34-6.08-3.69-3.03-7.61-7.82-11.77-14.37-5.04-7.9-9.15-17.07-12.33-27.51-3.19-10.45-4.78-19.99-4.78-28.63 0-10.67 2.86-19.63 8.58-26.86 5.72-7.24 12.9-11.01 21.55-11.31 4.35 0 9.66 1.38 15.92 4.12 6.26 2.75 10.29 4.17 12.1 4.28 1.56 0 6.13-1.66 13.7-4.96 7.57-3.3 13.97-4.68 19.22-4.13 14.34 1.15 25.09 6.84 32.26 17.08-12.76 7.77-19.04 18.67-18.82 32.69.22 10.91 4.21 19.98 11.98 27.2 5.42 5.1 11.71 8.46 18.88 10.07-1.45 4.44-3.11 8.71-5 12.82zM119.22 31.01c0 8.53-3.11 16.5-9.33 23.91-7.49 8.74-16.55 13.79-26.37 12.99a27.16 27.16 0 0 1-.21-3.44c0-8.19 3.55-16.95 9.89-24.13 3.16-3.61 7.18-6.62 12.06-9.03 4.88-2.4 9.52-3.73 13.91-3.98.11 1.25.05 2.48.05 3.68z"/></svg>
+                        <span>ACSP</span>
+                    </span><br>
                     <strong>Apple Certified</strong><br>Support Professional
                 </div>
                 <div class="acsp-text">
-                    <h3>18 Años de Experiencia Comprobables en CDMX</h3>
-                    <p>"El talento de un ingeniero de laboratorio de microelectrónica, con la certificación oficial de la marca que fabricó tu equipo."</p>
-                    <p class="acsp-sub">A diferencia de grandes tiendas que cambian piezas a precios absurdos o talleres amateurs de celular que experimentan en hardware pesado, nosotros combinamos reparación nivel componente con credenciales oficiales de Apple ACSP. No confíes tu herramienta de trabajo de $40,000 MXN en alguien más.</p>
+                    <h3>Respaldo Certificado y Trato Experto en CDMX</h3>
+                    <p>"La tranquilidad de dejar tu iMac en manos certificadas por Apple, con trato claro y soluciones reales."</p>
+                    <p class="acsp-sub">Sabemos lo importante que es tu iMac para tu trabajo, tus proyectos y tu familia. Unimos precisión técnica de laboratorio con acreditación oficial Apple ACSP para cuidar cada pieza interna, proteger toda tu información y explicarte la solución con palabras sencillas y transparentes.</p>
                 </div>
             </div>
         </section>
-
 
         <!-- SEC: HUB -->
         <section class="hub-section blue-theme">
-            <div class="hub-badge badge-blue">️ Manejo Técnico iMac</div>
-            <h2 class="hub-title">Reparamos a Gran <span>Escala Todo-en-Uno</span></h2>
-            <p class="hub-subtitle">Cortar el cristal pegado de una iMac de 27 pulgadas toma herramientas únicas y cintas TESA originales para que la pantalla no se estrelle a los 3 meses en tu casa o se despegue. Nosotros lo hacemos bajo estándar industrial.</p>
+            <div class="hub-badge badge-blue">Cuidado Especializado iMac</div>
+            <h2 class="hub-title">Tu iMac Renovada <span>como el Primer Día</span></h2>
+            <p class="hub-subtitle">Abrir una iMac sin dañar su pantalla requiere herramienta dedicada y sellado original Apple para que quede firme, silenciosa y lista para acompañarte muchos años más.</p>
 
             <div class="features-grid">
-                
                 <div class="feature-card">
-                    <span class="feature-icon"><svg width="32" height="32" fill="currentColor" viewBox="0 0 16 16"><path d="M6 0a.5.5 0 0 1 .5.5V3h3V.5a.5.5 0 0 1 1 0V3h1a.5.5 0 0 1 .5.5v3A3.5 3.5 0 0 1 8.5 10H8v4.5a.5.5 0 0 1-1 0V10h-.5A3.5 3.5 0 0 1 3 6.5v-3a.5.5 0 0 1 .5-.5h1V.5a.5.5 0 0 1 .5-.5z"/></svg></span>
-                    <h3>Fuentes de Poder Internas</h3>
-                    <p>La fuente ATX en la parte de atrás de la iMac absorbe todos los picos de voltaje mexicanos. Sustituimos mosfets blindando el futuro voltaje.</p>
+                    <span class="feature-icon"><svg width="32" height="32" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 0a.5.5 0 0 1 .5.5V3h3V.5a.5.5 0 0 1 1 0V3h1a.5.5 0 0 1 .5.5v3A3.5 3.5 0 0 1 8.5 10H8v4.5a.5.5 0 0 1-1 0V10h-.5A3.5 3.5 0 0 1 3 6.5v-3a.5.5 0 0 1 .5-.5h1V.5a.5.5 0 0 1 .5-.5z"/></svg></span>
+                    <h3>Encendido Estable y Seguro</h3>
+                    <p>Si tu iMac se apaga sola o ya no prende tras variaciones de luz, reparamos y protegemos su energía interna para que vuelvas a trabajar tranquilo.</p>
                 </div>
                 <div class="feature-card">
-                    <span class="feature-icon"><svg width="32" height="32" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 0a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 6.293V.5A.5.5 0 0 1 8 0zm-2.5 12a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5zm-2 2a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.5-.5z"/></svg></span>
-                    <h3>Adiós a Fusion Drive - Hola NVMe</h3>
-                    <p>Eliminamos el terror del viejo disco duro mecánico que hace tu iMac de $60,000 inusable por lentitud. SSDs 5,000MB/s reales.</p>
+                    <span class="feature-icon"><svg width="32" height="32" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path fill-rule="evenodd" d="M8 0a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 6.293V.5A.5.5 0 0 1 8 0zm-2.5 12a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5zm-2 2a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.5-.5z"/></svg></span>
+                    <h3>Fluidez Moderna con SSD</h3>
+                    <p>Reemplazamos el disco tradicional que frena tu equipo por almacenamiento sólido SSD para que encienda suave y tus programas respondan al instante.</p>
                 </div>
                 <div class="feature-card">
-                    <span class="feature-icon"><svg width="32" height="32" fill="currentColor" viewBox="0 0 16 16"><path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/><path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/></svg></span>
-                    <h3>Sellado Milimétrico Original</h3>
-                    <p>No usamos cinta doble cara de papelería. Aplicamos bandas TESA y rodillos oficiales para un ensamblado impecable a presión tal como Apple lo pensó.</p>
+                    <span class="feature-icon"><svg width="32" height="32" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/><path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/></svg></span>
+                    <h3>Sellado Impecable de Fábrica</h3>
+                    <p>Limpiamos el polvo interno acumulado, optimizamos macOS y cerramos la pantalla con adhesivos originales para un acabado perfecto y duradero.</p>
                 </div>
-        
             </div>
-            <a href="https://wa.me/525535757364?text=Hola%2C%20necesito%20servicio%20t%C3%A9cnico%20y%20reparaci%C3%B3n%20para%20mi%20iMac%20en%20CDMX." class="hub-cta cta-blue" style="font-size: 1.1rem; padding: 14px 30px;">Cotizar Solución con Garantía →</a>
+            <a href="https://wa.me/525535757364?text=Hola%2C%20mi%20iMac%20est%C3%A1%20muy%20lenta%20y%20quiero%20una%20cotizaci%C3%B3n%20para%20acelerarla%20en%20CDMX." target="_blank" rel="noopener noreferrer" class="hub-cta cta-blue" style="font-size: 1.08rem; padding: 14px 32px;">Cotizar Solución con Garantía →</a>
         </section>
-        
+
         <!-- FINAL CTA HUB -->
-        <section class="cta-final-hub" style="padding: 100px 20px; background: #000;">
-            <div class="cta-box" style="padding: 80px 40px; max-width: 800px; margin: 0 auto; background: rgba(0,0,0,0.4);">
-                <h2 style="margin-bottom: 30px; font-size: 2.5rem; line-height: 1.3;">¿Estás de acuerdo en que la reparamos?</h2>
-                <p style="margin-bottom: 40px; font-size: 1.2rem; line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto; color:#aaa;">
-                    Envíame un mensaje de WhatsApp ahora mismo. Te daré una pre-cotización técnica franca, comprobando mi nivel de compromiso antes de que te muevas del sillón.
+        <section class="cta-final-hub">
+            <div class="cta-section">
+                <div class="cta-urgency-pill">Atención cálida en CDMX: Diagnóstico claro y entrega el mismo día</div>
+                <h2>¿Lista tu iMac para volver a fluir?</h2>
+                <p class="cta-desc">Cuéntanos qué modelo es o qué notas lento en tu computadora. Te orientamos con palabras claras y te damos una <strong>solución honesta hoy mismo</strong>.</p>
+
+                <div class="cta-actions">
+                    <a href="https://wa.me/525535757364?text=Hola%2C%20mi%20iMac%20est%C3%A1%20muy%20lenta%20y%20quiero%20una%20cotizaci%C3%B3n%20para%20acelerarla%20en%20CDMX."
+                        target="_blank" rel="noopener noreferrer" class="cta-wa-button"
+                        onclick="gtag('event','whatsapp_click',{'event_category':'contact','event_label':'cta_imac_final'});">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                            <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+                        </svg>
+                        Cotizar por WhatsApp
+                    </a>
+                    <a href="tel:5535757364" class="cta-phone-button"
+                        onclick="gtag('event', 'phone_click', { 'event_category': 'contact', 'event_label': 'cta_imac_final' });">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                            <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328z"/>
+                        </svg>
+                        Llamar Ahora: 55-3575-7364
+                    </a>
+                </div>
+
+                <p class="cta-note">
+                    Servicio a domicilio en Polanco · Santa Fe · Interlomas · Satélite · toda la CDMX<br>
+                    <span class="cta-guarantee-line">Datos protegidos · Sellado original Apple · Garantía por escrito</span><br>
+                    <span class="cta-cross-links">¿Tu MacBook necesita batería nueva o sufrió algún derrame? Consulta nuestro servicio de <a href="/bateria-macbook-cdmx">cambio de batería MacBook en CDMX</a> y <a href="/mac-mojada-cdmx">rescate de Mac mojada</a>.</span>
                 </p>
-                <a href="https://wa.me/525535757364?text=Hola%2C%20necesito%20servicio%20t%C3%A9cnico%20y%20reparaci%C3%B3n%20para%20mi%20iMac%20en%20CDMX." target="_blank" class="cta-wa-hub">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-                    </svg>
-                    Contactar Ingeniero
-                </a>
             </div>
         </section>
     </main>

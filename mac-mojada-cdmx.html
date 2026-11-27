@@ -318,21 +318,20 @@
  .step {
  --step-accent: #009CDF;
  --step-bg: rgba(0, 156, 223, 0.14);
- --step-border: rgba(0, 156, 223, 0.34);
+ --step-border: rgba(0, 156, 223, 0.58);
  display: flex;
  flex-direction: column;
  gap: 16px;
  align-items: flex-start;
  padding: 28px 26px 24px;
  background: linear-gradient(155deg, rgba(255, 255, 255, 0.05) 0%, rgba(13, 17, 24, 0.94) 100%);
- border: 1px solid rgba(255, 255, 255, 0.09);
- border-top: 3px solid var(--step-accent);
+ border: 1.5px solid var(--step-border);
  border-radius: 22px;
  text-align: left;
  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
  position: relative;
  overflow: hidden;
- box-shadow: 0 16px 36px rgba(0, 0, 0, 0.42);
+ box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45), 0 0 22px -6px var(--step-bg), inset 0 1px 0 rgba(255, 255, 255, 0.05);
  }
  .step::before {
  content: attr(data-step);
@@ -349,28 +348,28 @@
  }
  .step:hover {
  transform: translateY(-6px);
- border-color: var(--step-border);
- box-shadow: 0 24px 48px rgba(0, 0, 0, 0.65), 0 0 28px var(--step-bg);
+ border-color: var(--step-accent);
+ box-shadow: 0 24px 48px rgba(0, 0, 0, 0.65), 0 0 32px var(--step-bg);
  }
  .step--urgent {
  --step-accent: #FF6600;
- --step-bg: rgba(255, 102, 0, 0.16);
- --step-border: rgba(255, 102, 0, 0.45);
+ --step-bg: rgba(255, 102, 0, 0.14);
+ --step-border: rgba(255, 102, 0, 0.6);
  }
  .step--ultra {
  --step-accent: #009CDF;
- --step-bg: rgba(0, 156, 223, 0.16);
- --step-border: rgba(0, 156, 223, 0.45);
+ --step-bg: rgba(0, 156, 223, 0.14);
+ --step-border: rgba(0, 156, 223, 0.6);
  }
  .step--micro {
  --step-accent: #38BDF8;
- --step-bg: rgba(56, 189, 248, 0.16);
- --step-border: rgba(56, 189, 248, 0.45);
+ --step-bg: rgba(56, 189, 248, 0.14);
+ --step-border: rgba(56, 189, 248, 0.6);
  }
  .step--verify {
  --step-accent: #2ECC71;
- --step-bg: rgba(46, 204, 113, 0.16);
- --step-border: rgba(46, 204, 113, 0.45);
+ --step-bg: rgba(46, 204, 113, 0.14);
+ --step-border: rgba(46, 204, 113, 0.6);
  }
  .step-top {
  display: flex;

@@ -268,64 +268,211 @@
  }
  .solution-image-wrapper img { width:100%; height:460px; object-fit:cover; display:block; }
 
+ .protocol-header {
+ max-width: 760px;
+ margin: 78px auto 38px;
+ text-align: center;
+ padding: 0 12px;
+ }
+ .protocol-eyebrow {
+ display: inline-flex;
+ align-items: center;
+ gap: 8px;
+ background: rgba(0, 156, 223, 0.14);
+ border: 1px solid rgba(0, 156, 223, 0.38);
+ color: #38BDF8;
+ padding: 6px 14px;
+ border-radius: 100px;
+ font-size: 0.76rem;
+ font-weight: 700;
+ letter-spacing: 0.1em;
+ text-transform: uppercase;
+ margin-bottom: 14px;
+ }
+ .protocol-heading {
+ font-size: clamp(1.75rem, 3.8vw, 2.55rem);
+ font-weight: 900;
+ letter-spacing: -0.025em;
+ line-height: 1.15;
+ color: #ffffff;
+ margin-bottom: 12px;
+ }
+ .protocol-heading span {
+ color: #009CDF;
+ }
+ .protocol-sub {
+ color: #9ca3af;
+ font-size: clamp(0.95rem, 2vw, 1.08rem);
+ line-height: 1.6;
+ max-width: 640px;
+ margin: 0 auto;
+ }
  .process-steps {
-  max-width: 1000px; margin: 0 auto 60px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
-  padding: 0 20px;
-  }
-  .step {
-  display: flex; flex-direction: column; gap: 20px; align-items: flex-start;
-  padding: 32px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
-  text-align: left;
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  }
-  .step:hover {
-  transform: translateY(-8px);
-  background: rgba(0, 113, 227, 0.08);
-  border-color: rgba(0, 113, 227, 0.5);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 30px rgba(0, 113, 227, 0.2);
-  }
-  
-  .step-num {
-  width: 52px; height: 52px; flex-shrink: 0;
-  background: linear-gradient(135deg, #0071e3 0%, #34aadc 100%);
-  border: none;
-  border-radius: 14px;
-  display: flex; align-items:center; justify-content:center;
-  font-size: 1.5rem; font-weight: 900; color: #fff;
-  box-shadow: 0 8px 20px rgba(0, 113, 227, 0.4);
-  margin-bottom: 8px;
-  }
-  .step-content h3 { 
-  font-size: 1.3rem; font-weight: 800; color:#fff; margin-bottom:12px;
-  letter-spacing: -0.01em;
-  text-shadow: 0 0 15px rgba(0, 113, 227, 0.3);
-  }
-  .step-content p { 
-  font-size:0.95rem; color:#b0b0b5; line-height:1.6; 
-  }
+ max-width: 1020px;
+ margin: 0 auto 44px;
+ display: grid;
+ grid-template-columns: repeat(2, minmax(0, 1fr));
+ gap: 22px;
+ padding: 0 20px;
+ }
+ .step {
+ --step-accent: #009CDF;
+ --step-bg: rgba(0, 156, 223, 0.14);
+ --step-border: rgba(0, 156, 223, 0.34);
+ display: flex;
+ flex-direction: column;
+ gap: 16px;
+ align-items: flex-start;
+ padding: 28px 26px 24px;
+ background: linear-gradient(155deg, rgba(255, 255, 255, 0.05) 0%, rgba(13, 17, 24, 0.94) 100%);
+ border: 1px solid rgba(255, 255, 255, 0.09);
+ border-top: 3px solid var(--step-accent);
+ border-radius: 22px;
+ text-align: left;
+ transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+ position: relative;
+ overflow: hidden;
+ box-shadow: 0 16px 36px rgba(0, 0, 0, 0.42);
+ }
+ .step::before {
+ content: attr(data-step);
+ position: absolute;
+ top: 14px;
+ right: 20px;
+ font-size: 3.1rem;
+ font-weight: 900;
+ line-height: 1;
+ letter-spacing: -0.04em;
+ color: rgba(255, 255, 255, 0.055);
+ pointer-events: none;
+ user-select: none;
+ }
+ .step:hover {
+ transform: translateY(-6px);
+ border-color: var(--step-border);
+ box-shadow: 0 24px 48px rgba(0, 0, 0, 0.65), 0 0 28px var(--step-bg);
+ }
+ .step--urgent {
+ --step-accent: #FF6600;
+ --step-bg: rgba(255, 102, 0, 0.16);
+ --step-border: rgba(255, 102, 0, 0.45);
+ }
+ .step--ultra {
+ --step-accent: #009CDF;
+ --step-bg: rgba(0, 156, 223, 0.16);
+ --step-border: rgba(0, 156, 223, 0.45);
+ }
+ .step--micro {
+ --step-accent: #38BDF8;
+ --step-bg: rgba(56, 189, 248, 0.16);
+ --step-border: rgba(56, 189, 248, 0.45);
+ }
+ .step--verify {
+ --step-accent: #2ECC71;
+ --step-bg: rgba(46, 204, 113, 0.16);
+ --step-border: rgba(46, 204, 113, 0.45);
+ }
+ .step-top {
+ display: flex;
+ align-items: center;
+ gap: 12px;
+ width: 100%;
+ padding-right: 46px;
+ }
+ .step-num {
+ width: 46px;
+ height: 46px;
+ flex-shrink: 0;
+ background: var(--step-bg);
+ border: 1px solid var(--step-border);
+ color: var(--step-accent);
+ border-radius: 13px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+ }
+ .step-phase {
+ display: inline-block;
+ font-size: 0.72rem;
+ font-weight: 800;
+ letter-spacing: 0.08em;
+ text-transform: uppercase;
+ color: var(--step-accent);
+ background: var(--step-bg);
+ border: 1px solid var(--step-border);
+ padding: 4px 10px;
+ border-radius: 999px;
+ }
+ .step-content {
+ display: flex;
+ flex-direction: column;
+ flex: 1;
+ width: 100%;
+ }
+ .step-content h3 {
+ font-size: 1.26rem;
+ font-weight: 800;
+ color: #ffffff;
+ margin-bottom: 10px;
+ letter-spacing: -0.015em;
+ line-height: 1.25;
+ }
+ .step-content p {
+ font-size: 0.94rem;
+ color: #b5bac4;
+ line-height: 1.62;
+ margin-bottom: 16px;
+ }
+ .step-content p strong {
+ color: #ffffff;
+ font-weight: 700;
+ }
+ .step-meta {
+ margin-top: auto;
+ display: inline-flex;
+ align-items: center;
+ gap: 7px;
+ font-size: 0.78rem;
+ font-weight: 700;
+ color: var(--step-accent);
+ padding-top: 12px;
+ border-top: 1px solid rgba(255, 255, 255, 0.07);
+ width: 100%;
+ }
 
  /* SO WHAT SECTION */
  .so-what {
- background: rgba(255,255,255,0.02);
- border-top: 1px solid rgba(255,255,255,0.06);
- padding: 50px 20px; text-align: center;
+ background: linear-gradient(135deg, rgba(0, 156, 223, 0.11) 0%, rgba(14, 20, 32, 0.92) 60%, rgba(46, 204, 113, 0.08) 100%);
+ border: 1px solid rgba(0, 156, 223, 0.34);
+ border-radius: 22px;
+ max-width: 980px;
+ margin: 0 auto 40px;
+ padding: 30px 32px;
+ text-align: center;
+ box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+ }
+ .so-what-badge {
+ display: inline-block;
+ font-size: 0.72rem;
+ font-weight: 800;
+ letter-spacing: 0.1em;
+ text-transform: uppercase;
+ color: #38BDF8;
+ background: rgba(56, 189, 248, 0.12);
+ border: 1px solid rgba(56, 189, 248, 0.32);
+ padding: 5px 12px;
+ border-radius: 999px;
+ margin-bottom: 14px;
  }
  .so-what p {
- max-width: 680px; margin: 0 auto;
- font-size: clamp(1.05rem, 2.5vw, 1.25rem);
- line-height: 1.7; color: #bbb;
+ max-width: 780px;
+ margin: 0 auto;
+ font-size: clamp(1.02rem, 2.3vw, 1.2rem);
+ line-height: 1.68;
+ color: #d1d5db;
  }
- .so-what strong { color: #fff; }
+ .so-what strong { color: #ffffff; }
 
  /* CTA */
  .cta-section {
@@ -414,6 +561,10 @@
   @media (max-width: 768px) {
  .pain-image-wrapper img, .solution-image-wrapper img { height: 280px; }
  .pain-image-wrapper img { height: auto; aspect-ratio: 1120 / 625; }
+ .protocol-header { margin: 52px auto 26px; }
+ .process-steps { grid-template-columns: 1fr; padding: 0; gap: 16px; }
+ .step { padding: 22px 18px; border-radius: 18px; }
+ .so-what { margin: 0 auto 30px; padding: 24px 18px; border-radius: 18px; }
  .cta-section { padding: 40px 20px; margin: 40px 16px 0; border-radius: 16px; }
  .timer-warning { gap: 10px; }
  }
@@ -549,46 +700,74 @@
  <img src="./images/mac_mojada_solucion.webp" alt="Técnico en laboratorio realizando limpieza ultrasónica de tarjeta lógica MacBook en macWave" loading="lazy" decoding="async">
  </div>
 
-  <div style="margin-top: 80px; margin-bottom: 40px;">
-    <h3 style="font-size: 1.5rem; font-weight: 800; color: #0071e3; letter-spacing: 0.1em; text-transform: uppercase; text-shadow: 0 0 10px rgba(0, 113, 227, 0.3);">
-      Protocolo de reparación técnica
-    </h3>
+  <div class="protocol-header">
+    <span class="protocol-eyebrow">Proceso en laboratorio · Paso a paso</span>
+    <h3 class="protocol-heading">Protocolo de <span>Rescate y Reparación Técnica</span></h3>
+    <p class="protocol-sub">4 etapas clínicas de microelectrónica para salvar tu tarjeta lógica, conservar tus datos y ahorrarte hasta 70% frente a un reemplazo completo.</p>
   </div>
 
  <div class="process-steps">
- <div class="step">
- <div class="step-num">1</div>
+ <div class="step step--urgent" data-step="01">
+ <div class="step-top">
+ <div class="step-num" aria-hidden="true">
+ <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
+ </div>
+ <span class="step-phase">Fase 01 · Prioridad</span>
+ </div>
  <div class="step-content">
- <h3>Recepción y diagnóstico técnico certero</h3>
- <p>Desde que recibimos tu Mac, iniciamos el protocolo de emergencia química. Te decimos exactamente qué componentes dañó el líquido y la cotización transparente sin sorpresas.</p>
+ <h3>Recepción y diagnóstico eléctrico</h3>
+ <p>Activamos el <strong>protocolo anti-sulfatación</strong> en cuanto recibimos tu Mac. Inspeccionamos cortos bajo microscopio y te enviamos <strong>evidencia y cotización exacta</strong> antes de intervenir.</p>
+ <div class="step-meta">✓ Evidencia real de cortos · Cotización transparente</div>
  </div>
  </div>
- <div class="step">
- <div class="step-num">2</div>
+
+ <div class="step step--ultra" data-step="02">
+ <div class="step-top">
+ <div class="step-num" aria-hidden="true">
+ <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/><path d="M9 14c0 1.66 1.34 3 3 3"/></svg>
+ </div>
+ <span class="step-phase">Fase 02 · Química</span>
+ </div>
  <div class="step-content">
- <h3>Limpieza ultrasónica profesional</h3>
- <p>Desmontamos la tarjeta lógica completamente y la limpiamos en nuestra máquina de limpieza ultrasónica con solución especializada. Eliminamos cada traza de corrosión.</p>
+ <h3>Limpieza ultrasónica profunda</h3>
+ <p>Desmontamos la tarjeta lógica por completo y la tratamos en <strong>tinas ultrasónicas con solución dieléctrica</strong>, eliminando cada traza de café, líquido, humedad y corrosión.</p>
+ <div class="step-meta">✓ Desoxidación total de placa · Cero cepillado superficial</div>
  </div>
  </div>
- <div class="step">
- <div class="step-num">3</div>
+
+ <div class="step step--micro" data-step="03">
+ <div class="step-top">
+ <div class="step-num" aria-hidden="true">
+ <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="5" y="5" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M9 1v4M15 1v4M9 19v4M15 19v4M1 9h4M1 15h4M19 9h4M19 15h4"/></svg>
+ </div>
+ <span class="step-phase">Fase 03 · Microscopio</span>
+ </div>
  <div class="step-content">
- <h3>Reparación a nivel componente con microsoldadura</h3>
- <p>Identificamos cada componente dañado bajo microscopio y lo reemplazamos. Chips, condensadores, conectores reparamos lo que otros dan por perdido.</p>
+ <h3>Microsoldadura a nivel componente</h3>
+ <p>Identificamos cada línea quemada bajo microscopio y reemplazamos lo dañado: <strong>chips, mosfets, condensadores y pistas</strong>. Rescatamos tarjetas que otros dan por perdidas.</p>
+ <div class="step-meta">✓ Hasta 70% ahorro vs cambio completo de tarjeta</div>
  </div>
  </div>
- <div class="step">
- <div class="step-num">4</div>
+
+ <div class="step step--verify" data-step="04">
+ <div class="step-top">
+ <div class="step-num" aria-hidden="true">
+ <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+ </div>
+ <span class="step-phase">Fase 04 · Certificada</span>
+ </div>
  <div class="step-content">
- <h3>Prueba completa y garantía</h3>
- <p>Antes de entregarte tu Mac, hacemos pruebas exhaustivas en todos los componentes. Entregamos con garantía por escrito del trabajo realizado.</p>
+ <h3>Pruebas de estrés y garantía</h3>
+ <p>Validamos carga, temperatura, teclado, puertos y encendido durante horas. Entregamos tu Mac operando al 100%, <strong>conservando tu información</strong> y con <strong>garantía por escrito</strong>.</p>
+ <div class="step-meta">✓ Datos intactos · Garantía por escrito macWave</div>
  </div>
  </div>
  </div>
 
  <div class="so-what">
+ <span class="so-what-badge">Diferencia real en laboratorio</span>
  <p>
- A diferencia de los centros de servicio comunes que sólo <strong>liman la corrosión visible</strong> con un pincel y cruzan los dedos, en macWave hacemos una <strong>reparación real a nivel de componente electrónico</strong>. Eso significa que si un microprocesador, condensador o conector se dañó por el líquido, lo <strong>reemplazamos con microsoldadura avanzada</strong>.
+ A diferencia de los centros comunes que solo <strong>cepillan el sulfato visible</strong> o quieren cobrarte una placa nueva, en macWave hacemos una <strong>reparación real a nivel componente electrónico</strong>: localizamos el corto y reconstruimos el circuito con microsoldadura avanzada.
  </p>
  </div>
 

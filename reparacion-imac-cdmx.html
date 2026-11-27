@@ -194,22 +194,222 @@
 
         /* Warning Symptoms */
         .warning-symptoms {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            max-width: 800px;
-            margin: 50px auto 0;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            max-width: 860px;
+            margin: 42px auto 0;
         }
 
         .symptom-tag {
-            background: rgba(192, 57, 43, 0.1);
-            border: 1px solid rgba(192, 57, 43, 0.3);
-            color: #e88;
-            padding: 8px 16px;
-            border-radius: 100px;
-            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(192, 57, 43, 0.16);
+            border: 1.5px solid rgba(231, 76, 60, 0.52);
+            color: #ffffff;
+            padding: 18px 24px;
+            border-radius: 16px;
+            font-size: 1.18rem;
+            font-weight: 700;
+            line-height: 1.35;
+            text-align: center;
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.32);
+        }
+
+        .symptom-tag:last-child {
+            background: rgba(46, 204, 113, 0.14);
+            border-color: rgba(46, 204, 113, 0.55);
+            color: #ecfdf5;
+        }
+
+        /* ── SHOWCASE + VENTAJAS + COMPARATIVA M1 ── */
+        .showcase-upgrade-section {
+            background: linear-gradient(180deg, #060d18 0%, #090d14 60%, #0a0a0a 100%);
+            padding: 76px 20px 84px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .showcase-image-wrapper {
+            max-width: 920px;
+            margin: 0 auto 18px;
+            border-radius: 22px;
+            overflow: hidden;
+            border: 1.5px solid rgba(56, 189, 248, 0.35);
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55);
+        }
+
+        .showcase-image-wrapper img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1120 / 625;
+            object-fit: cover;
+            display: block;
+        }
+
+        .showcase-caption {
+            color: #9fb2c7;
+            font-size: 0.95rem;
             font-weight: 500;
+            max-width: 760px;
+            margin: 0 auto 56px;
+            line-height: 1.55;
+        }
+
+        .showcase-subheading {
+            font-size: clamp(1.6rem, 3.6vw, 2.35rem);
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            margin: 0 auto 12px;
+            max-width: 760px;
+            line-height: 1.18;
+        }
+
+        .showcase-subheading span {
+            color: #38BDF8;
+        }
+
+        .showcase-subdesc {
+            color: #9ea6b2;
+            font-size: 1rem;
+            max-width: 640px;
+            margin: 0 auto 32px;
+            line-height: 1.6;
+        }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            max-width: 920px;
+            margin: 0 auto 64px;
+            text-align: left;
+        }
+
+        .advantage-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            background: rgba(255, 255, 255, 0.035);
+            border: 1.5px solid rgba(46, 204, 113, 0.35);
+            border-radius: 18px;
+            padding: 22px 22px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
+        }
+
+        .advantage-check {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: rgba(46, 204, 113, 0.16);
+            border: 1px solid rgba(46, 204, 113, 0.45);
+            color: #2ecc71;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2px;
+        }
+
+        .advantage-card h4 {
+            font-size: 1.06rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .advantage-card p {
+            font-size: 0.93rem;
+            color: #b4bcc6;
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        .m1-compare-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+            max-width: 920px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .compare-card {
+            border-radius: 22px;
+            padding: 28px 26px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .compare-card--renew {
+            background: linear-gradient(155deg, rgba(46, 204, 113, 0.12) 0%, rgba(10, 22, 18, 0.94) 100%);
+            border: 1.5px solid rgba(46, 204, 113, 0.62);
+            box-shadow: 0 20px 44px rgba(0, 0, 0, 0.45);
+        }
+
+        .compare-card--m1 {
+            background: linear-gradient(155deg, rgba(255, 255, 255, 0.04) 0%, rgba(16, 18, 24, 0.94) 100%);
+            border: 1.5px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.38);
+        }
+
+        .compare-pill {
+            display: inline-block;
+            align-self: flex-start;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 999px;
+        }
+
+        .compare-card--renew .compare-pill {
+            background: rgba(46, 204, 113, 0.18);
+            border: 1px solid rgba(46, 204, 113, 0.5);
+            color: #4ade80;
+        }
+
+        .compare-card--m1 .compare-pill {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #cbd5e1;
+        }
+
+        .compare-card h4 {
+            font-size: 1.28rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0;
+            line-height: 1.25;
+        }
+
+        .compare-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .compare-list li {
+            font-size: 0.94rem;
+            line-height: 1.55;
+            color: #b8c2cc;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .compare-list li strong {
+            display: block;
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 3px;
         }
 
         /* ── HUB SECTIONS ── */
@@ -615,6 +815,15 @@
 
         @media (max-width: 768px) {
             .pain-hero { padding: 64px 18px 54px; }
+            .warning-symptoms { grid-template-columns: 1fr; gap: 12px; margin-top: 28px; }
+            .symptom-tag { padding: 15px 18px; font-size: 1.05rem; border-radius: 14px; }
+            .showcase-upgrade-section { padding: 54px 18px 60px; }
+            .showcase-image-wrapper { border-radius: 16px; }
+            .showcase-caption { margin-bottom: 38px; font-size: 0.9rem; }
+            .advantages-grid { grid-template-columns: 1fr; gap: 12px; margin-bottom: 44px; }
+            .advantage-card { padding: 18px 16px; }
+            .m1-compare-grid { grid-template-columns: 1fr; gap: 16px; }
+            .compare-card { padding: 22px 18px; border-radius: 18px; }
             .hub-section { padding: 64px 18px; }
             .cta-final-hub { padding: 48px 16px; }
             .cta-section { padding: 38px 20px; border-radius: 18px; }
@@ -718,6 +927,111 @@
                 <span class="symptom-tag">La bolita de colores gira sin parar</span>
                 <span class="symptom-tag">Ya no deja actualizar apps ni macOS</span>
                 <span class="symptom-tag">Respaldamos tus archivos intactos</span>
+            </div>
+        </section>
+
+        <!-- SHOWCASE SEQUOIA / SONOMA + VENTAJAS + COMPARATIVA M1 -->
+        <section class="showcase-upgrade-section">
+            <div class="showcase-image-wrapper">
+                <img src="./images/imac-sequoia-macbook-sonoma-cdmx.webp"
+                    alt="iMac 2013 ejecutando macOS Sequoia y MacBook Pro 2012 ejecutando macOS Sonoma optimizadas en macWave CDMX"
+                    width="1120" height="625" loading="eager" decoding="async">
+            </div>
+            <p class="showcase-caption">
+                Tu iMac 2013 con <strong style="color:#fff;">macOS Sequoia</strong> y tu MacBook Pro 2012 con <strong style="color:#fff;">macOS Sonoma</strong> funcionando suaves, claras y al día sin cambiar de equipo.
+            </p>
+
+            <h2 class="showcase-subheading">Ventajas de renovar tu Mac <span>en lugar de desecharla</span></h2>
+            <p class="showcase-subdesc">Soluciones sencillas y duraderas para que sigas disfrutando la computadora en la que ya confías.</p>
+
+            <div class="advantages-grid">
+                <div class="advantage-card">
+                    <span class="advantage-check" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
+                    </span>
+                    <div>
+                        <h4>Conservas tu equipo y tu comodidad</h4>
+                        <p>Mantienes tu misma pantalla amplia, teclado familiar y estructura de aluminio que ya conoces, ahora con respuesta inmediata.</p>
+                    </div>
+                </div>
+                <div class="advantage-card">
+                    <span class="advantage-check" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
+                    </span>
+                    <div>
+                        <h4>Apps y navegadores recientes sin trabas</h4>
+                        <p>Vuelve a instalar programas actuales, videollamadas, paquetería de oficina y portales bancarios sin avisos de sistema antiguo.</p>
+                    </div>
+                </div>
+                <div class="advantage-card">
+                    <span class="advantage-check" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
+                    </span>
+                    <div>
+                        <h4>Todos tus archivos siguen contigo</h4>
+                        <p>Respaldamos tus documentos, fotografías y sesiones para que recibas tu computadora exactamente como la dejaste, pero fluida.</p>
+                    </div>
+                </div>
+                <div class="advantage-card">
+                    <span class="advantage-check" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
+                    </span>
+                    <div>
+                        <h4>Cuidamos cada detalle interno</h4>
+                        <p>Limpiamos el polvo del sistema térmico, revisamos la ventilación y sellamos todo con materiales originales y garantía por escrito.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="showcase-subheading">Tu Mac renovada <span>vs. comprar una Mac M1 nueva</span></h2>
+            <p class="showcase-subdesc">Compara con claridad qué opción te resuelve el trabajo diario sin gastar de más.</p>
+
+            <div class="m1-compare-grid">
+                <div class="compare-card compare-card--renew">
+                    <span class="compare-pill">Opción inteligente para uso diario</span>
+                    <h4>Tu iMac o MacBook Pro renovada</h4>
+                    <ul class="compare-list">
+                        <li>
+                            <strong>Inversión ligera y cuidada</strong>
+                            Pagas una fracción mínima frente a estrenar equipo completo y alargas la vida de una máquina muy noble.
+                        </li>
+                        <li>
+                            <strong>macOS Sonoma o Sequoia fluido</strong>
+                            Sistema actual listo para trabajar, estudiar, diseñar sin trabas, navegar y usar tus aplicaciones favoritas.
+                        </li>
+                        <li>
+                            <strong>Cero adaptadores ni mudanzas largas</strong>
+                            Sigues conectando tus memorias USB, cables, impresoras y discos tal como siempre, sin perder tu información.
+                        </li>
+                        <li>
+                            <strong>Mantenimiento y garantía real</strong>
+                            Conservas refacciones intercambiables en el futuro y cuentas con respaldo certificado Apple en CDMX.
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="compare-card compare-card--m1">
+                    <span class="compare-pill">Equipo nuevo de tienda</span>
+                    <h4>Comprar una Mac M1 nueva</h4>
+                    <ul class="compare-list">
+                        <li>
+                            <strong>Desembolso elevado desde cero</strong>
+                            Exige comprar una computadora nueva completa aun cuando tu pantalla y carcasa actual están en perfecto estado.
+                        </li>
+                        <li>
+                            <strong>Potencia extra que casi no usas</strong>
+                            Está pensada para edición de cine o tareas pesadas extremas; en oficina y uso cotidiano la diferencia apenas se nota.
+                        </li>
+                        <li>
+                            <strong>Requiere migrar todo y comprar hubs</strong>
+                            Debes configurar cuentas de nuevo y gastar aparte en adaptadores para conectar accesorios tradicionales.
+                        </li>
+                        <li>
+                            <strong>Sin ampliación interna posterior</strong>
+                            La memoria y el almacenamiento vienen soldados de fábrica, sin opción económica de crecer después.
+                        </li>
+                    </ul>
+                </div>
             </div>
         </section>
 
